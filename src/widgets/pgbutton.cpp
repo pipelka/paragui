@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/30 07:10:21 $
+    Update Date:      $Date: 2005/02/17 15:39:05 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.20 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.21 $
     Status:           $State: Exp $
 */
 
@@ -34,6 +34,8 @@
 #include "pgtheme.h"
 
 #include "propstrings_priv.h"
+
+PG_Button::SignalButtonClick<> PG_Button::sigGlobalClick;
 
 class PG_ButtonStateData {
 public:
@@ -268,13 +270,16 @@ bool PG_Button::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 	if(button->button == 1) {
 		_mid->state = PRESSED;
 		
-		if ( _mid->behaviour & MSGCAPTURE )
+		if ( _mid->behaviour & MSGCAPTURE ) {
 			SetCapture();
+		}
 
 		Update();
 		
-		if ( _mid->behaviour & SIGNALONCLICK )
+		if ( _mid->behaviour & SIGNALONCLICK ) {
+			sigGlobalClick(this);
 			sigClick(this);
+		}
 		
 		return true;
 	}
@@ -322,8 +327,10 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		
 	Update();
 
-	if ( _mid->behaviour & SIGNALONRELEASE )
+	if ( _mid->behaviour & SIGNALONRELEASE ) {
+		sigGlobalClick(this);
 		sigClick(this);
+	}
 		
 	return true;
 }

@@ -37,6 +37,7 @@ Whats new in ParaGUI 1.1.9 ?
 - fixed uninitialized values in PG_ListBoxItem
 - all multiline text-rendering is now done with PG_MultiLineEdit (log, messagebox).
   This is much faster.
+- added PG_Button::sigGlobalClick
 
 - applied patches from Sebastian:
 - PG_ListBox: fixed GetSelectedIndex()
