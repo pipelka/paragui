@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:54 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_LINEEDIT
 #define PG_LINEEDIT
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pglineedit
-%{
-#include "pglineedit.h"
-%}
-#endif
 
 #include "pgthemewidget.h"
 #include "pgsignals.h"
@@ -63,10 +55,8 @@ public:
 
 	void LoadThemeStyle(const char* widgettype);
 
-#ifndef SWIG
 	/** */
 	void LoadThemeStyle(const char* widgettype, const char* objectname);
-#endif
 
 	/** start edit */
 	void EditBegin();
@@ -191,11 +181,9 @@ protected:
 	int my_cursorPosition;
 
 private:
-#ifndef SWIG
 
 	PG_LineEdit(const PG_LineEdit&);
 	PG_LineEdit& operator=(PG_LineEdit&);
-#endif
 
 	void DrawText(const PG_Rect& dst);
 	void DrawTextCursor();

@@ -7,8 +7,9 @@ libpgdraw_la_SOURCES = \
 	setpixel.cpp \
 	stretch.cpp \
 	pgrect.cpp \
+	pgpoint.cpp \
 	drawtile.cpp \
-        gradient.cpp
+	gradient.cpp
 
 EXTRA_DIST =
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:54 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
@@ -37,48 +37,9 @@
 #ifndef PARAGUI_H
 #define PARAGUI_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module paragui
-%{
-#include "paragui.h"
-%}
-%include "paragui_types.h"
-%include "pgrect.h"
-%include "pgmessageobject.h"
-%include "pgwidget.h"
-%include "pgthemewidget.h"
-%include "pgwidgetdnd.h"
-%include "pgwidgetlist.h"
-%include "pgfilearchive.h"
-%include "pgfile.h"
-%include "pgfont.h"
-%include "pgapplication.h"
-%include "pgbutton.h"
-%include "pgradiobutton.h"
-%include "pgcheckbutton.h"
-%include "pglabel.h"
-%include "pglineedit.h"
-%include "pgscrollbar.h"
-%include "pgprogressbar.h"
-%include "pgwindow.h"
-%include "pgslider.h"
-%include "pglistboxbaseitem.h"
-%include "pglistboxitem.h"
-%include "pgcolumnitem.h"
-%include "pglistbox.h"
-%include "pgmaskedit.h"
-%include "pgmessagebox.h"
-%include "pgspinnerbox.h"
-%include "pgimage.h"
-%include "pgpopupmenu.h"
-#endif
-
-#ifndef SWIG
 #include <cstdlib>
 #include <iostream>
 #include <string>
-#endif
 
 // SDL
 #include "SDL.h"
@@ -92,8 +53,6 @@
 #endif
 
 #include "paragui_types.h"
-
-#include "pgrect.h"
 
 /**
 	calculate the minimum of 2 values

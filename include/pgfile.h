@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 15:36:54 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfile.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -32,14 +32,6 @@
 
 #ifndef PG_FILE_H
 #define PG_FILE_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgfile
-%{
-#include "pgfile.h"
-%}
-#endif
 
 #include "paragui.h"
 
@@ -79,25 +71,20 @@ public:
 	*/
 	int write(void *buffer, unsigned int bytestowrite);
 
-#ifndef SWIG
 	//! write bytes to the stream
 	/*! 
 	\param buffer buffer to write
 	\return number of bytes written
 	*/
 	int write(std::string &buffer);
-#endif
 
-#ifndef SWIG
 	//! write bytes to the stream
 	/*! 
 	\param buffer buffer to write
 	\return number of bytes written
 	*/
 	int write(const char *buffer);
-#endif
 
-#ifndef SWIG
 	/**
 	read records from the stream
 	@param buffer	buffer to fill
@@ -106,9 +93,7 @@ public:
 	@return number of records read
 	*/
 	int read(void *buffer, unsigned int objSize, unsigned int objCount);
-#endif
 
-#ifndef SWIG
 	/**
 	write records to the stream
 	@param buffer	buffer to write
@@ -117,7 +102,6 @@ public:
 	@return number of records written
 	*/
 	int write(void *buffer, unsigned int objSize, unsigned int objCount);
-#endif
 
 	/**
 	check for the end of the file.
@@ -147,9 +131,7 @@ public:
 private:
 	void* file;
 
-#ifndef SWIG
 	friend class PG_FileArchive;
-#endif
 };
 
 #endif

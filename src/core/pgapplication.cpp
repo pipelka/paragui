@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:55 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -36,6 +36,7 @@
 #include "pglayout.h"
 #include "pglog.h"
 #include "pgdraw.h"
+#include "pgtheme.h"
 
 // usually PARAGUI_THEMEDIR is defined by the configure script
 // or passed to the compiler. This is just a kind of last resort.

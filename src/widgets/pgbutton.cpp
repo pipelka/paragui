@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 13:58:20 $
+    Update Date:      $Date: 2002/04/27 15:36:55 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.6 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,7 @@
 #include "pgthemewidget.h"
 #include "pglog.h"
 #include "pgdraw.h"
+#include "pgtheme.h"
 
 struct PG_ButtonDataInternal {
 	SDL_Surface* srf_normal;
@@ -216,11 +217,13 @@ void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	    t->FindProperty(widgettype, objectname, "bordersize2")
 	);
 
-	SetTransparency(
-	    t->FindProperty(widgettype, objectname, "transparency0"),
-	    t->FindProperty(widgettype, objectname, "transparency1"),
-	    t->FindProperty(widgettype, objectname, "transparency2")
-	);
+	int t0 = t->FindProperty(widgettype, objectname, "transparency0");
+	int t1 = t->FindProperty(widgettype, objectname, "transparency1");
+	int t2 = t->FindProperty(widgettype, objectname, "transparency2");
+
+	if(t0 != -1 && t1 != -1 && t2 != -1) {
+		SetTransparency((Uint8)t0, (Uint8)t1, (Uint8)t2);
+	}
 
 	s = t->FindString(widgettype, objectname, "label");
 	if(s != NULL) {

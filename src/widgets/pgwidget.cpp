@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/04/27 11:57:23 $
+   Update Date:      $Date: 2002/04/27 15:36:55 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.5 $
+   CVS/RCS Revision: $Revision: 1.6 $
    Status:           $State: Exp $
  */
 
@@ -35,6 +35,7 @@
 #include "pglog.h"
 #include "pgdraw.h"
 #include "pglayout.h"
+#include "pgtheme.h"
 
 bool PG_Widget::bBulkUpdate = false;
 PG_RectList PG_Widget::widgetList;
@@ -386,12 +387,7 @@ void PG_Widget::AddChildToCache(PG_Widget *child, int id) {
 	}
 }
 
-/**  */
-bool PG_Widget::MoveWindow(int x, int y) {
-	return MoveWidget(x, y);
-}
-
-bool PG_Widget::MoveWidget(int x, int y) {
+bool PG_Widget::MoveWidget(Sint16 x, Sint16 y) {
 
 	if (GetParent() != NULL) {
 		x += GetParent()->my_xpos;
@@ -466,18 +462,10 @@ bool PG_Widget::MoveWidget(int x, int y) {
 	return true;
 }
 
-bool PG_Widget::MoveWindow(const PG_Rect& r) {
-	return MoveWidget(r);
-}
-
 bool PG_Widget::MoveWidget(const PG_Rect& r) {
 	MoveWidget(r.x, r.y);
 	SizeWidget(r.w, r.h);
 	return true;
-}
-
-bool PG_Widget::SizeWindow(Uint16 w, Uint16 h) {
-	return SizeWidget(w, h);
 }
 
 bool PG_Widget::SizeWidget(Uint16 w, Uint16 h) {
@@ -503,7 +491,6 @@ bool PG_Widget::SizeWidget(Uint16 w, Uint16 h) {
 		}
 	}
 
-	eventSizeWindow(w, h);
 	eventSizeWidget(w, h);
 
 	my_width = w;
@@ -735,7 +722,7 @@ void PG_Widget::Hide(bool fade) {
 }
 
 /**  */
-void PG_Widget::MoveRect(int x, int y) {
+void PG_Widget::MoveRect(Sint16 x, Sint16 y) {
 	int dx = x - my_xpos;
 	int dy = y - my_ypos;
 
@@ -759,7 +746,6 @@ void PG_Widget::MoveRect(int x, int y) {
 		}
 	}
 
-	eventMoveWindow(x, y);
 	eventMoveWidget(x, y);
 }
 
@@ -906,7 +892,7 @@ void PG_Widget::StartWidgetDrag() {
 	my_internaldata->ptDragStart.y -= my_ypos;
 }
 
-void PG_Widget::WidgetDrag(int x, int y) {
+void PG_Widget::WidgetDrag(Sint16 x, Sint16 y) {
 
 	x -= my_internaldata->ptDragStart.x;
 	y -= my_internaldata->ptDragStart.y;
@@ -1750,13 +1736,7 @@ void PG_Widget::DrawLine(Uint32 x0, Uint32 y0, Uint32 x1, Uint32 y1, const SDL_C
 void PG_Widget::eventDraw(SDL_Surface* surface, const PG_Rect& rect) {
 }
 
-void PG_Widget::eventMoveWidget(int x, int y) {
-}
-
-void PG_Widget::eventMoveWindow(int x, int y) {
-}
-
-void PG_Widget::eventSizeWindow(Uint16 w, Uint16 h) {
+void PG_Widget::eventMoveWidget(Sint16 x, Sint16 y) {
 }
 
 void PG_Widget::eventSizeWidget(Uint16 w, Uint16 h) {

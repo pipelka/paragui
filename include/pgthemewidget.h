@@ -20,22 +20,14 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 15:36:55 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_THEMEWIDGET_H
 #define PG_THEMEWIDGET_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgthemewidget
-%{
-#include "pgthemewidget.h"
-%}
-#endif
 
 #include "pgwidget.h"
 
@@ -98,11 +90,6 @@ public:
 	PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, const char* style="ThemeWidget");	
 
 	/**
-	*/
-#ifdef SWIG
-	%name(PG_ThemeWidgetEx) PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, bool bCreateSurface, const char* style="ThemeWidget");
-#else
-	/**
 	Create a new PG_ThemeWidget object
 	@param parent	Pointer to parent widget
 	@param r			Position of the widget (related to parent or screen)
@@ -114,7 +101,6 @@ public:
 	internal drawing surface. Blitting will be done on the screen surface.
 	*/
 	PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, bool bCreateSurface, const char* style="ThemeWidget");
-#endif
 
 	/**
 	*/
@@ -126,21 +112,14 @@ public:
 	*/
 	void LoadThemeStyle(const char* widgettype);
 
-#ifndef SWIG
 	void LoadThemeStyle(const char* widgettype, const char* objectname);
-#endif
 
 	/**
 	Load the background image from a file
 	@param	filename		path to background image file
 	@param	mode			BKMODE_TILE | BKMODE_STRETCH
 	*/
-	/**  */
-#ifdef SWIG
-	%name(SetBackgroundFile) bool SetBackground(const char* filename, int mode=BKMODE_TILE);
-#else
 	bool SetBackground(const char* filename, int mode=BKMODE_TILE);
-#endif
 
 
 	/**
@@ -149,12 +128,7 @@ public:
 	@param	colorkey		colorkey (0x00RRGGBB)
 	@param	mode			BKMODE_TILE | BKMODE_STRETCH
 	*/
-	/**  */
-#ifdef SWIG
-	%name(SetBackgroundColorKey) bool SetBackground(const char* filename, int mode, Uint32 colorkey);
-#else
 	bool SetBackground(const char* filename, int mode, Uint32 colorkey);
-#endif
 
 	/**
 	Define a surface as background image (will not be freed)
@@ -252,10 +226,8 @@ protected:
 
 private:
 
-#ifndef SWIG
 	PG_ThemeWidget(const PG_ThemeWidget&);
 	PG_ThemeWidget& operator=(const PG_ThemeWidget&);
-#endif
 
 	void Init(const char* style);
 

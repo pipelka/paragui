@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:54 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessagebox.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_MESSAGEBOX_H
 #define PG_MESSAGEBOX_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgmessagebox
-%{
-#include "pgmessagebox.h"
-    %}
-#endif
 
 #include "paragui.h"
 #include "pgbutton.h"
@@ -64,10 +56,6 @@ public:
 	*/
 	PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, const PG_Rect& btn2, const char* btn2text, int textalign=PG_TA_CENTER, const char* style="MessageBox");
 
-#ifdef SWIG
-
-	%name(PG_MessageBox1) PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, int textalign=PG_TA_CENTER, const char* style="MessageBox");
-#else
 	/**
 	Creates a PopUp with 1 Button
 
@@ -80,7 +68,6 @@ public:
 	@param textalign						Alignment for windowtext
 	*/
 	PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, int textalign=PG_TA_CENTER, const char* style="MessageBox");
-#endif
 
 	/**
 	Destructor

@@ -20,14 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/26 12:43:23 $
+    Update Date:      $Date: 2002/04/27 15:36:55 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.6 $
     Status:           $State: Exp $
 */
 
 #include "pglistboxitem.h"
 #include "pglistbox.h"
+#include "pgtheme.h"
 
 PG_ListBoxItem::PG_ListBoxItem(int height, const char* text, SDL_Surface* icon, void* userdata, const char* style) : PG_ListBoxBaseItem(height, userdata) {
 	

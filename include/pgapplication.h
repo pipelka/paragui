@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:54 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
@@ -34,18 +34,11 @@
 #ifndef PG_APPLICATION_H
 #define PG_APPLICATION_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgapplication
-%{
-#include "pgapplication.h"
-%}
-#endif
-
 #include "pgmessageobject.h"
 #include "pgfilearchive.h"
 #include "pgfont.h"
-#include "pgtheme.h"
+
+class PG_Theme;
 
 /**
 	@author Alexander Pipelka
@@ -112,13 +105,7 @@ public:
 	@param	depth	screendepth in bits per pixel
 	@param	flags	PG_ screen initialization flags
 	*/
-#ifdef SWIG
-	// swig messes up the default arguments
-	bool InitScreen(int w, int h, int depth, unsigned int flags);
-#else
-
 	bool InitScreen(int w, int h, int depth=DISPLAY_DEPTH, Uint32 flags = SDL_SWSURFACE /* | SDL_FULLSCREEN*/ | SDL_HWPALETTE);
-#endif
 
 	/**
 	Load a widget theme
@@ -208,12 +195,7 @@ public:
 	@param	mode	background mode (BKMODE_TILE | BKMODE_STRETCH)
 	@return		true - background image was altered successfully
 	*/
-#ifdef SWIG
-	%name(SetBackground2) bool SetBackground(SDL_Surface* surface, int mode=BKMODE_TILE);
-#else
-
 	bool SetBackground(SDL_Surface* surface, int mode=BKMODE_TILE);
-#endif
 
 	/**
 	Redraw the application background
@@ -270,9 +252,7 @@ public:
 	static void FlipPage();
 
 	/**  */
-#ifndef SWIG
 	void PrintVideoTest();
-#endif
 
 	/**
 	Get the current default widgettheme
@@ -347,9 +327,7 @@ public:
 	@param WorkCallback address of the progress callback function
 	@return   returns non-zero on success or 0 if not succes
 	*/
-#ifndef SWIG
 	static bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max));
-#endif
 
 	/**
 	Load layout from the XML file
@@ -358,9 +336,7 @@ public:
 	@param UserSpace address of user data with are returned by Processing instruction etc.
 	@return   returns non-zero on success or 0 if not succes
 	*/
-#ifndef SWIG
 	static bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max), void *UserSpace);
-#endif
 
 	/**
 	Get widget by name
@@ -392,22 +368,14 @@ public:
 	@param	Blue	Blue color value 0 - 255
 	@return   0 when OK
 	*/
-#ifdef SWIG
-	%name(SetFontColorRGB) static void SetFontColor(int Red, int Green, int Blue);
-#else
 	static void SetFontColor(int Red, int Green, int Blue);
-#endif
 
 	/**
 	Set default font color
 	@param	Color Value of the color 0x00RRGGBB (RGB)
 	@return   0 when OK
 	*/
-#ifdef SWIG
-	%name(SetFontColor32) static void SetFontColor(int Color);
-#else
 	static void SetFontColor(int Color);
-#endif
 
 	/**
 	Set default font transparency (!!!)
@@ -511,11 +479,9 @@ protected:
 
 private:
 
-#ifndef SWIG
 	// disable the copy operators
 	PG_Application(const PG_Application&);
 	PG_Application& operator=(const PG_Application&);
-#endif
 
 	bool my_freeBackground;
 	static SDL_Surface* my_background;
@@ -524,11 +490,7 @@ private:
 	static int my_backmode;
 	
 	static PG_Theme* my_Theme;
-
-#ifndef SWIG
 	static std::string app_path;
-#endif
-
 	static PG_Application* pGlobalApp;
 	static SDL_Surface* screen;
 

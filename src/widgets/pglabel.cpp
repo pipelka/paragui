@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/27 15:36:55 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
-#include "paragui.h"
 #include "pglabel.h"
+#include "pgtheme.h"
 
 PG_Label::PG_Label(PG_Widget* parent, const PG_Rect& r, const char* text, const char* style) :
 PG_Widget(parent, r) {

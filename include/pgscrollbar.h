@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:55 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_SCROLLBAR_H
 #define PG_SCROLLBAR_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgscrollbar
-%{
-#include "pgscrollbar.h"
-    %}
-#endif
 
 #include "pgwidget.h"
 #include "pgbutton.h"
@@ -54,7 +46,6 @@ class DECLSPEC PG_ScrollBar : public PG_ThemeWidget {
 
 protected:
 
-#ifndef SWIG
 #ifndef DOXYGEN_SKIP
 class ScrollButton : public PG_Button {
 	public:
@@ -88,7 +79,6 @@ class ScrollButton : public PG_Button {
 		int my_tempPos;
 	};
 #endif		// DOXYGEN_SKIP
-#endif		// SWIG
 
 
 public:
@@ -160,18 +150,12 @@ protected:
 	int sb_direction;
 	int id;
 
-#ifndef SWIG
-
 	friend class ScrollButton;
-#endif
 
 private:
 
-#ifndef SWIG
-
 	PG_ScrollBar(const PG_ScrollBar&);
 	PG_ScrollBar& operator=(PG_ScrollBar&);
-#endif
 
 };
 

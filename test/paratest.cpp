@@ -19,6 +19,7 @@
 #include "pgspinnerbox.h"
 #include "pglog.h"
 #include "pgmenubar.h"
+#include "pgtheme.h"
 
 #define RESX 800
 #define RESY 600
@@ -78,11 +79,11 @@ public:
 		PG_Button* b = static_cast<PG_Button*>(data);
 	
 		// set transparency of passed in button
-		b->SetTransparency((Unit8)pos, (Unit8)pos, (Unit8)pos);
+		b->SetTransparency((Uint8)pos, (Uint8)pos, (Uint8)pos);
 		b->Update();
 
 		// set transparency of class member (progress)
-		progress->SetTransparency(data);
+		progress->SetTransparency((Uint8)pos);
 		progress->Update();
 		return true;
 	}

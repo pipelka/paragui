@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:55 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_WINDOW_H
 #define PG_WINDOW_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgwindow
-%{
-#include "pgwindow.h"
-    %}
-#endif
 
 #include "pgthemewidget.h"
 #include "pgbutton.h"
@@ -69,11 +61,7 @@ public:
 
 	void LoadThemeStyle(const char* widgettype);
 
-#ifdef SWIG
-	%name(SetColorTitleBar32) void SetColorTitlebar(Uint32 color);
-#else
 	void SetColorTitlebar(Uint32 color);
-#endif
 
 	void SetColorTitlebar(const SDL_Color& c);
 
@@ -125,10 +113,9 @@ private:
 	bool my_showMinimizeButton;
 
 private: // disable the copy operators
-#ifndef SWIG
+
 	PG_Window(const PG_Window&);
 	PG_Window& operator=(const PG_Window&);
-#endif
 
 };
 

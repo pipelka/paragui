@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:55 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_SPINNERBOX_H
 #define PG_SPINNERBOX_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgspinnerbox
-%{
-#include "pgspinnerbox.h"
-%}
-#endif
 
 #include "pgmaskedit.h"
 #include "pgbutton.h"

@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:54 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_MESSAGEOBJECT_H
 #define PG_MESSAGEOBJECT_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgmessageobject
-%{
-#include "pgmessageobject.h"
-%}
-#endif
 
 #include "paragui.h"
 #include "pgsignals.h"
@@ -270,9 +262,7 @@ protected:
 
 	static bool my_quitEventLoop;
 
-#ifndef SWIG
 	static std::vector<PG_MessageObject*> objectList;
-#endif
 
 	static PG_MessageObject* captureObject;
 
@@ -282,10 +272,8 @@ protected:
 
 private:
 
-#ifndef SWIG
 	PG_MessageObject(const PG_MessageObject&);
 	PG_MessageObject& operator=(const PG_MessageObject&);
-#endif
 
 	bool RemoveObject(PG_MessageObject* obj);
 
@@ -297,55 +285,7 @@ private:
 
 	bool my_canReceiveMessages;
 
-#ifndef SWIG
 	friend class PG_Application;
-#endif
 };
-
-
-#ifdef SWIG
-
-// Grab a Python function object as a Python object.
-%typemap(python,in) PyObject *pyfunc {
-	if (!PyCallable_Check($source)) {
-		PyErr_SetString(PyExc_TypeError, "Need a callable object!");
-		return NULL;
-	}
-	$target = $source;
-}
-
-%addmethods PG_MessageObject {
-
-	// This function matches the prototype of the normal C callback
-	// function for our widget. However, we use the clientdata pointer
-	// for holding a reference to a Python callable object.
-
-	static bool PythonCallBack(int id, PG_Widget *widget, unsigned long data, void *clientdata) {
-		PyObject *func, *arglist;
-		PyObject *result;
-		bool     res = 0;
-
-		func = (PyObject *) clientdata;               // Get Python function
-		arglist = Py_BuildValue("(ill)",id,widget,data);// Build argument list
-		result = PyEval_CallObject(func,arglist);     // Call Python
-		Py_DECREF(arglist);                           // Trash arglist
-		if (result) {                                 // If no errors, return double
-			res = PyInt_AsLong(result);
-		}
-		Py_XDECREF(result);
-		return res;
-	}
-
-	// Attach a new method to our plot widget for adding Python functions
-	// Set a Python function object as a callback function
-	// Note : PyObject *pyfunc is remapped with a typempap
-
-	void set_pymethod(PG_MSG_TYPE type, PyObject *pyfunc) {
-		self->SetEventCallback(type, PG_MessageObject_PythonCallBack, (void *) pyfunc);
-		Py_INCREF(pyfunc);
-	}
-}
-
-#endif
 
 #endif // PG_MESSAGEOBJECT_H

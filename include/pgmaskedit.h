@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 15:36:54 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmaskedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -31,17 +31,7 @@
 
 #include "pglineedit.h"
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgmaskedit
-%{
-#include "pgmaskedit.h"
-    %}
-#endif
-
-#ifndef SWIG
 #include <string>
-#endif
 
 class DECLSPEC PG_MaskEdit : public PG_LineEdit {
 public:
@@ -89,11 +79,8 @@ protected:
 
 private:
 
-#ifndef SWIG
-
 	std::string my_mask;
 	std::string my_displaymask;
-#endif
 
 	char my_spacer;
 

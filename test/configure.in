@@ -3,7 +3,7 @@ AC_INIT(README)
 
 dnl Setup for automake
 SDL_VERSION=1.2.0
-PARAGUI_VERSION=1.0.0
+PARAGUI_VERSION=1.1.0
 
 dnl Detect the canonical host and target build environment
 AC_CANONICAL_HOST

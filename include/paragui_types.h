@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:54 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui_types.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
@@ -34,67 +34,12 @@
 #ifndef PARAGUI_TYPES_H
 #define PARAGUI_TYPES_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module paragui_types
-%{
-#include "paragui_types.h"
-%}
-#endif
-
-// Forward declarations
-
-class PG_MessageObject;
-class PG_Widget;
-#ifndef SWIG
-class PG_Rect;
-#endif
-
-//! Structure for a screen point
-typedef struct {
-	Sint16 x;	//!< screen X-Coordinate
-	Sint16 y;	//!< screen Y-Coordinate
-} PG_Point;
+#include "SDL.h"
 
 //! Structure for widget gradients
 typedef struct {
 	SDL_Color colors[4];	//!< array of gradient colors
 } PG_Gradient;
-
-//! ParaGUI message types
-typedef enum {
-//	MSG_BUTTONCLICK,	//!< a button was pressed
-//	MSG_SCROLLPOS,	//!< scrollbar changed it's position
-//	MSG_SLIDEEND = MSG_SCROLLPOS,	//!< slider changed it's position
-//	MSG_SCROLLTRACK,	//!< scrollbar position changing currently
-//	MSG_SLIDE = MSG_SCROLLTRACK,	//!< slider position changing currently
-	MSG_THREAD_SIGNAL,	//!< general appeal signal (can by used for signal events)
-	MSG_SIGNAL,	//!< general appeal signal (can by used for signal events)
-//	MSG_QUIT,	//!< the appliction's messageloop will quit
-//	MSG_EDITBEGIN,	//!< a lineedit object entered "edit-mode"
-//	MSG_EDITEND,	//!< a lineedit object has left "edit-mode"
-//	MSG_APPIDLE,	//!< fired repeatedly (if enabled) when the event queue is empty
-//	MSG_SELECTITEM,	//!< a listbox item has been selected
-//	MSG_VIDEORESIZE,	//!< the videowindow has been resized by the user
-//	MSG_SPINNER_CHANGE,	//!< a spinnerobject changed it's value
-//	MSG_WINDOWCLOSE,	//!< a window was closed
-//	MSG_WINDOWMINIMIZE,	//!< a window was minimized
-//	MSG_WINDOWRESTORE,	//!< a window was restored
-//	MSG_RETURN,	//!< RETURN/ENTER was pressed in a lineedit widget
-//	MSG_MODALQUIT,	//!< signal to leave a modal eventloop
-//	MSG_SELECTMENUITEM,	//!< a menuitem has been selected
-	MSG_NOTEBOOK_TAB_CLICK,	//!< a notebook tab was clicked
-	MSG_USER_1 = 10001,	//!< userevent 1
-	MSG_USER_2 = 10002,	//!< userevent 2
-	MSG_USER_3 = 10003,	//!< userevent 3
-	MSG_USER_4 = 10004,	//!< userevent 4
-	MSG_USER_5 = 10005,	//!< userevent 5
-	MSG_USER_6 = 10006,	//!< userevent 6
-	MSG_USER_7 = 10007,	//!< userevent 7
-	MSG_USER_8 = 10008,	//!< userevent 8
-	MSG_USER_9 = 10009,	//!< userevent 9
-	MSG_USER_10 = 10010	//!< userevent 10
-} PG_MSG_TYPE;
 
 //! Keyevent actions
 typedef enum {

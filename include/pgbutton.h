@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 13:58:20 $
+    Update Date:      $Date: 2002/04/27 15:36:54 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.6 $
     Status:           $State: Exp $
 */
 
@@ -33,14 +33,6 @@
 
 #ifndef PG_BUTTON_H
 #define PG_BUTTON_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgbutton
-%{
-#include "pgbutton.h"
-    %}
-#endif
 
 #include "pgwidget.h"
 #include <string>
@@ -144,10 +136,8 @@ public:
 	/**  */
 	void LoadThemeStyle(const char* widgettype);
 
-#ifndef SWIG
 	/**  */
 	void LoadThemeStyle(const char* widgettype, const char* objectname);
-#endif
 
 	/**
 		Set the gradient.
@@ -284,11 +274,8 @@ protected:
 
 private:
 
-#ifndef SWIG
-
 	PG_Button(const PG_Button&);
 	PG_Button& operator=(const PG_Button&);
-#endif
 
 	/**  */
 	void FreeSurfaces();

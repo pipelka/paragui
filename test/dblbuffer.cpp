@@ -7,15 +7,7 @@
 #include "pgbutton.h"
 #include "pglabel.h"
 #include "pgcheckbutton.h"
-
-/*
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-
-#include "SDL.h"
-*/
+#include "pgtheme.h"
 
 #include <ctime>
 

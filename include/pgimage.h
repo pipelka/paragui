@@ -20,9 +20,9 @@
     pipelka@teleweb.at 
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2002/04/15 13:35:35 $ 
+    Update Date:      $Date: 2002/04/27 15:36:54 $ 
     Source File:      $Source: /sources/paragui/paragui/include/pgimage.h,v $ 
-    CVS/RCS Revision: $Revision: 1.3 $ 
+    CVS/RCS Revision: $Revision: 1.4 $ 
     Status:           $State: Exp $ 
 */
 
@@ -32,14 +32,6 @@
 
 #ifndef PG_IMAGE_H
 #define PG_IMAGE_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgimage
-%{
-#include "pgimage.h"
-%}
-#endif
 
 #include "pgthemewidget.h"
 
@@ -69,11 +61,7 @@ public:
 	@param freeimage	if true the imagedata is handled by the widget
 	@param style		widgetstyle to use
 	*/
-#ifdef SWIG
-	%name(PG_ImageSurface) PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, const char* style = "ThemeWidget");
-#else
 	PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, const char* style = "ThemeWidget");
-#endif
 
 protected:
 

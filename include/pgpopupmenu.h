@@ -20,23 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 15:36:54 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
 
 #ifndef PG_POPUPMENU_H
 #define PG_POPUPMENU_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgpopupmenu
-%{
-#include "pgpopupmenu.h"
-%}
-#endif
 
 #include <string>
 #include <list>
@@ -206,7 +198,6 @@ public: // methods
 	 *@{
 	 */
 
-#ifndef SWIG
 	/**
 	 * Adds a menu item whose handler (if any) is set to be a stand-alone
 	 * function.
@@ -232,7 +223,6 @@ public: // methods
 	PG_PopupMenu& addMenuItem(char *caption,
 	                          PG_PopupMenu *sub,
 	                          PG_MenuItem::MI_FLAGS flags = PG_MenuItem::MIF_SUBMENU);
-#endif // SWIG
 
 	/**
 	 * @return a reference to this menu
@@ -263,9 +253,7 @@ public: // methods
 
 protected: // methods
 
-#ifndef SWIG
 	typedef std::list<PG_MenuItem*>::iterator MII;
-#endif // SWIG
 
 	// reimplemented
 	void eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst);
@@ -293,17 +281,15 @@ protected: // methods
 	virtual void liberate();
 
 private: // methods
-#ifndef SWIG
+
 	bool selectItem(PG_MenuItem *item, MII iter);
 	bool handleMotion(PG_Point const&);
 	void appendItem(PG_MenuItem *item);
-#endif //SWIG
 
 protected: // data
-#ifndef SWIG
+
 	std::list<PG_MenuItem*>  items; /** the menu items collection */
 	std::string           myCaption; /** menu caption */
-#endif //SWIG
 
 	SDL_Color             captionActiveColor;
 	SDL_Color             captionInactiveColor;
@@ -343,7 +329,6 @@ private: // data
 	PG_MenuItem             *subParent;
 };
 
-#ifndef SWIG
 inline int PG_PopupMenu::maxItemWidth() const {
 	return w - xPadding;
 }
@@ -429,7 +414,5 @@ inline const std::string& PG_MenuItem::getCaption() const {
 inline PG_MenuItem::operator PG_Point const&() const {
 	return myPoint;
 }
-
-#endif // SWIG
 
 #endif // PG_POPUPMENU_H
