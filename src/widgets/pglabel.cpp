@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/02/29 16:24:05 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -30,14 +30,16 @@
 #include "pglabel.h"
 #include "pgapplication.h"
 #include "pgtheme.h"
+#include "pglog.h"
 
 PG_Label::PG_Label(PG_Widget* parent, const PG_Rect& r, const char* text, const char* style) :
-PG_Widget(parent, r) {
+PG_Widget(parent, r),
+my_indent(0) {
 
-	my_alignment = CENTER;
+	my_alignment = LEFT;
 	my_srfIcon = NULL;
 	// might be set by PG_ListBox::AddChild()!
-	my_indent = 0;
+	//my_indent = 0;
 	my_freeicon = false;
 
 	SetText(text);
@@ -154,10 +156,11 @@ SDL_Surface* PG_Label::GetIcon() {
 	return my_srfIcon;
 }
 
-void PG_Label::SetIndent(int indent) {
+void PG_Label::SetIndent(Uint16 indent) {
 	my_indent = indent;
+	PG_LogDBG("PG_Label::SetIndent(%i)", my_indent);
 }
 
-int PG_Label::GetIndent() {
+Uint16 PG_Label::GetIndent() {
 	return my_indent;
 }

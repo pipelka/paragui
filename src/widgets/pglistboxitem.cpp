@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/29 16:24:05 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5.4.1.2.7 $
+    CVS/RCS Revision: $Revision: 1.5.4.1.2.8 $
     Status:           $State: Exp $
 */
 
@@ -69,12 +69,9 @@ void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 		return;
 	}
 
-	//PG_Rect my_src = src;
-	//PG_Rect my_dst = dst;
-
 	if(my_srfHover == NULL) {
 		my_srfHover = PG_ThemeWidget::CreateThemedSurface(
-						  PG_Rect(0, 0, my_width, my_itemheight),
+						  PG_Rect(0, 0, my_width, my_height),
 						  my_gradient[2],
 						  my_background[2],
 						  my_bkmode[2],
@@ -83,7 +80,7 @@ void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 	
 	if(my_srfSelected == NULL) {
 		my_srfSelected = PG_ThemeWidget::CreateThemedSurface(
-							 PG_Rect(0, 0, my_width, my_itemheight),
+							 PG_Rect(0, 0, my_width, my_height),
 							 my_gradient[1],
 							 my_background[1],
 							 my_bkmode[1],
@@ -97,7 +94,7 @@ void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 		PG_Widget::eventBlit(my_srfHover, src, dst);
 	}
 
-	PG_Label::eventBlit(NULL, /*my_*/src, /*my_*/dst);
+	PG_Label::eventBlit(NULL, src, dst);
 }
 
 void PG_ListBoxItem::LoadThemeStyle(const char* widgettype, const char* objectname) {

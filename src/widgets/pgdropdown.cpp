@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/02/29 16:24:05 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -49,7 +49,7 @@ my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 
 	PG_Rect rlist(r.my_xpos, r.my_ypos + r.my_height +1, r.my_width, r.my_height /* * 5 */);
 	my_DropList = new PG_ListBox(NULL, rlist, style);
-	my_DropList->EnableScrollBar(false);
+	//my_DropList->EnableScrollBar(false);
 	my_DropList->sigSelectItem.connect(slot(*this, &PG_DropDown::select_handler));
 
 	//LoadThemeStyle(style);
@@ -86,11 +86,8 @@ void PG_DropDown::AddItem(const char* text, void* userdata, Uint16 height) {
 	    h += 2;
 	}
 	
-	PG_ListBoxItem* item = new PG_ListBoxItem(NULL, h, text, NULL, userdata);
-
-	my_DropList->AddItem(item);
-	
-	my_DropList->SizeWidget(my_width, my_DropList->GetListHeight() + my_DropList->GetBorderSize()*2);
+	new PG_ListBoxItem(this, h, text, NULL, userdata);	
+	//my_DropList->SizeWidget(my_width, my_DropList->GetListHeight() + my_DropList->GetBorderSize()*2);
 }
 
 void PG_DropDown::RemoveAll() {
@@ -119,13 +116,12 @@ bool PG_DropDown::handleButtonClick(PG_Button* button) {
 	} else {
 		my_DropList->MoveRect(my_xpos, my_ypos+my_height);
 		my_DropList->Show();
-		//my_DropList->BringToFront();
 	}
 
 	return true;
 }
 
-void PG_DropDown::SetIndent(int indent) {
+void PG_DropDown::SetIndent(Uint16 indent) {
 	my_DropList->SetIndent(indent);
 }
 
@@ -201,6 +197,6 @@ void PG_DropDown::SelectItem(const int n) {
 	  my_DropList->SelectNextItem();
 }
 
-int PG_DropDown::GetIndent() {
+Uint16 PG_DropDown::GetIndent() {
 	return my_DropList->GetIndent();
 }

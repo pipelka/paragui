@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 11:23:24 $
+    Update Date:      $Date: 2004/02/29 16:24:05 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.9 $
     Status:           $State: Exp $
 */
 
@@ -156,8 +156,16 @@ void PG_WidgetList::eventSizeWidget(Uint16 w, Uint16 h) {
 
 	PG_ThemeWidget::eventSizeWidget(w,h);
 
-	RecalcPositions(my_objVerticalScrollbar->IsVisible(), my_objHorizontalScrollbar->IsVisible());
-	CheckScrollBars();
+	if(h != my_height) {
+		handleAreaChangedHeight(my_scrollarea, GetListHeight());
+	}
+
+	if(w != my_width) {
+		handleAreaChangedWidth(my_scrollarea, GetListWidth());
+	}
+
+	//RecalcPositions(my_objVerticalScrollbar->IsVisible(), my_objHorizontalScrollbar->IsVisible());
+	//CheckScrollBars();
 }
 
 bool PG_WidgetList::handleScrollPos(PG_ScrollBar* widget, long data) {
@@ -206,9 +214,9 @@ void PG_WidgetList::AddChild(PG_Widget* w) {
 }
 
 // obsolete -> roadmap
-void PG_WidgetList::AddWidget(PG_Widget* w) {
+/*void PG_WidgetList::AddWidget(PG_Widget* w) {
 	AddChild(w);
-}
+}*/
 
 PG_Widget* PG_WidgetList::GetWidgetFromPos(Sint32 y) {
 	Uint32 dy = 0;
@@ -284,6 +292,9 @@ void PG_WidgetList::CheckScrollBars() {
 			}
 			scrollBars[i]->SetLineSize(ls);
 		}
+		else {
+			scrollBars[i]->SetLineSize(10);
+		}
 		scrollBars[i]->SetRange(0, listsizes[i] - sizes[i]);
 		scrollBars[i]->SetPageSize(sizes[i]);
 		scrollBars[i]->SetPosition(scrollBars[i]->GetPosition());
@@ -330,11 +341,11 @@ void PG_WidgetList::ScrollTo(int index, PG_ScrollBar::ScrollDirection direction)
 }
 
 void PG_WidgetList::PageUp() {
-	my_scrollarea->ScrollTo(0, my_scrollarea->GetScrollPosY() - my_height );
+	my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), my_scrollarea->GetScrollPosY() - my_height );
 }
 
 void PG_WidgetList::PageDown() {
-	my_scrollarea->ScrollTo(0, my_scrollarea->GetScrollPosY() + my_height );
+	my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), my_scrollarea->GetScrollPosY() + my_height );
 }
 
 Uint16 PG_WidgetList::GetListHeight() {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/02/29 16:24:05 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.6 $
     Status:           $State: Exp $
 */
 
@@ -40,25 +40,27 @@ my_selectedItem(NULL) {
 PG_ListBox::~PG_ListBox() {
 }
 
-void PG_ListBox::AddWidget(PG_Widget* w) {
+/*void PG_ListBox::AddWidget(PG_Widget* w) {
 	PG_ListBox::AddChild(w);
-}
+}*/
 
 void PG_ListBox::AddChild(PG_Widget* item) {
 	if(item == NULL) {
         return;
 	}
 
-	static_cast<PG_ListBoxBaseItem*>(item)->SetIndent(my_indent);
+	PG_LogDBG("PG_ListBox::AddChild() : my_indent=%i", my_indent);
+
 	item->SizeWidget(Width(), item->Height());
+	static_cast<PG_ListBoxBaseItem*>(item)->SetIndent(my_indent);
 	
 	PG_WidgetList::AddChild(item);
 }
 
 // obsolete -> roadmap
-void PG_ListBox::AddItem(PG_ListBoxBaseItem* item) {
+/*void PG_ListBox::AddItem(PG_ListBoxBaseItem* item) {
 	AddChild(item);    
-}
+}*/
 
 void PG_ListBox::SetMultiSelect(bool multi) {
 	my_multiselect = multi;
@@ -125,7 +127,7 @@ PG_ListBoxBaseItem* PG_ListBox::GetSelectedItem() {
 	return my_selectedItem;
 }
 
-void PG_ListBox::SetIndent(int indent) {
+void PG_ListBox::SetIndent(Uint16 indent) {
 	my_indent = indent;
 }
 
@@ -180,6 +182,6 @@ void PG_ListBox::GetSelectedItems(std::vector<PG_ListBoxBaseItem*>& items) {
 	}
 }
 
-int PG_ListBox::GetIndent() {
+Uint16 PG_ListBox::GetIndent() {
 	return my_indent;
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:05 $
+    Update Date:      $Date: 2004/02/29 16:24:05 $
     Source File:      $Source: /sources/paragui/paragui/include/pglabel.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.5 $
     Status:           $State: Exp $
 */
 
@@ -82,10 +82,10 @@ public:
 	Set the text indentation
 	@param	indent		number of pixels for text indentation
 	*/
-	void SetIndent(int indent);
+	void SetIndent(Uint16 indent);
 
 	/** Returns the text indentation */
-	int GetIndent();
+	Uint16 GetIndent();
 
 protected:
 
@@ -106,7 +106,7 @@ private:
 	PG_Label& operator=(const PG_Label&);
 
 	TextAlign my_alignment;
-	int my_indent;
+	Uint16 my_indent;
 	bool my_freeicon;
 
 	PG_Rect my_rectLabel;

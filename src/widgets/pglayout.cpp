@@ -883,8 +883,8 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		}
 
 		// to be updated!
-		PG_ListBoxItem *Widget = new PG_ListBoxItem(NULL, h, PG_Layout::GetParamStr(atts, "ltext"));
-		((PG_ListBox *)XMLParser->ParentObject)->AddItem(Widget);
+		PG_ListBoxItem *Widget = new PG_ListBoxItem(parent, h, PG_Layout::GetParamStr(atts, "ltext"));
+		//((PG_ListBox *)XMLParser->ParentObject)->AddItem(Widget);
 		XMLParser->ParentObject = Widget;
 
 		XMLParser->InhTagFlags |= SetListBoxItemAtts(Widget, atts, XMLParser);
@@ -896,8 +896,8 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		XMLParser->Section = XML_SECTION_COLUMNITEM | XML_SECTION_COMWIDPARAMS;
 
 		// to be updated!
-		PG_ColumnItem *Widget = new PG_ColumnItem(NULL, PG_Layout::GetParamInt(atts, "columns"),PG_Layout::GetParamInt(atts, "height"));
-		((PG_ListBox *)XMLParser->ParentObject)->AddItem(Widget);
+		PG_ColumnItem *Widget = new PG_ColumnItem(parent, PG_Layout::GetParamInt(atts, "columns"),PG_Layout::GetParamInt(atts, "height"));
+		//((PG_ListBox *)XMLParser->ParentObject)->AddItem(Widget);
 		XMLParser->ParentObject = Widget;
 
 		XMLParser->InhTagFlags |= SetListBoxItemAtts(Widget, atts, XMLParser);
@@ -1133,7 +1133,7 @@ static void XMLEndDoc(void *userData, const char *name) {
 
 	if ((XMLParser->EndTagFlags & ENDTAGFLAG_OBJECT) != 0) {
 		if (((XMLParser->InhTagFlags & INHTAGFLAG_ADDWIDGET) != 0) && ((XMLParser->EndTagFlags & ENDTAGFLAG_WIDGETLIST) == 0)) {
-			WidgetToAdd = XMLParser->ParentObject;
+			//WidgetToAdd = XMLParser->ParentObject;
 //			goto object_end;
 		}
 
@@ -1154,7 +1154,7 @@ static void XMLEndDoc(void *userData, const char *name) {
 		return;
 	}
 
-	((PG_WidgetList *)(XMLParser->ParentObject))->AddWidget(WidgetToAdd);
+	((PG_WidgetList *)(XMLParser->ParentObject))->AddChild(WidgetToAdd);
 }
 
 static void XMLTextDoc(void *userData, const XML_Char *s, int len) {

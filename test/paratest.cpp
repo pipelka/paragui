@@ -140,7 +140,7 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	//WidgetList->AddWidget(new PG_LineEdit(NULL, PG_Rect(0,0,80,30)));
 	new PG_LineEdit(WidgetList, PG_Rect(0,0,80,30));
 
-	PG_CheckButton* check = new PG_CheckButton(WidgetList, PG_Rect(0,0,200,25), "CheckButton 2");
+	new PG_CheckButton(WidgetList, PG_Rect(0,0,200,25), "CheckButton 2");
 	//WidgetList->AddWidget(check);
 
 	progress = new PG_ProgressBar(this, PG_Rect(260, 90, 150, 25));
@@ -170,7 +170,7 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	drop->AddItem("Item 4");
 	drop->AddItem("Item 5");
 	drop->AddItem("Item 6");
-	drop->Hide();
+	//drop->Hide();
 }
 
 bool TestWindow::handleScrollPos(PG_ScrollBar* widget, long data){
@@ -208,14 +208,14 @@ bool TestWindow::handleScrollTrack(PG_ScrollBar* widget, long data) {
 }
 
 bool TestWindow::handleButtonClick(PG_Button* button) {
-	int label=0;
+	static int label=0;
 	int id = button->GetID();
 
 	if(id == 100) {
-		PG_Label* l = new PG_Label(NULL, PG_Rect(0,0,220,25), "");
+		PG_Label* l = new PG_Label(WidgetList, PG_Rect(0,0,220,25), "");
 		l->SetAlignment(PG_Label::CENTER);
 		l->SetTextFormat("Label %i", ++label);
-		WidgetList->AddWidget(l);
+		//WidgetList->AddWidget(l);
 	
 		return true;
 	}
@@ -474,7 +474,8 @@ int main(int argc, char* argv[]) {
 	// isn't a good idea (the list will try to delete the objects
 	// and the static objects will be destroyed when leaving the
 	// application). Let's use dynamic objects.
-	new PG_ListBoxItem(&drop, 25, "Item 7");
+	PG_ListBoxItem* item = new PG_ListBoxItem(&drop, 25, "Item 7");
+	item->SetIndent(20);
 	new PG_ListBoxItem(&drop, 25, "Item 8");
 	new PG_ListBoxItem(&drop, 25, "Item 9");
 	drop.Show();

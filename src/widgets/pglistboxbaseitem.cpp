@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/02/29 16:24:05 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.5 $
     Status:           $State: Exp $
 */
 
@@ -34,7 +34,7 @@ PG_ListBoxBaseItem::PG_ListBoxBaseItem(PG_Widget* parent, Uint16 height, void* u
 	my_userdata = userdata;
 	my_selected = false;
 	my_hover = false;
-	my_itemheight = height;
+	//my_itemheight = height;
 
 	SetAlignment(PG_Label::LEFT);
 }
@@ -69,7 +69,7 @@ void PG_ListBoxBaseItem::Select(bool select) {
 }
 
 void PG_ListBoxBaseItem::eventSizeWidget(Uint16 w, Uint16 h) {
-	my_itemheight = h;
+	//my_itemheight = h;
 }
 
 void PG_ListBoxBaseItem::eventMouseEnter() {
