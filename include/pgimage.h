@@ -20,9 +20,9 @@
     pipelka@teleweb.at 
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2002/04/27 15:36:54 $ 
+    Update Date:      $Date: 2003/01/25 16:53:57 $ 
     Source File:      $Source: /sources/paragui/paragui/include/pgimage.h,v $ 
-    CVS/RCS Revision: $Revision: 1.4 $ 
+    CVS/RCS Revision: $Revision: 1.3.6.1 $ 
     Status:           $State: Exp $ 
 */
 
@@ -32,6 +32,14 @@
 
 #ifndef PG_IMAGE_H
 #define PG_IMAGE_H
+
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgimage
+%{
+#include "pgimage.h"
+%}
+#endif
 
 #include "pgthemewidget.h"
 
@@ -44,7 +52,7 @@
 class DECLSPEC PG_Image : public PG_ThemeWidget  {
 public:
 	/**
-	Contructor of the PG_Image class
+	Contructor of the PG_Image class (loading from file)
 	@param parent	pointer to the parent widget or NULL
 	@param p			position of the PG_Image widget
 	@param filename	image-file to load
@@ -54,15 +62,40 @@ public:
 	PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, const char* style = "ThemeWidget");
 
 	/**
-	Contructor of the PG_Image class
+	Contructor of the PG_Image class (image from surface)
 	@param parent		pointer to the parent widget or NULL
 	@param p				position of the PG_Image widget
 	@param image		pointer to imagedata (SDL_Surface)
 	@param freeimage	if true the imagedata is handled by the widget
 	@param style		widgetstyle to use
 	*/
+#ifdef SWIG
+	%name(PG_ImageSurface) PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, const char* style = "ThemeWidget");
+#else
 	PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, const char* style = "ThemeWidget");
+#endif
 
+	/**
+	Contructor of the PG_Image class (loading from file)
+	@param parent	pointer to the parent widget or NULL
+	@param p		position of the PG_Image widget
+	@param filename	image-file to load
+	@param	colorkey	colorkey (0xRRGGBB)
+	@param style		widgetstyle to use
+	This constructor creates the widget and loads the image from a file using a colorkey.
+	*/
+#ifdef SWIG
+	%name(PG_ImageColorKey) PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, Uint32 colorkey, const char* style);
+#else
+	PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, Uint32 colorkey, const char* style);
+#endif
+
+	/**
+	Set the colorkey of the image
+	@param key		colorkey (0xRRGGBB);
+	*/
+	void SetColorKey(Uint32 key);
+	
 protected:
 
 	/** */

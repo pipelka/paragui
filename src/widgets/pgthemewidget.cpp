@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:41 $
+    Update Date:      $Date: 2003/01/25 16:53:57 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.7 $
     Status:           $State: Exp $
 */
 
@@ -339,19 +339,18 @@ bool PG_ThemeWidget::SetImage(SDL_Surface* image, bool bFreeImage) {
 	return true;
 }
 
+bool PG_ThemeWidget::LoadImage(const char* filename, Uint32 key) {
+	if(LoadImage(filename)) {
+		SDL_SetColorKey(my_image, SDL_SRCCOLORKEY, key);
+		return true;
+	}
+	
+	return false;
+}
+
 bool PG_ThemeWidget::LoadImage(const char* filename) {
 	SDL_Surface* image = PG_Application::LoadSurface(filename);
-
-	if(image == NULL) {
-		return false;
-	}
-
-	FreeImage();
-	my_internaldata->freeimage = true;
-	my_image = image;
-
-	Update();
-	return true;
+	return SetImage(image, true);
 }
 
 void PG_ThemeWidget::eventSizeWidget(Uint16 w, Uint16 h) {

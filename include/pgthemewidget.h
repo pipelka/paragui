@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/12 10:12:14 $
+    Update Date:      $Date: 2003/01/25 16:53:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -198,6 +198,17 @@ public:
 	*/
 	bool LoadImage(const char* filename);
 
+	/**
+	Display an image in the widget using a colorkey
+	@param filename		name of the image file to load
+	@param key			the colorkey (0xRRGGBB)
+	@return				true on success
+	With this function you can define an image with a colorkey to be displayed at the upper left corner
+	of the widget. Image data will be erased when deleting the widget or loading / setting
+	a new image.
+	*/
+	bool LoadImage(const char* filename, Uint32 key);
+	
 	/**
 	Display an image in the widget
 	@param image		pointer to surface to display
