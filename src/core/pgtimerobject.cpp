@@ -21,8 +21,9 @@ PG_TimerObject::~PG_TimerObject() {
 	// remove all timers of this object
 	std::map<PG_TimerID, SDL_TimerID>::iterator i;
 	
-	for(i = my_timermap.begin(); i != my_timermap.end(); i++) {
+	for(i = my_timermap.begin(); i != my_timermap.end(); ) {
 		RemoveTimer((*i).first);
+		i = my_timermap.begin();
 	}
 	
 	objectcount--;
@@ -47,10 +48,6 @@ PG_TimerID PG_TimerObject::AddTimer(Uint32 interval) {
 }
 	
 bool PG_TimerObject::RemoveTimer(PG_TimerID id) {
-	if(my_timermap[id] == 0) {
-		return false;
-	}
-	
 	SDL_TimerID sid = my_timermap[id];
 	my_timermap.erase(id);
 	timermap.erase(id);

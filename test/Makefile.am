@@ -35,7 +35,7 @@ windowtest_LDADD = -L../src $(PARAGUI_LIBS)
 layouttest_SOURCES = layouttest.cpp
 layouttest_LDADD = -L../src $(PARAGUI_LIBS)
 
-INCLUDES = $(PARAGUI_CFLAGS)
+INCLUDES = $(PARAGUI_CFLAGS) -I$(top_srcdir)/include
 
 $(PACKAGE)-$(VERSION).tar.gz: dist
 
