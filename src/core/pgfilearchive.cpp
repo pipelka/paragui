@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 16:06:25 $
+    Update Date:      $Date: 2002/05/28 09:41:44 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.2.4.1 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,6 @@
 #include "pgapplication.h"
 #include "pglog.h"
 #include "pgfont.h"
-#include "physfsrwops.h"
 
 #ifdef HAVE_SDLIMAGE
 #include "SDL_image.h"
@@ -106,6 +105,32 @@ bool PG_FileArchive::RemoveArchive(const char* arch) {
 
 char **PG_FileArchive::EnumerateFiles(const char *dir) {
 	return PHYSFS_enumerateFiles(dir);
+}
+
+PG_FileList* PG_FileArchive::GetFileList(const char *dir) {
+	char **tempList = EnumerateFiles(dir);
+	
+	if( tempList == NULL ) {
+		return NULL;
+	}
+
+	PG_FileList* retVal = NULL;
+	
+	// Scan through to get the length of the listing to get the proper vector size.
+	Uint32 size = 0;
+	for( size = 0; tempList[ size ] != NULL; ++size) {}
+	
+	// Now we're ready to initialize everything.
+	retVal = new std::vector< std::string >;
+	retVal->reserve( size );
+	for( Uint32 i = 0; i < size; ++i ) {
+		retVal->push_back(std::string(tempList[ i ]));
+	}
+	
+	// Clean up.
+	PHYSFS_freeList(tempList);
+	
+	return retVal;
 }
 
 bool PG_FileArchive::Exists(const char *filename) {
@@ -232,8 +257,14 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 		return surface;
 	}
 
+	PG_DataContainer* srfdata = ReadFile(filename);
+	if(!srfdata) {
+		PG_LogWRN("Unable to load '%s' !", filename);
+		return NULL;
+	}
+
 	surface = NULL;
-	SDL_RWops *rw = PHYSFSRWOPS_openRead(filename);
+	SDL_RWops *rw = SDL_RWFromMem(srfdata->data(), srfdata->size());
 	
 #ifdef HAVE_SDLIMAGE
 	surface = IMG_Load_RW(rw, 1);
@@ -241,7 +272,9 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 	surface = SDL_LoadBMP_RW(rw, 1);
 #endif
 	
-	if(convert) {
+	delete srfdata;
+	
+	if(convert && !PG_Application::GetGLMode()) {
 		SDL_Surface* tmpsrf = SDL_DisplayFormat(surface);
 		if(tmpsrf) {
 			SDL_FreeSurface(surface);
@@ -279,6 +312,32 @@ bool PG_FileArchive::RemoveAllArchives() {
 
 char** PG_FileArchive::GetSearchPath() {
 	return PHYSFS_getSearchPath();
+}
+
+PG_FileList* PG_FileArchive::GetSearchPathList() {
+	char **tempList = PHYSFS_getSearchPath();
+	
+	if( tempList == NULL ) {
+		return NULL;
+	}
+	
+	PG_FileList* retVal = NULL;
+	
+	// Scan through to get the length of the listing to get the proper vector size.
+	Uint32 size = 0;
+	for(; tempList[ size ] != NULL; ++size) {}
+	
+	// Now we're ready to initialize everything.
+	retVal = new std::vector< std::string >;
+	retVal->reserve( size );
+	for( Uint32 i = 0; i < size; ++i ) {
+		retVal->push_back(std::string(tempList[ i ]));
+	}
+	
+	// Clean up.
+	PHYSFS_freeList(tempList);
+	
+	return retVal;
 }
 
 void PG_FileArchive::FreeList(void* list) {

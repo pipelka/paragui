@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2002/05/28 09:41:44 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -34,10 +34,21 @@
 #ifndef PG_FILEARCHIVE_H
 #define PG_FILEARCHIVE_H
 
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgfilearchive
+%{
+#include "pgfilearchive.h"
+%}
+#endif
+
 #include "paragui.h"
 #include "pgfile.h"
 #include "pgsurfacecache.h"
 #include "pgdatacontainer.h"
+
+#include <vector>
+#include <string>
 
 //! File open mode
 enum PG_OPEN_MODE {
@@ -45,6 +56,9 @@ enum PG_OPEN_MODE {
   PG_OPEN_WRITE, //!< Open file for writing
   PG_OPEN_APPEND //!< Open file for writing, appending data to the end of the file
 };
+
+//! PG_FileList type (vector of strings)
+typedef std::vector< std::string > PG_FileList;
 
 /**
  * @author Alexander Pipelka
@@ -254,6 +268,31 @@ public:
 	*/
 	static void EnableSymlinks(bool followSymlinks);
 
+	//! Get the names of all registered archives
+	/*!
+	
+		This function returns a vector of strings containing the names
+		of all currently registered archives (Added via AddArchive)
+	
+	\note The caller owns the returned vector and is responsible for deleting the returned structure.
+	
+	\return the file list
+	*/
+	static PG_FileList* GetSearchPathList();
+	
+	
+	//! Get the names of all files in a directory
+	/*!
+	
+		This function returns a vector of strings containing the names
+		of all files in the specified directory.
+	
+	\note The caller owns the returned vector and is responsible for deleting the returned structure.
+	\param dir directory to list files in
+	\return the file list
+	*/
+	static PG_FileList* GetFileList(const char *dir);
+	
 private:
 
 	static Uint32 my_instance_count;
