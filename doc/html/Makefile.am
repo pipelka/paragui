@@ -6,3 +6,4 @@ clean:
 
 distclean: clean
 	rm -f Makefile
+	rm -f images/Makefile

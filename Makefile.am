@@ -1,8 +1,8 @@
 DISTCHECK_CONFIGURE_FLAGS=--enable-internalexpat --enable-internalphysfs
 
-SUBDIRS = include src data bindings test
+SUBDIRS = include src data bindings test doc
 
-DIST_SUBDIRS = $(SUBDIRS) sdk doc
+DIST_SUBDIRS = $(SUBDIRS) sdk
 
 bin_SCRIPTS = paragui-config
 
