@@ -43,8 +43,19 @@ int main( int argc, char **argv )
 	listbox.AddItem(new PG_ListBoxItem(25, "Item8"));
 	listbox.AddItem(new PG_ListBoxItem(25, "Item9"));
 	listbox.AddItem(new PG_ListBoxItem(25, "Item10"));
+	listbox.RemoveAll();
+	listbox.Update();
+	listbox.AddItem(new PG_ListBoxItem(25, "Item11"));
+	listbox.AddItem(new PG_ListBoxItem(25, "Item12"));
+	listbox.AddItem(new PG_ListBoxItem(25, "Item13"));
+	listbox.AddItem(new PG_ListBoxItem(25, "Item14"));
+	listbox.AddItem(new PG_ListBoxItem(25, "Item15"));
+	listbox.AddItem(new PG_ListBoxItem(25, "Item16"));
+	listbox.AddItem(new PG_ListBoxItem(25, "Item17"));
+	listbox.AddItem(new PG_ListBoxItem(25, "Item18"));
+	listbox.AddItem(new PG_ListBoxItem(25, "Item19"));
+	listbox.AddItem(new PG_ListBoxItem(25, "Item20"));
 	listbox.Show();
-	
 
 	app.Run();
 	

@@ -7,7 +7,7 @@ int main(int argc, char* argv[]) {
 
 	// initial flags for screensurface
 	Uint32 flags = SDL_SWSURFACE|SDL_HWPALETTE;
-	int bpp = 0;
+	int bpp = 16;
 
 	// construct the application object
 	PG_Application app;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/21 15:54:36 $
+    Update Date:      $Date: 2003/03/29 21:26:40 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -246,6 +246,11 @@ void PG_WidgetList::DeleteAll() {
 void PG_WidgetList::RemoveAll() {
 	my_listheight = my_listwidth = 0;
 	my_widgetCount = 0;
+	
+	for(vector<PG_Widget*>::iterator i = my_widgetList.begin(); i != my_widgetList.end(); i++) {
+		(*i)->Hide();
+	}
+	
 	my_widgetList.clear();
 	ScrollToY(0);
 	ScrollToX(0);
@@ -360,7 +365,8 @@ bool PG_WidgetList::RemoveWidget(PG_Widget* w, bool shiftx, bool shifty) {
 		if(widget == w) {
 
 			ri = wi;
-			w->SetVisible(false);
+			//w->SetVisible(false);
+			w->Hide();
 			w->MoveRect(0,-2000);
 
 			if(shifty) {
