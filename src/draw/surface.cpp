@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/13 11:54:48 $
+    Update Date:      $Date: 2004/03/02 20:27:52 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/surface.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -50,7 +50,7 @@ SDL_Surface* PG_Draw::CreateRGBSurface(Uint16 w, Uint16 h, int flags) {
 				0);
 }
 
-void Draw3TileH(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend = 0) {
+static void Draw3TileH(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend = 0) {
 	PG_Rect srcrect;
 	PG_Rect dstrect;
 	SDL_Surface* temp;
@@ -116,7 +116,7 @@ void Draw3TileH(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blen
 
 }
 
-void Draw3TileV(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend = 0) {
+static void Draw3TileV(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend = 0) {
 	PG_Rect srcrect;
 	PG_Rect dstrect;
 	SDL_Surface* temp;
@@ -182,7 +182,7 @@ void Draw3TileV(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blen
 
 }
 
-void DrawTile(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend = 0) {
+static void DrawTileSurface(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend = 0) {
 	PG_Rect srcrect;
 	PG_Rect dstrect;
 
@@ -235,7 +235,7 @@ void DrawTile(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend 
 **	DEEEEEEEF
 **	GHHHHHHI
 */
-void Draw9Tile(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend = 0) {
+static void Draw9Tile(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend = 0) {
 	PG_Rect srcrect;
 	PG_Rect dstrect;
 	int i = 0;
@@ -302,7 +302,7 @@ void Draw9Tile(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend
 
 	// tile stripe 1 (middle part)
 	dstrect.SetRect(r.x, r.y + dst_stripe[0]->h, r.w, r.h - 2*dst_stripe[0]->h);
-	DrawTile(dst_stripe[1], dstrect, dst, blend);
+	DrawTileSurface(dst_stripe[1], dstrect, dst, blend);
 
 	// copy stripe 2 (bottom)
 	srcrect.SetRect(0, 0, dst_stripe[2]->w, dst_stripe[2]->h);
@@ -374,7 +374,7 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 		//
 
 		case BKMODE_TILE:
-			DrawTile(background, r, surface, blend);
+			DrawTileSurface(background, r, surface, blend);
 			break;
 
 		//
