@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/01 20:16:28 $
+    Update Date:      $Date: 2003/01/09 20:04:31 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -246,6 +246,6 @@ void PG_Window::SetColorTitlebar(Uint32 color) {
 }
 
 void PG_Window::eventShow() {
-	//my_buttonClose->SetVisible(my_showCloseButton);
-	//my_buttonMinimize->SetVisible(my_showMinimizeButton);
+	my_buttonClose->SetVisible(my_showCloseButton);
+	my_buttonMinimize->SetVisible(my_showMinimizeButton);
 }
