@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 09:40:06 $
+    Update Date:      $Date: 2004/03/09 15:56:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -304,4 +304,12 @@ PG_Widget* PG_ScrollWidget::GetFirstInList() {
 
 void PG_ScrollWidget::ScrollTo(Uint16 x, Uint16 y) {
 	my_scrollarea->ScrollTo(x, y);
+}
+
+void PG_ScrollWidget::DeleteAll() {
+	my_scrollarea->DeleteAll();
+}
+	
+void PG_ScrollWidget::RemoveAll() {
+	my_scrollarea->RemoveAll();
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/08 16:52:39 $
+    Update Date:      $Date: 2004/03/09 15:56:21 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -92,6 +92,10 @@ public:
 
 	PG_Widget* GetFirstInList();
 
+	virtual void DeleteAll();
+	
+	virtual void RemoveAll();
+	
 	void AddChild(PG_Widget* child);
 
 protected:
