@@ -38,7 +38,9 @@ release:
 	rm -f $(top_builddir)/VisualC.zip
 	rm -f $(top_builddir)/data/*.zip
 	rm -f $(top_builddir)/sdk/*.tar.gz
+	unix2dos $(top_builddir)/src/physfs/physfs.dsp
 	make dist
+	dos2unix $(top_builddir)/src/physfs/physfs.dsp
 
 touch:
 	touch `find`
