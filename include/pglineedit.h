@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/02/13 11:54:33 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -177,7 +177,7 @@ protected:
 	bool eventKeyDown(const SDL_KeyboardEvent* key);
 
 	/** */
-	bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);
+	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
 
 	/** */
 	void eventInputFocusLost(PG_MessageObject* newfocus);

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/01/22 16:52:43 $
+   Update Date:      $Date: 2004/02/13 11:54:50 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.4 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.5 $
    Status:           $State: Exp $
  */
 
@@ -1502,7 +1502,13 @@ void PG_Widget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 
 	// Set alpha
 	if(my_internaldata->transparency != 255) {
-		SDL_SetAlpha(srf, SDL_SRCALPHA, 255-my_internaldata->transparency);
+		Uint8 a0 = srf->format->alpha;
+		Uint8 a1 = 255-my_internaldata->transparency;
+
+		if(a0 != a1) {
+			SDL_SetAlpha(srf, SDL_SRCALPHA, a1);
+		}
+		//SDL_SetAlpha(srf, SDL_SRCALPHA, 255-my_internaldata->transparency);
 
 		// Blit widget surface to screen
 #ifdef DEBUG

@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/07 10:01:32 $
+    Update Date:      $Date: 2004/02/13 11:54:48 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/surface.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -194,35 +194,24 @@ void DrawTile(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend 
 	int yc = (r.my_height / src->h) +1;
 	int xc = (r.my_width / src->w) +1;
 
+	if(blend > 0) {
+		SDL_SetAlpha(src, SDL_SRCALPHA, 255-blend);
+	}
+	else {
+		SDL_SetAlpha(src, 0, 0);
+	}
+
+	srcrect.my_width = src->w;
+	srcrect.my_height = src->h;
+	dstrect.my_width = src->w;
+	dstrect.my_height = src->h;
+	
 	SDL_SetClipRect(dst, &r);
 	for(int y=0; y<yc; y++) {
 		for(int x=0; x<xc; x++) {
+			dstrect.x = r.my_xpos + src->w * x;
+			dstrect.y = r.my_ypos + src->h * y;
 
-			dstrect.SetRect(
-			    r.my_xpos + src->w * x,
-			    r.my_ypos + src->h * y,
-			    src->w,
-			    src->h);
-
-			srcrect.my_width = src->w;
-			srcrect.my_height = src->h;
-
-			/*if((dstrect.my_xpos + dstrect.my_width -1) > r.my_width) {
-				dstrect.my_width = r.my_width - dstrect.my_xpos;
-			}
-
-			if((dstrect.my_ypos + dstrect.my_height -1) > r.my_height) {
-				dstrect.my_height = r.my_height - dstrect.my_ypos;
-			}
-
-			srcrect.my_width = dstrect.my_width;
-			srcrect.my_height = dstrect.my_height;*/
-
-			if(blend > 0) {
-				SDL_SetAlpha(src, SDL_SRCALPHA, 255-blend);
-			} else {
-				SDL_SetAlpha(src, 0, 0);
-			}
 			PG_Draw::BlitSurface(src, srcrect, dst, dstrect);
 		}
 	}

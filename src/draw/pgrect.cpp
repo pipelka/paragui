@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2004/02/13 11:54:35 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/pgrect.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.1 $
+    CVS/RCS Revision: $Revision: 1.3.8.2 $
     Status:           $State: Exp $
 */
 
@@ -142,13 +142,6 @@ PG_Rect PG_Rect::operator / (PG_Rect& b) {
 /*SDL_Rect* PG_Rect::SDLRect() {
 	return (SDL_Rect*)this;
 }*/
-
-void PG_Rect::SetRect(Sint16 nx, Sint16 ny, Uint16 nw, Uint16 nh) {
-	x = nx;
-	y = ny;
-	w = nw;
-	h = nh;
-}
 
 PG_Rect& PG_Rect::operator =(const SDL_Rect& src) {
 	x = src.x;

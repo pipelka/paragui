@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/14 15:11:11 $
+    Update Date:      $Date: 2004/02/13 11:54:34 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrect.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -83,7 +83,12 @@ public:
 	@param	nh	height
 	Moves the rectangle to the given values
 	*/
-	void SetRect(Sint16 nx, Sint16 ny, Uint16 nw, Uint16 nh);
+	inline void SetRect(Sint16 nx, Sint16 ny, Uint16 nw, Uint16 nh) {
+		x = nx;
+		y = ny;
+		w = nw;
+		h = nh;
+	}
 
 	/**
 	*/

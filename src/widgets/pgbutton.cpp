@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/07 10:01:32 $
+    Update Date:      $Date: 2004/02/13 11:54:49 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -215,7 +215,7 @@ void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	}
 
 	PG_Widget::LoadThemeStyle(widgettype, objectname);
-	SizeWidget(Width(), Height());
+	//SizeWidget(Width(), Height());
 }
 
 void PG_Button::SetBorderColor(int b, const PG_Color& color) {
@@ -224,6 +224,10 @@ void PG_Button::SetBorderColor(int b, const PG_Color& color) {
 
 /**  */
 void PG_Button::eventSizeWidget(Uint16 w, Uint16 h) {
+
+	if(w == my_width && h == my_height) {
+		return;
+	}
 
 	FreeSurfaces();
 
@@ -519,6 +523,26 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 
 	Uint8 t = 0;
 
+	// check for surface
+	if(_mid->srf[UNPRESSED] == NULL) {
+		FreeSurfaces();
+	
+		eventButtonSurface(&(_mid->srf[UNPRESSED]), UNPRESSED, w, h);
+		if(_mid->srf[UNPRESSED]) {
+				SDL_SetAlpha(_mid->srf[UNPRESSED], SDL_SRCALPHA, 255-_mid->my_transparency[UNPRESSED]);
+		}
+	
+		eventButtonSurface(&(_mid->srf[PRESSED]), PRESSED, w, h);
+		if(_mid->srf[PRESSED]) {
+			SDL_SetAlpha(_mid->srf[PRESSED], SDL_SRCALPHA, 255-_mid->my_transparency[PRESSED]);
+		}
+	
+		eventButtonSurface(&(_mid->srf[HIGHLITED]), HIGHLITED, w, h);
+		if(_mid->srf[HIGHLITED]) {
+			SDL_SetAlpha(_mid->srf[HIGHLITED], SDL_SRCALPHA, 255-_mid->my_transparency[HIGHLITED]);
+		}
+	}
+	
 	// get the right surface for the current state
 	switch(_mid->my_state) {
 		case UNPRESSED:

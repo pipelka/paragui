@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/07 10:01:32 $
+    Update Date:      $Date: 2004/02/13 11:54:49 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -397,7 +397,7 @@ int PG_LineEdit::GetCursorPos() {
 	return my_cursorPosition;
 }
 
-bool PG_LineEdit::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
+bool PG_LineEdit::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 	if(!my_isEditable) {
 		return false;
 	}
