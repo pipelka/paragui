@@ -6,7 +6,7 @@
     <author value="Alexander Pipelka"/>
     <email value="pipelka@teleweb.at"/>
 
-    <font name="default" value="default/font.ttf" size="20"/>
+    <font name="default" value="default/Vera.ttf" size="16"/>
 
     <widget>
 	<type value="Background"/>
@@ -435,40 +435,5 @@
 		</object>
 	</widget>
 
-    <widget>
-	<type value="TabBar"/>
-	<object>
-	    <name value="Button"/>
-	    <filename name="background0" value="default/tab_norm.png"/>
-	    <filename name="background1" value="default/tab_sel.png"/>
-	    <filename name="background2" value="default/tab_norm.png"/>
-	    <property name="backmode0" value="3TILEH"/>
-	    <property name="backmode1" value="3TILEH"/>
-	    <property name="backmode2" value="3TILEH"/>
-	    <property name="blend0" value="0"/>
-	    <property name="blend1" value="0"/>
-	    <property name="blend2" value="0"/>
-	    <property name="bordersize0" value="0"/>
-	    <property name="bordersize1" value="0"/>
-	    <property name="bordersize2" value="0"/>
-	    <property name="transparency0" value="0"/>
-	    <property name="transparency1" value="0"/>
-	    <property name="transparency2" value="0"/>
-	    <color name="textcolor" value="0x00000000"/>
-	    <property name="height" value="33"/>
-	</object>
-	<object>
-	    <name value="WidgetList"/>
-	    <filename name="background" value="default/tab_back.png"/>
-	    <property name="backmode" value="3TILEH"/>
-	    <property name="blend" value="0"/>
-	</object>
-	<object>
-	    <name value="Widget"/>
-	    <property name="height" value="33"/>
-	</object>
-	
-    </widget>
-    
 </theme>
 
