@@ -2,7 +2,25 @@ SUBDIRS = keyboard fireworks colorselector
 
 AUTOMAKE_OPTIONS = foreign
 
-noinst_PROGRAMS = eventbug array writefile stress1 stress2 listbox animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
+noinst_PROGRAMS = \
+	widgetlistbug \
+	eventbug \
+	array \
+	writefile \
+	stress1 \
+	stress2 \
+	listbox \
+	animation \
+	dropdown \
+	paratest \
+	dblbuffer \
+	navtest \
+	windowtest \
+	layouttest \
+	windowresize
+
+widgetlistbug_SOURCES = widgetlistbug.cpp
+widgetlistbug_LDADD = -L../src $(PARAGUI_LIBS)
 
 eventbug_SOURCES = event_bug.cpp
 eventbug_LDADD = -L../src $(PARAGUI_LIBS)
