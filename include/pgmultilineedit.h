@@ -36,7 +36,7 @@ private:
     void SetCursorPos(int p);
     void DrawText(const PG_Rect& dst);
     void DrawTextCursor();
-    void CreateTextVector();
+    void CreateTextVector(bool bSetupVScroll = true);
     void SetupVScroll();
     void SetVPosition(int line);
 	std::vector<PG_String> my_textdata;

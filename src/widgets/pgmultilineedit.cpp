@@ -321,8 +321,8 @@ void PG_MultiLineEdit::GetCursorPos(int *x, int *y) {
 	}
 } 
 
-void PG_MultiLineEdit::CreateTextVector() { 
-	int w = my_width - 6 - (my_vscroll->IsVisible() ? 16 : 0); 
+void PG_MultiLineEdit::CreateTextVector(bool bSetupVScroll) { 
+	int w = my_width - 6 - ((my_vscroll->IsVisible() || !my_vscroll->IsHidden()) ? my_vscroll->w : 0); 
 
 	// now split the text into lines 
 	my_textdata.clear(); 
@@ -330,12 +330,8 @@ void PG_MultiLineEdit::CreateTextVector() {
 	
 	do { 
 		Uint16 lineWidth = 0; 
-		//char* temp = new char[end-start+1];
-		//strncpy(temp, my_text.c_str()+start, end-start); 
 		PG_String temp = my_text.substr(start, end-start);
-		//temp[end-start] = '\0'; 
 		PG_FontEngine::GetTextSize(temp.c_str(), GetFont(), &lineWidth); 
-		//delete[] temp;
 		
 		if (lineWidth > w) { 
 			if (last == start) { 
@@ -362,18 +358,20 @@ void PG_MultiLineEdit::CreateTextVector() {
 			start = end+1; 
 			last = start; 
 		} 
-	//} while (my_text[end++] != '\0'); 
 	} while (end++ < my_text.size()); 
 
-	// setup the scrollbar 
-	SetupVScroll(); 
+	// setup the scrollbar
+	if(bSetupVScroll) {
+		SetupVScroll(); 
+	}
 } 
 
 void PG_MultiLineEdit::SetupVScroll() {
 	if (my_textdata.size()*GetFontHeight() < my_height) { 
 		my_vscroll->SetRange(0, 0); 
 		my_vscroll->Hide(); 
-		SetVPosition(0); 
+		SetVPosition(0);
+		CreateTextVector(false);
 	} 
 	
 	else { 
@@ -382,11 +380,11 @@ void PG_MultiLineEdit::SetupVScroll() {
 			SetVPosition(my_vscroll->GetMaxRange()); 
 		}
 		
-		if (!my_vscroll->IsVisible()) { 
+		if (!my_vscroll->IsVisible() || my_vscroll->IsHidden()) { 
 			// scrollbar makes the window less wide, so we have to redo the text 
 			// (note: don't switch these next two lines, unless you like infinite loops) 
 			my_vscroll->Show(); 
-			CreateTextVector(); 
+			CreateTextVector(false);
 		} 
 	} 
 } 
