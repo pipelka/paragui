@@ -1,0 +1,8 @@
+*.plg
+Debug
+Release
+*.txt
+*.dep
+*.opt
+*.plg
+*.ncb

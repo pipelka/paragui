@@ -28,3 +28,4 @@ mkinstalldirs
 *.kdevelop
 *.cache
 *.mlz
+*.rtf

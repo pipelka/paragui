@@ -1,1 +1,3 @@
-*.zip Makefile Makefile.in
+*.xml
+*.bmp
+*.zip
