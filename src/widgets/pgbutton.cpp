@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/30 09:21:55 $
+    Update Date:      $Date: 2003/01/25 16:32:12 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -306,7 +306,9 @@ void PG_Button::FreeIcons() {
 
 /**  */
 void PG_Button::eventMouseEnter() {
-	my_state = BTN_STATE_HIGH;
+	if (!(my_internaldata->togglemode && my_internaldata->isPressed)) {
+		my_state = BTN_STATE_HIGH;
+	}
 
 	Update();
 	PG_Widget::eventMouseEnter();
@@ -316,7 +318,7 @@ void PG_Button::eventMouseEnter() {
 void PG_Button::eventMouseLeave() {
 
 	if(my_state == BTN_STATE_HIGH) {
-		my_state = BTN_STATE_NORMAL;
+		(my_internaldata->togglemode && my_internaldata->isPressed) ? my_state = BTN_STATE_PRESSED : my_state = BTN_STATE_NORMAL;
 	}
 
 	Update();
@@ -367,7 +369,9 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		Update();
 		return false;
 	} else {
-		my_state = BTN_STATE_HIGH;
+		if(!my_internaldata->togglemode) {
+			my_state = BTN_STATE_HIGH;
+		}
 	}
 
 	ReleaseCapture();
