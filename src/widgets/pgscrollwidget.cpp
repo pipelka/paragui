@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/27 21:23:52 $
+    Update Date:      $Date: 2004/06/29 09:29:00 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.1.2.7 $
     Status:           $State: Exp $
 */
 

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/05/27 21:23:50 $
+   Update Date:      $Date: 2004/06/29 09:29:00 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.10 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.11 $
    Status:           $State: Exp $
 */
 
