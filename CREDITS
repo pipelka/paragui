@@ -3,6 +3,11 @@ CREDITS:
 Special thanks go to Sam Lantinga <slouken@libsdl.org>
 for the great SDL library <http://www.libsdl.org>.
 
+Sebastian Haag <ulf82@users.sf.net>:
+Win32 maintenance
+bug fix wizard
+overall improvements
+
 Keith Swyer <ksswyer@hotmail.com>:
 MacOS support
 CodeWarrior 7 project files
