@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 08:10:23 $
+    Update Date:      $Date: 2002/07/04 09:48:14 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.8 $
+    CVS/RCS Revision: $Revision: 1.2.4.9 $
     Status:           $State: Exp $
 */
 
@@ -118,6 +118,9 @@ PG_Application::PG_Application() {
 	my_background = NULL;
 	my_freeBackground = false;
 	my_backmode = BKMODE_TILE;
+	
+	// add our base dir to the searchpath
+	AddArchive(GetBaseDir());
 }
 
 PG_Application::~PG_Application() {
