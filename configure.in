@@ -575,6 +575,10 @@ fi
 
 AC_SUBST(RPM_ROOT)
 
+dnl
+dnl configure the "test" directory
+dnl
+
 # Finally create all the generated files
 AC_OUTPUT([
 Makefile
@@ -590,6 +594,7 @@ src/widgets/Makefile
 data/Makefile
 bindings/Makefile
 bindings/python/Makefile
+test/Makefile
 paragui.spec
 paragui-config
 paragui.pc

@@ -1,4 +1,6 @@
-AUTOMAKE_OPTIONS = 1.4
+DISTCHECK_CONFIGURE_FLAGS=--enable-internalexpat --enable-internalphysfs
+
+AUTOMAKE_OPTIONS = foreign
 
 SUBDIRS = include src data bindings
 
@@ -30,19 +32,12 @@ pkgconfig_DATA = paragui.pc
 $(PACKAGE)-$(VERSION).tar.gz: dist
 
 release:
-	if test ! -f $(top_builddir)/test/Makefile; then \
-	    mkdir -p $(top_builddir)/test ; \
-	    cd $(top_builddir)/test ; ../$(srcdir)/test/configure --disable-paraguitest ; \
-	fi
 	rm -f $(top_builddir)/VisualC.zip
 	rm -f $(top_builddir)/data/*.zip
 	make dist
 
 touch:
 	touch `find`
-
-clean:
-	rm -f $(top_builddir)/VisualC.zip
 
 VisualC.zip:
 	mkdir -p $(top_builddir)/VC-build
@@ -62,14 +57,6 @@ dist-hook:
 	cp $(srcdir)/bin/README.txt $(distdir)/bin
 	mkdir $(distdir)/lib
 	cp $(srcdir)/lib/README.txt $(distdir)/lib
-	rm -f $(distdir)/VisualC.zip
-	cp -f $(top_builddir)/VisualC.zip $(distdir)
-	rm -f $(distdir)/data/*.zip
-	cp -f $(top_builddir)/data/*.zip $(distdir)/data
-
-dist_bz2: $(PACKAGE)-$(VERSION).tar.gz
-	gzip -c -d $(PACKAGE)-$(VERSION).tar.gz > $(PACKAGE)-$(VERSION).tar
-	bzip2 $(PACKAGE)-$(VERSION).tar
 
 install-hook:
 	-ldconfig
@@ -77,18 +64,6 @@ install-hook:
 rpm: $(PACKAGE)-$(VERSION).tar.gz
 	cp $(PACKAGE)-$(VERSION).tar.gz $(RPM_ROOT)
 	rpm -ba $(PACKAGE).spec
-
-rpm_i686: $(PACKAGE)-$(VERSION).tar.gz 
-	cp $(PACKAGE)-$(VERSION).tar.gz $(RPM_ROOT)
-	rpm -ba --target=i686-linux $(PACKAGE).spec
-
-rpm_i586: $(PACKAGE)-$(VERSION).tar.gz 
-	cp $(PACKAGE)-$(VERSION).tar.gz $(RPM_ROOT)
-	rpm -ba --target i586-linux $(PACKAGE).spec
-
-rpm_i486: $(PACKAGE)-$(VERSION).tar.gz
-	cp $(PACKAGE)-$(VERSION).tar.gz $(RPM_ROOT)
-	rpm -ba --target=i486-linux $(PACKAGE).spec
 
 dist-beos: 
 	export CFLAGS="-O2 -march=pentium"
