@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 14:53:56 $
+    Update Date:      $Date: 2002/06/07 13:53:41 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.1 $
     Status:           $State: Exp $
 */
 
@@ -76,4 +76,27 @@ bool PG_File::seek(int pos) {
 
 int PG_File::fileLength() {
 	return PHYSFS_fileLength((PHYSFS_file*)file);
+}
+
+char PG_File::getc() {
+	char buffer = 0;
+	
+	if(read(&buffer, 1) == 1) {
+		return buffer;
+	}
+	return 0;
+}
+	
+std::string PG_File::getline() {
+	std::string result;
+	
+	char c = getc();
+	while(!eof() && (c != 0x0A)) {
+		if(c != 0x0D) {
+			result += c;
+		}
+		c = getc();
+	}
+	
+	return result;
 }
