@@ -118,6 +118,22 @@ if test x$mpatrol = xyes; then
     EXTRA_LIBS="$EXTRA_LIBS -lmpatrol -lbfd -liberty"
 fi
 
+dnl enable unicode support
+unicode=no
+AC_ARG_ENABLE(unicode,
+AC_HELP_STRING([--enable-unicode], [Enable Unicode support [default=no]]),
+           unicode=$enableval, unicode=no)
+if test "$unicode" = yes; then
+  AC_MSG_NOTICE([Unicode support is enabled.])
+  AC_DEFINE([ENABLE_UNICODE], , [Define to 1 if Unicode support is enabled.])
+  YSTRING_LIB="./ystring/libystring.la"
+  YSTRING_SUBDIR="ystring"
+fi
+
+AC_SUBST(YSTRING_LIB)
+AC_SUBST(YSTRING_SUBDIR)
+
+
 
 AC_ARG_WITH(stlport,[  --with-stlport=DIR      use the STLPort library installed with this prefix directory [default $prefix]],
             STLPORTPREFIX="$withval", STLPORTPREFIX="no")
@@ -601,6 +617,7 @@ src/font/Makefile
 src/themes/Makefile
 src/core/Makefile
 src/widgets/Makefile
+src/ystring/Makefile
 data/Makefile
 bindings/Makefile
 bindings/python/Makefile

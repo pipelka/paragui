@@ -52,7 +52,10 @@ libparaguiinclude_HEADERS = \
 	pgsigconvert.h \
 	pgscrollarea.h \
 	pgfactory.h \
-	pgsingleton.h
+	pgsingleton.h \
+	pgstring.h \
+	ystring.h \
+	ychar.h
 
 EXTRA_DIST = \
 	paraconfig_win32.h \

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:38 $
+    Update Date:      $Date: 2004/06/26 08:03:47 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,7 @@
 
 #include "pgthemewidget.h"
 #include "pgsignals.h"
-#include <string>
+#include "pgstring.h"
 
 /**
 	@author Alexander Pipelka
@@ -91,7 +91,7 @@ public:
 
 	@param	c		the character to insert
 	*/
-	void SendChar(char c);
+	void SendChar(PG_Char c);
 
 	/**
 	Send a 'del' keystroke into the LineEdit widget
@@ -143,8 +143,8 @@ public:
 protected:
 
 	/** */
-	virtual void InsertChar(const char* c);
-
+	virtual void InsertChar(const PG_Char* c);
+		
 	/** */
 	virtual void DeleteChar(Uint16 pos);
 
@@ -197,7 +197,7 @@ private:
 	const char* GetDrawText();
 	int GetCursorPosFromScreen(int x, int y);
 
-	bool IsValidKey(char c);
+	bool IsValidKey(PG_Char c);
 
 	std::string my_buffer;
 	int my_startMark;
@@ -205,11 +205,11 @@ private:
 
 	bool my_isCursorVisible;
 	int my_offsetX;
-	std::string my_validkeys;
+	PG_String my_validkeys;
 	bool my_isEditable;
 	int my_maximumLength;
 
-	char my_passchar;
+	PG_Char my_passchar;
 
 	SDL_Surface* my_srfTextCursor;
 };

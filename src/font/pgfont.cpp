@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:46:05 $
+    Update Date:      $Date: 2004/06/26 08:03:47 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -30,6 +30,7 @@
 #include "pglog.h"
 #include "pgfilearchive.h"
 #include "facecache.h"
+#include "pgstring.h"
 
 //#define OLD_TEXTRENDERING
 
@@ -526,9 +527,10 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 	if(SDL_MUSTLOCK(Surface)) {
 		SDL_LockSurface(Surface);
 	}		
-
+	
+	PG_String sText(Text);
 	//Go thu text and draw characters
-	for (unsigned char *c = (unsigned char*) Text;*c != 0; c++) {
+	for (PG_String::iterator c = sText.begin(); c != sText.end(); c++) {
 		int glyph_index;
 		PG_GlyphCacheItem* Glyph;
 		int OldBaseLineX = BaseLineX;
@@ -627,8 +629,10 @@ bool PG_FontEngine::GetTextSize(const char *Text, PG_Font* font, Uint16 *Width, 
 			preDescent = FaceCache->Descent;
 	}
 
+	PG_String sText(Text);
+
 	//Go thu text and get sizes of the characters
-	for (unsigned char *c = (unsigned char*) Text;*c != 0; c++) {
+	for (PG_String::iterator c = sText.begin(); c !=sText.end(); c++) {
 		int glyph_index;
 		PG_GlyphCacheItem	*Glyph;
 

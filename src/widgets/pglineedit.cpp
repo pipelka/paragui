@@ -20,15 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:46:01 $
+    Update Date:      $Date: 2004/06/26 08:03:47 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
     Status:           $State: Exp $
 */
 
 #include "pglineedit.h"
 #include "pgapplication.h"
 #include "pgtheme.h"
+#include "pgstring.h"
 
 PG_LineEdit::PG_LineEdit(PG_Widget* parent, const PG_Rect& r, const char* style, int _my_maximumLength) : PG_ThemeWidget(parent, r, style) {
 
@@ -105,6 +106,7 @@ void PG_LineEdit::DrawTextCursor() {
 Uint16 PG_LineEdit::GetCursorXPos() {
 	Uint16 w;
 	const char* drawtext = GetDrawText();
+
 	int newpos = my_cursorPosition - my_offsetX;
 
 	if(newpos == 0)
@@ -113,13 +115,7 @@ Uint16 PG_LineEdit::GetCursorXPos() {
 	if(drawtext[0] == 0)
 		return 0;
 
-	char* temp = new char[newpos+1];
-
-	strncpy(temp, drawtext, newpos);
-	temp[newpos] = 0;
-
-	PG_FontEngine::GetTextSize(temp, GetFont(), &w);
-	delete[] temp;
+	PG_FontEngine::GetTextSize(PG_String(PG_String(drawtext), 0, newpos).c_str(), GetFont(), &w);
 
 	return w;
 }
@@ -152,16 +148,12 @@ int PG_LineEdit::GetCursorPosFromScreen(int x, int y) {
 }
 
 const char* PG_LineEdit::GetDrawText() {
-	static std::string passtext;
+	static std::string passtext("");
 
-	if (my_passchar == 0)
-		return my_text.c_str()+my_offsetX;
-	passtext = "";
+	if (my_passchar == '\0')
+		return my_text.substr(my_offsetX).c_str();
 
-	for (unsigned int i=0;i<my_text.length();i++)
-		passtext += my_passchar;
-
-	return passtext.c_str()+my_offsetX;
+	return PG_String(my_text.length(), my_passchar).substr(my_offsetX).c_str();
 }
 
 void PG_LineEdit::EditBegin() {
@@ -185,7 +177,7 @@ void PG_LineEdit::EditEnd() {
 }
 
 bool PG_LineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
-	char c;
+	PG_Char c;
 
 	if(!my_isCursorVisible) {
 		return false;
@@ -350,7 +342,7 @@ handleModKeys:
 				InsertChar(&c);
 				return true;
 			} else {
-				c = key_copy.keysym.unicode & 0xFF;
+				c = (PG_Char)key_copy.keysym.unicode;
 
 				if(!IsValidKey(c)) {
 					return false;
@@ -411,9 +403,13 @@ bool PG_LineEdit::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 	return true;
 }
 
-void PG_LineEdit::InsertChar(const char* c) {
+void PG_LineEdit::InsertChar(const PG_Char* c) {
 	if (my_cursorPosition < my_maximumLength) {
-		my_text.insert(my_cursorPosition, c, 1);
+#ifdef ENABLE_UNICODE
+		my_text.insert(my_cursorPosition, *c);
+#else
+		my_text.insert(my_cursorPosition, c);
+#endif
 		SetCursorPos(++my_cursorPosition);
 	}
 }
@@ -507,7 +503,7 @@ void PG_LineEdit::LoadThemeStyle(const char* widgettype, const char* objectname)
 	}
 }
 
-void PG_LineEdit::SendChar(char c) {
+void PG_LineEdit::SendChar(PG_Char c) {
 	if(!IsValidKey(c)) {
 		return;
 	}
@@ -531,12 +527,12 @@ void PG_LineEdit::SetValidKeys(const char* keys) {
 	my_validkeys = keys;
 }
 
-bool PG_LineEdit::IsValidKey(char c) {
+bool PG_LineEdit::IsValidKey(PG_Char c) {
 	if(my_validkeys.size() == 0) {
 		return true;
 	}
 
-	return (my_validkeys.find(c) != std::string::npos);
+	return (my_validkeys.find(c) != PG_String::npos);
 }
 
 void PG_LineEdit::eventHide() {

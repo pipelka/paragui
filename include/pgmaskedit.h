@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:38 $
+    Update Date:      $Date: 2004/06/26 08:03:47 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmaskedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -30,7 +30,8 @@
 #define PG_MASKEDIT_H
 
 #include "pglineedit.h"
-#include <string>
+#include "pgstring.h"
+
 
 class DECLSPEC PG_MaskEdit : public PG_LineEdit {
 public:
@@ -60,7 +61,7 @@ public:
 	Set the "spacer" character. This char is displayed instead of "#"
 	@param	c					"spacer" character
 	*/
-	void SetSpacer(char c);
+	void SetSpacer(PG_Char c);
 
 	/**
 	Get the current "spacer" character.
@@ -72,16 +73,16 @@ protected:
 
 	bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);
 
-	void InsertChar(const char* c);
+	void InsertChar(const PG_Char* c);
 
 	void DeleteChar(Uint16 pos);
 
 private:
 
-	std::string my_mask;
-	std::string my_displaymask;
+	PG_String my_mask;
+	PG_String my_displaymask;
 
-	char my_spacer;
+	PG_Char my_spacer;
 
 };
 

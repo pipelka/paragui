@@ -20,14 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2004/06/26 08:03:47 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmaskedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.8.1 $
     Status:           $State: Exp $
 */
 
 
 #include "pgmaskedit.h"
+#include "pgstring.h"
 
 PG_MaskEdit::PG_MaskEdit(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_LineEdit(parent, r, style) {
 	my_spacer = '_';
@@ -43,9 +44,10 @@ void PG_MaskEdit::SetText(const char* new_text) {
 
 	SetCursorPos(0);
 
+	PG_String snew_text(new_text);
 	// merge the text with the displaymask
-	for(Uint32 i=0; i<strlen(new_text); i++) {
-		InsertChar(&new_text[i]);
+	for(Uint32 i=0; i<snew_text.length(); i++) {
+		InsertChar(&snew_text[i]);
 	}
 }
 
@@ -66,7 +68,7 @@ const char* PG_MaskEdit::GetMask() {
 	return my_mask.c_str();
 }
 
-void PG_MaskEdit::SetSpacer(char c) {
+void PG_MaskEdit::SetSpacer(PG_Char c) {
 	my_spacer = c;
 }
 
@@ -74,7 +76,7 @@ char PG_MaskEdit::GetSpacer() {
 	return my_spacer;
 }
 
-void PG_MaskEdit::InsertChar(const char* c) {
+void PG_MaskEdit::InsertChar(const PG_Char* c) {
         if (!c)
 	        return;
 
