@@ -319,7 +319,7 @@ void PG_MultiLineEdit::CreateTextVector() {
 
 	// now split the text into lines 
 	my_textdata.clear(); 
-	int start = 0, end = 0, last = 0; 
+	unsigned int start = 0, end = 0, last = 0; 
 	
 	do { 
 		Uint16 lineWidth = 0; 
