@@ -2,6 +2,32 @@
  * CHANGELOG.
  */
 
+05232003 - Rewrote MacOSX/Darwin CD-ROM detection code to use IOKit, which is
+           much much more accurate than the previous code. Updated
+           configure.in and Makefile.am.newautomake for some MacOSX stuff.
+05222003 - Fixed win32 crash if PHYSFS_init() is called with a NULL.
+05182003 - PocketPC fixes (thanks, David Hedbor!)
+05162003 - Compiler warning cleanup in HOG and MVL archivers (Thanks, Bradley!)
+04082003 - Minor changes to extras/abs-file.h (Thanks, Adam!)
+03302003 - Fixed seeking in uncompressed ZIP entries, and handle a
+           misbehaviour in Java's JAR creation tools. Thanks to "Tree" for
+           pointing these bugs out. Added HOG and MVL archive support for
+           Descent I and II (Thanks, Bradley Bell!). Added example code to
+           do case-insensitive file searches ("extras/ignorecase.*").
+03192003 - Fixed problem in PHYSFS_mkdir() when dirs to be created already
+           exist. Fixed problem where PHYSFS_mkdir() incorrectly tripped an
+           alarm in __PHYSFS_verifySecurity().
+03122003 - Attempt at cleaning up some type correctness for VC++6. Made QPAK
+           archiver case-insensitive (since Quake2 has problems without it).
+01302003 - Added buffering API to OS/2 build's exported symbol list. Updated
+           CWProjects.sit and made several fixes to get physfs building on
+           MacOS Classic again.
+01282003 - Fixed seeking in buffered files opened for read.
+01072003 - .NET assembly and C# wrapper by Gregory S. Read in the extras dir.
+01042003 - Added a hack for dealing with OSX bundles and newer PBProjects
+           (thanks, Eric Wing!). Added some missing files to "make dist".
+           Fixed minor Doxygen typo in PHYSFS_flush() docs. Upped version to
+           0.1.8.
 12172002 - Added Apple Project Builder support files (thanks, Eric Wing!).
 12112002 - Added Ruby bindings to extras directory (thanks, Ed Sinjiashvili!).
            Patched win32.c to compile with Mingw32 (thanks, Niels Wagenaar!).

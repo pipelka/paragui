@@ -57,6 +57,13 @@ Will produce debug messages during execution (slow).
 ParaGUI themefiles will be placed in DIR.
 Default location is PREFIX/share/paragui
 
+--enable-internalexpat:
+Use the built-in expat sources (if you don't have libexpat
+installed and you don't want to install it).
+
+--enable-internalphysfs:
+Use the built-in PhysicsFS library.
+
 
 Hint:
 Several people had troubles compiling CVS snapshots on

@@ -16,8 +16,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifndef _WIN32_WCE
 #include <errno.h>
 #include <time.h>
+#endif
 #include "physfs.h"
 #include "zlib.h"
 
@@ -54,7 +56,7 @@ typedef enum
     ZIP_RESOLVING,
     ZIP_RESOLVED,
     ZIP_BROKEN_FILE,
-    ZIP_BROKEN_SYMLINK,
+    ZIP_BROKEN_SYMLINK
 } ZipResolveType;
 
 
@@ -186,7 +188,9 @@ static const char *zlib_error_string(int rc)
     {
         case Z_OK: return(NULL);  /* not an error. */
         case Z_STREAM_END: return(NULL); /* not an error. */
+#ifndef _WIN32_WCE
         case Z_ERRNO: return(strerror(errno));
+#endif
         case Z_NEED_DICT: return(ERR_ZLIB_NEED_DICT);
         case Z_DATA_ERROR: return(ERR_ZLIB_DATA_ERROR);
         case Z_MEM_ERROR: return(ERR_ZLIB_MEMORY_ERROR);
@@ -250,7 +254,7 @@ static PHYSFS_sint64 ZIP_read(FileHandle *handle, void *buf,
     if (avail < maxread)
     {
         maxread = avail - (avail % objSize);
-        objCount = (PHYSFS_uint32)maxread / objSize;
+        objCount = (PHYSFS_uint32) (maxread / objSize);
         BAIL_IF_MACRO(objCount == 0, ERR_PAST_EOF, 0);  /* quick rejection. */
         __PHYSFS_setError(ERR_PAST_EOF);   /* this is always true here. */
     } /* if */
@@ -282,13 +286,13 @@ static PHYSFS_sint64 ZIP_read(FileHandle *handle, void *buf,
 
                     br = __PHYSFS_platformRead(finfo->handle,
                                                finfo->buffer,
-                                               1, (PHYSFS_uint32)br);
+                                               1, (PHYSFS_uint32) br);
                     if (br <= 0)
                         break;
 
-                    finfo->compressed_position += (PHYSFS_uint32)br;
+                    finfo->compressed_position += (PHYSFS_uint32) br;
                     finfo->stream.next_in = finfo->buffer;
-                    finfo->stream.avail_in = (PHYSFS_uint32)br;
+                    finfo->stream.avail_in = (PHYSFS_uint32) br;
                 } /* if */
             } /* if */
 
@@ -303,7 +307,7 @@ static PHYSFS_sint64 ZIP_read(FileHandle *handle, void *buf,
     } /* else */
 
     if (retval > 0)
-        finfo->uncompressed_position += (PHYSFS_uint32)(retval * objSize);
+        finfo->uncompressed_position += (PHYSFS_uint32) (retval * objSize);
 
     return(retval);
 } /* ZIP_read */
@@ -341,7 +345,7 @@ static int ZIP_seek(FileHandle *handle, PHYSFS_uint64 offset)
     {
         PHYSFS_sint64 newpos = offset + entry->offset;
         BAIL_IF_MACRO(!__PHYSFS_platformSeek(in, newpos), NULL, 0);
-        finfo->uncompressed_position = (PHYSFS_uint32)newpos;
+        finfo->uncompressed_position = (PHYSFS_uint32) offset;
     } /* if */
 
     else
@@ -371,7 +375,9 @@ static int ZIP_seek(FileHandle *handle, PHYSFS_uint64 offset)
         while (finfo->uncompressed_position != offset)
         {
             PHYSFS_uint8 buf[512];
-            PHYSFS_uint32 maxread = (PHYSFS_uint32)offset - finfo->uncompressed_position;
+            PHYSFS_uint32 maxread;
+
+            maxread = (PHYSFS_uint32) (offset - finfo->uncompressed_position);
             if (maxread > sizeof (buf))
                 maxread = sizeof (buf);
 
@@ -421,6 +427,7 @@ static PHYSFS_sint64 zip_find_end_of_central_dir(void *in, PHYSFS_sint64 *len)
 
     filelen = __PHYSFS_platformFileLength(in);
     BAIL_IF_MACRO(filelen == -1, NULL, 0);
+    BAIL_IF_MACRO(filelen > 0xFFFFFFFF, "ZIP bigger than 2 gigs?!", 0);
 
     /*
      * Jump to the end of the file and start reading backwards.
@@ -442,7 +449,7 @@ static PHYSFS_sint64 zip_find_end_of_central_dir(void *in, PHYSFS_sint64 *len)
     else
     {
         filepos = 0;
-        maxread = (PHYSFS_uint32)filelen;
+        maxread = (PHYSFS_uint32) filelen;
     } /* else */
 
     while ((totalread < filelen) && (totalread < 65557))
@@ -724,7 +731,7 @@ static int zip_resolve_symlink(void *in, ZIPinfo *info, ZIPentry *entry)
                 memset(&stream, '\0', sizeof (z_stream));
                 stream.next_in = compressed;
                 stream.avail_in = compsize;
-                stream.next_out = path;
+                stream.next_out = (unsigned char *) path;
                 stream.avail_out = size;
                 if (zlib_err(inflateInit2(&stream, -MAX_WBITS)) == Z_OK)
                 {
@@ -762,6 +769,13 @@ static int zip_parse_local(void *in, ZIPentry *entry)
     PHYSFS_uint16 fnamelen;
     PHYSFS_uint16 extralen;
 
+    /*
+     * crc and (un)compressed_size are always zero if this is a "JAR"
+     *  archive created with Sun's Java tools, apparently. We only
+     *  consider this archive corrupted if those entries don't match and
+     *  aren't zero. That seems to work well.
+     */
+
     BAIL_IF_MACRO(!__PHYSFS_platformSeek(in, entry->offset), NULL, 0);
     BAIL_IF_MACRO(!readui32(in, &ui32), NULL, 0);
     BAIL_IF_MACRO(ui32 != ZIP_LOCAL_FILE_SIG, ERR_CORRUPTED, 0);
@@ -772,11 +786,11 @@ static int zip_parse_local(void *in, ZIPentry *entry)
     BAIL_IF_MACRO(ui16 != entry->compression_method, ERR_CORRUPTED, 0);
     BAIL_IF_MACRO(!readui32(in, &ui32), NULL, 0);  /* date/time */
     BAIL_IF_MACRO(!readui32(in, &ui32), NULL, 0);
-    BAIL_IF_MACRO(ui32 != entry->crc, ERR_CORRUPTED, 0);
+    BAIL_IF_MACRO(ui32 && (ui32 != entry->crc), ERR_CORRUPTED, 0);
     BAIL_IF_MACRO(!readui32(in, &ui32), NULL, 0);
-    BAIL_IF_MACRO(ui32 != entry->compressed_size, ERR_CORRUPTED, 0);
+    BAIL_IF_MACRO(ui32 && (ui32 != entry->compressed_size), ERR_CORRUPTED, 0);
     BAIL_IF_MACRO(!readui32(in, &ui32), NULL, 0);
-    BAIL_IF_MACRO(ui32 != entry->uncompressed_size, ERR_CORRUPTED, 0);
+    BAIL_IF_MACRO(ui32 && (ui32 != entry->uncompressed_size),ERR_CORRUPTED,0);
     BAIL_IF_MACRO(!readui16(in, &fnamelen), NULL, 0);
     BAIL_IF_MACRO(!readui16(in, &extralen), NULL, 0);
 
@@ -882,8 +896,14 @@ static int zip_has_symlink_attr(ZIPentry *entry, PHYSFS_uint32 extern_attr)
 } /* zip_has_symlink_attr */
 
 
-PHYSFS_sint64 zip_dos_time_to_physfs_time(PHYSFS_uint32 dostime)
+static PHYSFS_sint64 zip_dos_time_to_physfs_time(PHYSFS_uint32 dostime)
 {
+#ifdef _WIN32_WCE
+	/* We have no struct tm and no mktime right now.
+	   FIXME: This should probably be fixed at some point.
+	*/
+    return -1;
+#else
     PHYSFS_uint32 dosdate;
     struct tm unixtime;
     memset(&unixtime, '\0', sizeof (unixtime));
@@ -905,6 +925,7 @@ PHYSFS_sint64 zip_dos_time_to_physfs_time(PHYSFS_uint32 dostime)
     unixtime.tm_isdst = -1;
 
     return((PHYSFS_sint64) mktime(&unixtime));
+#endif
 } /* zip_dos_time_to_physfs_time */
 
 
@@ -1060,7 +1081,7 @@ static int zip_parse_end_of_central_dir(void *in, DirHandle *dirh,
      *  sizeof central dir)...the difference in bytes is how much arbitrary
      *  data is at the start of the physical file.
      */
-	*data_start = (PHYSFS_uint32) pos - (*central_dir_ofs + ui32);
+    *data_start = (PHYSFS_uint32) (pos - (*central_dir_ofs + ui32));
 
     /* Now that we know the difference, fix up the central dir offset... */
     *central_dir_ofs += *data_start;

@@ -1,8 +1,5 @@
 X = adler32.c		\
-	compress.c		\
 	crc32.c			\
-	deflate.c		\
-	deflate.h		\
 	infblock.c		\
 	infblock.h		\
 	infcodes.c		\
@@ -15,8 +12,6 @@ X = adler32.c		\
 	inftrees.h		\
 	infutil.c		\
 	infutil.h		\
-	trees.c			\
-	trees.h			\
 	uncompr.c		\
 	zconf.h			\
 	zlib.h			\

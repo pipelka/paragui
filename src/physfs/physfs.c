@@ -59,6 +59,16 @@ extern const PHYSFS_ArchiveInfo   __PHYSFS_ArchiveInfo_GRP;
 extern const DirFunctions         __PHYSFS_DirFunctions_GRP;
 #endif
 
+#if (defined PHYSFS_SUPPORTS_HOG)
+extern const PHYSFS_ArchiveInfo   __PHYSFS_ArchiveInfo_HOG;
+extern const DirFunctions         __PHYSFS_DirFunctions_HOG;
+#endif
+
+#if (defined PHYSFS_SUPPORTS_MVL)
+extern const PHYSFS_ArchiveInfo   __PHYSFS_ArchiveInfo_MVL;
+extern const DirFunctions         __PHYSFS_DirFunctions_MVL;
+#endif
+
 #if (defined PHYSFS_SUPPORTS_QPAK)
 extern const PHYSFS_ArchiveInfo   __PHYSFS_ArchiveInfo_QPAK;
 extern const DirFunctions         __PHYSFS_DirFunctions_QPAK;
@@ -77,6 +87,14 @@ static const PHYSFS_ArchiveInfo *supported_types[] =
     &__PHYSFS_ArchiveInfo_GRP,
 #endif
 
+#if (defined PHYSFS_SUPPORTS_HOG)
+    &__PHYSFS_ArchiveInfo_HOG,
+#endif
+
+#if (defined PHYSFS_SUPPORTS_MVL)
+    &__PHYSFS_ArchiveInfo_MVL,
+#endif
+
 #if (defined PHYSFS_SUPPORTS_QPAK)
     &__PHYSFS_ArchiveInfo_QPAK,
 #endif
@@ -92,6 +110,14 @@ static const DirFunctions *dirFunctions[] =
 
 #if (defined PHYSFS_SUPPORTS_GRP)
     &__PHYSFS_DirFunctions_GRP,
+#endif
+
+#if (defined PHYSFS_SUPPORTS_HOG)
+    &__PHYSFS_DirFunctions_HOG,
+#endif
+
+#if (defined PHYSFS_SUPPORTS_MVL)
+    &__PHYSFS_DirFunctions_MVL,
 #endif
 
 #if (defined PHYSFS_SUPPORTS_QPAK)
@@ -122,7 +148,7 @@ static void *stateLock = NULL;     /* protects other PhysFS static state. */
 
 /* functions ... */
 
-void __PHYSFS_bubble_sort(void *a, PHYSFS_uint32 lo, PHYSFS_uint32 hi,
+static void __PHYSFS_bubble_sort(void *a, PHYSFS_uint32 lo, PHYSFS_uint32 hi,
                          int (*cmpfn)(void *, PHYSFS_uint32, PHYSFS_uint32),
                          void (*swapfn)(void *, PHYSFS_uint32, PHYSFS_uint32))
 {
@@ -144,7 +170,7 @@ void __PHYSFS_bubble_sort(void *a, PHYSFS_uint32 lo, PHYSFS_uint32 hi,
 } /* __PHYSFS_bubble_sort */
 
 
-void __PHYSFS_quick_sort(void *a, PHYSFS_uint32 lo, PHYSFS_uint32 hi,
+static void __PHYSFS_quick_sort(void *a, PHYSFS_uint32 lo, PHYSFS_uint32 hi,
                          int (*cmpfn)(void *, PHYSFS_uint32, PHYSFS_uint32),
                          void (*swapfn)(void *, PHYSFS_uint32, PHYSFS_uint32))
 {
@@ -1191,7 +1217,7 @@ char * __PHYSFS_convertToDependent(const char *prepend,
 } /* __PHYSFS_convertToDependent */
 
 
-int __PHYSFS_verifySecurity(DirHandle *h, const char *fname)
+int __PHYSFS_verifySecurity(DirHandle *h, const char *fname, int allowMissing)
 {
     int retval = 1;
     char *start;
@@ -1239,7 +1265,7 @@ int __PHYSFS_verifySecurity(DirHandle *h, const char *fname)
                  *  since this might be a non-existant file we're opening
                  *  for writing...
                  */
-                if (end == NULL)
+                if ((end == NULL) || (allowMissing))
                     retval = 1;
                 break;
             } /* if */
@@ -1264,6 +1290,7 @@ int PHYSFS_mkdir(const char *dname)
     char *start;
     char *end;
     int retval = 0;
+    int exists = 1;  /* force existance check on first path element. */
 
     BAIL_IF_MACRO(dname == NULL, ERR_INVALID_ARGUMENT, 0);
     while (*dname == '/')
@@ -1272,7 +1299,7 @@ int PHYSFS_mkdir(const char *dname)
     __PHYSFS_platformGrabMutex(stateLock);
     BAIL_IF_MACRO_MUTEX(writeDir == NULL, ERR_NO_WRITE_DIR, stateLock, 0);
     h = writeDir->dirHandle;
-    BAIL_IF_MACRO_MUTEX(!__PHYSFS_verifySecurity(h, dname), NULL, stateLock, 0);
+    BAIL_IF_MACRO_MUTEX(!__PHYSFS_verifySecurity(h,dname,1),NULL,stateLock,0);
     start = str = malloc(strlen(dname) + 1);
     BAIL_IF_MACRO_MUTEX(str == NULL, ERR_OUT_OF_MEMORY, stateLock, 0);
     strcpy(str, dname);
@@ -1283,7 +1310,13 @@ int PHYSFS_mkdir(const char *dname)
         if (end != NULL)
             *end = '\0';
 
-        retval = h->funcs->mkdir(h, str);
+        /* only check for existance if all parent dirs existed, too... */
+        if (exists)
+            retval = h->funcs->isDirectory(h, str, &exists);
+
+        if (!exists)
+            retval = h->funcs->mkdir(h, str);
+
         if (!retval)
             break;
 
@@ -1314,7 +1347,7 @@ int PHYSFS_delete(const char *fname)
 
     BAIL_IF_MACRO_MUTEX(writeDir == NULL, ERR_NO_WRITE_DIR, stateLock, 0);
     h = writeDir->dirHandle;
-    BAIL_IF_MACRO_MUTEX(!__PHYSFS_verifySecurity(h, fname), NULL, stateLock, 0);
+    BAIL_IF_MACRO_MUTEX(!__PHYSFS_verifySecurity(h,fname,0),NULL,stateLock,0);
     retval = h->funcs->remove(h, fname);
 
     __PHYSFS_platformReleaseMutex(stateLock);
@@ -1334,7 +1367,7 @@ const char *PHYSFS_getRealDir(const char *filename)
     for (i = searchPath; ((i != NULL) && (retval == NULL)); i = i->next)
     {
         DirHandle *h = i->dirHandle;
-        if (__PHYSFS_verifySecurity(h, filename))
+        if (__PHYSFS_verifySecurity(h, filename, 0))
         {
             if (h->funcs->exists(h, filename))
                 retval = i->dirName;
@@ -1451,7 +1484,7 @@ char **PHYSFS_enumerateFiles(const char *path)
     for (i = searchPath; i != NULL; i = i->next)
     {
         DirHandle *h = i->dirHandle;
-        if (__PHYSFS_verifySecurity(h, path))
+        if (__PHYSFS_verifySecurity(h, path, 0))
         {
             rc = h->funcs->enumerateFiles(h, path, omitSymLinks);
             interpolateStringLists(&finalList, rc);
@@ -1491,7 +1524,7 @@ PHYSFS_sint64 PHYSFS_getLastModTime(const char *fname)
     for (i = searchPath; ((i != NULL) && (!fileExists)); i = i->next)
     {
         DirHandle *h = i->dirHandle;
-        if (__PHYSFS_verifySecurity(h, fname))
+        if (__PHYSFS_verifySecurity(h, fname, 0))
             retval = h->funcs->getLastModTime(h, fname, &fileExists);
     } /* for */
     __PHYSFS_platformReleaseMutex(stateLock);
@@ -1516,7 +1549,7 @@ int PHYSFS_isDirectory(const char *fname)
     for (i = searchPath; ((i != NULL) && (!fileExists)); i = i->next)
     {
         DirHandle *h = i->dirHandle;
-        if (__PHYSFS_verifySecurity(h, fname))
+        if (__PHYSFS_verifySecurity(h, fname, 0))
             retval = h->funcs->isDirectory(h, fname, &fileExists);
     } /* for */
     __PHYSFS_platformReleaseMutex(stateLock);
@@ -1543,7 +1576,7 @@ int PHYSFS_isSymbolicLink(const char *fname)
     for (i = searchPath; ((i != NULL) && (!fileExists)); i = i->next)
     {
         DirHandle *h = i->dirHandle;
-        if (__PHYSFS_verifySecurity(h, fname))
+        if (__PHYSFS_verifySecurity(h, fname, 0))
             retval = h->funcs->isSymLink(h, fname, &fileExists);
     } /* for */
     __PHYSFS_platformReleaseMutex(stateLock);
@@ -1567,7 +1600,7 @@ static PHYSFS_file *doOpenWrite(const char *fname, int appending)
     __PHYSFS_platformGrabMutex(stateLock);
     h = (writeDir == NULL) ? NULL : writeDir->dirHandle;
     BAIL_IF_MACRO_MUTEX(!h, ERR_NO_WRITE_DIR, stateLock, NULL);
-    BAIL_IF_MACRO_MUTEX(!__PHYSFS_verifySecurity(h, fname), NULL,
+    BAIL_IF_MACRO_MUTEX(!__PHYSFS_verifySecurity(h, fname, 0), NULL,
                         stateLock, NULL);
 
     list = (FileHandleList *) malloc(sizeof (FileHandleList));
@@ -1622,7 +1655,7 @@ PHYSFS_file *PHYSFS_openRead(const char *fname)
     for (i = searchPath; ((i != NULL) && (!fileExists)); i = i->next)
     {
         DirHandle *h = i->dirHandle;
-        if (__PHYSFS_verifySecurity(h, fname))
+        if (__PHYSFS_verifySecurity(h, fname, 0))
             rc = h->funcs->openRead(h, fname, &fileExists);
     } /* for */
     BAIL_IF_MACRO_MUTEX(rc == NULL, NULL, stateLock, NULL);
@@ -1710,32 +1743,32 @@ static PHYSFS_sint64 doBufferedRead(PHYSFS_file *handle, void *buffer,
 
     while (objCount > 0)
     {
-        PHYSFS_uint64 buffered = h->buffill - h->bufpos;
+        PHYSFS_uint32 buffered = h->buffill - h->bufpos;
         PHYSFS_uint64 mustread = (objSize * objCount) - remainder;
         PHYSFS_uint32 copied;
 
         if (buffered == 0) /* need to refill buffer? */
         {
-            PHYSFS_sint64 rc = h->funcs->read(h, h->buffer, 1, (PHYSFS_uint32)h->bufsize);
+            PHYSFS_sint64 rc = h->funcs->read(h, h->buffer, 1, h->bufsize);
             if (rc <= 0)
             {
                 h->bufpos -= remainder;
                 return(((rc == -1) && (retval == 0)) ? -1 : retval);
             } /* if */
 
-            buffered = h->buffill = rc;
+            buffered = h->buffill = (PHYSFS_uint32) rc;
             h->bufpos = 0;
         } /* if */
 
         if (buffered > mustread)
-            buffered = mustread;
+            buffered = (PHYSFS_uint32) mustread;
 
         memcpy(buffer, h->buffer + h->bufpos, (size_t) buffered);
         buffer = ((PHYSFS_uint8 *) buffer) + buffered;
         h->bufpos += buffered;
         buffered += remainder;  /* take remainder into account. */
-        copied = (PHYSFS_uint32)(buffered / objSize);
-        remainder = (PHYSFS_uint32)(buffered % objSize);
+        copied = (buffered / objSize);
+        remainder = (buffered % objSize);
         retval += copied;
         objCount -= copied;
     } /* while */
@@ -1816,6 +1849,7 @@ int PHYSFS_seek(PHYSFS_file *handle, PHYSFS_uint64 pos)
 {
     FileHandle *h = (FileHandle *) handle->opaque;
     BAIL_IF_MACRO(!PHYSFS_flush(handle), NULL, 0);
+    h->buffill = h->bufpos = 0;     /* just in case. */
     return(h->funcs->seek(h, pos));
 } /* PHYSFS_seek */
 
@@ -1827,10 +1861,12 @@ PHYSFS_sint64 PHYSFS_fileLength(PHYSFS_file *handle)
 } /* PHYSFS_filelength */
 
 
-int PHYSFS_setBuffer(PHYSFS_file *handle, PHYSFS_uint64 bufsize)
+int PHYSFS_setBuffer(PHYSFS_file *handle, PHYSFS_uint64 _bufsize)
 {
     FileHandle *h = (FileHandle *) handle->opaque;
+	PHYSFS_uint32 bufsize = (PHYSFS_uint32) _bufsize;
 
+    BAIL_IF_MACRO(_bufsize > 0xFFFFFFFF, "buffer must fit in 32-bits", 0);
     BAIL_IF_MACRO(!PHYSFS_flush(handle), NULL, 0);
 
     /*
@@ -1858,7 +1894,7 @@ int PHYSFS_setBuffer(PHYSFS_file *handle, PHYSFS_uint64 bufsize)
 
     else
     {
-        PHYSFS_uint8 *newbuf = realloc(h->buffer, (PHYSFS_uint32)bufsize);
+        PHYSFS_uint8 *newbuf = realloc(h->buffer, bufsize);
         BAIL_IF_MACRO(newbuf == NULL, ERR_OUT_OF_MEMORY, 0);
         h->buffer = newbuf;
     } /* else */
@@ -1878,9 +1914,8 @@ int PHYSFS_flush(PHYSFS_file *handle)
         return(1);  /* open for read or buffer empty are successful no-ops. */
 
     /* dump buffer to disk. */
-    rc = h->funcs->write(h, h->buffer + h->bufpos, (PHYSFS_uint32)(h->buffill - h->bufpos), 1);
+    rc = h->funcs->write(h, h->buffer + h->bufpos, h->buffill - h->bufpos, 1);
     BAIL_IF_MACRO(rc <= 0, NULL, 0);
-
     h->bufpos = h->buffill = 0;
     return(1);
 } /* PHYSFS_flush */

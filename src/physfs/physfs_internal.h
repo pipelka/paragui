@@ -46,6 +46,8 @@ extern "C" {
 #if (PHYSFS_LANG == PHYSFS_LANG_ENGLISH)
  #define DIR_ARCHIVE_DESCRIPTION  "Non-archive, direct filesystem I/O"
  #define GRP_ARCHIVE_DESCRIPTION  "Build engine Groupfile format"
+ #define HOG_ARCHIVE_DESCRIPTION  "Descent I/II HOG file format"
+ #define MVL_ARCHIVE_DESCRIPTION  "Descent II Movielib format"
  #define ZIP_ARCHIVE_DESCRIPTION  "PkZip/WinZip/Info-Zip compatible"
 
  #define ERR_IS_INITIALIZED       "Already initialized"
@@ -140,6 +142,8 @@ extern "C" {
 #elif (PHYSFS_LANG == PHYSFS_LANG_GERMAN)
  #define DIR_ARCHIVE_DESCRIPTION  "Kein Archiv, direkte Ein/Ausgabe in das Dateisystem"
  #define GRP_ARCHIVE_DESCRIPTION  "Build engine Groupfile Format"
+ #define HOG_ARCHIVE_DESCRIPTION  "Descent I/II HOG file format"
+ #define MVL_ARCHIVE_DESCRIPTION  "Descent II Movielib format"
  #define ZIP_ARCHIVE_DESCRIPTION  "PkZip/WinZip/Info-Zip kompatibel"
 
  #define ERR_IS_INITIALIZED       "Bereits initialisiert"
@@ -234,6 +238,8 @@ extern "C" {
 #elif (PHYSFS_LANG == PHYSFS_LANG_RUSSIAN_KOI8_R)
  #define DIR_ARCHIVE_DESCRIPTION  "Ó≈ ¡“»…◊, Œ≈–œ”“≈ƒ”‘◊≈ŒŒŸ  ◊◊œƒ/◊Ÿ◊œƒ ∆¡ Ãœ◊œ  ”…”‘≈ÕŸ"
  #define GRP_ARCHIVE_DESCRIPTION  "Êœ“Õ¡‘ «“’––œ◊œ«œ ∆¡ Ã¡ Build engine"
+ #define HOG_ARCHIVE_DESCRIPTION  "Descent I/II HOG file format"
+ #define MVL_ARCHIVE_DESCRIPTION  "Descent II Movielib format"
  #define ZIP_ARCHIVE_DESCRIPTION  "PkZip/WinZip/Info-Zip ”œ◊Õ≈”‘…ÕŸ "
 
  #define ERR_IS_INITIALIZED       "ı÷≈ …Œ…√…¡Ã…⁄…“œ◊¡Œ"
@@ -328,6 +334,8 @@ extern "C" {
 #elif (PHYSFS_LANG == PHYSFS_LANG_RUSSIAN_CP1251)
  #define DIR_ARCHIVE_DESCRIPTION  "ÕÂ ‡ıË‚, ÌÂÔÓÒÂ‰ÒÚ‚ÂÌÌ˚È ‚‚Ó‰/‚˚‚Ó‰ Ù‡ÈÎÓ‚ÓÈ ÒËÒÚÂÏ˚"
  #define GRP_ARCHIVE_DESCRIPTION  "‘ÓÏ‡Ú „ÛÔÔÓ‚Ó„Ó Ù‡ÈÎ‡ Build engine"
+ #define HOG_ARCHIVE_DESCRIPTION  "Descent I/II HOG file format"
+ #define MVL_ARCHIVE_DESCRIPTION  "Descent II Movielib format"
  #define ZIP_ARCHIVE_DESCRIPTION  "PkZip/WinZip/Info-Zip ÒÓ‚ÏÂÒÚËÏ˚È"
 
  #define ERR_IS_INITIALIZED       "”ÊÂ ËÌËˆË‡ÎËÁËÓ‚‡Ì"
@@ -422,6 +430,8 @@ extern "C" {
 #elif (PHYSFS_LANG == PHYSFS_LANG_RUSSIAN_CP866)
  #define DIR_ARCHIVE_DESCRIPTION  "ç• †‡Â®¢, ≠•ØÆ·‡•§·‚¢•≠≠Î© ¢¢Æ§/¢Î¢Æ§ ‰†©´Æ¢Æ© ·®·‚•¨Î"
  #define GRP_ARCHIVE_DESCRIPTION  "îÆ‡¨†‚ £‡„ØØÆ¢Æ£Æ ‰†©´† Build engine"
+ #define HOG_ARCHIVE_DESCRIPTION  "Descent I/II HOG file format"
+ #define MVL_ARCHIVE_DESCRIPTION  "Descent II Movielib format"
  #define ZIP_ARCHIVE_DESCRIPTION  "PkZip/WinZip/Info-Zip ·Æ¢¨•·‚®¨Î©"
 
  #define ERR_IS_INITIALIZED       "ì¶• ®≠®Ê®†´®ß®‡Æ¢†≠"
@@ -516,6 +526,8 @@ extern "C" {
 #elif (PHYSFS_LANG == PHYSFS_LANG_RUSSIAN_ISO_8859_5)
  #define DIR_ARCHIVE_DESCRIPTION  "Ω’ –‡Âÿ“, ›’ﬂﬁ·‡’‘·‚“’››ÎŸ ““ﬁ‘/“Î“ﬁ‘ ‰–Ÿ€ﬁ“ﬁŸ ·ÿ·‚’‹Î"
  #define GRP_ARCHIVE_DESCRIPTION  "ƒﬁ‡‹–‚ ”‡„ﬂﬂﬁ“ﬁ”ﬁ ‰–Ÿ€– Build engine"
+ #define HOG_ARCHIVE_DESCRIPTION  "Descent I/II HOG file format"
+ #define MVL_ARCHIVE_DESCRIPTION  "Descent II Movielib format"
  #define ZIP_ARCHIVE_DESCRIPTION  "PkZip/WinZip/Info-Zip ·ﬁ“‹’·‚ÿ‹ÎŸ"
 
  #define ERR_IS_INITIALIZED       "√÷’ ÿ›ÿÊÿ–€ÿ◊ÿ‡ﬁ“–›"
@@ -610,6 +622,8 @@ extern "C" {
 #elif (PHYSFS_LANG == PHYSFS_LANG_SPANISH)
  #define DIR_ARCHIVE_DESCRIPTION  "No es un archivo, E/S directa al sistema de ficheros"
  #define GRP_ARCHIVE_DESCRIPTION  "Formato Build engine Groupfile"
+ #define HOG_ARCHIVE_DESCRIPTION  "Descent I/II HOG file format"
+ #define MVL_ARCHIVE_DESCRIPTION  "Descent II Movielib format"
  #define ZIP_ARCHIVE_DESCRIPTION  "Compatible con PkZip/WinZip/Info-Zip"
 
  #define ERR_IS_INITIALIZED       "Ya estaba inicializado"
@@ -704,6 +718,8 @@ extern "C" {
 #elif (PHYSFS_LANG == PHYSFS_LANG_FRENCH)
  #define DIR_ARCHIVE_DESCRIPTION  "Pas d'archive, E/S directes sur systËme de fichiers"
  #define GRP_ARCHIVE_DESCRIPTION  "Format Groupfile du moteur Build"
+ #define HOG_ARCHIVE_DESCRIPTION  "Descent I/II HOG file format"
+ #define MVL_ARCHIVE_DESCRIPTION  "Descent II Movielib format"
  #define ZIP_ARCHIVE_DESCRIPTION  "Compatible PkZip/WinZip/Info-Zip"
 
  #define ERR_IS_INITIALIZED       "DÈj‡ initialisÈ"
@@ -832,17 +848,17 @@ typedef struct __PHYSFS_FILEHANDLE__
         /*
          * This is the buffer size, if one is set (0 otherwise). Don't touch.
          */
-    PHYSFS_uint64 bufsize;
+    PHYSFS_uint32 bufsize;
 
         /*
          * This is the buffer fill size. Don't touch.
          */
-    PHYSFS_uint64 buffill;
+    PHYSFS_uint32 buffill;
 
         /*
          * This is the buffer position. Don't touch.
          */
-    PHYSFS_uint64 bufpos;
+    PHYSFS_uint32 bufpos;
 
         /*
          * This should be the DirHandle that created this FileHandle.
@@ -1108,10 +1124,13 @@ char *__PHYSFS_convertToDependent(const char *prepend,
  *  for symlinks (if they aren't permitted). Also, elements such as
  *  ".", "..", or ":" are flagged.
  *
+ * With some exceptions (like PHYSFS_mkdir(), which builds multiple subdirs
+ *  at a time), you should always pass zero for "allowMissing" for efficiency.
+ *
  * Returns non-zero if string is safe, zero if there's a security issue.
  *  PHYSFS_getLastError() will specify what was wrong.
  */
-int __PHYSFS_verifySecurity(DirHandle *h, const char *fname);
+int __PHYSFS_verifySecurity(DirHandle *h, const char *fname, int allowMissing);
 
 
 /*

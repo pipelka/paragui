@@ -128,6 +128,9 @@
  * Currently supported archive types:
  *   - .ZIP (pkZip/WinZip/Info-ZIP compatible)
  *   - .GRP (Build Engine groupfile archives)
+ *   - .PAK (Quake I/II archive format)
+ *   - .HOG (Descent I/II HOG file archives)
+ *   - .MVL (Descent II movielib archives)
  *
  * Please see the file LICENSE in the source's root directory for licensing
  *  and redistribution rights.
@@ -315,7 +318,7 @@ typedef struct
 #ifndef DOXYGEN_SHOULD_IGNORE_THIS
 #define PHYSFS_VER_MAJOR 0
 #define PHYSFS_VER_MINOR 1
-#define PHYSFS_VER_PATCH 7
+#define PHYSFS_VER_PATCH 8
 #endif  /* DOXYGEN_SHOULD_IGNORE_THIS */
 
 
@@ -1230,7 +1233,7 @@ __EXPORT__ int PHYSFS_setBuffer(PHYSFS_file *handle, PHYSFS_uint64 bufsize);
 
 
 /**
- * \fn int PHYSFS_flush(PHYSFS_file *handle, PHYSFS_uint64 bufsize)
+ * \fn int PHYSFS_flush(PHYSFS_file *handle)
  * \brief Flush a buffered PhysicsFS file handle.
  *
  * For buffered files opened for writing, this will put the current contents

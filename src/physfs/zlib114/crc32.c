@@ -3,7 +3,7 @@
  * For conditions of distribution and use, see copyright notice in zlib.h 
  */
 
-/* @(#) $Id: crc32.c,v 1.1.2.2 2002/07/01 17:15:22 braindead Exp $ */
+/* @(#) $Id: crc32.c,v 1.1.2.3 2003/05/26 07:39:54 braindead Exp $ */
 
 #include "zlib.h"
 

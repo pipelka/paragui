@@ -316,9 +316,9 @@ static int grp_load_entries(const char *name, int forWriting, GRPinfo *info)
             return(0);
         } /* if */
 
-        entry->size = PHYSFS_swapULE32((unsigned int)entry->size);
+        entry->size = PHYSFS_swapULE32(entry->size);
         entry->startPos = location;
-        location += (unsigned int)entry->size;
+        location += entry->size;
     } /* for */
 
     __PHYSFS_platformClose(fh);

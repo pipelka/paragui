@@ -1,6 +1,9 @@
-SUBDIRS = keyboard fireworks colorselector
-
 AUTOMAKE_OPTIONS = foreign
+
+SUBDIRS = \
+	keyboard \
+	fireworks \
+	colorselector
 
 noinst_PROGRAMS = \
 	widgetlistbug \
