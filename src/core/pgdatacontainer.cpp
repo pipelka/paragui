@@ -20,21 +20,28 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 14:53:56 $
+    Update Date:      $Date: 2002/07/30 10:18:37 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgdatacontainer.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.1 $
     Status:           $State: Exp $
 */
 
 #include "pgdatacontainer.h"
 
 PG_DataContainer::PG_DataContainer(Uint32 size) {
+	if(size == 0) {
+		my_data = NULL;
+		my_size = 0;
+	}
+	
 	my_data = new char[size];
 	my_size = size;
 }
 
 PG_DataContainer::~PG_DataContainer() {
-	delete[] my_data;
+	if(my_data != NULL) {
+		delete[] my_data;
+	}
 }
 
 	

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/05/28 12:37:31 $
+   Update Date:      $Date: 2002/07/30 10:18:38 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.1 $
+   CVS/RCS Revision: $Revision: 1.3.6.2 $
    Status:           $State: Exp $
 */
 
@@ -559,7 +559,10 @@ bool PG_RichEdit::LoadText(const char* textfile) {
 		return false;
 	}
 	
-	text->data()[text->size()] = 0;
+	// Hmm,...
+	// size() returns the number of loaded bytes. We have to terminate the text with 0.
+	// Last character will be truncated by this (i love valgrind).
+	text->data()[text->size()-1] = 0;
 	SetText(text->data());
 	
 	delete text;
