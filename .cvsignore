@@ -27,3 +27,4 @@ mkinstalldirs
 *.patch
 *.kdevelop
 *.cache
+*.mlz

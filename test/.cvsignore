@@ -16,3 +16,5 @@ navtest dblbuffer animation
 layouttest windowtest dropdown
 windowresize
 listbox
+stress1
+stress2
