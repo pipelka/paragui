@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 08:10:23 $
+    Update Date:      $Date: 2002/07/15 14:29:33 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/gradient.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -168,25 +168,35 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL
 
 		for (register Sint32 y = 0; y < drawrect.h; y++) {
 
-			if ( bpp == 1 )
+/*			if ( bpp == 1 )
 				pixel = SDL_MapRGB ( surface->format, r>>8, g>>8, b>>8 );
 			else
 				pixel =  (r>>Rloss) << Rshift
         	               | (g>>Gloss) << Gshift
                 	       | (b>>Bloss) << Bshift;
 	                       //| Amask;
+*/
 
 			/* Set the pixel */
 			switch (bpp) {
 				case 1:
+					pixel = SDL_MapRGB ( surface->format, r>>8, g>>8, b>>8 );
 					*((Uint8 *) (bits)) = (Uint8) pixel;
 					break;
 
 				case 2:
+					pixel =  (r>>Rloss) << Rshift
+							   | (g>>Gloss) << Gshift
+							   | (b>>Bloss) << Bshift;
+
 					*((Uint16 *) (bits)) = (Uint16) pixel;
 					break;
 
-				case 3: {			/* Format/endian independent */
+				case 3: {
+						pixel =  (r>>Rloss) << Rshift
+								   | (g>>Gloss) << Gshift
+								   | (b>>Bloss) << Bshift;
+	
 						Uint8 ri = (pixel >> surface->format->Rshift) & 0xFF;
 						Uint8 gi = (pixel >> surface->format->Gshift) & 0xFF;
 						Uint8 bi = (pixel >> surface->format->Bshift) & 0xFF;
@@ -197,6 +207,10 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL
 					break;
 
 				case 4:
+					pixel =  (r>>Rloss) << Rshift
+							   | (g>>Gloss) << Gshift
+							   | (b>>Bloss) << Bshift;
+
 					*((Uint32 *) (bits)) = (Uint32) pixel;
 					break;
 			}

@@ -331,7 +331,7 @@ int main(int argc, char* argv[]) {
 
 	app.SetCursor(app.GetTheme()->FindSurface("Pointer", "Pointer", "normal"));
 
-	Splash();
+	//Splash();
 	
 	SDL_Color color;
 	color.r = 255;
