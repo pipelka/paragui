@@ -20,6 +20,8 @@ Whats new in ParaGUI 1.0.2 ?
   Thanks Guillaume Cottenceau <gc@mandrakesoft.com>
 - added functions to add callback handlers to existing menu items
   Thanks John Rainey <John.Rainey@symmetron.com>
+- added missing DECLSPEC to pgwidgetlistex.h
+  Thanks Andrew Ford <andrewhford@yahoo.com>
 
 
 ----------------------------
