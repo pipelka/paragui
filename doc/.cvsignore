@@ -4,3 +4,4 @@ paragui.doxy
 latex
 *.tar.gz
 doxygen.log
+*.tar.gz.sig

@@ -65,8 +65,15 @@ Uint32 PG_TimerObject::eventTimer(Uint32 interval) {
 
 Uint32 PG_TimerObject::callbackTimer(Uint32 interval, void* data) {
 	PG_TimerObject::ID id = reinterpret_cast<PG_TimerObject::ID>(data);
-	timermap[id]->sigTimer(timermap[id], id);
-	return timermap[id]->eventTimer(id, interval);
+	PG_TimerObject* o = timermap[id];
+	
+	// check for unregistered timerobjects
+	if(o == NULL) {
+		return 0;
+	}
+	
+	o->sigTimer(timermap[id], id);
+	return o->eventTimer(id, interval);
 }
 
 Uint32 PG_TimerObject::callbackSingleTimer(Uint32 interval) {

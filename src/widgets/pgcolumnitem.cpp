@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/19 11:05:24 $
+    Update Date:      $Date: 2004/11/26 16:05:50 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcolumnitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -38,7 +38,7 @@ PG_ColumnItem::PG_ColumnItem(PG_Widget* parent, Uint32 columns, Uint16 height, v
 	// fill our vectors with the default values
 	for(Uint32 i=0; i<my_columncount; i++) {
 		my_columnwidth.push_back(Width()/my_columncount);
-		my_columntext.push_back("");
+		my_columntext.push_back(PG_NULLSTR);
 	}
 
 }

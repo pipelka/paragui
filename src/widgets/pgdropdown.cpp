@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 10:59:33 $
+    Update Date:      $Date: 2004/11/26 16:05:50 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.16 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.17 $
     Status:           $State: Exp $
 */
 
@@ -45,7 +45,7 @@ my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 	my_EditBox->sigEditReturn.connect(sigEditReturn.slot());
 
 	PG_Rect rbutton(abs(r.my_width - r.my_height), 0, r.my_height, r.my_height);
-	my_DropButton = new PG_Button(this, rbutton, "", -1, style);
+	my_DropButton = new PG_Button(this, rbutton, PG_NULLSTR, -1, style);
 	my_DropButton->SetID(IDDROPDOWN_BOX);
 	my_DropButton->sigClick.connect(slot(*this, &PG_DropDown::handleButtonClick));
 

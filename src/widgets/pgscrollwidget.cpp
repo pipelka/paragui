@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/26 16:05:50 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.10 $
+    CVS/RCS Revision: $Revision: 1.1.2.11 $
     Status:           $State: Exp $
 */
 
@@ -68,11 +68,6 @@ my_scrollarea(NULL)
 	my_scrollarea->sigAreaChangedHeight.connect(slot(*this, &PG_ScrollWidget::handleAreaChangedHeight));
 	my_scrollarea->sigAreaChangedWidth.connect(slot(*this, &PG_ScrollWidget::handleAreaChangedWidth));
 	my_scrollarea->SetShiftOnRemove(false, false);
-
-	/*if(strcmp(style, "ScrollWidget") != 0) {
-		LoadThemeStyle("ScrollWidget");
-	}
-	LoadThemeStyle(style);*/
 }
 
 PG_ScrollWidget::~PG_ScrollWidget() {

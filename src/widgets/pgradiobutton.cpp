@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/26 16:05:50 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.11 $
     Status:           $State: Exp $
 */
 
@@ -30,6 +30,8 @@
 #include "pgapplication.h"
 #include "pgtheme.h"
 #include "pgbutton.h"
+
+#include "propstrings_priv.h"
 
 PG_RadioButton::PG_RadioButton(PG_Widget* parent, const PG_Rect& r, const std::string& text, PG_RadioButton* firstOfGroup, int id, const std::string& style) : PG_ThemeWidget(parent, r) {
 	PG_Rect rectButton;
@@ -57,10 +59,11 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, const PG_Rect& r, const std::s
 
 	rectLabel.SetRect(rectButton.my_width, 0, r.my_width - rectButton.my_width, r.my_height);
 	my_widgetLabel = new PG_Label(this, rectLabel, text, style);
+	my_widgetLabel->EnableReceiver(false);
 
 	// load default first
-	if(style != "RadioButton") {
-		LoadThemeStyle("RadioButton");
+	if(style != PG_PropStr::RadioButton) {
+		LoadThemeStyle(PG_PropStr::RadioButton);
 	}
 
 	// load inherited style
@@ -78,9 +81,9 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, const PG_Rect& r, const std::s
 void PG_RadioButton::LoadThemeStyle(const std::string& widgettype) {
 	PG_Theme* t = PG_Application::GetTheme();
 
-	t->GetProperty(widgettype, "RadioButton", "transparency", my_hoverTransparency);
+	t->GetProperty(widgettype, PG_PropStr::RadioButton, PG_PropStr::transparency, my_hoverTransparency);
 
-	PG_ThemeWidget::LoadThemeStyle(widgettype, "RadioButton");
+	PG_ThemeWidget::LoadThemeStyle(widgettype, PG_PropStr::RadioButton);
 
 	my_widgetButton->LoadThemeStyle(widgettype, "CheckButton");
 	my_widgetLabel->LoadThemeStyle(widgettype);

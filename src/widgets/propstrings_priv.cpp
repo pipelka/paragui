@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 10:59:32 $
+    Update Date:      $Date: 2004/11/26 16:05:50 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/propstrings_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,7 @@
 const std::string PG_PropStr::Button = "Button";
 const std::string PG_PropStr::Label = "Label";
 const std::string PG_PropStr::ListBoxItem = "ListBoxItem";
+const std::string PG_PropStr::RadioButton = "RadioButton";
 const std::string PG_PropStr::Scrollbar = "Scrollbar";
 const std::string PG_PropStr::ScrollbarDown = "ScrollbarDown";
 const std::string PG_PropStr::ScrollbarDrag = "ScrollbarDrag";
