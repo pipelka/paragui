@@ -58,7 +58,7 @@ int __PHYSFS_platformInit(void)
         return 0;
     }
 
-	basedir = __PHYSFS_platformCalcBaseDir("dummy");
+	basedir = __PHYSFS_platformCalcBaseDir("");
 	SetCurrentDirectory(basedir);
 
     return(1);
@@ -648,13 +648,12 @@ PHYSFS_sint64 __PHYSFS_platformTell(void *opaque)
 
     /* Get current position */
     retval = SetFilePointer(FileHandle, 0, NULL, FILE_CURRENT);
-    if(GetLastError() != NO_ERROR)
+/*    if(GetLastError() != NO_ERROR)
     {
-        /* Set the error to GetLastError */
         __PHYSFS_setError(win32strerror());
-        /* We errored out */
         retval = 0;
     }
+*/
 
     return retval;
 } /* __PHYSFS_platformTell */
@@ -663,22 +662,10 @@ PHYSFS_sint64 __PHYSFS_platformTell(void *opaque)
 PHYSFS_sint64 __PHYSFS_platformFileLength(void *handle)
 {
     HANDLE FileHandle;
-    PHYSFS_sint64 retval;
 
     /* Cast the generic handle to a Win32 handle */
-    FileHandle = (HANDLE)handle;
-    
-    retval = GetFileSize(FileHandle, NULL);
-
-    if(GetLastError() != NO_ERROR)
-    {
-        /* Set the error to GetLastError */
-        __PHYSFS_setError(win32strerror());
-
-        retval = -1;
-    }
-
-    return retval;
+    FileHandle = (HANDLE)handle;  
+    return GetFileSize(FileHandle, NULL);
 } /* __PHYSFS_platformFileLength */
 
 
@@ -691,18 +678,13 @@ int __PHYSFS_platformEOF(void *opaque)
     /* Cast the generic handle to a Win32 handle */
     FileHandle = (HANDLE)opaque;
 
-	if(__PHYSFS_platformFileLength(opaque) == -1) {
+	if(__PHYSFS_platformFileLength(FileHandle) == -1) {
 		return 1;
 	}
 
     /* Get the current position in the file */
-    if((FilePosition = __PHYSFS_platformTell(opaque)) != 0)
-    {
-        /* Non-zero if EOF is equal to the file length - 1 */
-        retval = (FilePosition >= (__PHYSFS_platformFileLength(opaque) - 1));
-    }
-
-    return retval;
+	FilePosition = __PHYSFS_platformTell(FileHandle);
+    return (FilePosition >= (__PHYSFS_platformFileLength(FileHandle) - 1));
 } /* __PHYSFS_platformEOF */
 
 
