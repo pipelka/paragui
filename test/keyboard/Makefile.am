@@ -1,4 +1,4 @@
-bin_PROGRAMS = keyboard
+noinst_PROGRAMS = keyboard
 
 keyboard_SOURCES = \
 	keyboard.cpp \
@@ -10,4 +10,5 @@ EXTRA_DIST = \
 	keyboard.h
 
 INCLUDES = \
+	-I$(top_srcdir)/include \
 	$(PARAGUI_CFLAGS)

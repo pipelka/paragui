@@ -1,4 +1,15 @@
 ----------------------------
+Whats new in ParaGUI 1.0.4 ?
+----------------------------
+
+- fixed a stupid PG_Window bug (buttons not shown correctly)
+- made std:: the default workspace -> removed all std:: prefixes
+- fixed a bug in showing "hidden" child widgets
+- fixed a clipping bug in PG_ColumnItem
+- Win32 (VC++) build fixes for physfs
+- GNU build fixes (test dir), "make distcheck" passes now
+
+----------------------------
 Whats new in ParaGUI 1.0.3 ?
 ----------------------------
 

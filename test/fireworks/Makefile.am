@@ -1,4 +1,4 @@
-bin_PROGRAMS = fireworks
+noinst_PROGRAMS = fireworks
 
 fireworks_SOURCES = \
 	blob.cpp \
@@ -10,4 +10,5 @@ EXTRA_DIST = \
 	blob.h
 
 INCLUDES = \
+	-I$(top_srcdir)/include \
 	$(PARAGUI_CFLAGS)

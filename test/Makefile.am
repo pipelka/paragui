@@ -2,7 +2,7 @@ SUBDIRS = keyboard fireworks colorselector
 
 AUTOMAKE_OPTIONS = foreign
 
-bin_PROGRAMS = writefile stress1 stress2 listbox animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
+noinst_PROGRAMS = writefile stress1 stress2 listbox animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
 
 writefile_SOURCES = writefile.cpp
 writefile_LDADD = -L../src $(PARAGUI_LIBS)
