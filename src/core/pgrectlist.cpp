@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2004/12/30 06:56:02 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2.2.11 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.12 $
     Status:           $State: Exp $
 */
 
@@ -251,21 +251,35 @@ bool PG_RectList::SendToBack(PG_Widget* rect) {
 	return true;
 }
 
-PG_Widget* PG_RectList::Find(int id) {
+PG_Widget* PG_RectList::Find(int id, bool recursive ) {
 	for(PG_Widget* i = first(); i != NULL; i = i->next()) {
 		if(i->GetID() == id) {
 			return i;
 		}
 	}
+	if ( recursive )
+		for(PG_Widget* i = first(); i != NULL; i = i->next()) {
+			PG_Widget* w = i->FindChild(id, recursive );
+			if( w ) {
+				return w;
+			}
+		}
 	return NULL;
 }
 
-PG_Widget* PG_RectList::Find(const std::string& name) {
+PG_Widget* PG_RectList::Find(const std::string& name, bool recursive ) {
 	for(PG_Widget* i = first(); i != NULL; i = i->next()) {
 		if(i->GetName() == name) {
 			return i;
 		}
 	}
+	if ( recursive )
+		for(PG_Widget* i = first(); i != NULL; i = i->next()) {
+			PG_Widget* w = i->FindChild(name, recursive );
+			if( w ) {
+				return w;
+			}
+		}
 	return NULL;
 }
 

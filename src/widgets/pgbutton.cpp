@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2004/12/30 06:56:02 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.18 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.19 $
     Status:           $State: Exp $
 */
 
@@ -55,7 +55,7 @@ class PG_ButtonDataInternal : public std::map<PG_Button::STATE, PG_ButtonStateDa
 public:
 
 	PG_ButtonDataInternal() : free_icons(false), isPressed(false), togglemode(false), state(PG_Button::UNPRESSED), pressShift(1),
-	iconindent(3) {
+	iconindent(3), behaviour( PG_Button::SIGNALONRELEASE | PG_Button::MSGCAPTURE ) {
 	};
 
 	bool free_icons;
@@ -64,6 +64,7 @@ public:
 	PG_Button::STATE state;
 	int pressShift;
 	Uint16 iconindent;
+	int behaviour;
 };
 
 PG_Button::PG_Button(PG_Widget* parent, const PG_Rect& r, const std::string& text, int id, const std::string& style) : PG_Widget(parent, r) {
@@ -251,10 +252,10 @@ void PG_Button::eventMouseEnter() {
 /**  */
 void PG_Button::eventMouseLeave() {
 
-	if(_mid->state == HIGHLITED) {
+	if(_mid->state == HIGHLITED || !(_mid->behaviour & MSGCAPTURE) ) {
 		(_mid->togglemode && _mid->isPressed) ? _mid->state = PRESSED : _mid->state = UNPRESSED;
 	}
-
+	
 	Update();
 	PG_Widget::eventMouseLeave();
 }
@@ -266,9 +267,15 @@ bool PG_Button::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 
 	if(button->button == 1) {
 		_mid->state = PRESSED;
-		SetCapture();
+		
+		if ( _mid->behaviour & MSGCAPTURE )
+			SetCapture();
 
 		Update();
+		
+		if ( _mid->behaviour & SIGNALONCLICK )
+			sigClick(this);
+		
 		return true;
 	}
 
@@ -289,7 +296,10 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		if (!_mid->togglemode || !_mid->isPressed) {
 			_mid->state = UNPRESSED;
 		}
-		ReleaseCapture();
+		
+		if ( _mid->behaviour & MSGCAPTURE )
+			ReleaseCapture();
+			
 		Update();
 		return false;
 	}
@@ -307,10 +317,14 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		_mid->isPressed = false;
 	}
 
-	ReleaseCapture();
+	if ( _mid->behaviour & MSGCAPTURE )
+		ReleaseCapture();
+		
 	Update();
 
-	sigClick(this);
+	if ( _mid->behaviour & SIGNALONRELEASE )
+		sigClick(this);
+		
 	return true;
 }
 
@@ -435,6 +449,12 @@ void PG_Button::SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high) {
  */
 void PG_Button::SetShift(int pixelshift) {
 	_mid->pressShift = pixelshift;
+}
+
+
+void PG_Button::SetBehaviour( int behaviour )
+{
+	_mid->behaviour = behaviour;
 }
 
 

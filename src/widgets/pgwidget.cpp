@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/12/01 11:28:22 $
+   Update Date:      $Date: 2004/12/30 06:56:02 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.25 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.26 $
    Status:           $State: Exp $
  */
 
@@ -1701,18 +1701,18 @@ int PG_Widget::GetID() {
 	return _mid->id;
 }
 
-PG_Widget* PG_Widget::FindChild(int id) {
+PG_Widget* PG_Widget::FindChild(int id, bool recursive) {
 	if(_mid->childList == NULL) {
 		return NULL;
 	}
-	return _mid->childList->Find(id);
+	return _mid->childList->Find(id, recursive );
 }
 
-PG_Widget* PG_Widget::FindChild(const std::string& name) {
+PG_Widget* PG_Widget::FindChild(const std::string& name, bool recursive) {
 	if(_mid->childList == NULL) {
 		return NULL;
 	}
-	return _mid->childList->Find(name);
+	return _mid->childList->Find(name, recursive );
 }
 
 PG_RectList* PG_Widget::GetChildList() {

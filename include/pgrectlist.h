@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/30 06:56:02 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrectlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -79,9 +79,9 @@ public:
 	*/
 	PG_Widget* IsInside(const PG_Point& p);
 
-	PG_Widget* Find(int id);
+	PG_Widget* Find(int id, bool recursive = false );
 
-	PG_Widget* Find(const std::string& name);
+	PG_Widget* Find(const std::string& name, bool recursive = false );
 
 	/**
 		blit all rectangles in the list to the screen

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2004/12/30 06:56:02 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.22 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.23 $
     Status:           $State: Exp $
 */
 
@@ -268,16 +268,18 @@ public:
 	/**
 	Find a child that is identified by the given ID.
 	@param id   the id of the child to return
+	@param recursive also search child of childs 
 	@return A pointer to the child with the given ID or 0 if no such child exists.
 	*/
-	PG_Widget* FindChild(int id);
+	PG_Widget* FindChild(int id, bool recursive = false );
 
 	/**
 	Find a child that is identified by the given name.
 	@param name   the name of the child to return
+	@param recursive also search child of childs 
 	@return A pointer to the child with the given name or 0 if no such child exists.
 	*/
-	PG_Widget* FindChild(const std::string& name);
+	PG_Widget* FindChild(const std::string& name, bool recursive = false);
 
 	/**
 	Check if the mousepointer is currently inside the widget

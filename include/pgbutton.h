@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2004/12/30 06:56:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.17 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.18 $
     Status:           $State: Exp $
 */
 
@@ -146,6 +146,17 @@ public:
 		UNPRESSED,
 		HIGHLITED
 	} STATE;
+	
+	/**
+	Behaviour of the button. The default button captures the messages and fires on mouse button
+	release. This can be changed with these flags.
+	*/
+	typedef enum {
+		MSGCAPTURE      = 0x00000001,
+		SIGNALONCLICK   = 0x00000002,
+		SIGNALONRELEASE = 0x00000004
+	} BEHAVIOUR;	
+			       
 
 	/**
 	Signal type declaration
@@ -320,6 +331,13 @@ public:
 	@param text the text which is to fit on the button
 	*/
 	void SetSizeByText(int Width = 0, int Height = 0, const std::string& Text = PG_NULLSTR);
+
+	/**
+	Set the behaviour of the button. 
+	@param behaviour bitmapped field, see #BUTTONMODE
+	*/
+	void SetBehaviour( int behaviour );
+
 
 	SignalButtonClick<> sigClick;
 
