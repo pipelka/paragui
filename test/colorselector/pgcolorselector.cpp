@@ -17,6 +17,23 @@ bool PG_ColorSelector::PG_ColorBox::eventMouseMotion(const SDL_MouseMotionEvent*
 	}
 	
 	p = ScreenToClient(motion->x, motion->y);
+
+	if(p.x < 0) {
+		p.x = 0;
+	}
+
+	if(p.x >= my_width-1) {
+		p.x = my_width-1;
+	}
+
+	if(p.y < 0) {
+		p.y = 0;
+	}
+
+	if(p.y >= my_height-1) {
+		p.y = my_height-1;
+	}
+
 	Update();
 	GetParent()->SetBaseColor(GetBaseColor());
 	return true;
@@ -26,7 +43,8 @@ bool PG_ColorSelector::PG_ColorBox::eventMouseButtonDown(const SDL_MouseButtonEv
 	if(my_btndown) {
 		return false;
 	}
-	
+
+	SetCapture();
 	my_btndown = true;
 	p = ScreenToClient(button->x, button->y);
 	Update();
@@ -35,6 +53,11 @@ bool PG_ColorSelector::PG_ColorBox::eventMouseButtonDown(const SDL_MouseButtonEv
 }
 
 bool PG_ColorSelector::PG_ColorBox::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
+	if(!my_btndown) {
+		return false;
+	}
+
+	ReleaseCapture();
 	my_btndown = false;
 	return true;
 }
