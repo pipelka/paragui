@@ -1,6 +1,7 @@
 noinst_LTLIBRARIES = libpgcore.la
 
 libpgcore_la_SOURCES = \
+	physfsrwops.c \
 	pgdatacontainer.cpp \
 	pgapplication.cpp \
 	pgcolors.cpp \
@@ -26,3 +27,6 @@ style_cvs:
 
 style_personal:
 	astyle *.cpp
+
+EXTRA_DIST = \
+	physfsrwops.h

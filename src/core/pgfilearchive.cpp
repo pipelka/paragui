@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/26 12:43:22 $
+    Update Date:      $Date: 2002/04/27 16:06:25 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2 $
+    CVS/RCS Revision: $Revision: 1.3 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,7 @@
 #include "pgapplication.h"
 #include "pglog.h"
 #include "pgfont.h"
+#include "physfsrwops.h"
 
 #ifdef HAVE_SDLIMAGE
 #include "SDL_image.h"
@@ -231,14 +232,8 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 		return surface;
 	}
 
-	PG_DataContainer* srfdata = ReadFile(filename);
-	if(!srfdata) {
-		PG_LogWRN("Unable to load '%s' !", filename);
-		return NULL;
-	}
-
 	surface = NULL;
-	SDL_RWops *rw = SDL_RWFromMem(srfdata->data(), srfdata->size());
+	SDL_RWops *rw = PHYSFSRWOPS_openRead(filename);
 	
 #ifdef HAVE_SDLIMAGE
 	surface = IMG_Load_RW(rw, 1);
@@ -246,9 +241,7 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 	surface = SDL_LoadBMP_RW(rw, 1);
 #endif
 	
-	delete srfdata;
-	
-	if(convert && !PG_Application::GetGLMode()) {
+	if(convert) {
 		SDL_Surface* tmpsrf = SDL_DisplayFormat(surface);
 		if(tmpsrf) {
 			SDL_FreeSurface(surface);

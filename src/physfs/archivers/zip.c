@@ -9,18 +9,17 @@
 /*
  * !!! FIXME: overall design bugs.
  *
- *  Make unz_file_info.version into two fields of unsigned char. That's what
- *   they are in the zipfile; heavens knows why unzip.c casts it...this causes
- *   a byte ordering headache for me in entry_is_symlink().
- *
  *  Maybe add a seekToStartOfCurrentFile() in unzip.c if complete seek
  *   semantics are impossible.
+ *
+ *  Could be more i/o efficient if we combined unzip.c and this file.
+ *   (and thus lose all the unzGoToNextFile() dummy loops.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <errno.h>
+#include <assert.h>
 #include "physfs.h"
 #include "unzip.h"
 
@@ -58,15 +57,15 @@ typedef struct
 #define SYMLINK_RECURSE_COUNT 20
 
 
-static int ZIP_read(FileHandle *handle, void *buffer,
-                    unsigned int objSize, unsigned int objCount);
+static PHYSFS_sint64 ZIP_read(FileHandle *handle, void *buffer,
+                              PHYSFS_uint32 objSize, PHYSFS_uint32 objCount);
 static int ZIP_eof(FileHandle *handle);
-static int ZIP_tell(FileHandle *handle);
-static int ZIP_seek(FileHandle *handle, int offset);
-static int ZIP_fileLength(FileHandle *handle);
+static PHYSFS_sint64 ZIP_tell(FileHandle *handle);
+static int ZIP_seek(FileHandle *handle, PHYSFS_uint64 offset);
+static PHYSFS_sint64 ZIP_fileLength(FileHandle *handle);
 static int ZIP_fileClose(FileHandle *handle);
 static int ZIP_isArchive(const char *filename, int forWriting);
-static char *ZIP_realpath(unzFile fh, unz_file_info *info);
+static char *ZIP_realpath(unzFile fh, unz_file_info *info, ZIPentry *entry);
 static DirHandle *ZIP_openArchive(const char *name, int forWriting);
 static LinkedStringList *ZIP_enumerateFiles(DirHandle *h,
                                             const char *dirname,
@@ -110,18 +109,18 @@ const PHYSFS_ArchiveInfo __PHYSFS_ArchiveInfo_ZIP =
 {
     "ZIP",
     "PkZip/WinZip/Info-Zip compatible",
-    "Ryan C. Gordon (icculus@clutteredmind.org)",
+    "Ryan C. Gordon <icculus@clutteredmind.org>",
     "http://www.icculus.org/physfs/",
 };
 
 
 
-static int ZIP_read(FileHandle *handle, void *buffer,
-                    unsigned int objSize, unsigned int objCount)
+static PHYSFS_sint64 ZIP_read(FileHandle *handle, void *buffer,
+                              PHYSFS_uint32 objSize, PHYSFS_uint32 objCount)
 {
     unzFile fh = ((ZIPfileinfo *) (handle->opaque))->handle;
-    int bytes = objSize * objCount;
-    int rc = unzReadCurrentFile(fh, buffer, bytes);
+    int bytes = (int) (objSize * objCount); /* !!! FIXME: overflow? */
+    PHYSFS_sint32 rc = unzReadCurrentFile(fh, buffer, bytes);
 
     if (rc < bytes)
         __PHYSFS_setError(ERR_PAST_EOF);
@@ -140,21 +139,21 @@ static int ZIP_eof(FileHandle *handle)
 } /* ZIP_eof */
 
 
-static int ZIP_tell(FileHandle *handle)
+static PHYSFS_sint64 ZIP_tell(FileHandle *handle)
 {
     return(unztell(((ZIPfileinfo *) (handle->opaque))->handle));
 } /* ZIP_tell */
 
 
-static int ZIP_seek(FileHandle *handle, int offset)
+static int ZIP_seek(FileHandle *handle, PHYSFS_uint64 offset)
 {
-    /* this blows. */
+    /* !!! FIXME : this blows. */
     unzFile fh = ((ZIPfileinfo *) (handle->opaque))->handle;
     char *buf = NULL;
-    int bufsize = 4096 * 2;
+    PHYSFS_uint32 bufsize = 4096 * 2;
 
     BAIL_IF_MACRO(unztell(fh) == offset, NULL, 1);
-    BAIL_IF_MACRO(ZIP_fileLength(handle) <= offset, ERR_PAST_EOF, 0);
+    BAIL_IF_MACRO(ZIP_fileLength(handle) <= (PHYSFS_sint64) offset, ERR_PAST_EOF, 0);
 
         /* reset to the start of the zipfile. */
     unzCloseCurrentFile(fh);
@@ -169,8 +168,8 @@ static int ZIP_seek(FileHandle *handle, int offset)
 
     while (offset > 0)
     {
-        int chunk = (offset > bufsize) ? bufsize : offset;
-        int rc = unzReadCurrentFile(fh, buf, chunk);
+        PHYSFS_uint32 chunk = (offset > bufsize) ? bufsize : (PHYSFS_uint32)offset;
+        PHYSFS_sint32 rc = unzReadCurrentFile(fh, buf, chunk);
         BAIL_IF_MACRO(rc == 0, ERR_IO_ERROR, 0);  /* shouldn't happen. */
         BAIL_IF_MACRO(rc == UNZ_ERRNO, ERR_IO_ERROR, 0);
         BAIL_IF_MACRO(rc < 0, ERR_COMPRESSION, 0);
@@ -182,7 +181,7 @@ static int ZIP_seek(FileHandle *handle, int offset)
 } /* ZIP_seek */
 
 
-static int ZIP_fileLength(FileHandle *handle)
+static PHYSFS_sint64 ZIP_fileLength(FileHandle *handle)
 {
     ZIPfileinfo *finfo = (ZIPfileinfo *) (handle->opaque);
     unz_file_info info;
@@ -237,45 +236,42 @@ static void freeEntries(ZIPinfo *info, int count, const char *errmsg)
 } /* freeEntries */
 
 
-static char *ZIP_realpath(unzFile fh, unz_file_info *info)
+/*
+ * !!! FIXME: Really implement this.
+ * !!! FIXME:  symlinks in zipfiles can be relative paths, including
+ * !!! FIXME:  "." and ".." entries. These need to be parsed out.
+ * !!! FIXME:  For now, though, we're just copying the relative path. Oh well.
+ */
+static char *expand_symlink_path(const char *path, ZIPentry *entry)
 {
-    char *retval = NULL;
-    int size;
-
-    BAIL_IF_MACRO(unzOpenCurrentFile(fh) != UNZ_OK, ERR_IO_ERROR, NULL);
-    size = info->uncompressed_size;
-    retval = (char *) malloc(size + 1);
+    char *retval = (char *) malloc(strlen(path) + 1);
     BAIL_IF_MACRO(retval == NULL, ERR_OUT_OF_MEMORY, NULL);
-    if (unzReadCurrentFile(fh, retval, size) != size)
-    {
-        free(retval);
-        __PHYSFS_setError(ERR_IO_ERROR);
-        retval = NULL;
-    } /* if */
-    retval[size] = '\0';
-    unzCloseCurrentFile(fh);
-
+    strcpy(retval, path);
     return(retval);
-} /* ZIP_realpath */
+} /* expand_symlink_path */
 
 
-/* "uLong" is defined by zlib and/or unzip.h ... */
-typedef union
+static char *ZIP_realpath(unzFile fh, unz_file_info *info, ZIPentry *entry)
 {
-    unsigned char uchar4[4];
-    uLong ul;
-} uchar4_uLong;
+    char path[MAXZIPENTRYSIZE];
+    int size = info->uncompressed_size;
+    int rc;
+
+    BAIL_IF_MACRO(size >= sizeof (path), ERR_IO_ERROR, NULL);
+    BAIL_IF_MACRO(unzOpenCurrentFile(fh) != UNZ_OK, ERR_IO_ERROR, NULL);
+    rc = unzReadCurrentFile(fh, path, size);
+    unzCloseCurrentFile(fh);
+    BAIL_IF_MACRO(rc != size, ERR_IO_ERROR, NULL);
+    path[size] = '\0'; /* null terminate it. */
+
+    return(expand_symlink_path(path, entry));  /* retval is malloc()'d. */
+} /* ZIP_realpath */
 
 
 static int version_does_symlinks(uLong version)
 {
     int retval = 0;
-    unsigned char hosttype;
-    uchar4_uLong converter;
-
-    converter.ul = version;
-    hosttype = converter.uchar4[1]; /* !!! BYTE ORDERING ALERT! */
-
+    PHYSFS_uint8 hosttype = (PHYSFS_uint8) ((version >> 8) & 0xFF);
 
     /*
      * These are the platforms that can build an archive with symlinks,
@@ -344,7 +340,7 @@ static int loadZipEntries(ZIPinfo *info, unzFile unz)
 
         if (entry_is_symlink(d))
         {
-            info->entries[i].symlink = ZIP_realpath(unz, d);
+            info->entries[i].symlink = ZIP_realpath(unz, d, &info->entries[i]);
             if (info->entries[i].symlink == NULL)
             {
                 freeEntries(info, i + 1, NULL);

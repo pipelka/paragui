@@ -102,24 +102,16 @@
  *  PHYSFS_getBaseDir(), and PHYSFS_getUserDir() for info on what those
  *  are and how they can help you determine an optimal search path.
  *
- * PhysicsFS is (sort of) NOT thread safe! The error messages returned by
- *  PHYSFS_getLastError are unique by thread, but that's it. Generally
- *  speaking, we'd have to request a mutex at the start of each function,
- *  and release it before returning. Not only is this REALLY slow, it requires
- *  a thread lock portability layer to be written. All that work is only
- *  necessary as a safety if the calling application is poorly written.
- *  Generally speaking, it is safe to call most functions that don't set state
- *  simultaneously; you can read and write and open and close different files
- *  at the same time in different threads, but trying to set the write path in
- *  one thread while opening a file for writing in another will, at best,
- *  cause a polite error, but depending on the race condition results, you may
- *  get a segfault and crash, too. Use your head, and implement you own thread
- *  locks where needed. Also, consider if you REALLY need a multithreaded
- *  solution in the first place.
+ * PhysicsFS is mostly thread safe. The error messages returned by
+ *  PHYSFS_getLastError are unique by thread, and library-state-setting
+ *  functions are mutex'd. For efficiency, individual file accesses are 
+ *  not locked, so you can not safely read/write/seek/close/etc the same 
+ *  file from two threads at the same time. Other race conditions are bugs 
+ *  that should be reported/patched.
  *
  * While you CAN use stdio/syscall file access in a program that has PHYSFS_*
  *  calls, doing so is not recommended, and you can not use system
- *  filehandles with PhysicsFS filehandles and vice versa.
+ *  filehandles with PhysicsFS and vice versa.
  *
  * Note that archives need not be named as such: if you have a ZIP file and
  *  rename it with a .PKG extension, the file will still be recognized as a
@@ -147,6 +139,43 @@ extern "C" {
 #define __EXPORT__
 #endif
 
+typedef unsigned char         PHYSFS_uint8;
+typedef signed char           PHYSFS_sint8;
+typedef unsigned short        PHYSFS_uint16;
+typedef signed short          PHYSFS_sint16;
+typedef unsigned int          PHYSFS_uint32;
+typedef signed int            PHYSFS_sint32;
+
+#if (defined PHYSFS_NO_64BIT_SUPPORT)  /* oh well. */
+typedef PHYSFS_uint32         PHYSFS_uint64;
+typedef PHYSFS_sint32         PHYSFS_sint64;
+#elif (defined _MSC_VER)
+typedef signed __int64        PHYSFS_sint64;
+typedef unsigned __int64      PHYSFS_uint64;
+#else
+typedef unsigned long long    PHYSFS_uint64;
+typedef signed long long      PHYSFS_sint64;
+#endif
+
+/* Make sure the types really have the right sizes */
+#define PHYSFS_COMPILE_TIME_ASSERT(name, x)               \
+       typedef int PHYSFS_dummy_ ## name[(x) * 2 - 1]
+
+PHYSFS_COMPILE_TIME_ASSERT(uint8, sizeof(PHYSFS_uint8) == 1);
+PHYSFS_COMPILE_TIME_ASSERT(sint8, sizeof(PHYSFS_sint8) == 1);
+PHYSFS_COMPILE_TIME_ASSERT(uint16, sizeof(PHYSFS_uint16) == 2);
+PHYSFS_COMPILE_TIME_ASSERT(sint16, sizeof(PHYSFS_sint16) == 2);
+PHYSFS_COMPILE_TIME_ASSERT(uint32, sizeof(PHYSFS_uint32) == 4);
+PHYSFS_COMPILE_TIME_ASSERT(sint32, sizeof(PHYSFS_sint32) == 4);
+
+#ifndef PHYSFS_NO_64BIT_SUPPORT
+PHYSFS_COMPILE_TIME_ASSERT(uint64, sizeof(PHYSFS_uint64) == 8);
+PHYSFS_COMPILE_TIME_ASSERT(sint64, sizeof(PHYSFS_sint64) == 8);
+#endif
+
+#undef PHYSFS_COMPILE_TIME_ASSERT
+
+
 
 typedef struct __PHYSFS_FILE__
 {
@@ -166,14 +195,14 @@ typedef struct __PHYSFS_ARCHIVEINFO__
 
 typedef struct __PHYSFS_VERSION__
 {
-    int major;
-    int minor;
-    int patch;
+    PHYSFS_uint8 major;
+    PHYSFS_uint8 minor;
+    PHYSFS_uint8 patch;
 } PHYSFS_Version;
 
 #define PHYSFS_VER_MAJOR 0
 #define PHYSFS_VER_MINOR 1
-#define PHYSFS_VER_PATCH 4
+#define PHYSFS_VER_PATCH 5
 
 #define PHYSFS_VERSION(x) { \
                             (x)->major = PHYSFS_VER_MAJOR; \
@@ -272,7 +301,7 @@ __EXPORT__ const PHYSFS_ArchiveInfo **PHYSFS_supportedArchiveTypes(void);
  *
  *   @param list List of information specified as freeable by this function.
  */
-__EXPORT__ void PHYSFS_freeList(void *list);
+__EXPORT__ void PHYSFS_freeList(void *listVar);
 
 
 /**
@@ -560,6 +589,9 @@ __EXPORT__ int PHYSFS_mkdir(const char *dirName);
  *
  * A directory must be empty before this call can delete it.
  *
+ * Deleting a symlink will remove the link, not what it points to, regardless
+ *  of whether you "permitSymLinks" or not.
+ *
  * So if you've got the write dir set to "C:\mygame\writedir" and call
  *  PHYSFS_delete("downloads/maps/level1.map") then the file
  *  "C:\mygame\writedir\downloads\maps\level1.map" is removed from the
@@ -569,6 +601,10 @@ __EXPORT__ int PHYSFS_mkdir(const char *dirName);
  * Note that on Unix systems, deleting a file may be successful, but the
  *  actual file won't be removed until all processes that have an open
  *  filehandle to it (including your program) close their handles.
+ *
+ * Chances are, the bits that make up the file still exist, they are just
+ *  made available to be written over at a later point. Don't consider this
+ *  a security method or anything.  :)
  *
  *   @param filename Filename to delete.
  *  @return nonzero on success, zero on error. Specifics of the error can be
@@ -758,9 +794,10 @@ __EXPORT__ int PHYSFS_close(PHYSFS_file *handle);
  *           the reason this might be < (objCount), as can PHYSFS_eof().
  *            -1 if complete failure.
  */
-__EXPORT__ int PHYSFS_read(PHYSFS_file *handle, void *buffer,
-                           unsigned int objSize, unsigned int objCount);
-
+__EXPORT__ PHYSFS_sint64 PHYSFS_read(PHYSFS_file *handle,
+                                     void *buffer,
+                                     PHYSFS_uint32 objSize,
+                                     PHYSFS_uint32 objCount);
 
 /**
  * Write data to a PhysicsFS filehandle. The file must be opened for writing.
@@ -772,9 +809,10 @@ __EXPORT__ int PHYSFS_read(PHYSFS_file *handle, void *buffer,
  *  @return number of objects written. PHYSFS_getLastError() can shed light on
  *           the reason this might be < (objCount). -1 if complete failure.
  */
-__EXPORT__ int PHYSFS_write(PHYSFS_file *handle, void *buffer,
-                            unsigned int objSize, unsigned int objCount);
-
+__EXPORT__ PHYSFS_sint64 PHYSFS_write(PHYSFS_file *handle,
+                                      const void *buffer,
+                                      PHYSFS_uint32 objSize,
+                                      PHYSFS_uint32 objCount);
 
 /**
  * Determine if the end of file has been reached in a PhysicsFS filehandle.
@@ -792,7 +830,7 @@ __EXPORT__ int PHYSFS_eof(PHYSFS_file *handle);
  *  @return offset in bytes from start of file. -1 if error occurred.
  *           Specifics of the error can be gleaned from PHYSFS_getLastError().
  */
-__EXPORT__ int PHYSFS_tell(PHYSFS_file *handle);
+__EXPORT__ PHYSFS_sint64 PHYSFS_tell(PHYSFS_file *handle);
 
 
 /**
@@ -805,13 +843,13 @@ __EXPORT__ int PHYSFS_tell(PHYSFS_file *handle);
  *  @return nonzero on success, zero on error. Specifics of the error can be
  *          gleaned from PHYSFS_getLastError().
  */
-__EXPORT__ int PHYSFS_seek(PHYSFS_file *handle, int pos);
+__EXPORT__ int PHYSFS_seek(PHYSFS_file *handle, PHYSFS_uint64 pos);
 
 
 /**
  * Get total length of a file in bytes. Note that if the file size can't
  *  be determined (since the archive is "streamed" or whatnot) than this
- *  with report (-1). Also note that if another process/thread is writing
+ *  will report (-1). Also note that if another process/thread is writing
  *  to this file at the same time, then the information this function
  *  supplies could be incorrect before you get it. Use with caution, or
  *  better yet, don't use at all.
@@ -819,7 +857,132 @@ __EXPORT__ int PHYSFS_seek(PHYSFS_file *handle, int pos);
  *   @param handle handle returned from PHYSFS_open*().
  *  @return size in bytes of the file. -1 if can't be determined.
  */
-__EXPORT__ int PHYSFS_fileLength(PHYSFS_file *handle);
+__EXPORT__ PHYSFS_sint64 PHYSFS_fileLength(PHYSFS_file *handle);
+
+
+/* Byteorder stuff... */
+
+/**
+ * Take a 16-bit signed value in littleendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_sint16 PHYSFS_swapSLE16(PHYSFS_sint16 val);
+
+
+/**
+ * Take a 16-bit unsigned value in littleendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_uint16 PHYSFS_swapULE16(PHYSFS_uint16 val);
+
+/**
+ * Take a 32-bit signed value in littleendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_sint32 PHYSFS_swapSLE32(PHYSFS_sint32 val);
+
+
+/**
+ * Take a 32-bit unsigned value in littleendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_uint32 PHYSFS_swapULE32(PHYSFS_uint32 val);
+
+/**
+ * Take a 64-bit signed value in littleendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_sint64 PHYSFS_swapSLE64(PHYSFS_sint64 val);
+
+
+/**
+ * Take a 64-bit unsigned value in littleendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_uint64 PHYSFS_swapULE64(PHYSFS_uint64 val);
+
+
+/**
+ * Take a 16-bit signed value in bigendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_sint16 PHYSFS_swapSBE16(PHYSFS_sint16 val);
+
+
+/**
+ * Take a 16-bit unsigned value in bigendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_uint16 PHYSFS_swapUBE16(PHYSFS_uint16 val);
+
+/**
+ * Take a 32-bit signed value in bigendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_sint32 PHYSFS_swapSBE32(PHYSFS_sint32 val);
+
+
+/**
+ * Take a 32-bit unsigned value in bigendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_uint32 PHYSFS_swapUBE32(PHYSFS_uint32 val);
+
+
+/**
+ * Take a 64-bit signed value in bigendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_sint64 PHYSFS_swapSBE64(PHYSFS_sint64 val);
+
+
+/**
+ * Take a 64-bit unsigned value in bigendian format and convert it to
+ *  the platform's native byte order.
+ *
+ *    @param val value to convert
+ *   @return converted value.
+ */
+__EXPORT__ PHYSFS_uint64 PHYSFS_swapUBE64(PHYSFS_uint64 val);
+
+
+
+#if 0 /* !!! FIXME: add this? */
+#undef __EXPORT__
+#endif
 
 #ifdef __cplusplus
 }

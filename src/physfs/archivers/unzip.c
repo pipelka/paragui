@@ -11,6 +11,13 @@
 #include "zlib.h"
 #include "unzip.h"
 
+#define __PHYSICSFS_INTERNAL__
+#include "physfs_internal.h"
+
+#if (!defined PHYSFS_SUPPORTS_ZIP)
+#error PHYSFS_SUPPORTS_ZIP must be defined.
+#endif
+
 #ifdef STDC
 #  include <stddef.h>
 #  include <string.h>
@@ -86,7 +93,7 @@ typedef struct
 	char  *read_buffer;         /* internal buffer for compressed data */
 	z_stream stream;            /* zLib stream structure for inflate */
 
-	uLong pos_in_zipfile;       /* position in byte on the zipfile, for fseek*/
+	uLong pos_in_zipfile;       /* position in byte on the zipfile, for seek*/
 	uLong stream_initialised;   /* flag set if stream structure is initialised*/
 
 	uLong offset_local_extrafield;/* offset of the local extra field */
@@ -97,7 +104,7 @@ typedef struct
 	uLong crc32_wait;           /* crc32 we must obtain after decompress all */
 	uLong rest_read_compressed; /* number of byte to be decompressed */
 	uLong rest_read_uncompressed;/*number of byte to be obtained after decomp*/
-	FILE* file;                 /* io structore of the zipfile */
+	void* file;                 /* io structore of the zipfile */
 	uLong compression_method;   /* compression method (0==store) */
 	uLong byte_before_the_zipfile;/* byte before the zipfile, (>0 for sfx)*/
 } file_in_zip_read_info_s;
@@ -107,7 +114,7 @@ typedef struct
 */
 typedef struct
 {
-	FILE* file;                 /* io structore of the zipfile */
+	void* file;                 /* io structore of the zipfile */
 	unz_global_info gi;       /* public global information */
 	uLong byte_before_the_zipfile;/* byte before the zipfile, (>0 for sfx)*/
 	uLong num_file;             /* number of the current file in the zipfile*/
@@ -133,12 +140,13 @@ typedef struct
 */
 
 
+#if 0  /* not actually used anymore, at this point. */
 local int unzlocal_getByte(fin,pi)
-	FILE *fin;
+	void *fin;
 	int *pi;
 {
-    unsigned char c;
-	int err = fread(&c, 1, 1, fin);
+    PHYSFS_uint8 c;
+	PHYSFS_sint64 err = __PHYSFS_platformRead(fin, &c, sizeof (c), 1);
     if (err==1)
     {
         *pi = (int)c;
@@ -146,71 +154,70 @@ local int unzlocal_getByte(fin,pi)
     }
     else
     {
-        if (ferror(fin)) 
-            return UNZ_ERRNO;
-        else
+        if (__PHYSFS_platformEOF(fin)) 
             return UNZ_EOF;
+        else
+            return UNZ_ERRNO;
     }
 }
-
+#endif
 
 /* ===========================================================================
    Reads a long in LSB order from the given gz_stream. Sets 
 */
 local int unzlocal_getShort (fin,pX)
-	FILE* fin;
+	void* fin;
     uLong *pX;
 {
-    uLong x ;
-    int i;
-    int err;
-
-    err = unzlocal_getByte(fin,&i);
-    x = (uLong)i;
-    
-    if (err==UNZ_OK)
-        err = unzlocal_getByte(fin,&i);
-    x += ((uLong)i)<<8;
-   
-    if (err==UNZ_OK)
-        *pX = x;
+    PHYSFS_uint16 val;
+	PHYSFS_sint64 err = __PHYSFS_platformRead(fin, &val, sizeof (val), 1);
+    if (err==1)
+    {
+        *pX = (uLong) PHYSFS_swapULE16(val);
+        return UNZ_OK;
+    }
     else
+    {
         *pX = 0;
-    return err;
+        if (__PHYSFS_platformEOF(fin)) 
+            return UNZ_EOF;
+        else
+            return UNZ_ERRNO;
+    }
+
+    return(UNZ_ERRNO);  /* shouldn't ever hit this. */
 }
 
 local int unzlocal_getLong (fin,pX)
-	FILE* fin;
+	void* fin;
     uLong *pX;
 {
-    uLong x ;
-    int i;
-    int err;
-
-    err = unzlocal_getByte(fin,&i);
-    x = (uLong)i;
-    
-    if (err==UNZ_OK)
-        err = unzlocal_getByte(fin,&i);
-    x += ((uLong)i)<<8;
-
-    if (err==UNZ_OK)
-        err = unzlocal_getByte(fin,&i);
-    x += ((uLong)i)<<16;
-
-    if (err==UNZ_OK)
-        err = unzlocal_getByte(fin,&i);
-    x += ((uLong)i)<<24;
-   
-    if (err==UNZ_OK)
-        *pX = x;
+    PHYSFS_uint32 val;
+	PHYSFS_sint64 err = __PHYSFS_platformRead(fin, &val, sizeof (val), 1);
+    if (err==1)
+    {
+        *pX = (uLong) PHYSFS_swapULE32(val);
+        return UNZ_OK;
+    }
     else
+    {
         *pX = 0;
-    return err;
+        if (__PHYSFS_platformEOF(fin)) 
+            return UNZ_EOF;
+        else
+            return UNZ_ERRNO;
+    }
+
+    return(UNZ_ERRNO);  /* shouldn't ever hit this. */
 }
 
 
 /* My own strcmpi / strcasecmp */
+#if 1
+
+#define strcmpcasenosensitive_internal(x,y) __PHYSFS_platformStricmp(x,y)
+
+#else
 local int strcmpcasenosensitive_internal (fileName1,fileName2)
 	const char* fileName1;
 	const char* fileName2;
@@ -233,7 +240,7 @@ local int strcmpcasenosensitive_internal (fileName1,fileName2)
 			return 1;
 	}
 }
-
+#endif
 
 #ifdef  CASESENSITIVITYDEFAULT_NO
 #define CASESENSITIVITYDEFAULTVALUE 2
@@ -275,20 +282,16 @@ extern int ZEXPORT unzStringFileNameCompare (fileName1,fileName2,iCaseSensitivit
     the global comment)
 */
 local uLong unzlocal_SearchCentralDir(fin)
-	FILE *fin;
+	void *fin;
 {
 	unsigned char* buf;
 	uLong uSizeFile;
 	uLong uBackRead;
 	uLong uMaxBack=0xffff; /* maximum size of global comment */
 	uLong uPosFound=0;
-	
-	if (fseek(fin,0,SEEK_END) != 0)
-		return 0;
 
+	uSizeFile = (uLong) __PHYSFS_platformFileLength( fin );
 
-	uSizeFile = ftell( fin );
-	
 	if (uMaxBack>uSizeFile)
 		uMaxBack = uSizeFile;
 
@@ -309,19 +312,21 @@ local uLong unzlocal_SearchCentralDir(fin)
 		
 		uReadSize = ((BUFREADCOMMENT+4) < (uSizeFile-uReadPos)) ? 
                      (BUFREADCOMMENT+4) : (uSizeFile-uReadPos);
-		if (fseek(fin,uReadPos,SEEK_SET)!=0)
+		if (!__PHYSFS_platformSeek(fin,uReadPos))
 			break;
 
-		if (fread(buf,(uInt)uReadSize,1,fin)!=1)
+		if (__PHYSFS_platformRead(fin,buf,(uInt)uReadSize,1)!=1)
 			break;
 
-                for (i=(int)uReadSize-3; (i--)>0;)
-			if (((*(buf+i))==0x50) && ((*(buf+i+1))==0x4b) && 
+		for (i=(int)uReadSize-3; (i--)>0;)
+		{
+			if (((*(buf+i))==0x50) && ((*(buf+i+1))==0x4b) &&
 				((*(buf+i+2))==0x05) && ((*(buf+i+3))==0x06))
 			{
 				uPosFound = uReadPos+i;
 				break;
 			}
+		}
 
 		if (uPosFound!=0)
 			break;
@@ -345,7 +350,7 @@ extern unzFile ZEXPORT unzOpen (path)
 	unz_s us;
 	unz_s *s;
 	uLong central_pos,uL;
-	FILE * fin ;
+	void* fin ;
 
 	uLong number_disk;          /* number of the current dist, used for 
 								   spaning ZIP, unsupported, always 0*/
@@ -360,7 +365,7 @@ extern unzFile ZEXPORT unzOpen (path)
     if (unz_copyright[0]!=' ')
         return NULL;
 
-    fin=fopen(path,"rb");
+    fin=__PHYSFS_platformOpenRead(path);
 	if (fin==NULL)
 		return NULL;
 
@@ -368,7 +373,7 @@ extern unzFile ZEXPORT unzOpen (path)
 	if (central_pos==0)
 		err=UNZ_ERRNO;
 
-	if (fseek(fin,central_pos,SEEK_SET)!=0)
+	if (!__PHYSFS_platformSeek(fin,central_pos))
 		err=UNZ_ERRNO;
 
 	/* the signature, already checked */
@@ -415,7 +420,7 @@ extern unzFile ZEXPORT unzOpen (path)
 
 	if (err!=UNZ_OK)
 	{
-		fclose(fin);
+		__PHYSFS_platformClose(fin);
 		return NULL;
 	}
 
@@ -449,7 +454,7 @@ extern int ZEXPORT unzClose (file)
     if (s->pfile_in_zip_read!=NULL)
         unzCloseCurrentFile(file);
 
-	fclose(s->file);
+	__PHYSFS_platformClose(s->file);
 	TRYFREE(s);
 	return UNZ_OK;
 }
@@ -530,7 +535,7 @@ local int unzlocal_GetCurrentFileInfoInternal (file,
 	if (file==NULL)
 		return UNZ_PARAMERROR;
 	s=(unz_s*)file;
-	if (fseek(s->file,s->pos_in_central_dir+s->byte_before_the_zipfile,SEEK_SET)!=0)
+	if (!__PHYSFS_platformSeek(s->file,s->pos_in_central_dir+s->byte_before_the_zipfile))
 		err=UNZ_ERRNO;
 
 
@@ -603,8 +608,10 @@ local int unzlocal_GetCurrentFileInfoInternal (file,
 			uSizeRead = fileNameBufferSize;
 
 		if ((file_info.size_filename>0) && (fileNameBufferSize>0))
-			if (fread(szFileName,(uInt)uSizeRead,1,s->file)!=1)
+        {
+			if (__PHYSFS_platformRead(s->file,szFileName,(uInt)uSizeRead,1)!=1)
 				err=UNZ_ERRNO;
+        }
 		lSeek -= uSizeRead;
 	}
 
@@ -619,14 +626,15 @@ local int unzlocal_GetCurrentFileInfoInternal (file,
 
 		if (lSeek!=0)
 		{
-			if (fseek(s->file,lSeek,SEEK_CUR)==0)
+            PHYSFS_sint64 curpos = __PHYSFS_platformTell(s->file);
+			if ((curpos >= 0) && (__PHYSFS_platformSeek(s->file,lSeek+curpos)))
 				lSeek=0;
 			else
 				err=UNZ_ERRNO;
 		}
 		if ((file_info.size_file_extra>0) && (extraFieldBufferSize>0))
 		{
-			if (fread(extraField,(uInt)uSizeRead,1,s->file)!=1)
+			if (__PHYSFS_platformRead(s->file,extraField,(uInt)uSizeRead,1)!=1)
 				err=UNZ_ERRNO;
 		}
 		lSeek += file_info.size_file_extra - uSizeRead;
@@ -648,14 +656,15 @@ local int unzlocal_GetCurrentFileInfoInternal (file,
 
 		if (lSeek!=0)
         {
-			if (fseek(s->file,lSeek,SEEK_CUR)==0)
+            PHYSFS_sint64 curpos = __PHYSFS_platformTell(s->file);
+			if (__PHYSFS_platformSeek(s->file,lSeek+curpos))
 				lSeek=0;
 			else
 				err=UNZ_ERRNO;
         }
 		if ((file_info.size_file_comment>0) && (commentBufferSize>0))
 		{
-			if (fread(szComment,(uInt)uSizeRead,1,s->file)!=1)
+			if (__PHYSFS_platformRead(s->file,szComment,(uInt)uSizeRead,1)!=1)
 				err=UNZ_ERRNO;
 		}
 		lSeek+=file_info.size_file_comment - uSizeRead;
@@ -829,8 +838,9 @@ local int unzlocal_CheckCurrentFileCoherencyHeader (s,piSizeVar,
 	*poffset_local_extrafield = 0;
 	*psize_local_extrafield = 0;
 
-	if (fseek(s->file,s->cur_file_info_internal.offset_curfile +
-								s->byte_before_the_zipfile,SEEK_SET)!=0)
+	if (!__PHYSFS_platformSeek(s->file,
+								s->cur_file_info_internal.offset_curfile +
+								s->byte_before_the_zipfile))
 	{
 		return UNZ_ERRNO;
 	}
@@ -1047,12 +1057,13 @@ extern int ZEXPORT unzReadCurrentFile  (file, buf, len)
 				uReadThis = (uInt)pfile_in_zip_read_info->rest_read_compressed;
 			if (uReadThis == 0)
 				return UNZ_EOF;
-			if (fseek(pfile_in_zip_read_info->file,
+			if (!__PHYSFS_platformSeek(pfile_in_zip_read_info->file,
                       pfile_in_zip_read_info->pos_in_zipfile + 
-                         pfile_in_zip_read_info->byte_before_the_zipfile,SEEK_SET)!=0)
+                         pfile_in_zip_read_info->byte_before_the_zipfile))
 				return UNZ_ERRNO;
-			if (fread(pfile_in_zip_read_info->read_buffer,uReadThis,1,
-                         pfile_in_zip_read_info->file)!=1)
+			if (__PHYSFS_platformRead(pfile_in_zip_read_info->file,
+                                      pfile_in_zip_read_info->read_buffer,
+                                      uReadThis,1)!=1)
 				return UNZ_ERRNO;
 			pfile_in_zip_read_info->pos_in_zipfile += uReadThis;
 
@@ -1218,12 +1229,12 @@ extern int ZEXPORT unzGetLocalExtrafield (file,buf,len)
 	if (read_now==0)
 		return 0;
 	
-	if (fseek(pfile_in_zip_read_info->file,
+	if (!__PHYSFS_platformSeek(pfile_in_zip_read_info->file,
               pfile_in_zip_read_info->offset_local_extrafield + 
-			  pfile_in_zip_read_info->pos_local_extrafield,SEEK_SET)!=0)
+			  pfile_in_zip_read_info->pos_local_extrafield))
 		return UNZ_ERRNO;
 
-	if (fread(buf,(uInt)size_to_read,1,pfile_in_zip_read_info->file)!=1)
+	if (__PHYSFS_platformRead(pfile_in_zip_read_info->file,buf,(uInt)size_to_read,1)!=1)
 		return UNZ_ERRNO;
 
 	return (int)read_now;
@@ -1291,13 +1302,13 @@ extern int ZEXPORT unzGetGlobalComment (file, szComment, uSizeBuf)
 	if (uReadThis>s->gi.size_comment)
 		uReadThis = s->gi.size_comment;
 
-	if (fseek(s->file,s->central_pos+22,SEEK_SET)!=0)
+	if (!__PHYSFS_platformSeek(s->file,s->central_pos+22))
 		return UNZ_ERRNO;
 
 	if (uReadThis>0)
     {
       *szComment='\0';
-	  if (fread(szComment,(uInt)uReadThis,1,s->file)!=1)
+	  if (__PHYSFS_platformRead(s->file,szComment,(uInt)uReadThis,1)!=1)
 		return UNZ_ERRNO;
     }
 
@@ -1305,3 +1316,4 @@ extern int ZEXPORT unzGetGlobalComment (file, szComment, uSizeBuf)
 		*(szComment+s->gi.size_comment)='\0';
 	return (int)uReadThis;
 }
+

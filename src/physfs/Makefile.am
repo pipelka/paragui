@@ -7,6 +7,7 @@ platform.c: $(srcdir)/$(PHYSFS_PLATFORMFILE)
 
 libphysfs_la_SOURCES = \
 	physfs.c \
+	physfs_byteorder.c \
 	platform.c
 
 libphysfs_la_LIBADD = ./archivers/libarchivers.la

@@ -39,33 +39,32 @@
 #define __PHYSICSFS_INTERNAL__
 #include "physfs_internal.h"
 
-#if 0
 #if (!defined PHYSFS_SUPPORTS_GRP)
 #error PHYSFS_SUPPORTS_GRP must be defined.
-#endif
 #endif
 
 typedef struct
 {
-    FILE *handle;
-    int totalEntries;
+    void *handle;
+    char *filename;
+    PHYSFS_uint32 totalEntries;
 } GRPinfo;
 
 typedef struct
 {
-    int startPos;
-    int curPos;
-    int size;
+    void *handle;
+    PHYSFS_uint64 startPos;
+    PHYSFS_uint64 size;
 } GRPfileinfo;
 
 
 static void GRP_dirClose(DirHandle *h);
-static int GRP_read(FileHandle *handle, void *buffer,
-                    unsigned int objSize, unsigned int objCount);
+static PHYSFS_sint64 GRP_read(FileHandle *handle, void *buffer,
+                              PHYSFS_uint32 objSize, PHYSFS_uint32 objCount);
 static int GRP_eof(FileHandle *handle);
-static int GRP_tell(FileHandle *handle);
-static int GRP_seek(FileHandle *handle, int offset);
-static int GRP_fileLength(FileHandle *handle);
+static PHYSFS_sint64 GRP_tell(FileHandle *handle);
+static int GRP_seek(FileHandle *handle, PHYSFS_uint64 offset);
+static PHYSFS_sint64 GRP_fileLength(FileHandle *handle);
 static int GRP_fileClose(FileHandle *handle);
 static int GRP_isArchive(const char *filename, int forWriting);
 static DirHandle *GRP_openArchive(const char *name, int forWriting);
@@ -109,7 +108,7 @@ const PHYSFS_ArchiveInfo __PHYSFS_ArchiveInfo_GRP =
 {
     "GRP",
     "Build engine Groupfile format",
-    "Ryan C. Gordon (icculus@clutteredmind.org)",
+    "Ryan C. Gordon <icculus@clutteredmind.org>",
     "http://www.icculus.org/physfs/",
 };
 
@@ -117,64 +116,58 @@ const PHYSFS_ArchiveInfo __PHYSFS_ArchiveInfo_GRP =
 
 static void GRP_dirClose(DirHandle *h)
 {
-    fclose( ((GRPinfo *) h->opaque)->handle );
+    __PHYSFS_platformClose( ((GRPinfo *) h->opaque)->handle );
+    free(((GRPinfo *) h->opaque)->filename);
     free(h->opaque);
     free(h);
 } /* GRP_dirClose */
 
 
-static int GRP_read(FileHandle *handle, void *buffer,
-                    unsigned int objSize, unsigned int objCount)
+static PHYSFS_sint64 GRP_read(FileHandle *handle, void *buffer,
+                              PHYSFS_uint32 objSize, PHYSFS_uint32 objCount)
 {
     GRPfileinfo *finfo = (GRPfileinfo *) (handle->opaque);
-    FILE *fh = (FILE *) (((GRPinfo *) (handle->dirHandle->opaque))->handle);
-    int bytesLeft = (finfo->startPos + finfo->size) - finfo->curPos;
-    unsigned int objsLeft = bytesLeft / objSize;
-    size_t retval = 0;
+    void *fh = finfo->handle;
+    PHYSFS_sint64 curPos = __PHYSFS_platformTell(fh);
+    PHYSFS_uint64 bytesLeft = (finfo->startPos + finfo->size) - curPos;
+    PHYSFS_uint64 objsLeft = (bytesLeft / objSize);
 
     if (objsLeft < objCount)
-        objCount = objsLeft;
+        objCount = (PHYSFS_uint32) objsLeft;
 
-    errno = 0;
-    BAIL_IF_MACRO(fseek(fh,finfo->curPos,SEEK_SET) == -1,strerror(errno),-1);
-
-    errno = 0;
-    retval = fread(buffer, objSize, objCount, fh);
-    finfo->curPos += (retval * objSize);
-    BAIL_IF_MACRO((retval < (size_t) objCount) && (ferror(fh)),
-                   strerror(errno), (int) retval);
-
-    return((int) retval);
+    return(__PHYSFS_platformRead(fh, buffer, objSize, objCount));
 } /* GRP_read */
 
 
 static int GRP_eof(FileHandle *handle)
 {
     GRPfileinfo *finfo = (GRPfileinfo *) (handle->opaque);
-    return(finfo->curPos >= finfo->startPos + finfo->size);
+    void *fh = finfo->handle;
+    PHYSFS_sint64 pos = __PHYSFS_platformTell(fh);
+    BAIL_IF_MACRO(pos < 0, NULL, 1);  /* (*shrug*) */
+    return(pos >= (PHYSFS_sint64) (finfo->startPos + finfo->size));
 } /* GRP_eof */
 
 
-static int GRP_tell(FileHandle *handle)
+static PHYSFS_sint64 GRP_tell(FileHandle *handle)
 {
     GRPfileinfo *finfo = (GRPfileinfo *) (handle->opaque);
-    return(finfo->curPos - finfo->startPos);
+    return(__PHYSFS_platformTell(finfo->handle) - finfo->startPos);
 } /* GRP_tell */
 
 
-static int GRP_seek(FileHandle *handle, int offset)
+static int GRP_seek(FileHandle *handle, PHYSFS_uint64 offset)
 {
     GRPfileinfo *finfo = (GRPfileinfo *) (handle->opaque);
-    int newPos = finfo->startPos + offset;
+    PHYSFS_uint64 newPos = (finfo->startPos + offset);
 
     BAIL_IF_MACRO(offset < 0, ERR_INVALID_ARGUMENT, 0);
     BAIL_IF_MACRO(newPos > finfo->startPos + finfo->size, ERR_PAST_EOF, 0);
-    finfo->curPos = newPos;
-    return(1);
+    return(__PHYSFS_platformSeek(finfo->handle, newPos));
 } /* GRP_seek */
 
 
-static int GRP_fileLength(FileHandle *handle)
+static PHYSFS_sint64 GRP_fileLength(FileHandle *handle)
 {
     GRPfileinfo *finfo = (GRPfileinfo *) (handle->opaque);
     return(finfo->size);
@@ -183,47 +176,60 @@ static int GRP_fileLength(FileHandle *handle)
 
 static int GRP_fileClose(FileHandle *handle)
 {
+    GRPfileinfo *finfo = (GRPfileinfo *) (handle->opaque);
+    BAIL_IF_MACRO(__PHYSFS_platformClose(finfo->handle), NULL, 0);
+
     free(handle->opaque);
     free(handle);
     return(1);
 } /* GRP_fileClose */
 
 
-static int openGrp(const char *filename, int forWriting, FILE **fh, int *count)
+static int openGrp(const char *filename, int forWriting,
+                    void **fh, PHYSFS_sint32 *count)
 {
-    char buf[12];
-
-     /* !!! FIXME: Get me platform-independent typedefs! */
-    if (sizeof (int) != 4)
-        assert(0);
+    PHYSFS_uint8 buf[12];
 
     *fh = NULL;
     BAIL_IF_MACRO(forWriting, ERR_ARC_IS_READ_ONLY, 0);
 
-    errno = 0;
-    *fh = fopen(filename, "rb");
-    BAIL_IF_MACRO(*fh == NULL, strerror(errno), 0);
+    *fh = __PHYSFS_platformOpenRead(filename);
+    BAIL_IF_MACRO(*fh == NULL, NULL, 0);
     
-    errno = 0;
-    BAIL_IF_MACRO(fread(buf, 12, 1, *fh) != 1, strerror(errno), 0);
-    BAIL_IF_MACRO(strncmp(buf, "KenSilverman", 12) != 0,
-                    ERR_UNSUPPORTED_ARCHIVE, 0);
+    if (__PHYSFS_platformRead(*fh, buf, 12, 1) != 1)
+        goto openGrp_failed;
 
-    if (fread(count, 4, 1, *fh) != 1)
-        *count = 0;
+    if (memcmp(buf, "KenSilverman", 12) != 0)
+    {
+        __PHYSFS_setError(ERR_UNSUPPORTED_ARCHIVE);
+        goto openGrp_failed;
+    } /* if */
+
+    if (__PHYSFS_platformRead(*fh, count, sizeof (PHYSFS_sint32), 1) != 1)
+        goto openGrp_failed;
+
+    *count = PHYSFS_swapSLE32(*count);
 
     return(1);
+
+openGrp_failed:
+    if (*fh != NULL)
+        __PHYSFS_platformClose(*fh);
+
+    *count = -1;
+    *fh = NULL;
+    return(0);
 } /* openGrp */
 
 
 static int GRP_isArchive(const char *filename, int forWriting)
 {
-    FILE *fh;
+    void *fh;
     int fileCount;
     int retval = openGrp(filename, forWriting, &fh, &fileCount);
 
     if (fh != NULL)
-        fclose(fh);
+        __PHYSFS_platformClose(fh);
 
     return(retval);
 } /* GRP_isArchive */
@@ -231,7 +237,7 @@ static int GRP_isArchive(const char *filename, int forWriting)
 
 static DirHandle *GRP_openArchive(const char *name, int forWriting)
 {
-    FILE *fh;
+    void *fh = NULL;
     int fileCount;
     DirHandle *retval = malloc(sizeof (DirHandle));
 
@@ -239,22 +245,42 @@ static DirHandle *GRP_openArchive(const char *name, int forWriting)
     retval->opaque = malloc(sizeof (GRPinfo));
     if (retval->opaque == NULL)
     {
-        free(retval);
-        BAIL_IF_MACRO(1, ERR_OUT_OF_MEMORY, NULL);
+        __PHYSFS_setError(ERR_OUT_OF_MEMORY);
+        goto GRP_openArchive_failed;
+    } /* if */
+
+    ((GRPinfo *) retval->opaque)->filename = (char *) malloc(strlen(name) + 1);
+    if (((GRPinfo *) retval->opaque)->filename == NULL)
+    {
+        __PHYSFS_setError(ERR_OUT_OF_MEMORY);
+        goto GRP_openArchive_failed;
     } /* if */
 
     if (!openGrp(name, forWriting, &fh, &fileCount))
-    {
-        if (fh != NULL)
-            fclose(fh);
-        free(retval->opaque);
-        free(retval);
-    } /* if */
+        goto GRP_openArchive_failed;
 
+    strcpy(((GRPinfo *) retval->opaque)->filename, name);
     ((GRPinfo *) retval->opaque)->handle = fh;
     ((GRPinfo *) retval->opaque)->totalEntries = fileCount;
     retval->funcs = &__PHYSFS_DirFunctions_GRP;
     return(retval);
+
+GRP_openArchive_failed:
+    if (retval != NULL)
+    {
+        if (retval->opaque != NULL)
+        {
+            if ( ((GRPinfo *) retval->opaque)->filename != NULL )
+                free( ((GRPinfo *) retval->opaque)->filename );
+            free(retval->opaque);
+        } /* if */
+        free(retval);
+    } /* if */
+
+    if (fh != NULL)
+        __PHYSFS_platformClose(fh);
+
+    return(NULL);
 } /* GRP_openArchive */
 
 
@@ -262,25 +288,24 @@ static LinkedStringList *GRP_enumerateFiles(DirHandle *h,
                                             const char *dirname,
                                             int omitSymLinks)
 {
-    char buf[16];
+    PHYSFS_uint8 buf[16];
     GRPinfo *g = (GRPinfo *) (h->opaque);
-    FILE *fh = g->handle;
-    int i;
+    void *fh = g->handle;
+    PHYSFS_uint32 i;
     LinkedStringList *retval = NULL;
     LinkedStringList *l = NULL;
     LinkedStringList *prev = NULL;
 
+    /* !!! FIXME: Does this consider "/" ? */
     if (*dirname != '\0')   /* no directories in GRP files. */
         return(NULL);
 
         /* jump to first file entry... */
-    errno = 0;
-    BAIL_IF_MACRO(fseek(fh, 16, SEEK_SET) == -1, strerror(errno), NULL);
+    BAIL_IF_MACRO(!__PHYSFS_platformSeek(fh, 16), NULL, NULL);
 
     for (i = 0; i < g->totalEntries; i++)
     {
-        errno = 0;
-        BAIL_IF_MACRO(fread(buf, 16, 1, fh) != 1, strerror(errno), retval);
+        BAIL_IF_MACRO(__PHYSFS_platformRead(fh, buf, 16, 1) != 1, NULL, retval);
 
         buf[12] = '\0';  /* FILENAME.EXT is all you get. */
 
@@ -288,14 +313,14 @@ static LinkedStringList *GRP_enumerateFiles(DirHandle *h,
         if (l == NULL)
             break;
 
-        l->str = (char *) malloc(strlen(buf) + 1);
+        l->str = (char *) malloc(strlen((const char *) buf) + 1);
         if (l->str == NULL)
         {
             free(l);
             break;
         } /* if */
 
-        strcpy(l->str, buf);
+        strcpy(l->str, (const char *) buf);
 
         if (retval == NULL)
             retval = l;
@@ -310,12 +335,13 @@ static LinkedStringList *GRP_enumerateFiles(DirHandle *h,
 } /* GRP_enumerateFiles */
 
 
-static int getFileEntry(DirHandle *h, const char *name, int *size)
+static PHYSFS_sint32 getFileEntry(DirHandle *h, const char *name,
+                                  PHYSFS_uint32 *size)
 {
-    char buf[16];
+    PHYSFS_uint8 buf[16];
     GRPinfo *g = (GRPinfo *) (h->opaque);
-    FILE *fh = g->handle;
-    int i;
+    void *fh = g->handle;
+    PHYSFS_uint32 i;
     char *ptr;
     int retval = (g->totalEntries + 1) * 16; /* offset of raw file data */
 
@@ -330,29 +356,27 @@ static int getFileEntry(DirHandle *h, const char *name, int *size)
     if (strlen(name) > 12)
         return(-1);
 
-        /* jump to first file entry... */
-    errno = 0;
-    BAIL_IF_MACRO(fseek(fh, 16, SEEK_SET) == -1, strerror(errno), -1);
+    /* jump to first file entry... */
+    BAIL_IF_MACRO(!__PHYSFS_platformSeek(fh, 16), NULL, -1);
 
     for (i = 0; i < g->totalEntries; i++)
     {
-        int fsize;
+        PHYSFS_sint32 l = 0;
 
-        errno = 0;
-        BAIL_IF_MACRO(fread(buf, 16, 1, fh) != 1, strerror(errno), -1);
-
-        fsize = *((int *) (buf + 12));
+        BAIL_IF_MACRO(__PHYSFS_platformRead(fh, buf, 12, 1) != 1, NULL, -1);
+        BAIL_IF_MACRO(__PHYSFS_platformRead(fh, &l, sizeof (l), 1) != 1, NULL, -1);
+        l = PHYSFS_swapSLE32(l);
 
         buf[12] = '\0';  /* FILENAME.EXT is all you get. */
 
-        if (__PHYSFS_platformStricmp(buf, name) == 0)
+        if (__PHYSFS_platformStricmp((const char *) buf, name) == 0)
         {
             if (size != NULL)
-                *size = fsize;
+                *size = l;
             return(retval);
         } /* if */
 
-        retval += fsize;
+        retval += l;
     } /* for */
 
     return(-1);  /* not found. */
@@ -379,9 +403,11 @@ static int GRP_isSymLink(DirHandle *h, const char *name)
 
 static FileHandle *GRP_openRead(DirHandle *h, const char *name)
 {
+    const char *filename = ((GRPinfo *) h->opaque)->filename;
     FileHandle *retval;
     GRPfileinfo *finfo;
-    int size, offset;
+    PHYSFS_uint32 size;
+    PHYSFS_sint32 offset;
 
     offset = getFileEntry(h, name, &size);
     BAIL_IF_MACRO(offset == -1, ERR_NO_SUCH_FILE, NULL);
@@ -395,8 +421,16 @@ static FileHandle *GRP_openRead(DirHandle *h, const char *name)
         BAIL_IF_MACRO(1, ERR_OUT_OF_MEMORY, NULL);
     } /* if */
 
+    finfo->handle = __PHYSFS_platformOpenRead(filename);
+    if ( (finfo->handle == NULL) ||
+         (!__PHYSFS_platformSeek(finfo->handle, offset)) )
+    {
+        free(finfo);
+        free(retval);
+        return(NULL);
+    } /* if */
+
     finfo->startPos = offset;
-    finfo->curPos = offset;
     finfo->size = size;
     retval->opaque = (void *) finfo;
     retval->funcs = &__PHYSFS_FileFunctions_GRP;
