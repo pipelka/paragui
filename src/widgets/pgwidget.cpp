@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/04/28 16:35:30 $
+   Update Date:      $Date: 2002/05/02 08:45:36 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.7 $
+   CVS/RCS Revision: $Revision: 1.4.4.1 $
    Status:           $State: Exp $
  */
 
@@ -35,7 +35,6 @@
 #include "pglog.h"
 #include "pgdraw.h"
 #include "pglayout.h"
-#include "pgtheme.h"
 
 bool PG_Widget::bBulkUpdate = false;
 PG_RectList PG_Widget::widgetList;
@@ -121,7 +120,6 @@ void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
 	my_internaldata->havesurface = bObjectSurface;
 	my_srfScreen = PG_Application::GetScreen();
 
-	my_srfObject = NULL;
 	if(my_internaldata->havesurface) {
 		my_srfObject = PG_Draw::CreateRGBSurface(w, h);
 	}
@@ -388,7 +386,12 @@ void PG_Widget::AddChildToCache(PG_Widget *child, int id) {
 	}
 }
 
-bool PG_Widget::MoveWidget(Sint16 x, Sint16 y) {
+/**  */
+bool PG_Widget::MoveWindow(int x, int y) {
+	return MoveWidget(x, y);
+}
+
+bool PG_Widget::MoveWidget(int x, int y) {
 
 	if (GetParent() != NULL) {
 		x += GetParent()->my_xpos;
@@ -463,23 +466,33 @@ bool PG_Widget::MoveWidget(Sint16 x, Sint16 y) {
 	return true;
 }
 
+bool PG_Widget::MoveWindow(const PG_Rect& r) {
+	return MoveWidget(r);
+}
+
 bool PG_Widget::MoveWidget(const PG_Rect& r) {
 	MoveWidget(r.x, r.y);
 	SizeWidget(r.w, r.h);
 	return true;
 }
 
+bool PG_Widget::SizeWindow(Uint16 w, Uint16 h) {
+	return SizeWidget(w, h);
+}
+
 bool PG_Widget::SizeWidget(Uint16 w, Uint16 h) {
-	if((w == my_width) && (h == my_height)) {
-		return false;
+	bool v = IsVisible();
+
+	if (v) {
+		SetVisible(false);
 	}
 
-	if (IsVisible()) {
+	if (my_internaldata->firstredraw != true) {
 		RestoreBackground();
 	}
 
 	// create new widget drawsurface
-	if(my_internaldata->havesurface) {
+	if(my_srfObject) {
 		PG_Application::UnloadSurface(my_srfObject);
 
 		if(w > 0 && h > 0) {
@@ -490,13 +503,15 @@ bool PG_Widget::SizeWidget(Uint16 w, Uint16 h) {
 		}
 	}
 
+	eventSizeWindow(w, h);
 	eventSizeWidget(w, h);
 
 	my_width = w;
 	my_height = h;
 
-	Redraw();
-
+	if (v) {
+		SetVisible(true);
+	}
 	return true;
 }
 /**  */
@@ -658,11 +673,6 @@ void PG_Widget::Show(bool fade) {
 	widgetList.BringToFront(this);
 
 	SetHidden(false);
-	
-	if(GetParent() && !GetParent()->IsVisible()) {
-		return;
-	}
-	
 	SetVisible(true);
 	
 	eventShow();
@@ -725,7 +735,7 @@ void PG_Widget::Hide(bool fade) {
 }
 
 /**  */
-void PG_Widget::MoveRect(Sint16 x, Sint16 y) {
+void PG_Widget::MoveRect(int x, int y) {
 	int dx = x - my_xpos;
 	int dy = y - my_ypos;
 
@@ -749,6 +759,7 @@ void PG_Widget::MoveRect(Sint16 x, Sint16 y) {
 		}
 	}
 
+	eventMoveWindow(x, y);
 	eventMoveWidget(x, y);
 }
 
@@ -838,8 +849,7 @@ void PG_Widget::Update(bool doBlit) {
 				index = children->FindIndexOf(this);
 				if(index != -1) {
 					SDL_SetClipRect(my_srfScreen, &my_internaldata->rectClip);
-					//children->Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
-					children->Intersect(&my_internaldata->rectClip, index+1, -1).Blit();
+					children->Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
 				}
 			}
 		}
@@ -852,8 +862,7 @@ void PG_Widget::Update(bool doBlit) {
 
 		if(index != -1) {
 			SDL_SetClipRect(my_srfScreen, &my_internaldata->rectClip);
-			//widgetList.Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
-			widgetList.Intersect(&my_internaldata->rectClip, index+1, -1).Blit();
+			widgetList.Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
 		}
 
 		PG_Application::DrawCursor();
@@ -895,7 +904,7 @@ void PG_Widget::StartWidgetDrag() {
 	my_internaldata->ptDragStart.y -= my_ypos;
 }
 
-void PG_Widget::WidgetDrag(Sint16 x, Sint16 y) {
+void PG_Widget::WidgetDrag(int x, int y) {
 
 	x -= my_internaldata->ptDragStart.x;
 	y -= my_internaldata->ptDragStart.y;
@@ -1110,8 +1119,7 @@ bool PG_Widget::RestoreBackground(PG_Rect* clip, bool force) {
 
 		if(index != -1) {
 			SDL_SetClipRect(my_srfScreen, clip);
-			//widgetList.Intersect(clip, 0, index).Blit(*clip);
-			widgetList.Intersect(clip, 0, index).Blit();
+			widgetList.Intersect(clip, 0, index).Blit(*clip);
 		}
 		return true;
 	}
@@ -1166,8 +1174,7 @@ void PG_Widget::UpdateRect(const PG_Rect& r) {
 	PG_Application::LockScreen();
 	PG_Application::RedrawBackground(r);
 	SDL_SetClipRect(screen, (PG_Rect*)&r);
-	//widgetList.Intersect((PG_Rect*)&r).Blit(r);
-	widgetList.Blit(r);
+	widgetList.Intersect((PG_Rect*)&r).Blit(r);
 	SDL_SetClipRect(screen, NULL);
 	PG_Application::UnlockScreen();
 }
@@ -1415,7 +1422,7 @@ void PG_Widget::SetSizeByText(int Width, int Height, const char *Text) {
 		return;
 	}
 
-	SizeWidget(w + Width, h + Height);
+	//SizeWidget(w + Width, h + Height);
 	my_width = w + Width;
 	my_height = h + Height;
 }
@@ -1500,9 +1507,8 @@ void PG_Widget::DrawText(int x, int y, const char* text, const SDL_Color& c) {
 	DrawText(PG_Rect(x,y,0,0), text, c);
 }
 
-bool PG_Widget::QuitModal() {
-	eventQuitModal(0, this, 0);
-	return true;
+void PG_Widget::QuitModal() {
+		SendMessage(this, MSG_MODALQUIT, 0, 0);
 }
 
 int PG_Widget::RunModal() {
@@ -1510,7 +1516,7 @@ int PG_Widget::RunModal() {
 	my_internaldata->quitModalLoop = false;
 
 	// unlock the mutex
-	SDL_mutexV(my_mutexReceiveMessage);
+	//SDL_mutexV(my_mutexReceiveMessage);
 
 	while(!my_internaldata->quitModalLoop) {
 		SDL_WaitEvent(&event);
@@ -1638,10 +1644,20 @@ void PG_Widget::DrawHLine(int x, int y, int w, Uint8 r, Uint8 g, Uint8 b) {
 		return;
 	}
 	
+	/*SDL_GetClipRect(surface, &rect);
+
+	if((y < rect.y) || (y >= (rect.y+rect.h))) {
+		return;
+	}*/
+
 	// clip to widget cliprect
 	int x0 = PG_MAX(x, my_internaldata->rectClip.x);
 	int x1 = PG_MIN(x+w, my_internaldata->rectClip.x+my_internaldata->rectClip.w);
 	Uint32 c = SDL_MapRGB(surface->format, r, g, b);
+
+	// clip to surface cliprect
+	/*x0 = PG_MAX(x0, rect.x);
+	x1 = PG_MIN(x1, rect.x+rect.w);*/
 
 	int wl = (x1-x0);
 	
@@ -1673,10 +1689,20 @@ void PG_Widget::DrawVLine(int x, int y, int h, Uint8 r, Uint8 g, Uint8 b) {
 		return;
 	}
 	
+	/*SDL_GetClipRect(surface, &rect);
+
+	if((x < rect.x) || (x >= (rect.x+rect.w))) {
+		return;
+	}*/
+
 	// clip to widget cliprect
 	int y0 = PG_MAX(y, my_internaldata->rectClip.y);
 	int y1 = PG_MIN(y+h, my_internaldata->rectClip.y+my_internaldata->rectClip.h);
 	Uint32 c = SDL_MapRGB(surface->format, r, g, b);
+
+	// clip to surface cliprect
+	/*y0 = PG_MAX(y0, rect.y);
+	y1 = PG_MIN(y1, rect.y+rect.h);*/
 
 	int hl = (y1-y0);
 	
@@ -1720,7 +1746,13 @@ void PG_Widget::DrawLine(Uint32 x0, Uint32 y0, Uint32 x1, Uint32 y1, const SDL_C
 void PG_Widget::eventDraw(SDL_Surface* surface, const PG_Rect& rect) {
 }
 
-void PG_Widget::eventMoveWidget(Sint16 x, Sint16 y) {
+void PG_Widget::eventMoveWidget(int x, int y) {
+}
+
+void PG_Widget::eventMoveWindow(int x, int y) {
+}
+
+void PG_Widget::eventSizeWindow(Uint16 w, Uint16 h) {
 }
 
 void PG_Widget::eventSizeWidget(Uint16 w, Uint16 h) {
@@ -1826,6 +1858,55 @@ bool PG_Widget::IsClippingEnabled() {
 
 void PG_Widget::GetClipRects(PG_Rect& src, PG_Rect& dst) {
 	GetClipRects(src, dst, *this);
+}
+
+bool PG_Widget::eventButtonClick(int id, PG_Widget* widget) {
+	return false;
+}
+
+
+bool PG_Widget::eventScrollPos(int id, PG_Widget* widget, unsigned long data) {
+	return false;
+}
+
+
+bool PG_Widget::eventScrollTrack(int id, PG_Widget* widget, unsigned long data) {
+	return false;
+}
+
+bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
+	bool rc = false;
+
+    if (!msg)
+        return false;
+
+	if((msg->to != this) && (msg->to != NULL)) {
+		return false;
+	}
+
+	if(PG_MessageObject::eventMessage(msg)) {
+		return true;
+	}
+
+	switch(msg->type) {
+		case MSG_BUTTONCLICK:
+			rc = eventButtonClick(msg->widget_id, (PG_Widget*)(msg->from));
+			break;
+
+		case MSG_SCROLLPOS:
+			rc = eventScrollPos(msg->widget_id, (PG_Widget*)(msg->from), msg->data);
+			break;
+
+		case MSG_SCROLLTRACK:
+			rc = eventScrollTrack(msg->widget_id, (PG_Widget*)(msg->from), msg->data);
+			break;
+
+		default:
+			rc = false;
+			break;
+	}
+
+	return rc;
 }
 
 void PG_Widget::SetID(int id) {

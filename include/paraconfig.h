@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2002/05/02 08:45:35 $
     Source File:      $Source: /sources/paragui/paragui/include/paraconfig.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -38,6 +38,7 @@
 #include "paraconfig_gnu.h"
 
 // For C++ compliance (required with gcc 3.0)
+#ifndef SWIG
 using std::cerr;
 using std::cout;
 using std::endl;
@@ -50,6 +51,7 @@ using std::strlen;
 using std::strcat;
 using std::strncpy;
 #endif // _STLPORT_VERSION
+#endif // SWIG
 #endif // GNU
 
 // Some stuff needed for Win32
@@ -95,6 +97,15 @@ extern int SDL_RegisterApp(char*, Uint32, void*);
 #define PG_NOTHROW
 #define PG_UNWIND
 #define PG_CATCH(_ex_, _name_) if (false)
+#endif
+
+//
+// Replacement for strdup
+//
+#ifndef HAVE_STRDUP
+extern "C" {
+char* strdup(char* s);
+}
 #endif
 
 #endif // CONFIG_INCLUDED

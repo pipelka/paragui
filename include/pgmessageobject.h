@@ -20,17 +20,24 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2002/05/02 08:45:36 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_MESSAGEOBJECT_H
 #define PG_MESSAGEOBJECT_H
 
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgmessageobject
+%{
+#include "pgmessageobject.h"
+%}
+#endif
+
 #include "paragui.h"
-#include "pgsignals.h"
 #include <vector>
 
 class PG_Widget;
@@ -43,7 +50,7 @@ class PG_Widget;
 	Provides a message pump and global handlers for all other PG_MessageObject instances.
 */
 
-class DECLSPEC PG_MessageObject : public SigC::Object {
+class DECLSPEC PG_MessageObject {
 
 public:
 	/**
@@ -101,6 +108,32 @@ public:
 	bool IsEnabled();
 
 	/**
+	Send a message to an object
+	@param	target		object which will receive the message
+	@param	type			type of the message (MSG_TYPE)
+	@param	id
+	@param	data			message specific data value
+	*/
+	bool SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, MSG_ID id, MSG_DATA data);
+
+	/**
+	Set a callback function for an event
+	@param	type				message type to trigger
+	@param	cbfunc			the function to call when the defined event is triggerd
+	@param	clientdata	client specific message data
+	*/
+	void SetEventCallback(PG_MSG_TYPE type, MSG_CALLBACK cbfunc, void *clientdata = NULL);
+
+	/**
+	Set an object member function for an event
+	@param	type				message type to trigger
+	@param	calledobj		pointer to called object
+	@param	cbfunc			member function to call
+	@param	clientdata	client specific message data
+	*/
+	void SetEventObject(PG_MSG_TYPE type, PG_EventObject* calledobj, MSG_CALLBACK_OBJ cbfunc, void *clientdata = NULL);
+
+	/**
 	Sends an event to the global message queue.
 
 	@param event SDL_Event message
@@ -129,10 +162,6 @@ public:
 	*/
 	virtual bool ProcessEvent(const SDL_Event* event);
 
-	PG_SignalAppIdle sigAppIdle;
-
-	PG_SignalVideoResize sigVideoResize;
-	
 protected:
 
 	/**
@@ -235,14 +264,24 @@ protected:
 	virtual bool eventSysWM(const SDL_SysWMEvent* syswm);
 
 	/**
-	Overridable Eventhandler for a SDL_VideoResize message.
+	Overridable Eventhandler for a SDL_ResizeEvent message.
 	The default implementation returns 'false' which indicates that this message is not processed by this object.
 
-	@param syswm SDL_VideoResize message
+	@param event SDL_ResizeEvent message
 
 	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
 	*/
 	virtual bool eventResize(const SDL_ResizeEvent* event);
+
+	/**
+	Overridable Eventhandler for a SDL_SysUserEvent message.
+	The default implementation returns 'false' which indicates that this message is not processed by this object.
+
+	@param event SDL_SysUserEvent message
+
+	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
+	*/
+	virtual bool eventMessage(MSG_MESSAGE* msg);
 
 	/** */
 	virtual void eventInputFocusLost(PG_MessageObject* newfocus);
@@ -262,18 +301,22 @@ protected:
 
 	static bool my_quitEventLoop;
 
+#ifndef SWIG
 	static std::vector<PG_MessageObject*> objectList;
+#endif
 
 	static PG_MessageObject* captureObject;
 
-	// mutexes
+	// mutexes -- unused, but still here to keep binary compatibility
 	SDL_mutex* my_mutexSendMessage;
 	SDL_mutex* my_mutexReceiveMessage;
 
 private:
 
+#ifndef SWIG
 	PG_MessageObject(const PG_MessageObject&);
 	PG_MessageObject& operator=(const PG_MessageObject&);
+#endif
 
 	bool RemoveObject(PG_MessageObject* obj);
 
@@ -285,7 +328,55 @@ private:
 
 	bool my_canReceiveMessages;
 
+#ifndef SWIG
 	friend class PG_Application;
+#endif
 };
+
+
+#ifdef SWIG
+
+// Grab a Python function object as a Python object.
+%typemap(python,in) PyObject *pyfunc {
+	if (!PyCallable_Check($source)) {
+		PyErr_SetString(PyExc_TypeError, "Need a callable object!");
+		return NULL;
+	}
+	$target = $source;
+}
+
+%addmethods PG_MessageObject {
+
+	// This function matches the prototype of the normal C callback
+	// function for our widget. However, we use the clientdata pointer
+	// for holding a reference to a Python callable object.
+
+	static bool PythonCallBack(int id, PG_Widget *widget, unsigned long data, void *clientdata) {
+		PyObject *func, *arglist;
+		PyObject *result;
+		bool     res = 0;
+
+		func = (PyObject *) clientdata;               // Get Python function
+		arglist = Py_BuildValue("(ill)",id,widget,data);// Build argument list
+		result = PyEval_CallObject(func,arglist);     // Call Python
+		Py_DECREF(arglist);                           // Trash arglist
+		if (result) {                                 // If no errors, return double
+			res = PyInt_AsLong(result);
+		}
+		Py_XDECREF(result);
+		return res;
+	}
+
+	// Attach a new method to our plot widget for adding Python functions
+	// Set a Python function object as a callback function
+	// Note : PyObject *pyfunc is remapped with a typempap
+
+	void set_pymethod(PG_MSG_TYPE type, PyObject *pyfunc) {
+		self->SetEventCallback(type, PG_MessageObject_PythonCallBack, (void *) pyfunc);
+		Py_INCREF(pyfunc);
+	}
+}
+
+#endif
 
 #endif // PG_MESSAGEOBJECT_H

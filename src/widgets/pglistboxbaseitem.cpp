@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/28 21:14:59 $
+    Update Date:      $Date: 2002/05/02 08:45:36 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -38,7 +38,12 @@ PG_ListBoxBaseItem::PG_ListBoxBaseItem(int height, void* userdata) : PG_Label(NU
 	SetAlignment(PG_TA_LEFT);
 }
 
-PG_ListBoxBaseItem::~PG_ListBoxBaseItem() {}
+PG_ListBoxBaseItem::~PG_ListBoxBaseItem() {
+	if(GetParent()->GetSelectedItem() == this) {
+		GetParent()->SelectItem(NULL);
+		GetParent()->RemoveWidget(this, true, true);
+	}
+}
 
 void PG_ListBoxBaseItem::SetUserData(void* userdata) {
 	my_userdata = userdata;
@@ -59,13 +64,7 @@ void PG_ListBoxBaseItem::Select(bool select) {
 		if(select) {
 			GetParent()->SelectItem(this);
 		}
-		/*else {
-			GetParent()->Blit(false);
-	}*/
 	}
-
-	Update();
-	GetParent()->eventSelectItem(this);
 }
 
 int PG_ListBoxBaseItem::Height() {

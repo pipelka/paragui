@@ -17,6 +17,12 @@
 /* Define the default path to the theme files */
 #define PARAGUI_THEMEDIR "./data"
 
+/* Define if you have the strdup function.  */
+#define HAVE_STRDUP 1
+
+/* Define if you have the strtok function.  */
+#define HAVE_STRTOK 1
+
 /* Define if you have the vsnprintf function.  */
 /* #undef HAVE_VSNPRINTF */
 
