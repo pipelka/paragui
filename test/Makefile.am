@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 
-bin_PROGRAMS = tabbar animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
+noinst_PROGRAMS = tabbar animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
 
 tabbar_SOURCES = tabbar.cpp
 tabbar_LDADD = ../src/libparagui.la -lfreetype
