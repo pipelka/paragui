@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/28 11:27:07 $
+    Update Date:      $Date: 2004/09/27 09:42:34 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.14 $
     Status:           $State: Exp $
 */
 
@@ -52,7 +52,8 @@ public:
 class PG_ButtonDataInternal : public std::map<PG_Button::STATE, PG_ButtonStateData> {
 public:
 
-	PG_ButtonDataInternal() : free_icons(false), isPressed(false), togglemode(false), state(PG_Button::UNPRESSED), pressShift(1) {
+	PG_ButtonDataInternal() : free_icons(false), isPressed(false), togglemode(false), state(PG_Button::UNPRESSED), pressShift(1),
+	iconindent(3) {
 	};
 
 	bool free_icons;
@@ -60,6 +61,7 @@ public:
 	bool togglemode;
 	PG_Button::STATE state;
 	int pressShift;
+	Uint16 iconindent;
 };
 
 PG_Button::PG_Button(PG_Widget* parent, const PG_Rect& r, const char* text, int id, const char* style) : PG_Widget(parent, r) {
@@ -548,7 +550,7 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 
 	if(iconsrf) {
 
-		int dx = my_text.empty() ? (rect.my_width - iconsrf->w) / 2 : 3;
+		int dx = my_text.empty() ? (rect.my_width - iconsrf->w) / 2 : _mid->iconindent;
 		int dy = (rect.my_height - iconsrf->h) >> 1;
 
 		r.my_xpos = rect.my_xpos + dx + shift;
@@ -574,7 +576,7 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 		int ty = ((my_height - h)/2) + shift;
 
 		if (iconsrf /*&& tx < (iconsrf->w + 3)*/)
-			tx += iconsrf->w + 3;
+			tx += iconsrf->w + _mid->iconindent;
 
 		DrawText(tx, ty, my_text.c_str());
 	}
@@ -630,4 +632,8 @@ void PG_Button::SetSizeByText(int Width, int Height, const char *Text) {
 	my_height = PG_MAX(srf->h, h + baselineY) + Height;
 		
 	eventSizeWidget(my_width, my_height);
+}
+
+void PG_Button::SetIconIndent(Uint16 indent) {
+	_mid->iconindent = indent;
 }

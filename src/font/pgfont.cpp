@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/26 08:03:47 $
+    Update Date:      $Date: 2004/09/27 09:42:34 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -529,21 +529,31 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 	}		
 	
 	PG_String sText(Text);
+
+#ifndef ENABLE_UNICODE
+	unsigned char c;
+#else
+	YChar c;
+#endif
+
 	//Go thu text and draw characters
-	for (PG_String::iterator c = sText.begin(); c != sText.end(); c++) {
+	for (PG_String::iterator c0 = sText.begin(); c0 != sText.end(); c0++) {
 		int glyph_index;
 		PG_GlyphCacheItem* Glyph;
 		int OldBaseLineX = BaseLineX;
 
-		if (*c == 0)
-			break;
+#ifndef ENABLE_UNICODE
+		c = (unsigned char)(*c0);
+#else
+		c = (*c0);
+#endif
 
 		//Skip drawing we go non-printable char
-		if (*c<32)
+		if (c<32)
 			continue;
 
 		//Get glyph index
-		glyph_index = FT_Get_Char_Index(Face, *c);
+		glyph_index = FT_Get_Char_Index(Face, c);
 
 		//Make space between characters == kerneling
 		if ( FaceCache->Use_Kerning && previous && glyph_index ) {
@@ -556,7 +566,7 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 		Glyph = GetGlyph(font, glyph_index);
 
 		//Blit glyph bitmap into the surface
-		if (*c != ' ') {
+		if (c != ' ') {
 			BlitFTBitmap(Surface, &Glyph->Bitmap, BaseLineX + Glyph->Bitmap_left, BaseLineY - Glyph->Bitmap_top, font, ClipRect);
 		}
 
@@ -632,19 +642,29 @@ bool PG_FontEngine::GetTextSize(const char *Text, PG_Font* font, Uint16 *Width, 
 	PG_String sText(Text);
 
 	//Go thu text and get sizes of the characters
-	for (PG_String::iterator c = sText.begin(); c !=sText.end(); c++) {
+
+#ifndef ENABLE_UNICODE
+	unsigned char c;
+#else
+	YChar c;
+#endif
+
+	for (PG_String::iterator c0 = sText.begin(); c0 !=sText.end(); c0++) {
 		int glyph_index;
 		PG_GlyphCacheItem	*Glyph;
 
-		if (*c == 0)
-			break;
+#ifndef ENABLE_UNICODE
+		c = (unsigned char)(*c0);
+#else
+		c = (*c0);
+#endif
 
 		//Skip non-printable char
-		if (*c<32)
+		if (c<32)
 			continue;
 
 		//Get glyph index
-		glyph_index = FT_Get_Char_Index(Face, *c);
+		glyph_index = FT_Get_Char_Index(Face, c);
 
 		//Make space between characters == kerneling
 		if ( FaceCache->Use_Kerning && previous && glyph_index ) {
