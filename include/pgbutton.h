@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 15:00:59 $
+    Update Date:      $Date: 2003/06/29 17:09:49 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -204,6 +204,8 @@ public:
 	bool SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down = NULL);
 #endif
 
+	SDL_Surface* GetIcon(Uint8 num);	
+	
 	/**
 	Set the bordersize of the button
 	@param norm	bordersize for unpressed state

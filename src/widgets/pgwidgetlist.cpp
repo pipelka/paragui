@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/05/23 08:17:52 $
+    Update Date:      $Date: 2003/06/29 17:09:49 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.9 $
     Status:           $State: Exp $
 */
 
@@ -597,4 +597,12 @@ void PG_WidgetList::PageUp() {
 
 void PG_WidgetList::PageDown() {
 	ScrollToY(my_internaldata->my_scrolldeltay + my_height );
+}
+
+Uint32 PG_WidgetList::GetListWidth() {
+	return my_listwidth;
+}
+
+Uint32 PG_WidgetList::GetListHeight() {
+	return my_listheight;
 }

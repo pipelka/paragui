@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/10 16:44:06 $
+    Update Date:      $Date: 2003/06/29 17:09:49 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -158,4 +158,13 @@ void PG_ListBox::SelectPrevItem() {
 
 	my_selectindex--;
 	item->Select();
+}
+
+int PG_ListBox::GetSelectedIndex() {
+	return my_selectindex;
+}
+
+void PG_ListBox::GetSelectedItems(std::vector<PG_ListBoxBaseItem*>& items) {
+	for (Uint16 i = 0; i < GetWidgetCount(); ++i)
+		items.push_back((PG_ListBoxBaseItem*)FindWidget(i));	
 }

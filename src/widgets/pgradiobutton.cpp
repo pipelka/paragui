@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/07 22:28:18 $
+    Update Date:      $Date: 2003/06/29 17:09:49 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -186,4 +186,22 @@ void PG_RadioButton::SetFontColor(int Red, int Green, int Blue) {
 
 void PG_RadioButton::SetFontColor(int Color) {
 	my_widgetLabel->SetFontColor(Color);
+}
+
+void PG_RadioButton::SetSizeByText(int Width, int Height, const char *Text) {
+	Uint16 w,h;
+	int baselineY;
+	
+	if (Text == NULL) {
+		Text = my_widgetLabel->GetText();
+	}
+
+	if (my_width == 0 && Width == 0 && Height == 0)
+	{
+		if (!PG_FontEngine::GetTextSize(Text, GetFont(), &w, &h, &baselineY)) {
+			return;
+		}
+
+		my_width = my_widgetButton->my_width + w;	
+	}
 }

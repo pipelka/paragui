@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/28 21:14:59 $
+    Update Date:      $Date: 2003/06/29 17:09:49 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -94,6 +94,13 @@ public:
 	@param	indent		number of pixels for item indentation (must be set before adding items)
 	*/
 	void SetIndent(int indent);
+
+	/**
+	Returns the index of the last selected item
+	*/
+	int GetSelectedIndex();
+
+	void GetSelectedItems(std::vector<PG_ListBoxBaseItem*>& items);
 
 protected:
 

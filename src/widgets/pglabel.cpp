@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2003/06/29 17:09:49 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
+#include "paragui.h"
 #include "pglabel.h"
-#include "pgtheme.h"
 
 PG_Label::PG_Label(PG_Widget* parent, const PG_Rect& r, const char* text, const char* style) :
 PG_Widget(parent, r) {
@@ -149,6 +149,10 @@ SDL_Surface* PG_Label::SetIcon(const char* filename) {
 	my_freeicon = true;
 	Update();
 
+	return my_srfIcon;
+}
+
+SDL_Surface* PG_Label::GetIcon() {
 	return my_srfIcon;
 }
 

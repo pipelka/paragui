@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/25 16:32:12 $
+    Update Date:      $Date: 2003/06/29 17:09:49 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -452,6 +452,13 @@ bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down,SDL_Surface
 
 bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down) {
 	return SetIcon(icon_up, icon_down, NULL);
+}
+
+SDL_Surface* PG_Button::GetIcon(Uint8 num) {
+	if (num > 2)
+		return 0;
+	
+	return my_internaldata->srf_icon[num];
 }
 
 /**  */
