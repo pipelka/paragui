@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/29 21:26:40 $
+    Update Date:      $Date: 2003/03/30 18:45:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.5 $
     Status:           $State: Exp $
 */
 
@@ -218,9 +218,9 @@ void PG_WidgetList::AddWidget(PG_Widget* w) {
 	GetChildList()->BringToFront(my_objHorizontalScrollbar);
 	UpdateScrollBarsPos();
 
-	if(IsVisible()) {
+	if(w->IsVisible()) {
 		CheckScrollBars();
-		w->SetVisible(true);
+		w->Show();
 		Update();
 	}
 }
@@ -249,6 +249,7 @@ void PG_WidgetList::RemoveAll() {
 	
 	for(vector<PG_Widget*>::iterator i = my_widgetList.begin(); i != my_widgetList.end(); i++) {
 		(*i)->Hide();
+		(*i)->MoveRect(0,0);
 	}
 	
 	my_widgetList.clear();
