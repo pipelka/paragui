@@ -10,6 +10,7 @@
 #include "pgtheme.h"
 
 #include <ctime>
+#include <cctype>
 
 #define NUM_SPRITES	100
 #define MAX_SPEED 	1

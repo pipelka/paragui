@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:22 $
+    Update Date:      $Date: 2004/11/26 22:44:21 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.19 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.20 $
     Status:           $State: Exp $
 */
 
@@ -833,7 +833,7 @@ void PG_Application::SetIcon(const std::string& filename) {
 
 void PG_Application::SetCaption(const std::string& title, const std::string& icon) {
 	SDL_WM_SetCaption(title.c_str(), NULL);
-	if (icon != NULL) {
+	if (!icon.empty()) {
 		SetIcon(icon);
 	}
 }

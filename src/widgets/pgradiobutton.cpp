@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 16:05:50 $
+    Update Date:      $Date: 2004/11/26 22:44:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.12 $
     Status:           $State: Exp $
 */
 
@@ -198,7 +198,7 @@ void PG_RadioButton::SetText(const std::string& text) {
 	my_widgetLabel->SetText(text);
 }
 
-const std::string& PG_RadioButton::GetText() {
+const PG_String& PG_RadioButton::GetText() {
 	return my_widgetLabel->GetText();
 }
 
