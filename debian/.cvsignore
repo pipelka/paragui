@@ -4,3 +4,6 @@ libparagui1.1-dev
 tmp
 Makefile
 Makefile.in
+*.debhelper
+*.substvars
+files
