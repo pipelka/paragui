@@ -65,6 +65,7 @@ Whats new in ParaGUI 1.1.6 ?
   fixed PG_ThemeWidget::SetBackground(SDL_Surface*, ...)
   bring a PG_Window only to front if it isn't yet (removes an unnecessarycall to Show())
   added proper mouse wheel handling to PG_Sliders in paratest.cpp
+- major performance improvements after "cachegrinding"
 - more coming up
 
 

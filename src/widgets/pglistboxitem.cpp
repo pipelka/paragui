@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/02/13 12:20:49 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5.4.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.5.4.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -43,20 +43,9 @@ PG_ListBoxItem::PG_ListBoxItem(int height, const char* text, SDL_Surface* icon, 
 	SetText(text);
 	LoadThemeStyle(style, "ListBoxItem");
 
-	my_srfHover = PG_ThemeWidget::CreateThemedSurface(
-	                  PG_Rect(0, 0, my_width, my_itemheight),
-	                  my_gradient[2],
-	                  my_background[2],
-	                  my_bkmode[2],
-	                  my_blend[2]);
-
-	my_srfSelected = PG_ThemeWidget::CreateThemedSurface(
-	                     PG_Rect(0, 0, my_width, my_itemheight),
-	                     my_gradient[1],
-	                     my_background[1],
-	                     my_bkmode[1],
-	                     my_blend[1]);
-			     
+	my_srfHover = NULL;
+	my_srfSelected = NULL;
+	
 	my_srfIcon = icon;
 }
 
@@ -95,6 +84,24 @@ void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 	PG_Rect my_dst = dst;
 
 	temp = NULL;
+
+	if(my_srfHover == NULL) {
+		my_srfHover = PG_ThemeWidget::CreateThemedSurface(
+						  PG_Rect(0, 0, my_width, my_itemheight),
+						  my_gradient[2],
+						  my_background[2],
+						  my_bkmode[2],
+						  my_blend[2]);
+	}
+	
+	if(my_srfSelected == NULL) {
+		my_srfSelected = PG_ThemeWidget::CreateThemedSurface(
+							 PG_Rect(0, 0, my_width, my_itemheight),
+							 my_gradient[1],
+							 my_background[1],
+							 my_bkmode[1],
+							 my_blend[1]);
+	}
 
 	if(my_selected) {
 		PG_Widget::eventBlit(my_srfSelected, src, dst);
