@@ -11,12 +11,12 @@ DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
 include /usr/share/dpatch/dpatch.make
 
-CFLAGS = -Wall -g
+CFLAGS = -Wall
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -O0
+	CFLAGS += -O0 -g
 else
-	CFLAGS += -O2
+	CFLAGS += -O2 -fomit-frame-pointer -ffast-math
 endif
 ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 	INSTALL_PROGRAM += -s
@@ -35,6 +35,7 @@ config.status: configure
 		--build=$(DEB_BUILD_GNU_TYPE) \
 		--prefix=/usr \
 		--enable-unicode \
+		--disable-static \
 		--mandir=\$${prefix}/share/man \
 		--infodir=\$${prefix}/share/info
 

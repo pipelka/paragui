@@ -1,3 +1,10 @@
+libparagui1.1 (1.1.10) unstable; urgency=low
+
+  * changed compiler flags (for non-debug builds), removed static libs from
+    dev package
+
+ -- Alexander Pipelka <pipelka@localhost.localdomain>  Sat, 18 Dec 2004 20:07:32 +0100
+
 libparagui1.1 (1.1.9) unstable; urgency=low
 
   * changed version to 1.1.9
