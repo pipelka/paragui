@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/03/25 11:10:30 $
+   Update Date:      $Date: 2003/03/28 19:59:42 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.15 $
+   CVS/RCS Revision: $Revision: 1.4.4.16 $
    Status:           $State: Exp $
  */
 
@@ -1403,7 +1403,7 @@ void PG_Widget::SetSizeByText(int Width, int Height, const char *Text) {
 		Text = my_text.c_str();
 	}
 
-	if (PG_FontEngine::GetTextSize(Text, my_internaldata->font, &w, &h, &baselineY) != 0) {
+	if (!PG_FontEngine::GetTextSize(Text, my_internaldata->font, &w, &h, &baselineY)) {
 		return;
 	}
 
