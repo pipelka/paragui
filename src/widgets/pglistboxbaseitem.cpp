@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/21 20:04:58 $
+    Update Date:      $Date: 2003/03/30 16:30:57 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.5 $
     Status:           $State: Exp $
 */
 

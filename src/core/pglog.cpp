@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:40 $
+    Update Date:      $Date: 2003/03/30 16:30:57 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.7 $
+    CVS/RCS Revision: $Revision: 1.1.6.8 $
     Status:           $State  
 */
 
@@ -65,6 +65,7 @@ inline ostream& operator<<(ostream& os, PG_LogMessage_t *msg) {
 static list<PG_LogMessage_t*> PG_LogMessages;
 static PG_Window* PG_LogWindow = NULL;
 static PG_RichEdit* PG_LogWindowData = NULL;
+static std::string my_title = "ParaGUI Log Console";
 
 void PG_LogConsole::SetLogLevel(PG_LOG_LEVEL newlevel) {
 	PG_LogLevel = newlevel;
@@ -178,7 +179,7 @@ void PG_LogConsole::Update() {
 	//If LogWindow is not initialized and it is possible, do it ...
 	if (PG_LogWindow == NULL) {
 		PG_Rect r(25,100,PG_Application::GetScreenWidth()-50,300);
-		PG_LogWindow = new PG_Window(NULL, r, "ParaGUI Log Console", WF_SHOW_CLOSE, "Window", 25);
+		PG_LogWindow = new PG_Window(NULL, r, my_title.c_str(), WF_SHOW_CLOSE, "Window", 25);
 		PG_LogWindowData = new PG_RichEdit(PG_LogWindow, PG_Rect(1,26,r.w-2,r.h-27));
 	}
 
@@ -215,6 +216,14 @@ void PG_LogConsole::Update() {
 		buffer += "\n";
 	}
 	PG_LogWindowData->SetText(buffer);
+}
+
+void PG_LogConsole::SetTitle(const char* title, int alignment) {
+	my_title = title;
+
+	if (PG_LogWindow) {
+		PG_LogWindow->SetTitle(title, alignment);
+	}
 }
 
 void PG_LogConsole::Show() {

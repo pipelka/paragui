@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:37 $
+    Update Date:      $Date: 2003/03/30 16:30:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.6 $
     Status:           $State: Exp $
 */
 
@@ -514,6 +514,8 @@ public:
 	static PG_Application* GetApp();
 	
 	static PG_Font* DefaultFont;
+
+	static bool GetAppIdleCallsEnabled();
 
 protected:
 

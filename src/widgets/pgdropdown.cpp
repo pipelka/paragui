@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:23 $
+    Update Date:      $Date: 2003/03/30 16:30:57 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -40,11 +40,10 @@ PG_DropDown::PG_DropDown(PG_Widget* parent, int id, const PG_Rect& r, const char
 
 	PG_Rect rbutton(abs(r.my_width - r.my_height), 0, r.my_height, r.my_height);
 	my_DropButton = new PG_Button(this, PG_IDDROPDOWN_BOX, rbutton, NULL, style);
-	my_DropButton->sigButtonClick.connect(slot(this, &PG_DropDown::handleButtonClick));
-	
+
 	PG_Rect rlist(r.my_xpos, r.my_ypos + r.my_height +1, r.my_width, r.my_height * 5);
 	my_DropList = new PG_ListBox(NULL, rlist, style);
-	my_DropList->sigSelectItem.connect(slot(this, &PG_DropDown::handleSelectItem));
+	my_DropList->SetEventObject(MSG_SELECTITEM, this, (MSG_CALLBACK_OBJ)&PG_DropDown::select_handler);
 
 	//LoadThemeStyle(style);
 }
@@ -84,8 +83,8 @@ void PG_DropDown::eventHide() {
 	my_DropList->Hide();
 }
 
-bool PG_DropDown::handleButtonClick(PG_Button* widget, PG_Pointer* data) {
-	if(widget->GetID() != PG_IDDROPDOWN_BOX) {
+bool PG_DropDown::eventButtonClick (int id, PG_Widget* widget) {
+	if(id != PG_IDDROPDOWN_BOX) {
 		return false;
 	}
 
@@ -120,6 +119,10 @@ void PG_DropDown::SetText(const char* new_text) {
 	my_EditBox->SetText(new_text);
 }
 
+bool PG_DropDown::eventSelectItem(PG_ListBoxBaseItem* item) {
+	return false;
+}
+
 // TODO: Fill me with code :)
 void PG_DropDown::eventSizeWidget(Uint16 w, Uint16 h) {}
 
@@ -129,7 +132,8 @@ void PG_DropDown::eventMoveWidget(int x, int y) {
 	}
 }
 
-bool PG_DropDown::handleSelectItem(PG_ListBoxItem* item, PG_Pointer* data) {
+PARAGUI_CALLBACK(PG_DropDown::select_handler) {
+	PG_ListBoxItem* item = (PG_ListBoxItem*)data;
 
 	my_EditBox->SetText(item->GetText());
 	item->Select(false);
@@ -140,9 +144,14 @@ bool PG_DropDown::handleSelectItem(PG_ListBoxItem* item, PG_Pointer* data) {
 		GetParent()->RemoveChild(my_DropList);
 	}
 
-	return sigSelectItem(item, item->GetUserData());
+	eventSelectItem(item);
+	SendMessage(NULL, MSG_SELECTITEM, GetID(), (unsigned long)item);
+
+	return true;
 }
 
+// 1. try to fix the problems when running PG_DropDown in a modal loop
+// still not working -- Alex
 bool PG_DropDown::ProcessEvent(const SDL_Event * event, bool bModal) {
 
 	if(bModal && my_DropList->IsVisible()) {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:40 $
+    Update Date:      $Date: 2003/03/30 16:30:57 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.11 $
+    CVS/RCS Revision: $Revision: 1.2.4.12 $
     Status:           $State: Exp $
 */
 
@@ -309,10 +309,10 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 	}
 
 	// add the loaded surface to the cache
-	my_cache.AddSurface(fn, surface);
+	return my_cache.AddSurface(fn, surface);
 
 	// return the pointer to the surface
-	return surface;
+	//return surface;
 }
 
 bool PG_FileArchive::UnloadSurface(SDL_Surface* surface, bool bDeleteIfNotExists) {

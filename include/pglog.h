@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/11 08:25:57 $
+    Update Date:      $Date: 2003/03/30 16:30:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pglog.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State 
 */
 
@@ -37,6 +37,7 @@
 
 #include <stdarg.h>
 #include "SDL.h"
+#include "paragui.h"
 
 //! ParaGUI logging level
 typedef enum {
@@ -82,6 +83,7 @@ namespace PG_LogConsole {
 	DECLSPEC int GetMethod();
 	DECLSPEC void SetConsoleKey(SDLKey key);
 	DECLSPEC SDLKey GetConsoleKey();
+	DECLSPEC void SetTitle(const char* title, int alignment = PG_TA_CENTER);	
 };
 
 #endif

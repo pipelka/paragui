@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/21 20:04:58 $
+    Update Date:      $Date: 2003/03/30 16:30:57 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.16 $
+    CVS/RCS Revision: $Revision: 1.2.4.17 $
     Status:           $State: Exp $
 */
 
@@ -179,6 +179,11 @@ SDL_Thread* PG_Application::Run(bool threaded) {
 
 void PG_Application::EnableAppIdleCalls(bool enable) {
 	enableAppIdleCalls = enable;
+}
+
+bool PG_Application::GetAppIdleCallsEnabled()
+{
+	return enableAppIdleCalls;
 }
 
 /** Event processing loop */
