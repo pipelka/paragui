@@ -26,7 +26,7 @@ public:
 
 	PG_Color& operator=(Uint32 c);
 
-	operator SDL_Color();
+	//operator SDL_Color();
 	
 	operator Uint32() const;
 	

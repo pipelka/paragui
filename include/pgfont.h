@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:57 $
+    Update Date:      $Date: 2004/01/14 15:11:11 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
     Status:           $State: Exp $
 */
 
@@ -37,6 +37,7 @@
 #include "pgdatacontainer.h"
 #include "pgcolor.h"
 #include "pgrect.h"
+#include <string>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -224,7 +225,7 @@ private:
 
 		virtual ~FONT_ITEM();
 
-		string name;
+		std::string name;
 		PG_DataContainer* memdata;
 		MAP_SUBITEMS subitems;
 	};

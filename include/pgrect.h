@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/01/14 15:11:11 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrect.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -95,9 +95,9 @@ public:
 	*/
 	PG_Rect operator / (PG_Rect& b);
 
-	inline operator SDL_Rect() const {
+	/*inline operator SDL_Rect() const {
 		return *this;
-	}
+	}*/
 
 	/**
 	Check if a given point is inside a rectangle (boxtest)
