@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/26 15:17:16 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistboxbaseitem.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -43,7 +43,7 @@ class DECLSPEC PG_ListBoxBaseItem : public PG_Label {
 public:
 
 	/** */
-	PG_ListBoxBaseItem(PG_Widget* parent, int height, void* userdata = NULL);
+	PG_ListBoxBaseItem(PG_Widget* parent, Uint16 height, void* userdata = NULL);
 
 	/** */
 	~PG_ListBoxBaseItem();
@@ -59,9 +59,6 @@ public:
 
 	/** */
 	void Select(bool select = true);
-
-	/** */
-	int Height();
 
 	/** */
 	PG_ListBox* GetParent();
@@ -85,7 +82,7 @@ protected:
 	void* my_userdata;
 	bool my_selected;
 	bool my_hover;
-	int my_itemheight;
+	Uint16 my_itemheight;
 };
 
 #endif	// PG_LISTBOXBASEITEM_H

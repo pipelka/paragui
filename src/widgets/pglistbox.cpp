@@ -20,14 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/26 15:17:16 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.4 $
     Status:           $State: Exp $
 */
 
 #include "pglistbox.h"
 #include "pglistboxbaseitem.h"
+#include "pglog.h"
 
 PG_ListBox::PG_ListBox(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_WidgetList (parent, r, style) {
 	my_multiselect = false;
@@ -49,12 +50,14 @@ void PG_ListBox::AddChild(PG_Widget* item) {
 	if (!item)
         return;
     
-    Sint16 neww = Width() - my_widthScrollbar - (my_bordersize << 1);
+	Sint16 neww = Width() - my_widthScrollbar - (my_bordersize << 1);
+	if (neww < 0) {
+		neww = 0;
+	}
 
-    if (neww < 0)
-        neww = 0;
-    
-	item->SizeWidget(neww, item->Height());
+	Uint16 h = item->Height();	
+	item->SizeWidget(neww, h);
+
 	if (static_cast<PG_ListBoxBaseItem*>(item) != NULL) {
 		static_cast<PG_ListBoxBaseItem*>(item)->SetIndent(my_indent);
 	
@@ -98,10 +101,9 @@ void PG_ListBox::SelectItem(PG_ListBoxBaseItem* item, bool select) {
 		}
 
 		my_selectedItem = item;
-		my_selectedItem->Update();
 	}
 
-	//Update();
+	Update();
 	sigSelectItem(item);
 	eventSelectItem(item);
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/26 15:17:16 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.3 $
     Status:           $State: Exp $
 */
 
@@ -30,7 +30,7 @@
 #include "pglistbox.h"
 #include "pglog.h"
 
-PG_ListBoxBaseItem::PG_ListBoxBaseItem(PG_Widget* parent, int height, void* userdata) : PG_Label(parent, PG_Rect(0,0,100,20), NULL) {
+PG_ListBoxBaseItem::PG_ListBoxBaseItem(PG_Widget* parent, Uint16 height, void* userdata) : PG_Label(parent, PG_Rect(0,0,100,height), NULL) {
 	my_userdata = userdata;
 	my_selected = false;
 	my_hover = false;
@@ -66,10 +66,6 @@ void PG_ListBoxBaseItem::Select(bool select) {
 			GetParent()->SelectItem(this);
 		}
 	}
-}
-
-int PG_ListBoxBaseItem::Height() {
-	return my_itemheight;
 }
 
 void PG_ListBoxBaseItem::eventSizeWidget(Uint16 w, Uint16 h) {
