@@ -49,10 +49,10 @@ VisualC.zip:
 	dsw=`find $(top_builddir)/VC-build/VisualC -name "*.dsw"`; \
 	dsp=`find $(top_builddir)/VC-build/VisualC -name "*.dsp"`; \
 	mak=`find $(top_builddir)/VC-build/VisualC -name "*.mak"`; \
-	for file in $$dsp $$dsw $$mak; do \
+	for file in $$dsp $$dsw $$mak $$rc $$h $(top_builddir)/VC-build/VisualC/paragui_dynamic/resource.h $(top_builddir)/VC-build/VisualC/paragui_dynamic/Version.rc; do \
 	    unix2dos $$file || echo "unix2dos not found!"; \
 	done
-	rm -f $(top_builddir)/VisualC.zip && cd $(top_builddir)/VC-build && zip -9 -r $(TOP_BUILDDIR)/VisualC.zip VisualC -i *.dsp *.dsw *.mak
+	rm -f $(top_builddir)/VisualC.zip && cd $(top_builddir)/VC-build && zip -9 -r $(TOP_BUILDDIR)/VisualC.zip VisualC -i *.dsp *.dsw *.mak *.rc *.h
 	rm -Rf $(top_builddir)/VC-build
 
 dist-hook:
