@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/06 22:10:46 $
+    Update Date:      $Date: 2002/06/07 07:29:30 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.4 $
+    CVS/RCS Revision: $Revision: 1.2.4.5 $
     Status:           $State: Exp $
 */
 
@@ -35,6 +35,8 @@
 #ifdef HAVE_SDLIMAGE
 #include "SDL_image.h"
 #endif
+
+#include "physfsrwops.h"
 
 Uint32 PG_FileArchive::my_instance_count = 0;
 PG_SurfaceCache PG_FileArchive::my_cache;
@@ -184,6 +186,23 @@ PG_File* PG_FileArchive::OpenFile(const char* filename, PG_OPEN_MODE mode) {
 	return new PG_File(file);
 }
 
+SDL_RWops* PG_FileArchive::OpenFileRWops(const char* filename, PG_OPEN_MODE mode) {
+	SDL_RWops* file = NULL;
+	switch(mode) {
+	case PG_OPEN_READ:
+		file = PHYSFSRWOPS_openRead(filename);
+		break;
+	case PG_OPEN_WRITE:
+		file = PHYSFSRWOPS_openWrite(filename);
+		break;
+	case PG_OPEN_APPEND:
+		file = PHYSFSRWOPS_openAppend(filename);
+		break;
+	}
+	
+	return file;
+}
+
 bool PG_FileArchive::MakeDir(const char* dir) {
 	return PHYSFS_mkdir(dir) == 1;
 }
@@ -256,22 +275,19 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 		return surface;
 	}
 
-	PG_DataContainer* srfdata = ReadFile(filename);
-	if(!srfdata) {
+	surface = NULL;
+	SDL_RWops *rw = OpenFileRWops(filename);
+
+	if(rw == NULL) {
 		PG_LogWRN("Unable to load '%s' !", filename);
 		return NULL;
 	}
 
-	surface = NULL;
-	SDL_RWops *rw = SDL_RWFromMem(srfdata->data(), srfdata->size());
-	
 #ifdef HAVE_SDLIMAGE
 	surface = IMG_Load_RW(rw, 1);
 #else
 	surface = SDL_LoadBMP_RW(rw, 1);
 #endif
-	
-	delete srfdata;
 	
 	if(convert && !PG_Application::GetGLMode()) {
 		SDL_Surface* tmpsrf = SDL_DisplayFormat(surface);

@@ -1,6 +1,7 @@
 noinst_LTLIBRARIES = libpgcore.la
 
 libpgcore_la_SOURCES = \
+	physfsrwops.c \
 	missing.cpp \
 	pgdatacontainer.cpp \
 	pgapplication.cpp \
@@ -20,6 +21,7 @@ libpgcore_la_SOURCES = \
 libpgcore_la_LIBADD = 
 
 EXTRA_DIST = \
+	physfsrwops.h \
 	pgmsgmap.h
 
 INCLUDES = \
