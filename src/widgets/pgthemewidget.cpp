@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/31 16:14:08 $
+    Update Date:      $Date: 2004/02/07 10:01:32 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.6 $
     Status:           $State: Exp $
 */
 
@@ -135,8 +135,7 @@ void PG_ThemeWidget::LoadThemeStyle(const char* widgettype, const char* objectna
 	PG_Gradient* g = t->FindGradient(widgettype, objectname, "gradient");
 
 	if(g) {
-		SetGradient(*g);
-		my_has_gradient = true;
+		SetGradient(*g);		
 	}
 
 	Uint8 trans = GetTransparency();
@@ -245,6 +244,10 @@ bool PG_ThemeWidget::SetBackground(SDL_Surface* surface, int mode) {
 	my_background = surface;
 	my_backgroundFree = false;
 	my_backgroundMode = mode;
+
+	if(my_srfObject == NULL) {
+		CreateSurface();
+	}
 
 	return true;
 }

@@ -15,6 +15,7 @@ EXTRA_DIST =
 
 INCLUDES = \
 	$(SDL_CFLAGS) \
+	$(SIGC_CFLAGS) \
 	-I$(top_srcdir)/include
 
 style_cvs:

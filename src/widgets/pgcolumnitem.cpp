@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/02/11 14:14:10 $
+    Update Date:      $Date: 2004/02/07 10:01:32 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcolumnitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
     Status:           $State: Exp $
 */
 
@@ -51,7 +51,7 @@ void PG_ColumnItem::SetColumnWidth(Uint32 column, Uint32 width) {
 
 void PG_ColumnItem::SetColumnText(Uint32 column, const char* text) {
 	my_columntext[column] = text;
-	Redraw();
+	Update();
 }
 
 void PG_ColumnItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {

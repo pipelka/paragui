@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/31 09:15:53 $
+    Update Date:      $Date: 2004/02/07 10:01:32 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.6 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.7 $
     Status:           $State: Exp $
 */
 
@@ -399,6 +399,7 @@ bool PG_Application::SetBackground(const char* filename, int mode) {
 		my_freeBackground = true;
 		my_backmode = mode;
 		RedrawBackground(PG_Rect(0,0,screen->w,screen->h));
+		PG_Widget::GetWidgetList()->Blit();
 		return true;
 	} else {
 		PG_LogWRN("Failed to load '%s'",(char*)filename);
@@ -426,6 +427,7 @@ bool PG_Application::SetBackground(SDL_Surface* surface, int mode) {
 	my_backmode = mode;
 
 	RedrawBackground(PG_Rect(0,0,screen->w,screen->h));
+	PG_Widget::GetWidgetList()->Blit();
 	return true;
 }
 
@@ -433,13 +435,13 @@ bool PG_Application::SetBackground(SDL_Surface* surface, int mode) {
 void PG_Application::RedrawBackground(const PG_Rect& rect) {
 	static PG_Rect screenrect(0,0,screen->w,screen->h);
 
-	if(GetBulkMode() || !enableBackground) {
+	if(GetBulkMode()) {
 		return;
 	}
 
 	PG_Rect fillrect = rect;
 
-	if(!my_background) {
+	if(!my_background || !enableBackground) {
 		SDL_FillRect(screen, (SDL_Rect*)&fillrect, my_backcolor.MapRGB(screen->format));
 		return;
 	}

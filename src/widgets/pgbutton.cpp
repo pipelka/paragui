@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/02/07 10:01:32 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -395,7 +395,7 @@ bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, const 
 	_mid->srf_icon[PRESSED] = icon2;
 	_mid->free_icons = true;
 
-	Redraw();
+	Update();
 	return true;
 }
 

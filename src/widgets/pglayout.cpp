@@ -207,6 +207,14 @@ int PG_Layout::GetParamIMode(const char **Source, char *What) {
 		ret = BKMODE_TILE;
 	if (tcscmp(T(c),T("stretch")) == 0)
 		ret = BKMODE_STRETCH;
+	if (tcscmp(T(c),T("stretch")) == 0)
+		ret = BKMODE_STRETCH;
+	if (tcscmp(T(c),T("3tileh")) == 0)
+		ret = BKMODE_3TILEH;
+	if (tcscmp(T(c),T("3tilev")) == 0)
+		ret = BKMODE_3TILEV;
+	if (tcscmp(T(c),T("9tile")) == 0)
+		ret = BKMODE_9TILE;
 
 	return(ret);
 }

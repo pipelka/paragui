@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:01:04 $
+    Update Date:      $Date: 2004/02/07 10:01:32 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.5 $
     Status:           $State: Exp $
 */
 
@@ -156,13 +156,19 @@ bool PG_Window::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 			my_moveMode = true;
 			my_moveDelta.x = ta.my_xpos - x;
 			my_moveDelta.y = ta.my_ypos - y;
-			Show();
+			// there's no need to update the whole window and bring us to front, if we already are!
+			if (GetWidgetList()->FindIndexOf(this) < static_cast<int>(GetWidgetList()->size() - 1))	{
+				Show();
+			}
 			SetCapture();
 			return true;
 		}
 	}
 
-	Show();
+	// there's no need to update the whole window and bring us to front, if we already are!
+	if (GetWidgetList()->FindIndexOf(this) < static_cast<int>(GetWidgetList()->size() - 1))	{
+		Show();
+	}
 	return false; //PG_Widget::eventMouseButtonDown(button);
 }
 

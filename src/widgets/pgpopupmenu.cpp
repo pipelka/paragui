@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/12/02 15:27:59 $
+   Update Date:      $Date: 2004/02/07 10:01:32 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.3 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.4 $
    Status:           $State: Exp $
  */
 
@@ -133,8 +133,8 @@ bool PG_PopupMenu::MenuItem::isPointInside(int x, int y) {
 	int posx = x - my_xpos;
 	int posy = y - my_ypos;
 
-	if ((posx >= 0) && (posx <= my_height) &&
-	        (posy >= 0) && (posy <= my_width))
+	if ((posx >= 0) && (posx <= my_width) &&
+	        (posy >= 0) && (posy <= my_height))
 		return true;
 
 	return false;
@@ -337,10 +337,16 @@ void PG_PopupMenu::trackMenu(int x, int y) {
 	x = my_xpos;
 	y = my_ypos;
 	
-	if(my_xpos + my_width >= PG_Application::GetScreenWidth()) {
-		x = PG_Application::GetScreenWidth() - my_width;
-		MoveWidget(x, y);
+	if(x + my_width >= PG_Application::GetScreenWidth()) {
+		x = PG_Application::GetScreenWidth() - my_width;		
 	}
+
+	if(y + my_height >= PG_Application::GetScreenHeight()) {
+		y = PG_Application::GetScreenHeight() - my_height;		
+	}
+
+	if (x != my_xpos || y != my_ypos)
+		MoveWidget(x, y);
 	
 	tracking = true;
 	Show();
@@ -558,7 +564,6 @@ bool PG_PopupMenu::selectItem(MenuItem *item, MII iter) {
 		sub->enslave(this);
 		sub->trackMenu(my_xpos + my_width - xPadding,
 		               selected->my_ypos + my_ypos - rect.my_height);
-		sub->Show();
 
 		return true;
 	}

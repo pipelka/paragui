@@ -133,6 +133,7 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	s->SetPosition(50);
 
 	s->sigSlide.connect(slot(*this, &TestWindow::handler_slider_btntrans));
+	s->sigSlideEnd.connect(slot(*this, &TestWindow::handler_slider_btntrans));
 
 	WidgetList->AddWidget(s);
 		
@@ -442,6 +443,7 @@ int main(int argc, char* argv[]) {
 
 	// connect the "MSG_SLIDE" event with "handler_slider" of slider_label
 	slider.sigSlide.connect(slot(slider_label, &MySliderLabel::handler_slider));
+	slider.sigSlideEnd.connect(slot(slider_label, &MySliderLabel::handler_slider));
 
 	slider.Show();
 

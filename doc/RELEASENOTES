@@ -51,6 +51,20 @@ Whats new in ParaGUI 1.1.6 ?
   added comments to pglog.h
 - applied patches from "H. C." :))
   Win32 support. Requires VisualC.NET or GCC
+  commented new background modes
+  updated layout loader to handle new background modes
+  changing the background results in redrawing the screen properly
+  fixed disabling background
+  PG_Draw::CreateRGBSurface() will check for invalid surface first before doing any work on it
+  replaced some Redraw()s with Update()s
+  disabling PG_LineEdit removes edit cursor
+  fixed handling keys like '@' in PG_LineEdit
+  PG_PopupMenu::trackMenu() takes care of exceeding the screen's height
+  removed unnecessary Show() in PG_PopupMenu::trackMenu()
+  removed unnecessary my_has_gradient assignment in PG_ThemeWidget
+  fixed PG_ThemeWidget::SetBackground(SDL_Surface*, ...)
+  bring a PG_Window only to front if it isn't yet (removes an unnecessarycall to Show())
+  added proper mouse wheel handling to PG_Sliders in paratest.cpp
 - more coming up
 
 
