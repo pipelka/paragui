@@ -1,10 +1,13 @@
-fidnl Process this file with autoconf to produce a configure script.
+dnl Process this file with autoconf to produce a configure script.
+
 AC_INIT(Makefile.am)
 AM_CONFIG_HEADER(include/paraconfig_gnu.h:include/paraconfig_gnu.h.in)
 
 TOP_BUILDDIR=`pwd`
 
 AC_SUBST(TOP_BUILDDIR)
+
+AC_CONFIG_SUBDIRS(src/physfs)
 
 dnl The minimum SDL version required
 SDL_VERSION=1.2.0
@@ -130,7 +133,6 @@ AC_ARG_WITH(libstdcpp,[  --with-libstdcpp=NAME   library to be used as -lNAME in
             LIBSTDCPP="-l$withval", LIBSTDCPP="-lstdc++")
 	    
 CROSSCOMPILE=NO
-PHYSFS_PLATFORMFILE=platform/unix.c
 
 dnl The alpha architecture needs special flags for binary portability
 
@@ -145,19 +147,6 @@ case "$target" in
             ac_default_prefix=$BUILD_PREFIX
         fi
 	CROSSCOMPILE=YES
-	PHYSFS_PLATFORMFILE=platform/win32.c
-	;;
-    *-*-darwin*)
-	PHYSFS_PLATFORMFILE=platform/unix.c
-	;;
-    *-*-freebsd*)
-	PHYSFS_PLATFORMFILE=platform/unix_nocdrom.c
-	;;
-    *-*-irix*)
-	PHYSFS_PLATFORMFILE=platform/unix_nocdrom.c
-	;;
-    *-*-solaris*)
-	PHYSFS_PLATFORMFILE=platform/unix_nocdrom.c
 	;;
     alpha*-*-linux*)
         CFLAGS="$CFLAGS -mcpu=ev4 -Wa,-mall"
@@ -165,11 +154,8 @@ case "$target" in
     *-*-beos*)
 	ac_default_prefix=/boot/develop/tools/gnupro
 	LIBSTDCPP="-lstdc++.r4"
-	PHYSFS_PLATFORMFILE=platform/beos.c
         ;;
 esac  
-
-AC_SUBST(PHYSFS_PLATFORMFILE)
 
 AC_MSG_CHECKING(for the STL library to use)
 if test "$STLPORTPREFIX" != "no"; then
@@ -548,9 +534,6 @@ if test [ -d /usr/src/RPM ]; then
 fi
 
 AC_SUBST(RPM_ROOT)
-
-echo "Running configure for PhysFS ..."
-AC_CONFIG_SUBDIRS(src/physfs)
 
 # Finally create all the generated files
 AC_OUTPUT([

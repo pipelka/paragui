@@ -1,3 +1,6 @@
+echo "Bootstrapping physfs ..."
+src/physfs/bootstrap
+
 echo "Generating build information ..."
 cd `dirname $0`
 aclocalinclude="$ACLOCAL_FLAGS"
@@ -24,9 +27,6 @@ automake -c -a --foreign || ( echo "***ERROR*** automake failed." ; exit 1 )
 
 echo "Running autoconf ..."
 autoconf || ( echo "***ERROR*** autoconf failed." ; exit 1 )
-
-echo "Bootstrapping physfs ..."
-src/physfs/bootstrap
 
 echo "Running autogen.sh in the \"test\" directory ..."
 cp -f paragui.m4 test/acinclude.m4

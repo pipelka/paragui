@@ -362,8 +362,10 @@ static void *doOpen(const char *filename, int mode)
     errno = 0;
 
     fd = open(filename, mode, S_IRUSR | S_IWUSR);
-    if (fd < 0)
+    if (fd < 0) {
         __PHYSFS_setError(strerror(errno));
+		return NULL;
+	}
 
     retval = (int *) malloc(sizeof (int));
     if (retval == NULL)
