@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/06 22:10:46 $
+    Update Date:      $Date: 2002/06/17 08:01:57 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -145,7 +145,7 @@ inline void BlitTemplate(DT pixels, SDL_Surface* Surface, FT_Bitmap *Bitmap, int
 	Uint32 pitch = Surface->pitch;
 	Uint32 src_pitch = Bitmap->pitch;
 	register Uint8* src_pixels = Bitmap->buffer + x0 + y0*Bitmap->pitch;
-	register Uint8* dst_pixels = (Uint8*)pixels + (PosX+x0)*bpp + (PosY+y0)*pitch + Surface->offset;
+	register Uint8* dst_pixels = (Uint8*)pixels + (PosX+x0)*bpp + (PosY+y0)*pitch /*+ Surface->offset*/;
 	Uint8* line;
 
 	Uint8 r,g,b,a;
@@ -486,6 +486,10 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 	FT_Face Face = FaceCache->Face;
 	FT_Vector  delta;
 
+	if(SDL_MUSTLOCK(Surface)) {
+		SDL_LockSurface(Surface);
+	}		
+
 	//Go thu text and draw characters
 	for (unsigned char *c = (unsigned char*) Text;*c != 0; c++) {
 		int glyph_index;
@@ -552,6 +556,10 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 		bRecursion = false;
 	}
 
+	if(SDL_MUSTLOCK(Surface)) {
+		SDL_UnlockSurface(Surface);
+	}		
+	
 	return true;
 }
 

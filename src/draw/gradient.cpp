@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/06/17 08:01:56 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/gradient.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -102,6 +102,10 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL
 
 	int ox = drawrect.x - rect.x;
 	int oy = drawrect.y - rect.y;
+
+	if(SDL_MUSTLOCK(surface)) {
+		SDL_LockSurface(surface);
+	}		
 
 	// color space vectors
 	v00 = ((ur.r - ul.r) * 256) / w;
@@ -214,4 +218,7 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL
 		bits -= y_pitch;
 	}
 
+	if(SDL_MUSTLOCK(surface)) {
+		SDL_UnlockSurface(surface);
+	}		
 }

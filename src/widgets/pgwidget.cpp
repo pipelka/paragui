@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/06/10 16:44:06 $
+   Update Date:      $Date: 2002/06/17 08:01:57 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.6 $
+   CVS/RCS Revision: $Revision: 1.4.4.7 $
    Status:           $State: Exp $
  */
 
@@ -786,7 +786,7 @@ void PG_Widget::Blit(bool recursive, bool restore) {
 			my_internaldata->childList->Blit();
 		}
 	}
-
+	
 	PG_Application::UnlockScreen();
 }
 

@@ -290,6 +290,11 @@ int main(int argc, char* argv[]) {
 			flags |= SDL_FULLSCREEN;
 		}
 
+		if(strcmp(argv[c], "-hw") == 0) {
+			flags |= SDL_HWSURFACE;
+			flags ^= SDL_SWSURFACE;
+		}
+
 		if(strcmp(argv[c], "-bpp") == 0) {
 			bpp = atoi(argv[++c]);
 		}
