@@ -7,7 +7,7 @@ PG_MultiLineEdit::PG_MultiLineEdit(PG_Widget* parent, const PG_Rect& r, const ch
 : PG_LineEdit(parent, r, style, maximumLength) { 
 	my_vscroll = new PG_ScrollBar(this, PG_Rect(r.w-16,0,16,r.h));
 	my_isCursorAtEOL = false; 
-	my_allowHiddenCursor = false; 
+	my_allowHiddenCursor = false;
 	my_firstLine = 0; 	
 	my_vscroll->sigScrollPos.connect(slot(*this, &PG_MultiLineEdit::handleScroll));
 	my_vscroll->sigScrollTrack.connect(slot(*this, &PG_MultiLineEdit::handleScroll));
@@ -519,7 +519,7 @@ bool PG_MultiLineEdit::eventMouseButtonDown(const SDL_MouseButtonEvent* button) 
 	}
 
 	// if we're clicking the scrollbar.... 
-	if (my_vscroll->IsVisible() && button->x > my_xpos + my_width - 16) {
+	if (my_vscroll->IsVisible() && button->x > my_xpos + my_width - my_vscroll->w) {
 		return false; 
 	}
 
