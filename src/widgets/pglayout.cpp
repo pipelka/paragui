@@ -1112,7 +1112,9 @@ static void XMLEndDoc(void *userData, const char *name) {
 		}
 
 		if ((XMLParser->InhTagFlags & INHTAGFLAG_HIDE) == 0)
-			XMLParser->ParentObject->Show();
+			if(XMLParser->ParentObject->GetParent() == NULL) {
+				XMLParser->ParentObject->Show();
+			}
 		else
 			XMLParser->ParentObject->Hide();
 
