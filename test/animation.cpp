@@ -10,19 +10,20 @@
     Submitted by: Mark Krosky <krosky@concentric.net>
 */
 
-#include <pgapplication.h>
-#include <pgpopupmenu.h> 
-#include <pgbutton.h>
-#include <pgmenubar.h> 
-#include <pgscrollbar.h> 
+#include "pgapplication.h"
+#include "pgpopupmenu.h"
+#include "pgbutton.h"
+#include "pgmenubar.h"
+#include "pgscrollbar.h"
+#include "pgtimerobject.h"
 
 #define ID_APP_EXIT		1
 
-bool exit_handler(PG_Button* button, PG_Pointer* data) {
+PARAGUI_CALLBACK(exit_handler) {
 
-	// we can pass in some pointer to data
+	// we can pass in some pointer to any userdata
 	// (in this case we get a pointer to the application object)
-	PG_Application* app = static_cast<PG_Application*>(data);
+	PG_Application* app = (PG_Application*) clientdata;
 
 	// exit the application eventloop
 	app->Quit();
@@ -31,19 +32,18 @@ bool exit_handler(PG_Button* button, PG_Pointer* data) {
 	return true;
 }
 
-bool handle_menu_click(PG_MenuItem* item, PG_Pointer* data) {
-	PG_Application* app = static_cast<PG_Application*>(data);
-	
-	switch (item->getId()) {
+PARAGUI_CALLBACK_SELECTMENUITEM(handle_menu_click) {
+
+	switch (id) {
 	  case ID_APP_EXIT:
-		app->Quit();
+		static_cast<PG_Application*>(clientdata)->Quit();
 		break;
 	}
 
 	return true;
 }
 
-class PlayField : public PG_ThemeWidget {
+class PlayField : public PG_ThemeWidget, public PG_TimerObject {
 public:
 
 	// the constructor
@@ -52,7 +52,7 @@ public:
 	// the destructor
 	~PlayField();
 
-	void timer_callback(void);
+	Uint32 eventTimer(Uint32 interval);
 
 protected:
 
@@ -116,24 +116,20 @@ void PlayField::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rec
 			my_color,
 			1
 			);
+		tickstate = 1;
 	}
 	else if (tickstate == 1) {
 		DrawHLine(0, my_height/2, my_width-1, my_color.r, my_color.g, my_color.b);
+		tickstate = 0;
 	}
 }
 
-void PlayField::timer_callback(void) {
-
-	int prev_tickstate = tickstate;
-
-	tickstate = (SDL_GetTicks()/1000)%3;
-
-	if (tickstate != prev_tickstate) {
-		Update();
-	}
+Uint32 PlayField::eventTimer(Uint32 interval) {
+	Update();
+	PG_TimerObject::eventTimer(interval);
 }
 
-class PlayField2 : public PG_ThemeWidget
+class PlayField2 : public PG_ThemeWidget, public PG_TimerObject
 {
 public:
 
@@ -143,7 +139,7 @@ public:
 	// the destructor
 	~PlayField2();
 
-	void timer_callback(void);
+	Uint32 eventTimer(Uint32 interval);
 
 protected:
 
@@ -214,25 +210,15 @@ void PlayField2::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Re
 	SDL_FillRect(my_srfScreen, (SDL_Rect *)&temp_rect, temp_int);
 }
 
-void PlayField2::timer_callback(void) {
-
-	int prev_tickstate = tickstate;
-
-	tickstate = (SDL_GetTicks()%1000)/25;
-
-	if (tickstate != prev_tickstate) {
-		Update();
+Uint32 PlayField2::eventTimer(Uint32 interval) {
+	tickstate++;
+	
+	if(tickstate >= 40) {
+		tickstate = 0;
 	}
-}
-
-Uint32 timer_callback(Uint32 interval, void* parameter) {
-	((PlayField2 *)parameter)->timer_callback();
-	return interval;
-}
-
-bool appidle_handler(PG_MessageObject* object, PG_Pointer* data) {
-	((PlayField *)data)->timer_callback();
-	return true;
+	
+	Update();
+	PG_TimerObject::eventTimer(interval);
 }
 
 int main(int argc, char* argv[]) {
@@ -273,14 +259,14 @@ int main(int argc, char* argv[]) {
 	PG_MenuBar menubar(NULL, PG_Rect(100, 0, 400, 30));
 	PG_PopupMenu   popmenu(NULL, 425, 140, "File");
 
-	popmenu.addMenuItem("Nail", 99, slot(handle_menu_click)).
-        addMenuItem("Quit", ID_APP_EXIT, slot(handle_menu_click), &app);
+	popmenu.addMenuItem("Nail", 99, handle_menu_click).
+        addMenuItem("Quit", ID_APP_EXIT, handle_menu_click, &app);
  
 	menubar.Add("File", &popmenu);
 
 	menubar.Show();
 
-	myButton.sigButtonClick.connect(slot(exit_handler), &app);
+	myButton.SetEventCallback(MSG_BUTTONCLICK, exit_handler, &app);
 
 	// now we have to make the button visible
 
@@ -313,21 +299,16 @@ int main(int argc, char* argv[]) {
 		PG_Rect(260,120,120,50)
 		);
 
-	// show me your .... lines ;-)
-
+	anim_test.AddTimer(500);
 	anim_test.Show();
 
     PlayField2 anim_test2(
 	  NULL,
 	  PG_Rect(260, 300, 120, 100)
 	  );
+	  
+	anim_test2.AddTimer(50);
 	anim_test2.Show();
-
-	SDL_Init(SDL_INIT_TIMER);
-	SDL_AddTimer(20, timer_callback, (void *)&anim_test2);
-
-	app.sigAppIdle.connect(slot(appidle_handler), &anim_test);
-	app.EnableAppIdleCalls();
 
 	app.Run();
 

@@ -14,7 +14,8 @@ libpgcore_la_SOURCES = \
 	pgmsgmap.cpp \
 	pgnavigator.cpp \
 	pgrectlist.cpp \
-	pgsurfacecache.cpp
+	pgsurfacecache.cpp \
+	pgtimerobject.cpp
 
 libpgcore_la_LIBADD = 
 
