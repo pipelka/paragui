@@ -240,6 +240,14 @@ SOURCE=..\..\src\core\pgsurfacecache.cpp
 
 SOURCE=..\..\src\core\pgtimerobject.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\src\core\physfsrwops.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\core\physfsrwops.h
+# End Source File
 # End Group
 # Begin Group "font"
 

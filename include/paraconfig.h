@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/06 22:10:46 $
+    Update Date:      $Date: 2002/06/10 09:18:27 $
     Source File:      $Source: /sources/paragui/paragui/include/paraconfig.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.10 $
     Status:           $State: Exp $
 */
 
@@ -160,7 +160,7 @@ extern "C" {
 /* Value returned by `fnmatch' if STRING does not match PATTERN.  */
 #define	FNM_NOMATCH	1
 
-int fnmatch((const char *, const char *, int));
+int fnmatch(const char *, const char *, int);
 }
 #else
 #include <fnmatch.h>

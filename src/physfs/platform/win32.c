@@ -339,7 +339,7 @@ LinkedStringList *__PHYSFS_platformEnumerateFiles(const char *dirname,
 
         prev = l;
         l->next = NULL;
-    } while( FindNextFile(dir, &ent) != 0; )
+    } while( FindNextFile(dir, &ent) != 0 );
 
     FindClose(dir);
     return(retval);

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/06 22:10:46 $
+    Update Date:      $Date: 2002/06/10 09:18:27 $
     Source File:      $Source: /sources/paragui/paragui/include/pglayout.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -51,12 +51,12 @@ namespace PG_Layout {
 */
 DECLSPEC bool Load(PG_Widget* parent, const char *filename, void (* WorkCallback)(int now, int max), void *UserSpace);
 
-int DECLSPEC GetParamInt(const char **Source, char *What);
-char* DECLSPEC GetParamStr(const char **Source, char *What);
-void DECLSPEC GetParamRect(const char **Source, char *What, PG_Rect& Rect, PG_Widget* parent = NULL);
-int DECLSPEC GetParamAlign(const char **Source, char *What);
-int DECLSPEC GetParamIMode(const char **Source, char *What);
-int DECLSPEC GetParamGrad(const char **Source, char *What, PG_Gradient *grad);
+DECLSPEC int GetParamInt(const char **Source, char *What);
+DECLSPEC char* GetParamStr(const char **Source, char *What);
+DECLSPEC void GetParamRect(const char **Source, char *What, PG_Rect& Rect, PG_Widget* parent = NULL);
+DECLSPEC int GetParamAlign(const char **Source, char *What);
+DECLSPEC int GetParamIMode(const char **Source, char *What);
+DECLSPEC int GetParamGrad(const char **Source, char *What, PG_Gradient *grad);
 
 };
 
