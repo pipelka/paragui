@@ -1,4 +1,4 @@
-SUBDIRS = fireworks
+SUBDIRS = fireworks colorselector
 
 AUTOMAKE_OPTIONS = foreign
 
