@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/04/27 15:36:55 $
+   Update Date:      $Date: 2002/04/28 16:35:30 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.6 $
+   CVS/RCS Revision: $Revision: 1.7 $
    Status:           $State: Exp $
  */
 
@@ -121,6 +121,7 @@ void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
 	my_internaldata->havesurface = bObjectSurface;
 	my_srfScreen = PG_Application::GetScreen();
 
+	my_srfObject = NULL;
 	if(my_internaldata->havesurface) {
 		my_srfObject = PG_Draw::CreateRGBSurface(w, h);
 	}
@@ -469,18 +470,16 @@ bool PG_Widget::MoveWidget(const PG_Rect& r) {
 }
 
 bool PG_Widget::SizeWidget(Uint16 w, Uint16 h) {
-	bool v = IsVisible();
-
-	if (v) {
-		SetVisible(false);
+	if((w == my_width) && (h == my_height)) {
+		return false;
 	}
 
-	if (my_internaldata->firstredraw != true) {
+	if (IsVisible()) {
 		RestoreBackground();
 	}
 
 	// create new widget drawsurface
-	if(my_srfObject) {
+	if(my_internaldata->havesurface) {
 		PG_Application::UnloadSurface(my_srfObject);
 
 		if(w > 0 && h > 0) {
@@ -496,9 +495,8 @@ bool PG_Widget::SizeWidget(Uint16 w, Uint16 h) {
 	my_width = w;
 	my_height = h;
 
-	if (v) {
-		SetVisible(true);
-	}
+	Redraw();
+
 	return true;
 }
 /**  */
@@ -660,6 +658,11 @@ void PG_Widget::Show(bool fade) {
 	widgetList.BringToFront(this);
 
 	SetHidden(false);
+	
+	if(GetParent() && !GetParent()->IsVisible()) {
+		return;
+	}
+	
 	SetVisible(true);
 	
 	eventShow();
@@ -1412,7 +1415,7 @@ void PG_Widget::SetSizeByText(int Width, int Height, const char *Text) {
 		return;
 	}
 
-	//SizeWidget(w + Width, h + Height);
+	SizeWidget(w + Width, h + Height);
 	my_width = w + Width;
 	my_height = h + Height;
 }
@@ -1497,8 +1500,9 @@ void PG_Widget::DrawText(int x, int y, const char* text, const SDL_Color& c) {
 	DrawText(PG_Rect(x,y,0,0), text, c);
 }
 
-void PG_Widget::QuitModal() {
-		eventQuitModal(0, this, 0);
+bool PG_Widget::QuitModal() {
+	eventQuitModal(0, this, 0);
+	return true;
 }
 
 int PG_Widget::RunModal() {
@@ -1634,20 +1638,10 @@ void PG_Widget::DrawHLine(int x, int y, int w, Uint8 r, Uint8 g, Uint8 b) {
 		return;
 	}
 	
-	/*SDL_GetClipRect(surface, &rect);
-
-	if((y < rect.y) || (y >= (rect.y+rect.h))) {
-		return;
-	}*/
-
 	// clip to widget cliprect
 	int x0 = PG_MAX(x, my_internaldata->rectClip.x);
 	int x1 = PG_MIN(x+w, my_internaldata->rectClip.x+my_internaldata->rectClip.w);
 	Uint32 c = SDL_MapRGB(surface->format, r, g, b);
-
-	// clip to surface cliprect
-	/*x0 = PG_MAX(x0, rect.x);
-	x1 = PG_MIN(x1, rect.x+rect.w);*/
 
 	int wl = (x1-x0);
 	
@@ -1679,20 +1673,10 @@ void PG_Widget::DrawVLine(int x, int y, int h, Uint8 r, Uint8 g, Uint8 b) {
 		return;
 	}
 	
-	/*SDL_GetClipRect(surface, &rect);
-
-	if((x < rect.x) || (x >= (rect.x+rect.w))) {
-		return;
-	}*/
-
 	// clip to widget cliprect
 	int y0 = PG_MAX(y, my_internaldata->rectClip.y);
 	int y1 = PG_MIN(y+h, my_internaldata->rectClip.y+my_internaldata->rectClip.h);
 	Uint32 c = SDL_MapRGB(surface->format, r, g, b);
-
-	// clip to surface cliprect
-	/*y0 = PG_MAX(y0, rect.y);
-	y1 = PG_MIN(y1, rect.y+rect.h);*/
 
 	int hl = (y1-y0);
 	

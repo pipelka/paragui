@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/28 16:35:30 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlistex.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -55,7 +55,7 @@ void PG_WidgetListEx::AddWidget(PG_Widget* w) {
 	UpdateScrollBarsPos();
 
 	if(IsVisible()) {
-		CheckScrollBars();
+		CheckScrollBars(my_width, my_height);
 		w->SetVisible(true);
 		Update();
 	}
@@ -119,8 +119,7 @@ bool PG_WidgetListEx::RemoveWidget(PG_Widget* w, bool shiftx, bool shifty) {
 
 			UpdateScrollBarsPos();
 			if(IsVisible()) {
-				CheckScrollBars()
-				;
+				CheckScrollBars(my_width, my_height);
 				Update();
 			}
 

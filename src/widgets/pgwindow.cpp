@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/04/28 16:35:30 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.6 $
     Status:           $State: Exp $
 */
 
@@ -241,4 +241,12 @@ void PG_Window::SetColorTitlebar(Uint32 color) {
 void PG_Window::eventShow() {
 	my_buttonClose->SetVisible(my_showCloseButton);
 	my_buttonMinimize->SetVisible(my_showMinimizeButton);
+}
+
+int PG_Window::RunModal() {
+	Connection c = sigWindowClose.connect(slot(this, &PG_Widget::QuitModal));
+	int rc = PG_Widget::RunModal();
+	c.disconnect();
+	
+	return rc;
 }

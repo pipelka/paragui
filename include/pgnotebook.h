@@ -18,9 +18,10 @@ public:
 		bottom
 	} TabBarPos;
 	
-	PG_NoteBook(PG_Widget* parent, const PG_Rect& r, TabBarPos pos = top);
-	~PG_NoteBook();
+	PG_NoteBook(PG_Widget* parent, const PG_Rect& r, TabBarPos pos = top, int BarHeight = 33, const char* style="TabBar");
 	
+	~PG_NoteBook();
+		
 	void AddPage(const char* text, PG_Widget* page);
 
 	void AddPage(const char* text, PG_Widget* page, PG_PageSelectSlot slot);
@@ -36,6 +37,8 @@ public:
 	PG_PageSelect sigPageSelect;
 	
 protected:
+	
+	void eventSizeWidget(Uint16 w, Uint16 h);
 	
 	bool handleTabSelect(PG_Button* button);
 	

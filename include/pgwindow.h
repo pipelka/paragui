@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/04/28 16:35:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.6 $
     Status:           $State: Exp $
 */
 
@@ -65,6 +65,8 @@ public:
 
 	void SetColorTitlebar(const SDL_Color& c);
 
+	int RunModal();
+	
 	PG_SignalWindowClose sigWindowClose;
 
 	PG_SignalWindowMinimize sigWindowMinimize;

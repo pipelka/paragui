@@ -1,7 +1,10 @@
 #include "pgtabbar.h"
 #include "pglog.h"
+#include <cstring>
 
 PG_TabBar::PG_TabBar(PG_Widget* parent, const PG_Rect r, const char* style) : PG_Widget(parent, r) {
+
+	my_style = style;
 
 	my_tabList = new PG_WidgetListEx(this, PG_Rect(0,0,r.w-50,r.h), style);
 	my_tabList->EnableScrollBar(false, PG_SB_VERTICAL);
@@ -19,27 +22,27 @@ PG_TabBar::PG_TabBar(PG_Widget* parent, const PG_Rect r, const char* style) : PG
 	
 	my_selectedTab = NULL;
 	
-	SizeWidget(r.w, r.h);
+	eventSizeWidget(r.w, r.h);
 }
 
 PG_TabBar::~PG_TabBar() {
 }
 	
-PG_Button* PG_TabBar::AddTab(const char* text) {
+PG_Button* PG_TabBar::AddTab(const char* text, int id) {
 	Uint16 height = 0;
 	Uint16 width = 0;
 	
 	GetTextSize(width, height, text);
-	width += 6;
+	width += 8;
 	
-	PG_Button* b = new PG_Button(NULL, -1, PG_Rect(my_tabList->GetListWidth(), 0, width, my_height), text);
+	PG_Button* b = new PG_Button(NULL, id, PG_Rect(my_tabList->GetListWidth(), 0, width, my_height), text, my_style.c_str());
 	b->SetToggle(true);
 	b->sigButtonClick.connect(slot(this, &PG_TabBar::handleTabClick));
 	
 	my_tabList->AddWidget(b);
 	
 	if(my_tabList->GetListWidth() > my_width) {
-		SizeWidget(my_width, my_height);
+		eventSizeWidget(my_width, my_height);
 	}
 	Update();
 	
@@ -53,8 +56,8 @@ PG_Button* PG_TabBar::AddTab(const char* text) {
 	return b;
 }
 
-PG_Button* PG_TabBar::AddTab(const char* text, PG_TabSelectSlot slot) {
-	PG_Button* b = AddTab(text);
+PG_Button* PG_TabBar::AddTab(const char* text, PG_TabSelectSlot slot, int id) {
+	PG_Button* b = AddTab(text, id);
 	b->sigButtonClick.connect(slot);
 	
 	return b;
@@ -102,24 +105,101 @@ bool PG_TabBar::handleTabClick(PG_Button* button) {
 }
 
 bool PG_TabBar::handleTabNav(PG_Button* button) {
-	int index = -1;
-	int dir = 0;
-	
+
 	if(button == my_btnPrev) {
-		index = my_tabList->FindIndex(my_selectedTab);
-		dir = -1;
+		return SelectPrev();
 	}
 
 	if(button == my_btnNext) {
-		index = my_tabList->FindIndex(my_selectedTab);
-		dir = +1;
+		return SelectNext();
 	}
+
+	return false;
+}
+
+PG_Button* PG_TabBar::FindTab(int index) {
+	return static_cast<PG_Button*>(my_tabList->FindWidget(index));
+}
+
+PG_Button* PG_TabBar::FindTab(const char* text) {
+	PG_Button* b = NULL;
+	
+	for(int i=0; i<GetChildCount(); i++) {
+		b = FindTab(i);
+		if(strcmp(text, b->GetText()) == 0) {
+			return b;
+		}
+	}
+	
+	return NULL;
+}
+
+int PG_TabBar::FindIndex(PG_Button* tab) {
+	return my_tabList->FindIndex(tab);
+}
+
+bool PG_TabBar::RemoveTab(PG_Button* tab) {
+	PG_Button* newTab = NULL;
+	int index = FindIndex(tab);
+	
+	if(index == -1) {
+		return false;
+	}
+	
+	// last tab ?
+	if(index == GetChildCount()-1) {
+		newTab = FindTab(index-1);
+		
+	}
+	// first tab ?
+	else if(index == 0) {
+		newTab = FindTab(1);
+	}
+	// in between
+	else {
+		newTab = FindTab(index+1);
+	}
+
+	if(newTab != NULL) {
+		handleTabClick(newTab);
+	}
+	
+	// emit remove signal
+	sigTabRemove(tab);
+	
+	// delete the tab
+	return my_tabList->DeleteWidget(tab, true, false);
+}
+
+bool PG_TabBar::SelectNext() {
+	int index = my_tabList->FindIndex(my_selectedTab);
 
 	if(index == -1) {
 		return false;
 	}
 	
-	index += dir;
+	index++;
+	PG_Widget* w = my_tabList->FindWidget(index);
+	
+	if(w == NULL) {
+		return false;
+	}
+	
+	my_tabList->ScrollTo(w, PG_SB_HORIZONTAL);
+	PG_Button* b = static_cast<PG_Button*>(w);
+	handleTabClick(b);
+	
+	return true;
+}
+	
+bool PG_TabBar::SelectPrev() {
+	int index = my_tabList->FindIndex(my_selectedTab);
+
+	if(index == -1) {
+		return false;
+	}
+	
+	index--;
 	PG_Widget* w = my_tabList->FindWidget(index);
 	
 	if(w == NULL) {

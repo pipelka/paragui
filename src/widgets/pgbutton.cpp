@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 19:08:11 $
+    Update Date:      $Date: 2002/04/28 16:35:30 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.7 $
+    CVS/RCS Revision: $Revision: 1.8 $
     Status:           $State: Exp $
 */
 
@@ -91,6 +91,7 @@ PG_Button::PG_Button(PG_Widget* parent, int id, const PG_Rect& r, const char* te
 	}
 
 	LoadThemeStyle(style);
+	eventSizeWidget(r.w, r.h);
 }
 
 PG_Button::~PG_Button() {

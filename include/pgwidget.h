@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/04/28 16:35:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.6 $
     Status:           $State: Exp $
 */
 
@@ -700,7 +700,7 @@ public:
 	/**
 	Quit modal mode
 	*/
-	void QuitModal();
+	bool QuitModal();
 
 	/**
 	Set the dirty update mode

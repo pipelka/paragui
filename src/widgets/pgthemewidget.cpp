@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 23:43:39 $
+    Update Date:      $Date: 2002/04/28 16:35:30 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.6 $
     Status:           $State: Exp $
 */
 
@@ -117,6 +117,8 @@ void PG_ThemeWidget::LoadThemeStyle(const char* widgettype, const char* objectna
 		if(c != NULL) {
 			my_internaldata->backgroundcolor = *c;
 		}
+		DeleteThemedSurface(my_internaldata->cachesurface);
+		my_internaldata->cachesurface = NULL;
 	}
 
 	const char *font = t->FindFontName(widgettype, objectname);

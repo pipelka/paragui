@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 19:08:11 $
+    Update Date:      $Date: 2002/04/28 16:35:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.6 $
+    CVS/RCS Revision: $Revision: 1.7 $
     Status:           $State: Exp $
 */
 
@@ -201,7 +201,7 @@ protected:
 	bool my_enableHorizontalScrollbar;
 
 	virtual void UpdateScrollBarsPos();
-	void CheckScrollBars();
+	void CheckScrollBars(Uint16 w, Uint16 h);
 
 private:
 

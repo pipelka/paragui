@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:23 $
+    Update Date:      $Date: 2002/04/28 16:35:30 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
@@ -46,6 +46,7 @@ PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* wi
 PG_Window(parent, r, windowtitle, WF_DEFAULT) {
 
 	my_btnok = new PG_Button(this, 1, btn1, btn1text);
+	my_btnok->sigButtonClick.connect(slot(this, &PG_MessageBox::handleButtonClick));
 	my_btncancel = NULL;
 
 	Init(windowtext, textalign, style);
@@ -97,6 +98,6 @@ bool PG_MessageBox::handleButtonClick(PG_Button* widget, PG_Pointer* data) {
 }
 
 int PG_MessageBox::WaitForClick() {
-	RunModal();
+	PG_Window::RunModal();
 	return buttonflag;
 }
