@@ -19,10 +19,10 @@
     Alexander Pipelka
     pipelka@teleweb.at
  
-    Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/07 07:29:30 $
+    Last Update:      $Author: eross $
+    Update Date:      $Date: 2002/08/17 21:39:04 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -255,7 +255,7 @@ public:
 	Load a surface (image) from the archive
 	all loaded surface will be cached
 	@param filename imagefile to load
-	@param convert convert the loaded surface into screen format (default = true)
+	@param convert convert the loaded surface into screen format (default = false)
 	@return pointer to loaded SDL_Surface or NULL
 	*/
 	static SDL_Surface* LoadSurface(const char* filename, bool convert = false);
