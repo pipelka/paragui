@@ -148,16 +148,16 @@ case "$target" in
 	PHYSFS_PLATFORMFILE=platform/win32.c
 	;;
     *-*-darwin*)
-	PHYSFS_PLATFORMFILE=platform/darwin.c
+	PHYSFS_PLATFORMFILE=platform/unix.c
 	;;
     *-*-freebsd*)
-	PHYSFS_PLATFORMFILE=platform/freebsd.c
+	PHYSFS_PLATFORMFILE=platform/unix_nocdrom.c
 	;;
     *-*-irix*)
-	PHYSFS_PLATFORMFILE=platform/irix.c
+	PHYSFS_PLATFORMFILE=platform/unix_nocdrom.c
 	;;
     *-*-solaris*)
-	PHYSFS_PLATFORMFILE=platform/solaris.c
+	PHYSFS_PLATFORMFILE=platform/unix_nocdrom.c
 	;;
     alpha*-*-linux*)
         CFLAGS="$CFLAGS -mcpu=ev4 -Wa,-mall"

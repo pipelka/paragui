@@ -1,10 +1,7 @@
 EXTRA_DIST = \
 	beos.c \
-	darwin.c \
-	freebsd.c \
-	irix.c \
-	macclassic.c \
 	skeleton.c \
-	solaris.c \
+	macclassic.c \
 	unix.c \
+	unix_nocdrom.c \
 	win32.c

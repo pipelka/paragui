@@ -1,5 +1,5 @@
 /*
- * FreeBSD support routines for PhysicsFS.
+ * Unix support routines for PhysicsFS.
  *
  * Please see the file LICENSE in the source's root directory.
  *
@@ -39,7 +39,15 @@
 #include <dirent.h>
 #include <time.h>
 #include <errno.h>
+
+//#if (!defined __DARWIN__)
 //#include <mntent.h>
+//#else
+//#include <sys/ucred.h>
+//#endif
+
+//#include <sys/mount.h>
+
 
 #define __PHYSICSFS_INTERNAL__
 #include "physfs_internal.h"
@@ -47,47 +55,23 @@
 
 const char *__PHYSFS_platformDirSeparator = "/";
 
+
+int __PHYSFS_platformInit(void)
+{
+    return(1);  /* always succeed. */
+} /* __PHYSFS_platformInit */
+
+
+int __PHYSFS_platformDeinit(void)
+{
+    return(1);  /* always succeed. */
+} /* __PHYSFS_platformDeinit */
+
+
 char **__PHYSFS_platformDetectAvailableCDs(void)
 {
-//    char **retval = (char **) malloc(sizeof (char *));
-//    int cd_count = 1;  /* We count the NULL entry. */
-//    FILE *mounts = NULL;
-//    struct mntent *ent = NULL;
-//
-//    *retval = NULL;
-//    mounts = setmntent("/etc/mtab", "r");
-//    BAIL_IF_MACRO(mounts == NULL, ERR_IO_ERROR, retval);
-//
-//    while ( (ent = getmntent(mounts)) != NULL )
-//    {
-//        int add_it = 0;
-//        if (strcmp(ent->mnt_type, "iso9660") == 0)
-//            add_it = 1;
-//        /* !!! other mount types? */
-//
-//        if (add_it)
-//        {
-//            char **tmp = realloc(retval, sizeof (char *) * cd_count + 1);
-//            if (tmp)
-//            {
-//                retval = tmp;
-//                retval[cd_count-1] = (char *) malloc(strlen(ent->mnt_dir) + 1);
-//                if (retval[cd_count-1])
-//                {
-//                    strcpy(retval[cd_count-1], ent->mnt_dir);
-//                    cd_count++;
-//                } /* if */
-//            } /* if */
-//        } /* if */
-//    } /* while */
-//
-//    endmntent(mounts);
-//
-//    retval[cd_count - 1] = NULL;
-//    return(retval);
-
-    return NULL;
-} /* __PHYSFS_detectAvailableCDs */
+	return NULL;
+} /* __PHYSFS_platformDetectAvailableCDs */
 
 
 static char *copyEnvironmentVariable(const char *varname)
@@ -211,9 +195,9 @@ char *__PHYSFS_platformGetUserDir(void)
 } /* __PHYSFS_platformGetUserDir */
 
 
-int __PHYSFS_platformGetThreadID(void)
+PHYSFS_uint64 __PHYSFS_platformGetThreadID(void)
 {
-    return((int) pthread_self());
+    return((PHYSFS_uint64) ((PHYSFS_uint32) pthread_self()));
 } /* __PHYSFS_platformGetThreadID */
 
 
@@ -311,10 +295,7 @@ char *__PHYSFS_platformCvtToDependent(const char *prepend,
 /* Much like my college days, try to sleep for 10 milliseconds at a time... */
 void __PHYSFS_platformTimeslice(void)
 {
-    struct timespec napTime;
-    napTime.tv_sec = 0;
-    napTime.tv_nsec = 10 * 1000 * 1000;  /* specified in nanoseconds. */
-    nanosleep(&napTime, NULL);           /* don't care if it fails. */
+    usleep( 10 * 1000 );           /* don't care if it fails. */
 } /* __PHYSFS_platformTimeslice */
 
 
@@ -413,15 +394,6 @@ LinkedStringList *__PHYSFS_platformEnumerateFiles(const char *dirname,
 } /* __PHYSFS_platformEnumerateFiles */
 
 
-int __PHYSFS_platformFileLength(FILE *handle)
-{
-    struct stat statbuf;
-    errno = 0;
-    BAIL_IF_MACRO(fstat(fileno(handle), &statbuf) == -1, strerror(errno), -1);
-    return(statbuf.st_size);
-} /* __PHYSFS_platformFileLength */
-
-
 char *__PHYSFS_platformCurrentDir(void)
 {
     int allocSize = 0;
@@ -436,20 +408,24 @@ char *__PHYSFS_platformCurrentDir(void)
         {
             if (retval != NULL)
                 free(retval);
-            BAIL_IF_MACRO(1, ERR_OUT_OF_MEMORY, NULL);
+            BAIL_MACRO(ERR_OUT_OF_MEMORY, NULL);
         } /* if */
-	
+
         retval = ptr;
         ptr = getcwd(retval, allocSize);
     } while (ptr == NULL && errno == ERANGE);
-    if(ptr == NULL && errno) {
-	/* getcwd() failed for some reason, for example current
-	 * directory not existing.
-	 */
-	if (retval != NULL)
-	    free(retval);
-	BAIL_IF_MACRO(1, ERR_NO_SUCH_FILE, NULL);
-    }
+
+    if (ptr == NULL && errno)
+    {
+            /*
+             * getcwd() failed for some reason, for example current
+             * directory not existing.
+             */
+        if (retval != NULL)
+            free(retval);
+        BAIL_MACRO(ERR_NO_SUCH_FILE, NULL);
+    } /* if */
+
     return(retval);
 } /* __PHYSFS_platformCurrentDir */
 
@@ -477,5 +453,160 @@ int __PHYSFS_platformMkDir(const char *path)
     return(1);
 } /* __PHYSFS_platformMkDir */
 
-/* end of freebsd.c ... */
+
+static void *doOpen(const char *filename, const char *mode)
+{
+    FILE *retval;
+    errno = 0;
+
+    retval = fopen(filename, mode);
+    if (retval == NULL)
+        __PHYSFS_setError(strerror(errno));
+
+    return((void *) retval);
+} /* doOpen */
+
+
+void *__PHYSFS_platformOpenRead(const char *filename)
+{
+    return(doOpen(filename, "rb"));
+} /* __PHYSFS_platformOpenRead */
+
+
+void *__PHYSFS_platformOpenWrite(const char *filename)
+{
+    return(doOpen(filename, "wb"));
+} /* __PHYSFS_platformOpenWrite */
+
+
+void *__PHYSFS_platformOpenAppend(const char *filename)
+{
+    return(doOpen(filename, "wb+"));
+} /* __PHYSFS_platformOpenAppend */
+
+
+PHYSFS_sint64 __PHYSFS_platformRead(void *opaque, void *buffer,
+                                    PHYSFS_uint32 size, PHYSFS_uint32 count)
+{
+    FILE *io = (FILE *) opaque;
+    int rc = fread(buffer, size, count, io);
+    if (rc < count)
+    {
+        int err = errno;
+        BAIL_IF_MACRO(ferror(io), strerror(err), rc);
+        BAIL_MACRO(ERR_PAST_EOF, rc);
+    } /* if */
+
+    return(rc);
+} /* __PHYSFS_platformRead */
+
+
+PHYSFS_sint64 __PHYSFS_platformWrite(void *opaque, const void *buffer,
+                                     PHYSFS_uint32 size, PHYSFS_uint32 count)
+{
+    FILE *io = (FILE *) opaque;
+    int rc = fwrite((void *) buffer, size, count, io);
+    if (rc < count)
+        __PHYSFS_setError(strerror(errno));
+
+    return(rc);
+} /* __PHYSFS_platformWrite */
+
+
+int __PHYSFS_platformSeek(void *opaque, PHYSFS_uint64 pos)
+{
+    FILE *io = (FILE *) opaque;
+
+    /* !!! FIXME: Use llseek where available. */
+    errno = 0;
+    BAIL_IF_MACRO(fseek(io, pos, SEEK_SET) != 0, strerror(errno), 0);
+
+    return(1);
+} /* __PHYSFS_platformSeek */
+
+
+PHYSFS_sint64 __PHYSFS_platformTell(void *opaque)
+{
+    FILE *io = (FILE *) opaque;
+    PHYSFS_sint64 retval = ftell(io);
+    BAIL_IF_MACRO(retval == -1, strerror(errno), -1);
+    return(retval);
+} /* __PHYSFS_platformTell */
+
+
+PHYSFS_sint64 __PHYSFS_platformFileLength(void *opaque)
+{
+    FILE *io = (FILE *) opaque;
+    struct stat statbuf;
+    errno = 0;
+    BAIL_IF_MACRO(fstat(fileno(io), &statbuf) == -1, strerror(errno), -1);
+    return((PHYSFS_sint64) statbuf.st_size);
+} /* __PHYSFS_platformFileLength */
+
+
+int __PHYSFS_platformEOF(void *opaque)
+{
+    return(feof((FILE *) opaque));
+} /* __PHYSFS_platformEOF */
+
+
+int __PHYSFS_platformFlush(void *opaque)
+{
+    errno = 0;
+    BAIL_IF_MACRO(fflush((FILE *) opaque) == EOF, strerror(errno), 0);
+    return(1);
+} /* __PHYSFS_platformFlush */
+
+
+int __PHYSFS_platformClose(void *opaque)
+{
+    errno = 0;
+    BAIL_IF_MACRO(fclose((FILE *) opaque) == EOF, strerror(errno), 0);
+    return(1);
+} /* __PHYSFS_platformClose */
+
+
+int __PHYSFS_platformDelete(const char *path)
+{
+    errno = 0;
+    BAIL_IF_MACRO(remove(path) == -1, strerror(errno), 0);
+    return(1);
+} /* __PHYSFS_platformDelete */
+
+
+void *__PHYSFS_platformCreateMutex(void)
+{
+    int rc;
+    pthread_mutex_t *m = (pthread_mutex_t *) malloc(sizeof (pthread_mutex_t));
+    BAIL_IF_MACRO(m == NULL, ERR_OUT_OF_MEMORY, NULL);
+    rc = pthread_mutex_init(m, NULL);
+    if (rc != 0)
+    {
+        free(m);
+        BAIL_MACRO(strerror(rc), NULL);
+    } /* if */
+
+    return((void *) m);
+} /* __PHYSFS_platformCreateMutex */
+
+
+void __PHYSFS_platformDestroyMutex(void *mutex)
+{
+    pthread_mutex_destroy((pthread_mutex_t *) mutex);
+    free(mutex);
+} /* __PHYSFS_platformDestroyMutex */
+
+
+int __PHYSFS_platformGrabMutex(void *mutex)
+{
+    return(pthread_mutex_lock((pthread_mutex_t *) mutex) == 0);    
+} /* __PHYSFS_platformGrabMutex */
+
+
+void __PHYSFS_platformReleaseMutex(void *mutex)
+{
+    pthread_mutex_unlock((pthread_mutex_t *) mutex);
+} /* __PHYSFS_platformReleaseMutex */
+
+/* end of unix.c ... */
 
