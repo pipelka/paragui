@@ -26,7 +26,7 @@ EXTRA_DIST = \
 
 INCLUDES = \
 	$(SDL_CFLAGS) \
-	-I$(top_srcdir)/src/physfs \
+	$(PHYSFS_INCLUDE) \
 	-I$(top_srcdir)/include
 
 style_cvs:

@@ -7,6 +7,7 @@ DIST_SUBDIRS = $(SUBDIRS) doc test
 bin_SCRIPTS = paragui-config
 
 EXTRA_DIST = \
+	acconfig.h \
 	paragui.m4 \
 	paragui.spec.in \
 	paragui.pc.in \

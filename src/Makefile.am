@@ -1,6 +1,6 @@
-SUBDIRS = physfs $(EXPAT_SUBDIR) draw font themes core widgets
+SUBDIRS = $(PHYSFS_SUBDIR) $(EXPAT_SUBDIR) draw font themes core widgets
 
-DIST_SUBDIRS = $(SUBDIRS) expat
+DIST_SUBDIRS = $(SUBDIRS) expat physfs
 
 lib_LTLIBRARIES = libparagui.la
 
@@ -18,7 +18,7 @@ libparagui_la_LIBADD = \
 	$(SDL_LIBS) \
 	$(IMAGE_LIBS) \
 	$(EXPAT_LIB) \
-	./physfs/libphysfs.la \
+	$(PHYSFS_LIB) \
 	./draw/libpgdraw.la \
 	./font/libpgfont.la \
 	./core/libpgcore.la \

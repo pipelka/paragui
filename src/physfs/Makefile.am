@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libphysfs.la
+noinst_LTLIBRARIES = libphysfs.la
 
 if BUILD_ZLIB
 ZLIB_DIR = zlib114
