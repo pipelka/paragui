@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 13:58:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
@@ -220,7 +220,10 @@ public:
 	void SetPressed(bool pressed);
 
 	/**  */
-	void SetTransparency(int norm, int pressed, int high);
+	void SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high);
+
+	/**  */
+	void SetTransparency(Uint8 t);
 
 	/**
 	 * Set the moving distance of the image when we press on it

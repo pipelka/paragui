@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:22 $
+    Update Date:      $Date: 2002/04/27 13:58:20 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
@@ -482,18 +482,14 @@ void PG_Button::SetPressed(bool pressed) {
 }
 
 /**  */
-void PG_Button::SetTransparency(int norm, int pressed, int high) {
-	if(norm >= 0 && norm <= 255) {
-		my_transparency[0] = norm;
-	}
+void PG_Button::SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high) {
+	my_transparency[0] = norm;
+	my_transparency[1] = pressed;
+	my_transparency[2] = high;
+}
 
-	if(pressed >= 0 && pressed <= 255) {
-		my_transparency[1] = pressed;
-	}
-
-	if(high >= 0 && high <= 255) {
-		my_transparency[2] = high;
-	}
+void PG_Button::SetTransparency(Uint8 t) {
+	SetTransparency(t, t, t);
 }
 
 /**
