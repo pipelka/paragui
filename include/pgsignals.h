@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/07/07 08:44:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsignals.h,v $
-    CVS/RCS Revision: $Revision: 1.8.2.2 $
+    CVS/RCS Revision: $Revision: 1.8.2.3 $
     Status:           $State: Exp $
 */
 
@@ -72,6 +72,7 @@ public:
 		return Signal1<bool, P1>::connect(convert(s, sig_convert0));
 	}
 
+	PG_Signal1& operator=(const PG_Signal1&);
 };
 
 
@@ -113,6 +114,10 @@ public:
 	Connection connect(const Slot0<bool>& s) {
 		return Signal2<bool, P1, P2>::connect(convert(s, sig_convert0));
 	}
+
+private:
+	PG_Signal2& operator=(const PG_Signal2&);
+
 };
 
 /*

@@ -13,6 +13,17 @@
 #include "pgstring.h"
 
 
+#ifndef ENABLE_UNICODE
+#include <iostream>
+#warning UNICODE support disabled!
+
+int main( int argc, char **argv ) {
+	std::cout << "UNICODE support disabled" << std::endl;
+	return 0;
+}
+
+#else
+
 int main( int argc, char **argv )
 {
 	PG_Application app;
@@ -188,3 +199,5 @@ int main( int argc, char **argv )
 	
 	return 0;
 }
+
+#endif // UNICODE_ENABLED
