@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ystring.cpp,v 1.1.2.3 2004/09/08 15:47:37 braindead Exp $
+ * $Id: ystring.cpp,v 1.1.2.4 2004/10/12 15:44:20 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2004/09/08 15:47:37 $
+ *  $Date: 2004/10/12 15:44:20 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.3 $
+ *  $Revision: 1.1.2.4 $
  *  $Source: /sources/paragui/paragui/src/ystring/Attic/ystring.cpp,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -407,6 +407,9 @@ YString YString::fromUtf8(std::string utf8) throw(std::domain_error)
   YString::size_type currentOctet = 0;
   do {
     YString::size_type noOctets = 1 + YChar::getNumberOfContinuingOctents(utf8[currentOctet]);
+    if(noOctets == 0) {
+    	break;
+    }
     YChar c;
     PG_TRY {
       c = YChar::fromUtf8(utf8.substr(currentOctet, noOctets));
