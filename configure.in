@@ -358,12 +358,13 @@ if test x$internalphysfs = xno; then
 	    )
     fi
 else
-    AC_CONFIG_SUBDIRS(src/physfs)
     PHYSFS_INCLUDE="-I\$(srcdir)/../physfs"
     PHYSFS_LIB="./physfs/libphysfs.la"
     PHYSFS_SUBDIR="physfs"
     LIBPHYSFS=""
 fi
+
+AC_CONFIG_SUBDIRS(src/physfs)
 
 AC_SUBST(PHYSFS_INCLUDE)
 AC_SUBST(PHYSFS_LIB)
