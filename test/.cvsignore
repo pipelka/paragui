@@ -9,7 +9,10 @@ config.status
 paratest
 paratest.spec
 aclocal.m4
+acinclude.m4
 .deps
 .libs
-navtest dblbuffer
-layouttest windowtest
+navtest dblbuffer animation
+layouttest windowtest dropdown
+windowresize
+

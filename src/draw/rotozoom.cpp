@@ -22,9 +22,9 @@
     cosmetical (interface and naming) to fit the ParaGUI library.
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:31:30 $
+    Update Date:      $Date: 2002/04/15 13:35:35 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/rotozoom.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2 $
+    CVS/RCS Revision: $Revision: 1.3 $
     Status:           $State: Exp $
 */
 

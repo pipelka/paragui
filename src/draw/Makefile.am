@@ -1,14 +1,14 @@
 noinst_LTLIBRARIES = libpgdraw.la
 
 libpgdraw_la_SOURCES = \
-	gradient.cpp \
 	surface.cpp \
 	rotozoom.cpp \
 	drawline.cpp \
 	setpixel.cpp \
 	stretch.cpp \
 	pgrect.cpp \
-	drawtile.cpp
+	drawtile.cpp \
+        gradient.cpp
 
 EXTRA_DIST =
 

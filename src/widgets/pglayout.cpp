@@ -121,7 +121,7 @@ void PG_Layout::GetParamRect(const char **Source, char *What, PG_Rect& Rect, PG_
 	if(c == NULL) {
 		return;
 	}
-	
+
 	if(strlen(c) == 0) {
 		return;
 	}
@@ -140,8 +140,7 @@ void PG_Layout::GetParamRect(const char **Source, char *What, PG_Rect& Rect, PG_
 	for(d = strtok(parm,","); d != NULL; d = strtok(NULL,",")) {
 		if(parent == NULL) {
 			mx = ((i%2)==0) ? screen->w : screen->h;
-		}
-		else {
+		} else {
 			mx = ((i%2)==0) ? parent->w : parent->h;
 		}
 
@@ -396,22 +395,27 @@ static int SetLabelAtts(PG_Label *Widget, const char **atts, ParseUserData_t *XM
 }
 
 static int SetUserButtonAtts(PG_Button *Widget, const char **atts, ParseUserData_t *XMLParser) {
-	char	*c,*c1;
+	char	*c,*c1,*c2;
 	int i,j,k;
 	int b;
 
 	c = PG_Layout::GetParamStr(atts, "upimage");
 	c1 = PG_Layout::GetParamStr(atts, "downimage");
+	c2 = PG_Layout::GetParamStr(atts, "overimage");
 	if (c1[0] == 0) {
 		c1 = NULL;
+	}
+
+	if (c2[0] == 0) {
+		c2 = NULL;
 	}
 
 	if (c[0] != 0) {
 		b = PG_Layout::GetParamInt(atts, "colorkey");
 		if(b != -1) {
-			Widget->SetIcon(c, c1, b);
+			Widget->SetIcon2(c, c1, c2, b);
 		} else {
-			Widget->SetIcon(c, c1);
+			Widget->SetIcon2(c, c1, c2);
 		}
 	}
 
@@ -420,6 +424,12 @@ static int SetUserButtonAtts(PG_Button *Widget, const char **atts, ParseUserData
 
 	i = PG_Layout::GetParamInt(atts, "pressed");
 	Widget->SetPressed(i == 1);
+
+	c = PG_Layout::GetParamStr(atts, "shift");
+	if (c[0] != 0) {
+		sscanf(c,"%d",&i);
+		Widget->SetShift(i);
+	}
 
 	c = PG_Layout::GetParamStr(atts, "border");
 	if (c[0] != 0) {
@@ -664,10 +674,10 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		PG_Layout::GetParamRect(atts, "pos", Rect, parent);
 
 		PG_Button	*Widget = new PG_Button(
-			parent,
-			0,
-			Rect,
-			PG_Layout::GetParamStr(atts, "text"));
+		                        parent,
+		                        0,
+		                        Rect,
+		                        PG_Layout::GetParamStr(atts, "text"));
 
 		XMLParser->ParentObject = Widget;
 
@@ -902,11 +912,11 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		PG_Layout::GetParamRect(atts, "pos", Rect, parent);
 
 		PG_RadioButton *Widget = new PG_RadioButton(
-			parent,
-			0,
-			Rect,
-			(const char*)PG_Layout::GetParamStr(atts, "text"),
-			(PG_RadioButton *)PG_Application::GetWidgetByName(PG_Layout::GetParamStr(atts, "group")));
+		                             parent,
+		                             0,
+		                             Rect,
+		                             (const char*)PG_Layout::GetParamStr(atts, "text"),
+		                             (PG_RadioButton *)PG_Application::GetWidgetByName(PG_Layout::GetParamStr(atts, "group")));
 
 		XMLParser->ParentObject = Widget;
 
@@ -920,10 +930,10 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		PG_Layout::GetParamRect(atts, "pos", Rect, parent);
 
 		PG_CheckButton *Widget = new PG_CheckButton(
-			parent,
-			0,
-			Rect,
-			PG_Layout::GetParamStr(atts, "text"));
+		                             parent,
+		                             0,
+		                             Rect,
+		                             PG_Layout::GetParamStr(atts, "text"));
 
 		XMLParser->ParentObject = Widget;
 
@@ -997,26 +1007,24 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 
 		Point.x=Rect.x;
 		Point.y=Rect.y;
-		
+
 		PG_PopupMenu* Widget = NULL;
-		
+
 		// is the current popup a child of another popup ?
 		if(XMLParser->Section & XML_SECTION_POPUPMENU) {
 			Widget = new PG_PopupMenu(NULL, 0, 0, NULL);
 			PG_PopupMenu* menu = static_cast<PG_PopupMenu*>(XMLParser->ParentObject);
 			menu->addMenuItem(PG_Layout::GetParamStr(atts, "caption"), Widget);
-		}
-		else {
+		} else {
 			// is the popup a child of a menubar ?
 			if(XMLParser->Section & XML_SECTION_MENUBAR) {
 				Widget = new PG_PopupMenu(NULL, Point.x, Point.y, PG_Layout::GetParamStr(atts, "caption"));
 				static_cast<PG_MenuBar*>(XMLParser->ParentObject)->Add(PG_Layout::GetParamStr(atts, "text"), Widget);
-			}	
-			else {
+			} else {
 				Widget = new PG_PopupMenu(parent, Point.x, Point.y, PG_Layout::GetParamStr(atts, "caption"));
 			}
 		}
-		
+
 		// register section popupmenu
 		XMLParser->Section = XML_SECTION_POPUPMENU | XML_SECTION_BODY | XML_SECTION_COMWIDPARAMS;
 
@@ -1034,10 +1042,10 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		}
 		PG_PopupMenu* menu = static_cast<PG_PopupMenu*>(XMLParser->ParentObject);
 		menu->addMenuItem(PG_Layout::GetParamStr(atts, "caption"), PG_Layout::GetParamInt(atts, "id"));
-		
+
 		return;
 	}
-	
+
 	//Tag <menubar> <MB>
 	if(IsTag("menubar", "MB", XML_SECTION_BODY)) {
 		PG_Rect Rect;
@@ -1109,11 +1117,11 @@ object_end:
 	}
 
 	RestoreUserData(XMLParser);
-	
+
 	if (WidgetToAdd == NULL) {
 		return;
 	}
-	
+
 	((PG_WidgetList *)(XMLParser->ParentObject))->AddWidget(WidgetToAdd);
 }
 
@@ -1186,15 +1194,15 @@ bool PG_Layout::Load(PG_Widget* parent, const char *filename, void (* WorkCallba
 			break;
 		}
 
-                if (bytes_read == 0) {
-                        status = true;
-                        break;
-                }
-        }
+		if (bytes_read == 0) {
+			status = true;
+			break;
+		}
+	}
 
-        if (XMLParser.Parser != NULL) {
-                XML_ParserFree(XMLParser.Parser);
-        }
+	if (XMLParser.Parser != NULL) {
+		XML_ParserFree(XMLParser.Parser);
+	}
 
 	delete f;
 

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/04/15 13:31:31 $
+   Update Date:      $Date: 2002/04/15 13:35:36 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.2 $
+   CVS/RCS Revision: $Revision: 1.3 $
    Status:           $State: Exp $
  */
 
@@ -78,6 +78,8 @@ struct PG_WidgetDataInternal{
 
 	bool inDestruct;
 	std::string name;
+	
+	bool hidden;
 };
 
 #define TXT_HEIGHT_UNDEF 0xFFFF
@@ -149,6 +151,7 @@ void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
 	my_internaldata->transparency = 0;
 	my_internaldata->quitModalLoop = false;
 	my_internaldata->visible = false;
+	my_internaldata->hidden = false;
 	my_internaldata->firstredraw = true;
 
 	my_internaldata->childList = NULL;
@@ -453,9 +456,11 @@ bool PG_Widget::MoveWidget(int x, int y) {
 		UpdateRect(vertical);
 		UpdateRect(horizontal);
 		UpdateRect(my_internaldata->rectClip);
+		PG_Application::LockScreen();
 		SDL_UpdateRects(my_srfScreen, 1, &my_internaldata->rectClip);
 		SDL_UpdateRects(my_srfScreen, 1, &vertical);
 		SDL_UpdateRects(my_srfScreen, 1, &horizontal);
+		PG_Application::UnlockScreen();
 	}
 
 	return true;
@@ -617,6 +622,10 @@ bool PG_Widget::Redraw(bool update) {
 
 void PG_Widget::SetVisible(bool visible) {
 
+	if(IsHidden()) {
+		return;
+	}
+	
 	// Attempt to make object visible
 	if(visible) {
 		if(my_internaldata->visible) {			// Object already visible
@@ -646,10 +655,12 @@ void PG_Widget::SetVisible(bool visible) {
 
 		while (list != my_internaldata->childList->end()) {
 			(*list)->SetVisible(visible);
-			if(visible) {
-				(*list)->eventShow();
-			} else {
-				(*list)->eventHide();
+			if(!(*list)->IsHidden()) {
+				if(visible) {
+					(*list)->eventShow();
+				} else {
+					(*list)->eventHide();
+				}
 			}
 			list++;
 		}
@@ -661,8 +672,9 @@ void PG_Widget::Show(bool fade) {
 
 	widgetList.BringToFront(this);
 
+	SetHidden(false);
 	SetVisible(true);
-
+	
 	eventShow();
 
 	if (fade) {
@@ -683,6 +695,7 @@ void PG_Widget::Show(bool fade) {
 void PG_Widget::Hide(bool fade) {
 
 	if(!IsVisible()) {
+		SetHidden(true);
 		return;
 	}
 
@@ -711,8 +724,12 @@ void PG_Widget::Hide(bool fade) {
 	SDL_SetClipRect(my_srfScreen, NULL);
 
 	if(!PG_Application::GetBulkMode()) {
+		PG_Application::LockScreen();
 		SDL_UpdateRects(my_srfScreen, 1, &my_internaldata->rectClip);
+		PG_Application::UnlockScreen();
 	}
+
+	SetHidden(true);
 
 	return;
 }
@@ -985,6 +1002,9 @@ void PG_Widget::FadeOut() {
 	if(!d) {
 		d = 1;
 	} // minimum step == 1
+	
+	PG_Application::LockScreen();
+	
 	for(int i=my_internaldata->transparency; i<255; i += d) {
 		RestoreBackground(NULL, true);
 		SDL_SetAlpha(srfFade, SDL_SRCALPHA, 255-i);
@@ -996,6 +1016,8 @@ void PG_Widget::FadeOut() {
 	SDL_SetAlpha(srfFade, SDL_SRCALPHA, 0);
 	SDL_BlitSurface(srfFade, NULL, my_srfScreen, this);
 	SetVisible(false);
+	PG_Application::UnlockScreen();
+
 	Update(false);
 
 	PG_Application::UnloadSurface(srfFade);
@@ -1016,6 +1038,8 @@ void PG_Widget::FadeIn() {
 	// create a temp surface
 	SDL_Surface* srfFade = PG_Draw::CreateRGBSurface(w, h);
 
+	PG_Application::LockScreen();
+	
 	// blit the widget to temp surface
 	PG_Draw::BlitSurface(my_srfScreen, my_internaldata->rectClip, srfFade, src);
 
@@ -1030,6 +1054,8 @@ void PG_Widget::FadeIn() {
 		PG_Draw::BlitSurface(srfFade, src, my_srfScreen, my_internaldata->rectClip);
 		SDL_UpdateRects(my_srfScreen, 1, &my_internaldata->rectClip);
 	}
+
+	PG_Application::UnlockScreen();
 
 	Update();
 
@@ -1145,10 +1171,12 @@ void PG_Widget::UpdateRect(const PG_Rect& r) {
 
 	SDL_Surface* screen = PG_Application::GetScreen();
 
+	PG_Application::LockScreen();
 	PG_Application::RedrawBackground(r);
 	SDL_SetClipRect(screen, (PG_Rect*)&r);
 	widgetList.Intersect((PG_Rect*)&r).Blit(r);
 	SDL_SetClipRect(screen, NULL);
+	PG_Application::UnlockScreen();
 }
 
 void PG_Widget::UpdateScreen() {
@@ -1616,11 +1644,11 @@ void PG_Widget::DrawHLine(int x, int y, int w, Uint8 r, Uint8 g, Uint8 b) {
 		return;
 	}
 	
-	SDL_GetClipRect(surface, &rect);
+	/*SDL_GetClipRect(surface, &rect);
 
 	if((y < rect.y) || (y >= (rect.y+rect.h))) {
 		return;
-	}
+	}*/
 
 	// clip to widget cliprect
 	int x0 = PG_MAX(x, my_internaldata->rectClip.x);
@@ -1628,8 +1656,8 @@ void PG_Widget::DrawHLine(int x, int y, int w, Uint8 r, Uint8 g, Uint8 b) {
 	Uint32 c = SDL_MapRGB(surface->format, r, g, b);
 
 	// clip to surface cliprect
-	x0 = PG_MAX(x0, rect.x);
-	x1 = PG_MIN(x1, rect.x+rect.w);
+	/*x0 = PG_MAX(x0, rect.x);
+	x1 = PG_MIN(x1, rect.x+rect.w);*/
 
 	int wl = (x1-x0);
 	
@@ -1661,11 +1689,11 @@ void PG_Widget::DrawVLine(int x, int y, int h, Uint8 r, Uint8 g, Uint8 b) {
 		return;
 	}
 	
-	SDL_GetClipRect(surface, &rect);
+	/*SDL_GetClipRect(surface, &rect);
 
 	if((x < rect.x) || (x >= (rect.x+rect.w))) {
 		return;
-	}
+	}*/
 
 	// clip to widget cliprect
 	int y0 = PG_MAX(y, my_internaldata->rectClip.y);
@@ -1673,8 +1701,8 @@ void PG_Widget::DrawVLine(int x, int y, int h, Uint8 r, Uint8 g, Uint8 b) {
 	Uint32 c = SDL_MapRGB(surface->format, r, g, b);
 
 	// clip to surface cliprect
-	y0 = PG_MAX(y0, rect.y);
-	y1 = PG_MIN(y1, rect.y+rect.h);
+	/*y0 = PG_MAX(y0, rect.y);
+	y1 = PG_MIN(y1, rect.y+rect.h);*/
 
 	int hl = (y1-y0);
 	
@@ -1894,4 +1922,13 @@ void PG_Widget::SetDirtyUpdate(bool bDirtyUpdate) {
 
 bool PG_Widget::GetDirtyUpdate() {
 	return my_internaldata->dirtyUpdate;
+}
+
+void PG_Widget::SetHidden(bool hidden) {
+	my_internaldata->hidden = hidden;
+}
+
+	
+bool PG_Widget::IsHidden() {
+	return my_internaldata->hidden;
 }

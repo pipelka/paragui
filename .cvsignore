@@ -4,10 +4,6 @@ Makefile.in
 paragui.spec
 paragui.spec.in
 libtool
-config.h
-config.log
-config.cache
-config.status
 paragui-config
 aclocal.m4
 config.h.in
@@ -19,3 +15,15 @@ stamp-h.in
 *.kdevses
 *.kdevprj
 paragui.pc
+config.*
+depcomp
+install-sh
+ltmain.sh
+missing
+mkinstalldirs
+*.prw
+*.pws
+*.prj
+*.patch
+*.kdevelop
+*.cache

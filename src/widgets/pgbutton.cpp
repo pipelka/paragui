@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:31:31 $
+    Update Date:      $Date: 2002/04/15 13:35:36 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2 $
+    CVS/RCS Revision: $Revision: 1.3 $
     Status:           $State: Exp $
 */
 
@@ -36,7 +36,7 @@ struct PG_ButtonDataInternal {
 	SDL_Surface* srf_normal;
 	SDL_Surface* srf_high;
 	SDL_Surface* srf_down;
-	SDL_Surface* srf_icon[2];
+	SDL_Surface* srf_icon[3];
 
 	bool free_icons;
 
@@ -51,7 +51,7 @@ struct PG_ButtonDataInternal {
 
 PG_Button::PG_Button(PG_Widget* parent, int id, const PG_Rect& r, const char* text, const char* style) : PG_Widget(parent, r) {
 	SetDirtyUpdate(false);
-	
+
 	my_internaldata = new PG_ButtonDataInternal;
 
 	my_internaldata->srf_normal = NULL;
@@ -60,6 +60,7 @@ PG_Button::PG_Button(PG_Widget* parent, int id, const PG_Rect& r, const char* te
 
 	my_internaldata->srf_icon[0] = NULL;
 	my_internaldata->srf_icon[1] = NULL;
+	my_internaldata->srf_icon[2] = NULL;
 
 	my_internaldata->free_icons = false;
 
@@ -110,7 +111,7 @@ void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	if(b != -1)
 		SetFontColor(b);
 
-	const char  *iconup = 0, *icondown = 0;
+	const char  *iconup = 0, *icondown = 0, *iconover = 0;
 
 	switch (GetID()) {
 		case BTN_ID_OK:
@@ -144,12 +145,14 @@ void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
 		default:
 			iconup = "iconup";
 			icondown = "icondown";
+			iconover = "iconover";
 			break;
 	}
 
 	SetIcon(
 	    t->FindSurface(widgettype, objectname, iconup),
-	    t->FindSurface(widgettype, objectname, icondown)
+	    t->FindSurface(widgettype, objectname, icondown),
+	    t->FindSurface(widgettype, objectname, iconover)
 	);
 
 	PG_Gradient* g;
@@ -291,6 +294,11 @@ void PG_Button::FreeIcons() {
 		my_internaldata->srf_icon[1] = NULL;
 	}
 
+	if(my_internaldata->srf_icon[2]) {
+		PG_Application::UnloadSurface(my_internaldata->srf_icon[2]); // false
+		my_internaldata->srf_icon[2] = NULL;
+	}
+
 	my_internaldata->free_icons = false;
 }
 
@@ -315,9 +323,9 @@ void PG_Button::eventMouseLeave() {
 
 /**  */
 bool PG_Button::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
-    if (!button)
-        return false;
-    
+	if (!button)
+		return false;
+
 	if(button->button == 1) {
 		my_state = BTN_STATE_PRESSED;
 		SetCapture();
@@ -331,9 +339,9 @@ bool PG_Button::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 
 /**  */
 bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
-    if (!button)
-        return false;
-    
+	if (!button)
+		return false;
+
 	if(button->button != 1) {
 		return false;
 	}
@@ -368,8 +376,8 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 }
 
 /**  */
-bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, Uint32 colorkey) {
-	if(!SetIcon(filenameup, filenamedown)) {
+bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const char* filenameover, Uint32 colorkey) {
+	if(!SetIcon2(filenameup, filenamedown, filenameover)) {
 		return false;
 	}
 
@@ -381,12 +389,17 @@ bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, Uint32
 		SDL_SetColorKey(my_internaldata->srf_icon[1], SDL_SRCCOLORKEY, colorkey);
 	}
 
+	if(my_internaldata->srf_icon[2] != NULL) {
+		SDL_SetColorKey(my_internaldata->srf_icon[2], SDL_SRCCOLORKEY, colorkey);
+	}
+
 	return true;
 }
 
-bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown) {
+bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const char* filenameover) {
 	SDL_Surface* icon0 = PG_Application::LoadSurface(filenameup);
 	SDL_Surface* icon1 = PG_Application::LoadSurface(filenamedown);
+	SDL_Surface* icon2 = PG_Application::LoadSurface(filenameover);
 
 	if(icon0 == NULL) {
 		return false;
@@ -396,16 +409,27 @@ bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown) {
 
 	my_internaldata->srf_icon[0] = icon0;
 	my_internaldata->srf_icon[1] = icon1;
+	my_internaldata->srf_icon[2] = icon2;
 	my_internaldata->free_icons = true;
 
 	Redraw();
 	return true;
 }
 
-/**  */
-bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down) {
 
-	if(!icon_up && !icon_down) {
+/**  */
+bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown) {
+	return SetIcon2(filenameup, filenamedown, NULL);
+}
+
+bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, Uint32 colorkey) {
+	return SetIcon2(filenameup, filenamedown, NULL, colorkey);
+}
+
+/**  */
+bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down,SDL_Surface* icon_over) {
+
+	if(!icon_up && !icon_down && !icon_over) {
 		return false;
 	}
 
@@ -413,10 +437,15 @@ bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down) {
 
 	my_internaldata->srf_icon[0] = icon_up;
 	my_internaldata->srf_icon[1] = icon_down;
+	my_internaldata->srf_icon[2] = icon_over;
 
 	my_internaldata->free_icons = false;
 
 	return true;
+}
+
+bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down) {
+	return SetIcon(icon_up, icon_down, NULL);
 }
 
 /**  */
@@ -466,13 +495,21 @@ void PG_Button::SetTransparency(int norm, int pressed, int high) {
 	}
 }
 
+/**
+ * Set the moving distance of the image when we press on it
+ */
+void PG_Button::SetShift(int pixelshift) {
+	my_pressShift = pixelshift;
+}
+
+
 /**  */
 void PG_Button::eventButtonSurface(SDL_Surface** surface, int newstate, Uint16 w, Uint16 h) {
-    if (!surface)
-        return;
-    
+	if (!surface)
+		return;
+
 	PG_Rect r(0, 0, w, h);
-    
+
 	// remove the old button surface (if there are no more references)
 	PG_ThemeWidget::DeleteThemedSurface(*surface);
 
@@ -504,8 +541,7 @@ void PG_Button::SetBackground(int state, SDL_Surface* background, int mode) {
 bool PG_Button::GetPressed() {
 	if(my_internaldata->togglemode) {
 		return my_internaldata->isPressed;
-	}
-	else {
+	} else {
 		return (my_state == BTN_STATE_PRESSED);
 	}
 }
@@ -555,7 +591,25 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	r.my_height = 0;
 
 	// check for icon srf
-	SDL_Surface* iconsrf = (my_state == BTN_STATE_PRESSED) ? ((my_internaldata->srf_icon[1] == 0) ? my_internaldata->srf_icon[0] : my_internaldata->srf_icon[1]) : my_internaldata->srf_icon[0];
+	//
+	//SDL_Surface* iconsrf = (my_state == BTN_STATE_PRESSED) ? ((my_internaldata->srf_icon[1] == 0) ? my_internaldata->srf_icon[0] : my_internaldata->srf_icon[1]) : my_internaldata->srf_icon[0];
+
+	SDL_Surface* iconsrf;
+	if(my_state ==  BTN_STATE_PRESSED) {
+		if(my_internaldata->srf_icon[1] == 0) {
+			iconsrf = my_internaldata->srf_icon[0];
+		} else {
+			iconsrf = my_internaldata->srf_icon[1];
+		}
+	} else if(my_state ==BTN_STATE_HIGH) {
+		if(my_internaldata->srf_icon[2] == 0) {
+			iconsrf = my_internaldata->srf_icon[0];
+		} else {
+			iconsrf = my_internaldata->srf_icon[2];
+		}
+	} else {
+		iconsrf = my_internaldata->srf_icon[0];
+	}
 
 	int tw = my_width;
 
