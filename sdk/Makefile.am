@@ -4,3 +4,5 @@ EXTRA_DIST = \
 
 sampleapp.tar.gz:
 	tar --exclude CVS -czvf sampleapp.tar.gz $(srcdir)/sampleapp
+
+all: sampleapp.tar.gz
