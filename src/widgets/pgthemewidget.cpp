@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.2 $
     Status:           $State: Exp $
 */
 
@@ -33,9 +33,17 @@
 
 static PG_SurfaceCache my_SurfaceCache;
 
-struct PG_WidgetDataInternal{
+class PG_WidgetDataInternal {
+public:
+	PG_WidgetDataInternal() : 
+	cachesurface(NULL),
+	backgroundcolor(128,128,128),
+	freeimage(false),
+	simplebackground(false),
+	nocache(false) {};
+
 	SDL_Surface* cachesurface;
-	SDL_Color backgroundcolor;
+	PG_Color backgroundcolor;
 
 	bool freeimage;
 	bool simplebackground;
@@ -54,7 +62,7 @@ PG_ThemeWidget::PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, bool bCreate
 void PG_ThemeWidget::Init(const char* style) {
 	SetDirtyUpdate(true);
 	
-	my_internaldata = new PG_WidgetDataInternal;
+	_mid = new PG_WidgetDataInternal;
 	
 	my_backgroundFree = false;
 	my_background = NULL;
@@ -64,15 +72,11 @@ void PG_ThemeWidget::Init(const char* style) {
 	my_has_gradient = false;
 
 	my_image = NULL;
-	my_internaldata->freeimage = false;
-	my_internaldata->simplebackground = false;
-	my_internaldata->nocache = false;
+	/*_mid->freeimage = false;
+	_mid->simplebackground = false;
+	_mid->nocache = false;
 
-	my_internaldata->backgroundcolor.r = 128;
-	my_internaldata->backgroundcolor.g = 128;
-	my_internaldata->backgroundcolor.b = 128;
-
-	my_internaldata->cachesurface = NULL;
+	_mid->cachesurface = NULL;*/
 
 	LoadThemeStyle(style);
 }
@@ -84,10 +88,10 @@ PG_ThemeWidget::~PG_ThemeWidget() {
 	FreeImage();
 	
 	// remove the cachesurface
-	DeleteThemedSurface(my_internaldata->cachesurface);
+	DeleteThemedSurface(_mid->cachesurface);
 	
 	// delete internal data
-	delete my_internaldata;
+	delete _mid;
 }
 
 void PG_ThemeWidget::LoadThemeStyle(const char* widgettype) {
@@ -98,7 +102,6 @@ void PG_ThemeWidget::LoadThemeStyle(const char* widgettype) {
 }
 
 void PG_ThemeWidget::LoadThemeStyle(const char* widgettype, const char* objectname) {
-	int b;
 	PG_Theme* t = PG_Application::GetTheme();
 
 	if(my_srfObject == NULL) {
@@ -106,19 +109,9 @@ void PG_ThemeWidget::LoadThemeStyle(const char* widgettype, const char* objectna
 			PG_ThemeWidget::LoadThemeStyle(widgettype, "ThemeWidget");
 		}
 
-		b = t->FindProperty(widgettype, objectname, "simplebackground");
-		if(b != -1) {
-			SetSimpleBackground(b);
-		}
-		//my_internaldata->simplebackground = (b != -1) ? b : my_internaldata->simplebackground;
-
-		b = t->FindProperty(widgettype, objectname, "nocache");
-		my_internaldata->nocache = (b != -1) ? b : my_internaldata->nocache;
-
-		SDL_Color* c = t->FindColor(widgettype, objectname, "backgroundcolor");
-		if(c != NULL) {
-			my_internaldata->backgroundcolor = *c;
-		}
+		t->GetProperty(widgettype, objectname, "simplebackground", _mid->simplebackground);
+		t->GetProperty(widgettype, objectname, "nocache", _mid->nocache);
+		t->GetColor(widgettype, objectname, "backgroundcolor", _mid->backgroundcolor);
 	}
 
 	const char *font = t->FindFontName(widgettype, objectname);
@@ -134,23 +127,9 @@ void PG_ThemeWidget::LoadThemeStyle(const char* widgettype, const char* objectna
 
 	SetBackground(t->FindSurface(widgettype, objectname, "background"));
 
-	b = t->FindProperty(widgettype, objectname, "blend");
-
-	if(b != -1) {
-		SetBackgroundBlend(b);
-	}
-
-	b = t->FindProperty(widgettype, objectname, "bordersize");
-
-	if(b != -1) {
-		my_bordersize = b;
-	}
-
-	b = t->FindProperty(widgettype, objectname, "backmode");
-
-	if(b != -1) {
-		my_backgroundMode = b;
-	}
+	t->GetProperty(widgettype, objectname, "blend", my_blendLevel);
+	t->GetProperty(widgettype, objectname, "bordersize", my_bordersize);
+	t->GetProperty(widgettype, objectname, "backmode", my_backgroundMode);
 
 	PG_Gradient* g = t->FindGradient(widgettype, objectname, "gradient");
 
@@ -158,23 +137,17 @@ void PG_ThemeWidget::LoadThemeStyle(const char* widgettype, const char* objectna
 		SetGradient(*g);
 		my_has_gradient = true;
 	}
-	
-	b = t->FindProperty(widgettype, objectname, "transparency");
-	if(b != -1)
-		SetTransparency((Uint32)b);
+
+	Uint8 trans = GetTransparency();
+	t->GetProperty(widgettype, objectname, "transparency", trans);
+	SetTransparency(trans);
 
 	PG_Widget::LoadThemeStyle(widgettype, objectname);
 
-	int w = t->FindProperty(widgettype, objectname, "width");
-	if (w==-1)
-		w=Width();
-	int h = t->FindProperty(widgettype, objectname, "height");
-	if (h==-1)
-		h=Height();
-
-	if(w <=0 || h <= 0) {
-		return;
-	}
+	int w = Width();
+	t->GetProperty(widgettype, objectname, "width", w);
+	int h = Height();
+	t->GetProperty(widgettype, objectname, "height", h);
 
 	if((w != Width()) || (h != Height())) {
 		SizeWidget(w, h);
@@ -199,7 +172,7 @@ void PG_ThemeWidget::eventDraw(SDL_Surface* surface, const PG_Rect& rect) {
 	}
 }
 
-bool PG_ThemeWidget::SetBackground(const char* filename, int mode, Uint32 colorkey) {
+bool PG_ThemeWidget::SetBackground(const char* filename, int mode, const PG_Color &colorkey) {
 	// try to load the file
 	SDL_Surface* temp = PG_Application::LoadSurface(filename, true);
 
@@ -220,12 +193,7 @@ bool PG_ThemeWidget::SetBackground(const char* filename, int mode, Uint32 colork
 		return false;
 	}
 
-	Uint32 c = SDL_MapRGB(
-		my_background->format, 
-		(colorkey>>16) & 0xFF,
-		(colorkey>>8) & 0xFF,
-		colorkey & 0xFF);
-		
+	Uint32 c = colorkey.MapRGB(my_background->format);
 	SDL_SetColorKey(my_background, SDL_SRCCOLORKEY, c);
 	 
 	if(my_srfObject == NULL) {
@@ -298,8 +266,8 @@ void PG_ThemeWidget::FreeSurface() {
 void PG_ThemeWidget::SetGradient(PG_Gradient& grad) {
 	my_gradient = grad;
 	my_has_gradient = true;
-	DeleteThemedSurface(my_internaldata->cachesurface);
-	my_internaldata->cachesurface = NULL;
+	DeleteThemedSurface(_mid->cachesurface);
+	_mid->cachesurface = NULL;
 	Redraw();
 }
 
@@ -313,11 +281,11 @@ void PG_ThemeWidget::SetBorderSize(int b) {
 
 void PG_ThemeWidget::FreeImage() {
 
-	if(my_internaldata->freeimage) {
+	if(_mid->freeimage) {
 		PG_Application::UnloadSurface(my_image); // false
 	}
 
-	my_internaldata->freeimage = false;
+	_mid->freeimage = false;
 	my_image = NULL;
 	return;
 }
@@ -332,7 +300,7 @@ bool PG_ThemeWidget::SetImage(SDL_Surface* image, bool bFreeImage) {
 	}
 
 	FreeImage();
-	my_internaldata->freeimage = bFreeImage;
+	_mid->freeimage = bFreeImage;
 	my_image = image;
 
 	Update();
@@ -363,20 +331,20 @@ void PG_ThemeWidget::eventSizeWidget(Uint16 w, Uint16 h) {
 }
 
 void PG_ThemeWidget::CreateSurface(Uint16 w, Uint16 h) {
-	if(my_internaldata->simplebackground) {
+	if(_mid->simplebackground) {
 		return;
 	}
 
-	DeleteThemedSurface(my_internaldata->cachesurface);
+	DeleteThemedSurface(_mid->cachesurface);
 
 	if(w == 0 || h == 0) {
-		my_internaldata->cachesurface = NULL;
+		_mid->cachesurface = NULL;
 		return;
 	}
 
 	PG_Rect r(my_xpos, my_ypos, w, h);
 
-	my_internaldata->cachesurface = CreateThemedSurface(
+	_mid->cachesurface = CreateThemedSurface(
 	                      r,
 	                      my_has_gradient ? &my_gradient : 0,
 	                      my_background,
@@ -391,31 +359,28 @@ void PG_ThemeWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 		return;
 	}
 
-	if(!my_internaldata->simplebackground && !my_internaldata->nocache) {
-		if(my_internaldata->cachesurface == NULL) {
+	if(!_mid->simplebackground && !_mid->nocache) {
+		if(_mid->cachesurface == NULL) {
 			CreateSurface(Width(), Height());
 		}
-		PG_Widget::eventBlit(my_internaldata->cachesurface, src, dst);
-	} else if (my_internaldata->simplebackground) {
+		PG_Widget::eventBlit(_mid->cachesurface, src, dst);
+	} else if (_mid->simplebackground) {
 		if(GetTransparency() < 255) {
-			Uint32 c = SDL_MapRGBA(
+			Uint32 c = _mid->backgroundcolor.MapRGBA(
 			               my_srfScreen->format,
-			               my_internaldata->backgroundcolor.r,
-			               my_internaldata->backgroundcolor.g,
-			               my_internaldata->backgroundcolor.b,
-			               255-GetTransparency());
+						   255-GetTransparency());
 			SDL_FillRect(my_srfScreen, (SDL_Rect*)&dst, c);
 		}
-	} else if (my_internaldata->nocache) {
-		my_internaldata->cachesurface = CreateThemedSurface(
+	} else if (_mid->nocache) {
+		_mid->cachesurface = CreateThemedSurface(
 		                      *this,
 		                      my_has_gradient ? &my_gradient : 0,
 		                      my_background,
 		                      my_backgroundMode,
 		                      my_blendLevel);
-		PG_Widget::eventBlit(my_internaldata->cachesurface, src, dst);
-		DeleteThemedSurface(my_internaldata->cachesurface);
-		my_internaldata->cachesurface = NULL;
+		PG_Widget::eventBlit(_mid->cachesurface, src, dst);
+		DeleteThemedSurface(_mid->cachesurface);
+		_mid->cachesurface = NULL;
 	}
 
 	if(my_bordersize > 0) {
@@ -432,14 +397,14 @@ void PG_ThemeWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 }
 
 void PG_ThemeWidget::SetTransparency(Uint8 t) {
-	if(my_internaldata->simplebackground || my_internaldata->nocache) {
+	if(_mid->simplebackground || _mid->nocache) {
 		PG_Widget::SetTransparency(t);
 		return;
 	}
 
 	if(t == 255) {
-		DeleteThemedSurface(my_internaldata->cachesurface);
-		my_internaldata->cachesurface = NULL;
+		DeleteThemedSurface(_mid->cachesurface);
+		_mid->cachesurface = NULL;
 	} else if(GetTransparency() == 255) {
 		CreateSurface();
 	}
@@ -526,12 +491,12 @@ void PG_ThemeWidget::DeleteThemedSurface(SDL_Surface* surface) {
 }
 
 void PG_ThemeWidget::SetSimpleBackground(bool simple) {
-	my_internaldata->simplebackground = simple;
-	DeleteThemedSurface(my_internaldata->cachesurface);
-	my_internaldata->cachesurface = NULL;
+	_mid->simplebackground = simple;
+	DeleteThemedSurface(_mid->cachesurface);
+	_mid->cachesurface = NULL;
 	Redraw();
 }
 
-void PG_ThemeWidget::SetBackgroundColor(const SDL_Color& c) {
-	my_internaldata->backgroundcolor = c;
+void PG_ThemeWidget::SetBackgroundColor(const PG_Color& c) {
+	_mid->backgroundcolor = c;
 }

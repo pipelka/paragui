@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:51 $
+    Update Date:      $Date: 2003/11/24 09:17:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
@@ -56,13 +56,13 @@
 	button:
  
 	<blockquote>
-	\p BTN_ID_OK <img src="images/button_ok_icon.png" alt="OK Icon"><br>
-	\p BTN_ID_YES <img src="images/button_yes_icon.png" alt="Yes Icon"><br>
-	\p BTN_ID_NO <img src="images/button_no_icon.png" alt="No Icon"><br>
-	\p BTN_ID_APPPLY <img src="images/button_apply_icon.png" alt="Apply Icon"><br>
-	\p BTN_ID_CANCEL <img src="images/button_cancel_icon.png" alt="Cancel Icon"><br>
-	\p BTN_ID_CLOSE <img src="images/button_close_icon.png" alt="Close Icon"><br>
-	\p BTN_ID_HELP <img src="images/button_help_icon.png" alt="Help Icon">
+	\p PG_Button::OK <img src="images/button_ok_icon.png" alt="OK Icon"><br>
+	\p PG_Button::YES <img src="images/button_yes_icon.png" alt="Yes Icon"><br>
+	\p PG_Button::NO <img src="images/button_no_icon.png" alt="No Icon"><br>
+	\p PG_Button::APPLY <img src="images/button_apply_icon.png" alt="Apply Icon"><br>
+	\p PG_Button::CANCEL <img src="images/button_cancel_icon.png" alt="Cancel Icon"><br>
+	\p PG_Button::CLOSE <img src="images/button_close_icon.png" alt="Close Icon"><br>
+	\p PG_Button::HELP <img src="images/button_help_icon.png" alt="Help Icon">
 	</blockquote>
     
 	\anchor theme_PG_Button
@@ -142,6 +142,15 @@ public:
 	};
 
 	/**
+	Button states
+	**/
+	typedef enum {
+		PRESSED,
+		UNPRESSED,
+		HIGHLITED
+	} STATE;
+
+	/**
 	Signal type declaration
 	**/
 	template<class datatype = PG_Pointer> class SignalButtonClick : public PG_Signal1<PG_Button*, datatype> {};
@@ -174,7 +183,7 @@ public:
 
 		This member function set's the buttons gradient for a specific state.
 	*/
-	void SetGradient(int state, PG_Gradient& gradient);
+	void SetGradient(STATE state, PG_Gradient& gradient);
 
 	/**
 		Set the background.
@@ -184,7 +193,7 @@ public:
 
 		This member function set's the buttons background and tiling mode for a specific state.
 	*/
-	void SetBackground(int state, SDL_Surface* background, int mode = BKMODE_TILE);
+	void SetBackground(STATE state, SDL_Surface* background, int mode = BKMODE_TILE);
 
 	/**
 	Set the color of the border
@@ -223,7 +232,7 @@ public:
 	bool SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down = NULL);
 #endif
 
-	SDL_Surface* GetIcon(Uint8 num);	
+	SDL_Surface* GetIcon(STATE num);	
 	
 	/**
 	Set the bordersize of the button
@@ -241,7 +250,7 @@ public:
 	void SetPressed(bool pressed);
 
 	/**  */
-	void SetTransparency(int norm, int pressed, int high);
+	void SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high);
 
 	/**
 	 * Set the moving distance of the image when we press on it
@@ -260,21 +269,21 @@ public:
 	If the blend-level is 0 only the background image is visible.
 	At a level of 255 only the gradient is visible.
 	*/
-	void SetBlendLevel(int mode, Uint8 blend);
+	void SetBlendLevel(STATE mode, Uint8 blend);
 
 	/**
 	Get the current blend level.
 	@param mode button mode
 	@return the current blend level
 	*/
-	Uint8 GetBlendLevel(int mode);
+	Uint8 GetBlendLevel(STATE mode);
 
 	SignalButtonClick<> sigClick;
 
 protected:
 
 	/**  */
-	virtual void eventButtonSurface(SDL_Surface** surface, int newstate, Uint16 w, Uint16 h);
+	virtual void eventButtonSurface(SDL_Surface** surface, STATE newstate, Uint16 w, Uint16 h);
 
 	/**  */
 	void eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst);
@@ -294,12 +303,6 @@ protected:
 	/**  */
 	bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);
 
-	int my_bordersize[3];
-	int my_transparency[3];
-	int my_state;
-	//int id;
-	int my_pressShift;
-
 private:
 
 #ifndef SWIG
@@ -314,7 +317,7 @@ private:
 	/**  */
 	void FreeIcons();
 
-	PG_ButtonDataInternal* my_internaldata;
+	PG_ButtonDataInternal* _mid;
 };
 
 // Standard button IDs

@@ -22,19 +22,17 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/setpixel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.8.1 $
     Status:           $State: Exp $
 */
 
 #include "pgdraw.h"
 
-void PG_Draw::SetPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, SDL_Surface * surface) {
-	static Uint8 old_r = 0;
-	static Uint8 old_g = 0;
-	static Uint8 old_b = 0;
-	static Uint8 ri, gi, bi;
+void PG_Draw::SetPixel(int x, int y, const PG_Color& c, SDL_Surface * surface) {
+	static PG_Color old;
+	Uint8 ri,gi,bi;
 
 	static Uint32 pixel;
 	static Uint8 *bits;
@@ -54,11 +52,9 @@ void PG_Draw::SetPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, SDL_Surface * su
 	bpp = surface->format->BytesPerPixel;
 	bits = ((Uint8 *) surface->pixels) + y * surface->pitch + x * bpp;
 
-	if(!((old_r==r) && (old_g==g) && (old_b==b))) {
-		pixel = SDL_MapRGB(surface->format, r, g, b);
-		old_r = r;
-		old_g = g;
-		old_b = b;
+	if(old != c) {
+		pixel = c.MapRGB(surface->format);
+		old = c;
 	}
 
 	/* Set the pixel */

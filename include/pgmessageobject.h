@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:52 $
+    Update Date:      $Date: 2003/11/24 09:17:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -121,7 +121,7 @@ public:
 	@param	id
 	@param	data			message specific data value
 	*/
-	bool SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, MSG_ID id, MSG_DATA data);
+	//bool SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, MSG_ID id, MSG_DATA data);
 
 	/**
 	Set a callback function for an event
@@ -129,7 +129,7 @@ public:
 	@param	cbfunc			the function to call when the defined event is triggerd
 	@param	clientdata	client specific message data
 	*/
-	void SetEventCallback(PG_MSG_TYPE type, MSG_CALLBACK cbfunc, void *clientdata = NULL);
+	//void SetEventCallback(PG_MSG_TYPE type, MSG_CALLBACK cbfunc, void *clientdata = NULL);
 
 	/**
 	Set an object member function for an event
@@ -138,7 +138,7 @@ public:
 	@param	cbfunc			member function to call
 	@param	clientdata	client specific message data
 	*/
-	void SetEventObject(PG_MSG_TYPE type, PG_EventObject* calledobj, MSG_CALLBACK_OBJ cbfunc, void *clientdata = NULL);
+	//void SetEventObject(PG_MSG_TYPE type, PG_EventObject* calledobj, MSG_CALLBACK_OBJ cbfunc, void *clientdata = NULL);
 
 	/**
 	Sends an event to the global message queue.

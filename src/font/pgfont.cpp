@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:41 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -93,27 +93,30 @@ void PG_FontEngine::FontEngineError(FT_Error error) {
 
 PG_GlyphCacheItem* PG_FontEngine::GetGlyph(PG_Font *Param, int glyph_index) {
 
-	PG_GlyphCacheItem *GlyphCacheItem = Param->GetFaceCache()->GlyphCache[glyph_index];
+	PG_FontFaceCacheItem* facecache = Param->GetFaceCache();
+	PG_GlyphCacheItem *GlyphCacheItem = facecache->GlyphCache[glyph_index];
 
 	if(GlyphCacheItem != NULL) {
 		return GlyphCacheItem;
 	}
 
-	if (FT_Load_Glyph(Param->GetFaceCache()->Face, glyph_index, FT_LOAD_RENDER ))
+	FT_Face face = facecache->Face;
+
+	if (FT_Load_Glyph(face, glyph_index, FT_LOAD_RENDER ))
 		return NULL;
 
-	Uint32 bitmapsize = Param->GetFaceCache()->Face->glyph->bitmap.pitch * Param->GetFaceCache()->Face->glyph->bitmap.rows;
-	GlyphCacheItem =  new PG_GlyphCacheItem(bitmapsize);
+	Uint32 bitmapsize = face->glyph->bitmap.pitch * face->glyph->bitmap.rows;
+	GlyphCacheItem = new PG_GlyphCacheItem(bitmapsize);
 
 	GlyphCacheItem->Glyph_Index = glyph_index;
-	GlyphCacheItem->Bitmap = Param->GetFaceCache()->Face->glyph->bitmap;
-	GlyphCacheItem->Bitmap_left = Param->GetFaceCache()->Face->glyph->bitmap_left;
-	GlyphCacheItem->Bitmap_top = Param->GetFaceCache()->Face->glyph->bitmap_top;
-	GlyphCacheItem->Advance_x = FT_CEIL(Param->GetFaceCache()->Face->glyph->metrics.horiAdvance);
-	memcpy(GlyphCacheItem->data(), Param->GetFaceCache()->Face->glyph->bitmap.buffer, bitmapsize);
+	GlyphCacheItem->Bitmap = face->glyph->bitmap;
+	GlyphCacheItem->Bitmap_left = face->glyph->bitmap_left;
+	GlyphCacheItem->Bitmap_top = face->glyph->bitmap_top;
+	GlyphCacheItem->Advance_x = FT_CEIL(face->glyph->metrics.horiAdvance);
+	memcpy(GlyphCacheItem->data(), face->glyph->bitmap.buffer, bitmapsize);
 	GlyphCacheItem->Bitmap.buffer = (unsigned char*)GlyphCacheItem->data();
 
-	Param->GetFaceCache()->GlyphCache[glyph_index] = GlyphCacheItem;
+	facecache->GlyphCache[glyph_index] = GlyphCacheItem;
 	return GlyphCacheItem;
 }
 
@@ -154,7 +157,7 @@ inline void BlitTemplate(DT pixels, SDL_Surface* Surface, FT_Bitmap *Bitmap, int
 	Uint32 color = 0;
 	Sint32 v;
 
-	SDL_Color fc = Param->GetColor();
+	PG_Color fc = Param->GetColor();
 	cr = fc.r;
 	cg = fc.g;
 	cb = fc.b;
@@ -181,8 +184,8 @@ inline void BlitTemplate(DT pixels, SDL_Surface* Surface, FT_Bitmap *Bitmap, int
 
 			// Get the pixel
 			color = *((DT) (dst_pixels));
-			if ( Surface->format->BytesPerPixel > 1 ) {
-
+			switch(Surface->format->BytesPerPixel) {
+			default:
 				// get the RGBA values
 				rv = (color & Rmask) >> Rshift;
 				r = (rv << Rloss) + (rv >> Rloss8);
@@ -221,11 +224,13 @@ inline void BlitTemplate(DT pixels, SDL_Surface* Surface, FT_Bitmap *Bitmap, int
 
 				// get the destination color
 				color = (r >> Rloss) << Rshift
-        		    | (g >> Gloss) << Gshift
-                	    | (b >> Bloss) << Bshift
+					| (g >> Gloss) << Gshift
+					| (b >> Bloss) << Bshift
 	        	    | ((a >> Aloss) << Ashift & Amask);
 				// Set the pixel
-			} else {
+				break;
+				
+			case 1:
 				SDL_GetRGBA(color, format, &r, &g, &b, &a);
 
 				// calculate new RGBA values
@@ -249,6 +254,7 @@ inline void BlitTemplate(DT pixels, SDL_Surface* Surface, FT_Bitmap *Bitmap, int
 					a = v;
 				}
  				color = SDL_MapRGBA(format, r,g,b, a);
+				break;
 			}
 			*((DT) (dst_pixels)) = color;
 
@@ -418,7 +424,7 @@ bool PG_FontEngine::BlitFTBitmap(SDL_Surface *Surface, FT_Bitmap *Bitmap, int Po
 							//if (Param->Alpha != 255)
 							//	a = (a * Param->Alpha) / 255;
 
-							raw_pixels[int(ioffset) + x + (my_charSurface->pitch/4)*(y)] = SDL_MapRGBA(my_charSurface->format, Param->Color.r, Param->Color.g, Param->Color.b, a);
+							raw_pixels[int(ioffset) + x + (my_charSurface->pitch/4)*(y)] = Param->Color.MapRGBA(my_charSurface->format, a);
 						}
 						SrcPix -= x;
 					}
@@ -436,7 +442,7 @@ bool PG_FontEngine::BlitFTBitmap(SDL_Surface *Surface, FT_Bitmap *Bitmap, int Po
 						if (Param->Alpha != 255)
 							a = (a * Param->Alpha) / 255;
 
-						*raw_pixels = SDL_MapRGBA(my_charSurface->format, Param->Color.r, Param->Color.g, Param->Color.b, a);
+						*raw_pixels = Param->Color.MapRGBA(my_charSurface->format, a);
 						raw_pixels++;
 					}
 					SrcPix -= x;
@@ -539,12 +545,7 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 			SDL_FillRect(
 				Surface,
 				&und_rect,
-				SDL_MapRGB(
-					Surface->format,
-					font->GetColor().r,
-					font->GetColor().g,
-					font->GetColor().b
-					)
+				font->GetColor().MapRGB(Surface->format)
 				);
 		}
 	}

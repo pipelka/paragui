@@ -22,15 +22,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/drawline.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.8.1 $
     Status:           $State: Exp $
 */
 
 #include "pgdraw.h"
 
-void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const SDL_Color& c, Uint8 width, int *pixelflag) {
+void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const PG_Color& c, Uint8 width, int *pixelflag) {
 	Uint32 xp, yp, xf, yf;
 	static Uint32 oldx, oldy;
 
@@ -39,7 +39,7 @@ void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const SDL_Color& c, Uin
     
 	//	width=1? Only need to draw 1 pixel
 	if(width==1) {
-		PG_Draw::SetPixel(x, y, c.r, c.g, c.b, surface);
+		PG_Draw::SetPixel(x, y, c, surface);
 	} else {
 
 		//	calculate new pixel position (shifts are faster)
@@ -54,7 +54,7 @@ void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const SDL_Color& c, Uin
 			//	draw all pixels needed
 			for (xf=0; xf<width; xf++) {
 				for (yf=0; yf<width; yf++) {
-					PG_Draw::SetPixel(xf+xp, yf+yp, c.r, c.g, c.b, surface);
+					PG_Draw::SetPixel(xf+xp, yf+yp, c, surface);
 				}
 			}
 		}
@@ -67,7 +67,7 @@ void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const SDL_Color& c, Uin
 
 				//	only need to draw the bottom pixels
 				for (xf=0; xf<width; xf++) {
-					PG_Draw::SetPixel(xf+xp, yp-1+(width-1), c.r, c.g, c.b, surface);
+					PG_Draw::SetPixel(xf+xp, yp-1+(width-1), c, surface);
 				}
 			}
 
@@ -75,7 +75,7 @@ void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const SDL_Color& c, Uin
 			if (xp>oldx) {
 				//	only need to draw the most right pixels
 				for (yf=0; yf<width; yf++) {
-					PG_Draw::SetPixel(xp-1+(width-1), yp+yf, c.r, c.g, c.b, surface);
+					PG_Draw::SetPixel(xp-1+(width-1), yp+yf, c, surface);
 				}
 			}
 
@@ -84,7 +84,7 @@ void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const SDL_Color& c, Uin
 
 				//	only need to draw the most left pixels
 				for (yf=0; yf<width; yf++) {
-					PG_Draw::SetPixel(xp+1, yp+yf, c.r, c.g, c.b, surface);
+					PG_Draw::SetPixel(xp+1, yp+yf, c, surface);
 				}
 			}
 
@@ -96,7 +96,7 @@ void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const SDL_Color& c, Uin
 }
 
 void octant0(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 deltax, Uint32 deltay,
-             int xdirection, const SDL_Color& color, Uint8 width, int pixelflag)
+             int xdirection, const PG_Color& color, Uint8 width, int pixelflag)
 {
 	int deltay2;
 	int error;
@@ -131,7 +131,7 @@ void octant0(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 deltax, Uint32 d
 } /* end of the function */
 
 void octant1(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 deltax, Uint32 deltay,
-             int xdirection, const SDL_Color& color, Uint8 width, int pixelflag)
+             int xdirection, const PG_Color& color, Uint8 width, int pixelflag)
 {
 	int deltax2;
 	int error;
@@ -166,7 +166,7 @@ void octant1(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 deltax, Uint32 d
 
 } /* end of the function */
 
-void PG_Draw::DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Uint32 y1, const SDL_Color& color, Uint8 width) {
+void PG_Draw::DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Uint32 y1, const PG_Color& color, Uint8 width) {
 	int deltax;
 	int deltay;
 	int temp;

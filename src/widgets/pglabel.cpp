@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/06/29 17:09:49 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
     Status:           $State: Exp $
 */
 
@@ -53,22 +53,15 @@ void PG_Label::LoadThemeStyle(const char* style) {
 }
 
 void PG_Label::LoadThemeStyle(const char* widgettype, const char* object) {
-	const char* s = NULL;
-	int b = -1;
-
 	PG_Theme* t = PG_Application::GetTheme();
 
-	s = t->FindString(widgettype, object, "label");
+	const char* s = t->FindString(widgettype, object, "label");
 
 	if(s != NULL) {
 		SetText(s);
 	}
 
-	b = t->FindProperty(widgettype, object, "alignment");
-
-	if(b != -1) {
-		SetAlignment(b);
-	}
+	t->GetProperty(widgettype, object, "alignment", my_alignment);
 
 	PG_Widget::LoadThemeStyle(widgettype, object);
 }

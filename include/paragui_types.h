@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 15:00:59 $
+    Update Date:      $Date: 2003/11/24 09:17:20 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui_types.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
     Status:           $State: Exp $
 */
 
@@ -41,6 +41,8 @@
 #include "paragui_types.h"
 %}
 #endif
+
+#include "pgcolor.h"
 
 // Forward declarations
 
@@ -63,7 +65,7 @@ typedef struct {
 
 //! Structure for widget gradients
 typedef struct {
-	SDL_Color colors[4];	//!< array of gradient colors
+	PG_Color colors[4];	//!< array of gradient colors
 } PG_Gradient;
 
 #ifndef DOXYGEN_SKIP

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.2 $
     Status:           $State: Exp $
 */
 
@@ -81,33 +81,23 @@ const char* PG_Window::GetTitle() {
 
 void PG_Window::LoadThemeStyle(const char* widgettype) {
 	PG_Theme* t = PG_Application::GetTheme();
-	int b;
 
 	PG_ThemeWidget::LoadThemeStyle(widgettype, "Window");
 
 	my_titlebar->LoadThemeStyle(widgettype, "Titlebar");
 
-	b = t->FindProperty(widgettype, "Titlebar", "height");
-	if(b != -1)
-		my_heightTitlebar = b;
-
+	t->GetProperty(widgettype, "Titlebar", "height", my_heightTitlebar);
 	my_titlebar->SizeWidget(my_width, my_heightTitlebar);
 	my_labelTitle->SizeWidget(my_width, my_heightTitlebar);
 
-	long c = t->FindProperty(widgettype, "Titlebar", "textcolor");
-	if(c != -1)
-		SetColorTitlebar(c);
-
-	b = t->FindProperty(widgettype, "Titlebar", "showclosebutton");
-	if(b != -1)
-		my_showCloseButton = (b == 1);
-
+	PG_Color c = my_labelTitle->GetFontColor();
+	t->GetColor(widgettype, "Titlebar", "textcolor", c);
+	SetColorTitlebar(c);
+	
+	t->GetProperty(widgettype, "Titlebar", "showclosebutton", my_showCloseButton);
 	my_buttonClose->LoadThemeStyle(widgettype, "CloseButton");
 
-	b = t->FindProperty(widgettype, "Titlebar", "showminimizebutton");
-	if(b != -1)
-		my_showMinimizeButton = (b == 1);
-
+	t->GetProperty(widgettype, "Titlebar", "showminimizebutton", my_showMinimizeButton);
 	my_buttonMinimize->LoadThemeStyle(widgettype, "MinimizeButton");
 
 	my_buttonClose->MoveWidget(PG_Rect(my_width - my_heightTitlebar, 0, my_heightTitlebar, my_heightTitlebar));
@@ -257,16 +247,7 @@ bool PG_Window::handleButtonClick(PG_Button* button) {
 	return true;
 }
 
-void PG_Window::SetColorTitlebar(const SDL_Color& c) {
-	my_labelTitle->SetFontColor(c);
-}
-
-void PG_Window::SetColorTitlebar(Uint32 color) {
-	SDL_Color c;
-	c.r = (color >> 16) & 0xFF;
-	c.g = (color >> 8)  & 0xFF;
-	c.b = color & 0xFF;
-
+void PG_Window::SetColorTitlebar(const PG_Color& c) {
 	my_labelTitle->SetFontColor(c);
 }
 

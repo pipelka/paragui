@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 08:10:24 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgprogressbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
     Status:           $State: Exp $
 */
 
@@ -77,7 +77,6 @@ void PG_ProgressBar::SetDrawPercentage(bool drawit) {
 
 
 void PG_ProgressBar::LoadThemeStyle(const char* widgettype) {
-	int b;
 	PG_Theme* t = PG_Application::GetTheme();
 
 	PG_ThemeWidget::LoadThemeStyle(widgettype, "Background");
@@ -90,17 +89,8 @@ void PG_ProgressBar::LoadThemeStyle(const char* widgettype) {
 		my_pbGradient = *g;
 	}
 
-	b = t->FindProperty(widgettype, "Indicator", "backmode");
-
-	if(b != -1) {
-		my_pbBackmode = b;
-	}
-
-	b = t->FindProperty(widgettype, "Indicator", "blend");
-
-	if(b != -1) {
-		my_pbBlend = b;
-	}
+	t->GetProperty(widgettype, "Indicator", "backmode", my_pbBackmode);
+	t->GetProperty(widgettype, "Indicator", "blend", my_pbBlend);
 }
 
 void PG_ProgressBar::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {

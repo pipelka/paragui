@@ -3,7 +3,7 @@
 #include "pgfont.h"
 
 struct PG_FontDataInternal {
-	SDL_Color color;
+	PG_Color color;
 	int alpha;
 	int style;
 
@@ -57,11 +57,11 @@ int PG_Font::GetFontHeight() {
 		FT_CEIL(FT_MulFix(my_internaldata->FaceCache->Face->height, my_internaldata->FaceCache->Face->size->metrics.y_scale)) : 0;
 }
 
-void PG_Font::SetColor(const SDL_Color& c) {
+void PG_Font::SetColor(const PG_Color& c) {
 	my_internaldata->color = c;
 }
 
-SDL_Color PG_Font::GetColor() {
+PG_Color PG_Font::GetColor() {
 	return my_internaldata->color;
 }
 	

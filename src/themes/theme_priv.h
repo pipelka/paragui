@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:41 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
     Status:           $State: Exp $
 */
 
@@ -30,6 +30,7 @@
 #define THEME_PRIV_H
 
 #include "paragui.h"
+#include "pgcolor.h"
 
 #include <string>
 #include <vector>
@@ -56,12 +57,6 @@ public:
 	int size;
 	int index;
 	int style;
-};
-
-class THEME_COLOR {
-public:
-	SDL_Color c;
-	Uint32 val;
 };
 
 class THEME_STRING {
@@ -95,11 +90,9 @@ public:
 	long value;
 };
 
-class THEME_GRADIENT {
+class THEME_GRADIENT : public PG_Gradient {
 public:
 	string name;
-	THEME_COLOR color[4];
-	PG_Gradient gradient;
 };
 
 #ifdef HASH_MAP_INC
@@ -187,8 +180,11 @@ public:
 
 	SDL_Surface* FindSurface(const char* widgettype, const char* object, const char* name);
 	PG_Gradient* FindGradient(const char* widgettype, const char* object, const char* name);
-	long FindProperty(const char* widgettype, const char* object, const char* name);
-	SDL_Color* FindColor(const char* widgettype, const char* object, const char* name);
+	void GetProperty(const char* widgettype, const char* object, const char* name, long& prop);
+	void GetProperty(const char* widgettype, const char* object, const char* name, Uint8& prop);
+	void GetProperty(const char* widgettype, const char* object, const char* name, bool& prop);
+	void GetProperty(const char* widgettype, const char* object, const char* name, int& prop);
+	void GetColor(const char* widgettype, const char* object, const char* name, PG_Color& color);
 	const char* FindString(const char* widgettype, const char* object, const char* name);
 
 	THEME_FONT* defaultfont;

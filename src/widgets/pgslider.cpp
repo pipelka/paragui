@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgslider.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -75,26 +75,19 @@ PG_Slider::PG_Slider(PG_Widget* parent, int id, const PG_Rect& r, int direction,
 PG_Slider::~PG_Slider() {}
 
 void PG_Slider::LoadThemeStyle(const char* widgettype) {
-	int b;
 	PG_Theme* t = PG_Application::GetTheme();
 
 	//PG_ScrollBar::LoadThemeStyle(widgettype);
 
 	if(sb_direction == PG_SB_VERTICAL) {
-		b = t->FindProperty(widgettype, "SliderDragV", "height");
-		if(b != -1) {
-			position[3].h = b;
-			my_sliderSize = b;
-		}
+		t->GetProperty(widgettype, "SliderDragV", "height", position[3].h);
+		my_sliderSize = position[3].h;
 
 		scrollbutton[0]->LoadThemeStyle(widgettype, "SliderUp");
 		scrollbutton[1]->LoadThemeStyle(widgettype, "SliderDown");
 	} else {
-		b = t->FindProperty(widgettype, "SliderDragH", "width");
-		if(b != -1) {
-			position[3].w = b;
-			my_sliderSize = b;
-		}
+		t->GetProperty(widgettype, "SliderDragH", "width", position[3].w);
+		my_sliderSize = position[3].w;
 
 		scrollbutton[0]->LoadThemeStyle(widgettype, "SliderLeft");
 		scrollbutton[1]->LoadThemeStyle(widgettype, "SliderRight");

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:51 $
+    Update Date:      $Date: 2003/11/24 09:17:20 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.2 $
     Status:           $State: Exp $
 */
 
@@ -46,7 +46,6 @@
 %include "paragui_types.h"
 %include "pgrect.h"
 %include "pgmessageobject.h"
-%include "pgeventobject.h"
 %include "pgwidget.h"
 %include "pgthemewidget.h"
 %include "pglayout.h"
@@ -158,15 +157,15 @@ using namespace std;
 /**
 	Buttonstate: Normal (up).
 */
-#define BTN_STATE_NORMAL		0
+//#define BTN_STATE_NORMAL		PG_Button::UNPRESSED
 /**
 	Buttonstate: Pressed (down).
 */
-#define BTN_STATE_PRESSED		1
+//#define BTN_STATE_PRESSED		PG_Button::PRESSED
 /**
 	Buttonstate: Highlited.
 */
-#define BTN_STATE_HIGH			2
+//#define BTN_STATE_HIGH			PG_Button::HIGHLITED
 
 
 // Text alignment

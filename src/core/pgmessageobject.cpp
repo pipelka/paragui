@@ -20,15 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:55 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.2 $
     Status:           $State: Exp $
 */
 
 #include "pgmessageobject.h"
 #include "pgwidget.h"
-#include "pgmsgmap.h"
 #include "pglog.h"
 
 #include <iostream>
@@ -60,7 +59,7 @@ PG_MessageObject::~PG_MessageObject() {
 
 	RemoveObject(this);
 
-	PG_UnregisterEventObject(this);
+	//PG_UnregisterEventObject(this);
 
 	if (inputFocusObject == this) {
 		inputFocusObject = NULL;
@@ -414,7 +413,7 @@ bool PG_MessageObject::RemoveObject(PG_MessageObject* obj) {
 }
 
 /**  */
-bool PG_MessageObject::SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, MSG_ID id, MSG_DATA data) {
+/*bool PG_MessageObject::SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, MSG_ID id, MSG_DATA data) {
 	bool rc = false;
 
 	// check if there is a callback function
@@ -451,16 +450,16 @@ bool PG_MessageObject::SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, M
 	}
 
 	return rc;
-}
+}*/
 
-
+/*
 void PG_MessageObject::SetEventCallback(PG_MSG_TYPE type, MSG_CALLBACK cbfunc, void *clientdata) {
 	PG_RegisterEventHandler(type, this, cbfunc, clientdata);
 }
 
 void PG_MessageObject::SetEventObject(PG_MSG_TYPE type, PG_EventObject* calledobj, MSG_CALLBACK_OBJ cbfunc, void *clientdata) {
 	PG_RegisterEventHandlerObj(type, this, calledobj, cbfunc, clientdata);
-}
+}*/
 
 void PG_MessageObject::TranslateNumpadKeys(SDL_KeyboardEvent *key) {
 	// note: works on WIN, test this on other platforms

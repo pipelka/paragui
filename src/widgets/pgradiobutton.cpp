@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.2 $
     Status:           $State: Exp $
 */
 
@@ -73,14 +73,9 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, cons
 }
 
 void PG_RadioButton::LoadThemeStyle(const char* widgettype) {
-	int b;
 	PG_Theme* t = PG_Application::GetTheme();
 
-	b = t->FindProperty(widgettype, "RadioButton", "transparency");
-
-	if(b != -1) {
-		my_hoverTransparency = b;
-	}
+	t->GetProperty(widgettype, "RadioButton", "transparency", my_hoverTransparency);
 
 	PG_ThemeWidget::LoadThemeStyle(widgettype, "RadioButton");
 
@@ -172,15 +167,7 @@ void PG_RadioButton::SetAlignment(int a) {
 	my_widgetLabel->SetAlignment(a);
 }
 
-void PG_RadioButton::SetFontColor(const SDL_Color& Color) {
-	my_widgetLabel->SetFontColor(Color);
-}
-
-void PG_RadioButton::SetFontColor(int Red, int Green, int Blue) {
-	my_widgetLabel->SetFontColor(Red, Green, Blue);
-}
-
-void PG_RadioButton::SetFontColor(int Color) {
+void PG_RadioButton::SetFontColor(const PG_Color& Color) {
 	my_widgetLabel->SetFontColor(Color);
 }
 

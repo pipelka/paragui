@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/29 21:30:54 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/gradient.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.1 $
     Status:           $State: Exp $
 */
 
@@ -43,7 +43,7 @@ SDL_Surface* PG_Draw::CreateGradient(const PG_Rect& r, PG_Gradient& gradient) {
 	           gradient.colors[3]);
 }
 
-SDL_Surface* PG_Draw::CreateGradient(const PG_Rect& r, SDL_Color & ul, SDL_Color & ur, SDL_Color & dl, SDL_Color & dr) {
+SDL_Surface* PG_Draw::CreateGradient(const PG_Rect& r, const PG_Color& ul, const PG_Color& ur, const PG_Color& dl, const PG_Color& dr) {
 	SDL_Surface* screen = SDL_GetVideoSurface();
 
 	assert(screen);
@@ -67,7 +67,7 @@ void PG_Draw::DrawGradient(SDL_Surface* surface, const PG_Rect& r, PG_Gradient& 
 	    gradient.colors[3]);
 }
 
-void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL_Color & ul, const SDL_Color & ur, const SDL_Color & dl, const SDL_Color & dr) {
+void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_Color& ul, const PG_Color& ur, const PG_Color& dl, const PG_Color& dr) {
 	Sint32 v00,v01,v02;
 	Sint32 v10,v11,v12;
 
@@ -83,10 +83,10 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL
     if (w > surface->w || h > surface->h)
             return;
 
-	Uint32 c1 = SDL_MapRGB(surface->format, ul.r, ul.g, ul.b);
-	Uint32 c2 = SDL_MapRGB(surface->format, ur.r, ur.g, ur.b);
-	Uint32 c3 = SDL_MapRGB(surface->format, dl.r, dl.g, dl.b);
-	Uint32 c4 = SDL_MapRGB(surface->format, dr.r, dr.g, dr.b);
+	Uint32 c1 = ul.MapRGB(surface->format);
+	Uint32 c2 = ur.MapRGB(surface->format);
+	Uint32 c3 = dl.MapRGB(surface->format);
+	Uint32 c4 = dr.MapRGB(surface->format);
 
 	// solid color gradient ?
 	if((c1 == c2) && (c2 == c3) && (c3 == c4)) {

@@ -18,6 +18,15 @@ If you want to take part in the development process - drop me a few lines.
 
 
 ----------------------------
+Whats new in ParaGUI 1.1.6 ?
+----------------------------
+
+- new PG_Color class unifying SDL_Color/Uint32/R,G,B
+- added signal "sigTimer" to PG_TimerObject
+- more coming up
+
+
+----------------------------
 Whats new in ParaGUI 1.1.5 ?
 ----------------------------
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:53 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -40,7 +40,6 @@
 #include "pgmaskedit.h"
 #include "pgbutton.h"
 #include "pgthemewidget.h"
-#include "pgeventobject.h"
 
 /**
  * @author Atani - Mike Dunston
@@ -61,7 +60,7 @@
  * added soon.  Note: using SetValue above will fire this event.
  */
 
-class DECLSPEC PG_SpinnerBox : public PG_ThemeWidget, public PG_EventObject {
+class DECLSPEC PG_SpinnerBox : public PG_ThemeWidget {
 public:
 
 	/**

@@ -43,6 +43,7 @@ libparaguiinclude_HEADERS = \
 	pgfilearchive.h \
 	pgfile.h \
 	pgfont.h \
+	pgcolor.h \
 	pgcolors.h \
 	pgdraw.h \
 	pginfo.h \

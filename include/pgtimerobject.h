@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:38 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtimerobject.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.1.2.6.2.1 $
     Status:           $State: Exp $
 */
 
@@ -30,6 +30,7 @@
 #define PG_TIMEROBJECT_H
 
 #include "paragui.h"
+#include "pgsignals.h"
 #include <map>
 
 typedef Uint32 PG_TimerID;
@@ -46,6 +47,11 @@ class DECLSPEC PG_TimerObject {
 	
 public:
 	
+	/**
+	Signal type declaration
+	**/
+	template<class datatype = PG_Pointer> class SignalTimer : public PG_Signal2<PG_TimerObject*, PG_TimerID, datatype> {};
+
 	/**
 	Constructor of the PG_TimerObject class.
 	The constructor also calls SDL_InitSubSystem(SDL_Timer) to enable
@@ -89,6 +95,8 @@ public:
 	
 	virtual Uint32 eventTimer(Uint32 interval);
 	
+	SignalTimer<> sigTimer;
+
 private:
 	
 	static Uint32 callbackTimer(Uint32 interval, void* data);

@@ -20,36 +20,44 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/pgrect.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.8.1 $
     Status:           $State: Exp $
 */
 
 #include "pgrect.h"
 
-PG_Rect::PG_Rect(Sint16 xv, Sint16 yv, Uint16 wv, Uint16 hv) : my_xpos(x), my_ypos(y), my_width(w), my_height(h) {
+PG_Rect::PG_Rect(Sint16 xv, Sint16 yv, Uint16 wv, Uint16 hv) : 
+my_xpos(x), 
+my_ypos(y), 
+my_width(w), 
+my_height(h) {
 	SetRect(xv, yv, wv, hv);
 }
 
-PG_Rect::PG_Rect() : my_xpos(x), my_ypos(y), my_width(w), my_height(h) {
+PG_Rect::PG_Rect() :
+my_xpos(x),
+my_ypos(y),
+my_width(w),
+my_height(h) {
 	SetRect(0, 0, 0, 0);
 }
 
-PG_Rect::PG_Rect(const PG_Rect& src)  : my_xpos(x), my_ypos(y), my_width(w), my_height(h) {
-	SetRect(
-	    src.x,
-	    src.y,
-	    src.w,
-	    src.h);
+PG_Rect::PG_Rect(const PG_Rect& src) :
+my_xpos(x),
+my_ypos(y),
+my_width(w),
+my_height(h) {
+	*this = src;
 }
 
-PG_Rect::PG_Rect(const SDL_Rect& src) : my_xpos(x), my_ypos(y), my_width(w), my_height(h) {
-	SetRect(
-	    src.x,
-	    src.y,
-	    src.w,
-	    src.h);
+PG_Rect::PG_Rect(const SDL_Rect& src) :
+my_xpos(x),
+my_ypos(y),
+my_width(w),
+my_height(h) {
+	*this = src;
 }
 
 PG_Rect::~PG_Rect() {}
@@ -131,13 +139,21 @@ PG_Rect PG_Rect::operator / (PG_Rect& b) {
 	return IntersectRect(b);
 }
 
-SDL_Rect* PG_Rect::SDLRect() {
+/*SDL_Rect* PG_Rect::SDLRect() {
 	return (SDL_Rect*)this;
-}
+}*/
 
 void PG_Rect::SetRect(Sint16 nx, Sint16 ny, Uint16 nw, Uint16 nh) {
 	x = nx;
 	y = ny;
 	w = nw;
 	h = nh;
+}
+
+PG_Rect& PG_Rect::operator =(const SDL_Rect& src) {
+	x = src.x;
+	y = src.y;
+	w = src.w;
+	h = src.h;
+	return *this;
 }

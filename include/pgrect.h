@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/03 10:51:38 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrect.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
     Status:           $State: Exp $
 */
 
@@ -41,13 +41,6 @@
 	@author Alexander Pipelka
 	@short Encapsulation of the SDL_Rect structure
 */
-
-#ifdef SWIG
-typedef struct {
-        Sint16 x, y;
-        Uint16 w, h;
-} SDL_Rect;
-#endif // SWIG
 
 class DECLSPEC PG_Rect : public SDL_Rect {
 public:
@@ -97,14 +90,19 @@ public:
 	*/
 	void SetRect(Sint16 nx, Sint16 ny, Uint16 nw, Uint16 nh);
 
-#ifndef SWIG
 	/**
 	*/
-	PG_Rect& operator =(const PG_Rect& src);
+	PG_Rect& operator =(const SDL_Rect& src);
 
+	PG_Rect& operator =(const PG_Rect& src);
+	
 	/**
 	*/
 	PG_Rect operator / (PG_Rect& b);
+
+	inline operator SDL_Rect() const {
+		return *this;
+	}
 
 	/**
 	Check if a given point is inside a rectangle (boxtest)
@@ -116,8 +114,6 @@ public:
 	inline static bool IsInside(const PG_Point& p, PG_Rect& r) {
 		return r.IsInside(p);
 	}
-
-#endif
 
 	/**
 	Check if a given point is inside a rectangle (boxtest)
@@ -194,7 +190,6 @@ public:
 		return OverlapRect(p, *this);
 	}
 
-#ifndef SWIG
 	//! Check if this rectangle overlap another one
 	/*!
 	\param p pointer to rectangle to check for overlap
@@ -203,10 +198,7 @@ public:
 	inline bool OverlapRect(PG_Rect* p) {
 		return OverlapRect(*p, *this);
 	}
-#endif
 	
-	SDL_Rect* SDLRect();
-
 #ifndef SWIG
 	Sint16& my_xpos;
 	Sint16& my_ypos;

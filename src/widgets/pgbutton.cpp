@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:55 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -33,61 +33,66 @@
 #include "pgdraw.h"
 
 struct PG_ButtonDataInternal {
-	SDL_Surface* srf_normal;
-	SDL_Surface* srf_high;
-	SDL_Surface* srf_down;
-	SDL_Surface* srf_icon[3];
-
 	bool free_icons;
 
 	bool isPressed;
 	bool togglemode;
+	PG_Button::STATE my_state;
+	int my_pressShift;
 
-	PG_Gradient gradState[3];
-	SDL_Surface* background[3];
-	int backMode[3];
-	int backBlend[3];
+	std::map<PG_Button::STATE, SDL_Surface*> srf;
+	std::map<PG_Button::STATE, SDL_Surface*> srf_icon;
+	std::map<PG_Button::STATE, Uint8> my_bordersize;
+	std::map<PG_Button::STATE, Uint8> my_transparency;
+	std::map<PG_Button::STATE, PG_Gradient> gradState;
+	std::map<PG_Button::STATE, SDL_Surface*> background;
+	std::map<PG_Button::STATE, int> backMode;
+	std::map<PG_Button::STATE,int> backBlend;
 };
 
 PG_Button::PG_Button(PG_Widget* parent, int id, const PG_Rect& r, const char* text, const char* style) : PG_Widget(parent, r) {
 	SetDirtyUpdate(false);
 
-	my_internaldata = new PG_ButtonDataInternal;
+	_mid = new PG_ButtonDataInternal;
 
-	my_internaldata->srf_normal = NULL;
-	my_internaldata->srf_high = NULL;
-	my_internaldata->srf_down = NULL;
+	_mid->srf[UNPRESSED] = NULL;
+	_mid->srf[HIGHLITED] = NULL;
+	_mid->srf[PRESSED] = NULL;
 
-	my_internaldata->srf_icon[0] = NULL;
-	my_internaldata->srf_icon[1] = NULL;
-	my_internaldata->srf_icon[2] = NULL;
+	_mid->srf_icon[UNPRESSED] = NULL;
+	_mid->srf_icon[HIGHLITED] = NULL;
+	_mid->srf_icon[PRESSED] = NULL;
 
-	my_internaldata->free_icons = false;
+	_mid->free_icons = false;
 
 	SetText(text);
 
-	my_internaldata->togglemode = false;
-	my_internaldata->isPressed = false;
+	_mid->togglemode = false;
+	_mid->isPressed = false;
 
 	SetID(id);
 
-	my_state = BTN_STATE_NORMAL;
+	_mid->my_state = UNPRESSED;
 
-	my_pressShift = 1;
+	_mid->my_pressShift = 1;
 
-	my_bordersize[0] = 1;
-	my_bordersize[1] = 1;
-	my_bordersize[2] = 1;
+	_mid->my_bordersize[UNPRESSED] = 1;
+	_mid->my_bordersize[HIGHLITED] = 1;
+	_mid->my_bordersize[PRESSED] = 1;
 
-	my_transparency[0] = 0;
-	my_transparency[1] = 0;
-	my_transparency[2] = 0;
+	_mid->my_transparency[UNPRESSED] = 0;
+	_mid->my_transparency[HIGHLITED] = 0;
+	_mid->my_transparency[PRESSED] = 0;
 
-	for(int i=0; i<3; i++) {
-		my_internaldata->background[i] = NULL;
-		my_internaldata->backMode[i] = BKMODE_TILE;
-		my_internaldata->backBlend[i] = 0;
-	}
+	_mid->background[UNPRESSED] = NULL;
+	_mid->background[HIGHLITED] = NULL;
+	_mid->background[PRESSED] = NULL;
+	_mid->backMode[UNPRESSED] = BKMODE_TILE;
+	_mid->backMode[HIGHLITED] = BKMODE_TILE;
+	_mid->backMode[PRESSED] = BKMODE_TILE;
+	_mid->backBlend[UNPRESSED] = 0;
+	_mid->backBlend[HIGHLITED] = 0;
+	_mid->backBlend[PRESSED] = 0;
 
 	LoadThemeStyle(style);
 }
@@ -96,7 +101,7 @@ PG_Button::~PG_Button() {
 	FreeSurfaces();
 	FreeIcons();
 	
-	delete my_internaldata;
+	delete _mid;
 }
 
 void PG_Button::LoadThemeStyle(const char* widgettype) {
@@ -105,13 +110,12 @@ void PG_Button::LoadThemeStyle(const char* widgettype) {
 }
 
 void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
-	int b;
 	const char* s = NULL;
 	PG_Theme* t = PG_Application::GetTheme();
 
-	b = t->FindProperty(widgettype, objectname, "textcolor");
-	if(b != -1)
-		SetFontColor(b);
+	PG_Color fontcolor;
+	t->GetColor(widgettype, objectname, "textcolor", fontcolor);
+	SetFontColor(fontcolor);
 
 	const char  *iconup = 0, *icondown = 0, *iconover = 0;
 
@@ -160,69 +164,45 @@ void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	PG_Gradient* g;
 	g = t->FindGradient(widgettype, objectname, "gradient0");
 	if(g) {
-		my_internaldata->gradState[0] = *g;
+		_mid->gradState[UNPRESSED] = *g;
 	}
 
 	g = t->FindGradient(widgettype, objectname, "gradient1");
 	if(g) {
-		my_internaldata->gradState[1] = *g;
+		_mid->gradState[HIGHLITED] = *g;
 	}
 
 	g = t->FindGradient(widgettype, objectname, "gradient2");
 	if(g) {
-		my_internaldata->gradState[2] = *g;
+		_mid->gradState[PRESSED] = *g;
 	}
+	
+	_mid->background[UNPRESSED] = t->FindSurface(widgettype, objectname, "background0");
+	t->GetProperty(widgettype, objectname, "backmode0", _mid->backMode[UNPRESSED]);
 
-	SetBackground(
-	    0,
-	    t->FindSurface(widgettype, objectname, "background0"),
-	    t->FindProperty(widgettype, objectname, "backmode0")
-	);
+	_mid->background[HIGHLITED] = t->FindSurface(widgettype, objectname, "background1");
+	t->GetProperty(widgettype, objectname, "backmode1", _mid->backMode[HIGHLITED]);
 
-	SetBackground(
-	    1,
-	    t->FindSurface(widgettype, objectname, "background1"),
-	    t->FindProperty(widgettype, objectname, "backmode1")
-	);
+	_mid->background[PRESSED] = t->FindSurface(widgettype, objectname, "background2");
+	t->GetProperty(widgettype, objectname, "backmode2", _mid->backMode[PRESSED]);
 
-	SetBackground(
-	    2,
-	    t->FindSurface(widgettype, objectname, "background2"),
-	    t->FindProperty(widgettype, objectname, "backmode2")
-	);
+	t->GetProperty(widgettype, objectname, "blend0", _mid->backBlend[UNPRESSED]);
+	t->GetProperty(widgettype, objectname, "blend1", _mid->backBlend[HIGHLITED]);
+	t->GetProperty(widgettype, objectname, "blend2", _mid->backBlend[PRESSED]);
 
-	b = t->FindProperty(widgettype, objectname, "blend0");
-	if(b != -1)
-		my_internaldata->backBlend[0] = b;
+	t->GetProperty(widgettype, objectname, "shift", _mid->my_pressShift);
 
-	b = t->FindProperty(widgettype, objectname, "blend1");
-	if(b != -1)
-		my_internaldata->backBlend[1] = b;
+	t->GetProperty(widgettype, objectname, "bordersize", _mid->my_bordersize[UNPRESSED]);
+	t->GetProperty(widgettype, objectname, "bordersize", _mid->my_bordersize[PRESSED]);
+	t->GetProperty(widgettype, objectname, "bordersize", _mid->my_bordersize[HIGHLITED]);
 
-	b = t->FindProperty(widgettype, objectname, "blend2");
-	if(b != -1)
-		my_internaldata->backBlend[2] = b;
+	t->GetProperty(widgettype, objectname, "bordersize0", _mid->my_bordersize[UNPRESSED]);
+	t->GetProperty(widgettype, objectname, "bordersize1", _mid->my_bordersize[PRESSED]);
+	t->GetProperty(widgettype, objectname, "bordersize2", _mid->my_bordersize[HIGHLITED]);
 
-	b = t->FindProperty(widgettype, objectname, "shift");
-	if(b != -1)
-		my_pressShift = b;
-
-	b = t->FindProperty(widgettype, objectname, "bordersize");
-	if(b != -1) {
-		SetBorderSize(b, b, b);
-	}
-
-	SetBorderSize(
-	    t->FindProperty(widgettype, objectname, "bordersize0"),
-	    t->FindProperty(widgettype, objectname, "bordersize1"),
-	    t->FindProperty(widgettype, objectname, "bordersize2")
-	);
-
-	SetTransparency(
-	    t->FindProperty(widgettype, objectname, "transparency0"),
-	    t->FindProperty(widgettype, objectname, "transparency1"),
-	    t->FindProperty(widgettype, objectname, "transparency2")
-	);
+	t->GetProperty(widgettype, objectname, "transparency0", _mid->my_transparency[UNPRESSED]);
+	t->GetProperty(widgettype, objectname, "transparency1", _mid->my_transparency[PRESSED]);
+	t->GetProperty(widgettype, objectname, "transparency2", _mid->my_transparency[HIGHLITED]);
 
 	s = t->FindString(widgettype, objectname, "label");
 	if(s != NULL) {
@@ -244,25 +224,19 @@ void PG_Button::eventSizeWidget(Uint16 w, Uint16 h) {
 
 	FreeSurfaces();
 
-	eventButtonSurface(&(my_internaldata->srf_normal), BTN_STATE_NORMAL, w, h);
-	if(my_internaldata->srf_normal) {
-		if(my_transparency[0] > 0) {
-			SDL_SetAlpha(my_internaldata->srf_normal, SDL_SRCALPHA, 255-my_transparency[0]);
-		}
+	eventButtonSurface(&(_mid->srf[UNPRESSED]), UNPRESSED, w, h);
+	if(_mid->srf[UNPRESSED]) {
+			SDL_SetAlpha(_mid->srf[UNPRESSED], SDL_SRCALPHA, 255-_mid->my_transparency[UNPRESSED]);
 	}
 
-	eventButtonSurface(&(my_internaldata->srf_down), BTN_STATE_PRESSED, w, h);
-	if(my_internaldata->srf_down) {
-		if(my_transparency[1] > 0) {
-			SDL_SetAlpha(my_internaldata->srf_down, SDL_SRCALPHA, 255-my_transparency[1]);
-		}
+	eventButtonSurface(&(_mid->srf[PRESSED]), PRESSED, w, h);
+	if(_mid->srf[PRESSED]) {
+		SDL_SetAlpha(_mid->srf[PRESSED], SDL_SRCALPHA, 255-_mid->my_transparency[PRESSED]);
 	}
 
-	eventButtonSurface(&(my_internaldata->srf_high), BTN_STATE_HIGH, w, h);
-	if(my_internaldata->srf_high) {
-		if(my_transparency[2] > 0) {
-			SDL_SetAlpha(my_internaldata->srf_high, SDL_SRCALPHA, 255-my_transparency[2]);
-		}
+	eventButtonSurface(&(_mid->srf[HIGHLITED]), HIGHLITED, w, h);
+	if(_mid->srf[HIGHLITED]) {
+		SDL_SetAlpha(_mid->srf[HIGHLITED], SDL_SRCALPHA, 255-_mid->my_transparency[HIGHLITED]);
 	}
 
 	return;
@@ -270,44 +244,44 @@ void PG_Button::eventSizeWidget(Uint16 w, Uint16 h) {
 
 /**  */
 void PG_Button::FreeSurfaces() {
-	PG_ThemeWidget::DeleteThemedSurface(my_internaldata->srf_normal);
-	my_internaldata->srf_normal = NULL;
+	PG_ThemeWidget::DeleteThemedSurface(_mid->srf[UNPRESSED]);
+	_mid->srf[UNPRESSED] = NULL;
 
-	PG_ThemeWidget::DeleteThemedSurface(my_internaldata->srf_high);
-	my_internaldata->srf_high = NULL;
+	PG_ThemeWidget::DeleteThemedSurface(_mid->srf[HIGHLITED]);
+	_mid->srf[HIGHLITED] = NULL;
 
-	PG_ThemeWidget::DeleteThemedSurface(my_internaldata->srf_down);
-	my_internaldata->srf_down = NULL;
+	PG_ThemeWidget::DeleteThemedSurface(_mid->srf[PRESSED]);
+	_mid->srf[PRESSED] = NULL;
 }
 
 void PG_Button::FreeIcons() {
 
-	if(!my_internaldata->free_icons) {
+	if(!_mid->free_icons) {
 		return;
 	}
 
-	if(my_internaldata->srf_icon[0]) {
-		PG_Application::UnloadSurface(my_internaldata->srf_icon[0]); // false
-		my_internaldata->srf_icon[0] = NULL;
+	if(_mid->srf_icon[UNPRESSED]) {
+		PG_Application::UnloadSurface(_mid->srf_icon[UNPRESSED]); // false
+		_mid->srf_icon[UNPRESSED] = NULL;
 	}
 
-	if(my_internaldata->srf_icon[1]) {
-		PG_Application::UnloadSurface(my_internaldata->srf_icon[1]); // false
-		my_internaldata->srf_icon[1] = NULL;
+	if(_mid->srf_icon[HIGHLITED]) {
+		PG_Application::UnloadSurface(_mid->srf[HIGHLITED]); // false
+		_mid->srf_icon[HIGHLITED] = NULL;
 	}
 
-	if(my_internaldata->srf_icon[2]) {
-		PG_Application::UnloadSurface(my_internaldata->srf_icon[2]); // false
-		my_internaldata->srf_icon[2] = NULL;
+	if(_mid->srf_icon[PRESSED]) {
+		PG_Application::UnloadSurface(_mid->srf_icon[PRESSED]); // false
+		_mid->srf_icon[PRESSED] = NULL;
 	}
 
-	my_internaldata->free_icons = false;
+	_mid->free_icons = false;
 }
 
 /**  */
 void PG_Button::eventMouseEnter() {
-	if (!(my_internaldata->togglemode && my_internaldata->isPressed)) {
-		my_state = BTN_STATE_HIGH;
+	if (!(_mid->togglemode && _mid->isPressed)) {
+		_mid->my_state = HIGHLITED;
 	}
 
 	Update();
@@ -317,8 +291,8 @@ void PG_Button::eventMouseEnter() {
 /**  */
 void PG_Button::eventMouseLeave() {
 
-	if(my_state == BTN_STATE_HIGH) {
-		(my_internaldata->togglemode && my_internaldata->isPressed) ? my_state = BTN_STATE_PRESSED : my_state = BTN_STATE_NORMAL;
+	if(_mid->my_state == HIGHLITED) {
+		(_mid->togglemode && _mid->isPressed) ? _mid->my_state = PRESSED : _mid->my_state = UNPRESSED;
 	}
 
 	Update();
@@ -331,7 +305,7 @@ bool PG_Button::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 		return false;
 
 	if(button->button == 1) {
-		my_state = BTN_STATE_PRESSED;
+		_mid->my_state = PRESSED;
 		SetCapture();
 
 		Update();
@@ -350,27 +324,27 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		return false;
 	}
 
-	if(my_internaldata->togglemode) {
-		if(!my_internaldata->isPressed) {
-			my_state = BTN_STATE_PRESSED;
-			my_internaldata->isPressed = true;
+	if(_mid->togglemode) {
+		if(!_mid->isPressed) {
+			_mid->my_state = PRESSED;
+			_mid->isPressed = true;
 		} else {
-			my_state = BTN_STATE_HIGH;
-			my_internaldata->isPressed = false;
+			_mid->my_state = HIGHLITED;
+			_mid->isPressed = false;
 		}
 	} else {
-		my_state = BTN_STATE_NORMAL;
-		my_internaldata->isPressed = false;
+		_mid->my_state = UNPRESSED;
+		_mid->isPressed = false;
 	}
 
 	if(!IsMouseInside()) {
-		my_state = BTN_STATE_NORMAL;
+		_mid->my_state = UNPRESSED;
 		ReleaseCapture();
 		Update();
 		return false;
 	} else {
-		if(!my_internaldata->togglemode) {
-			my_state = BTN_STATE_HIGH;
+		if(!_mid->togglemode) {
+			_mid->my_state = HIGHLITED;
 		}
 	}
 
@@ -387,16 +361,16 @@ bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const
 		return false;
 	}
 
-	if(my_internaldata->srf_icon[0] != NULL) {
-		SDL_SetColorKey(my_internaldata->srf_icon[0], SDL_SRCCOLORKEY, colorkey);
+	if(_mid->srf_icon[UNPRESSED] != NULL) {
+		SDL_SetColorKey(_mid->srf_icon[UNPRESSED], SDL_SRCCOLORKEY, colorkey);
 	}
 
-	if(my_internaldata->srf_icon[1] != NULL) {
-		SDL_SetColorKey(my_internaldata->srf_icon[1], SDL_SRCCOLORKEY, colorkey);
+	if(_mid->srf_icon[HIGHLITED] != NULL) {
+		SDL_SetColorKey(_mid->srf_icon[HIGHLITED], SDL_SRCCOLORKEY, colorkey);
 	}
 
-	if(my_internaldata->srf_icon[2] != NULL) {
-		SDL_SetColorKey(my_internaldata->srf_icon[2], SDL_SRCCOLORKEY, colorkey);
+	if(_mid->srf_icon[PRESSED] != NULL) {
+		SDL_SetColorKey(_mid->srf_icon[PRESSED], SDL_SRCCOLORKEY, colorkey);
 	}
 
 	return true;
@@ -404,8 +378,8 @@ bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const
 
 bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const char* filenameover) {
 	SDL_Surface* icon0 = PG_Application::LoadSurface(filenameup);
-	SDL_Surface* icon1 = PG_Application::LoadSurface(filenamedown);
-	SDL_Surface* icon2 = PG_Application::LoadSurface(filenameover);
+	SDL_Surface* icon1 = PG_Application::LoadSurface(filenameover);
+	SDL_Surface* icon2 = PG_Application::LoadSurface(filenamedown);
 
 	if(icon0 == NULL) {
 		return false;
@@ -413,10 +387,10 @@ bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const
 
 	FreeIcons();
 
-	my_internaldata->srf_icon[0] = icon0;
-	my_internaldata->srf_icon[1] = icon1;
-	my_internaldata->srf_icon[2] = icon2;
-	my_internaldata->free_icons = true;
+	_mid->srf[UNPRESSED] = icon0;
+	_mid->srf[HIGHLITED] = icon1;
+	_mid->srf[PRESSED] = icon2;
+	_mid->free_icons = true;
 
 	Redraw();
 	return true;
@@ -441,11 +415,11 @@ bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down,SDL_Surface
 
 	FreeIcons();
 
-	my_internaldata->srf_icon[0] = icon_up;
-	my_internaldata->srf_icon[1] = icon_down;
-	my_internaldata->srf_icon[2] = icon_over;
+	_mid->srf_icon[UNPRESSED] = icon_up;
+	_mid->srf_icon[HIGHLITED] = icon_over;
+	_mid->srf_icon[PRESSED] = icon_down;
 
-	my_internaldata->free_icons = false;
+	_mid->free_icons = false;
 
 	return true;
 }
@@ -454,70 +428,59 @@ bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down) {
 	return SetIcon(icon_up, icon_down, NULL);
 }
 
-SDL_Surface* PG_Button::GetIcon(Uint8 num) {
-	if (num > 2)
-		return 0;
-	
-	return my_internaldata->srf_icon[num];
+SDL_Surface* PG_Button::GetIcon(STATE num) {
+	return _mid->srf_icon[num];
 }
 
 /**  */
 void PG_Button::SetBorderSize(int norm, int pressed, int high) {
 
 	if(norm >= 0) {
-		my_bordersize[BTN_STATE_NORMAL] = norm;
+		_mid->my_bordersize[UNPRESSED] = norm;
 	}
 
 	if(pressed >= 0) {
-		my_bordersize[BTN_STATE_PRESSED] = pressed;
+		_mid->my_bordersize[PRESSED] = pressed;
 	}
 
 	if(high >= 0) {
-		my_bordersize[BTN_STATE_HIGH] = high;
+		_mid->my_bordersize[HIGHLITED] = high;
 	}
 }
 
 /**  */
 void PG_Button::SetToggle(bool bToggle) {
-	my_internaldata->togglemode = bToggle;
+	_mid->togglemode = bToggle;
 }
 
 /**  */
 void PG_Button::SetPressed(bool pressed) {
-	if(!my_internaldata->togglemode)
+	if(!_mid->togglemode)
 		return;
 
-	my_internaldata->isPressed = pressed;
-	my_state = (my_internaldata->isPressed ? BTN_STATE_PRESSED : BTN_STATE_NORMAL);
+	_mid->isPressed = pressed;
+	_mid->my_state = (_mid->isPressed ? PRESSED : UNPRESSED);
 
 	Update();
 }
 
 /**  */
-void PG_Button::SetTransparency(int norm, int pressed, int high) {
-	if(norm >= 0 && norm <= 255) {
-		my_transparency[0] = norm;
-	}
-
-	if(pressed >= 0 && pressed <= 255) {
-		my_transparency[1] = pressed;
-	}
-
-	if(high >= 0 && high <= 255) {
-		my_transparency[2] = high;
-	}
+void PG_Button::SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high) {
+	_mid->my_transparency[UNPRESSED] = norm;
+	_mid->my_transparency[PRESSED] = pressed;
+	_mid->my_transparency[HIGHLITED] = high;
 }
 
 /**
  * Set the moving distance of the image when we press on it
  */
 void PG_Button::SetShift(int pixelshift) {
-	my_pressShift = pixelshift;
+	_mid->my_pressShift = pixelshift;
 }
 
 
 /**  */
-void PG_Button::eventButtonSurface(SDL_Surface** surface, int newstate, Uint16 w, Uint16 h) {
+void PG_Button::eventButtonSurface(SDL_Surface** surface, STATE newstate, Uint16 w, Uint16 h) {
 	if (!surface)
 		return;
 
@@ -529,33 +492,33 @@ void PG_Button::eventButtonSurface(SDL_Surface** surface, int newstate, Uint16 w
 	// create a new one
 	*surface = PG_ThemeWidget::CreateThemedSurface(
 	               r,
-	               &my_internaldata->gradState[newstate],
-	               my_internaldata->background[newstate],
-	               my_internaldata->backMode[newstate],
-	               my_internaldata->backBlend[newstate]);
+	               &_mid->gradState[newstate],
+	               _mid->background[newstate],
+	               _mid->backMode[newstate],
+	               _mid->backBlend[newstate]);
 }
 
 /**  */
-void PG_Button::SetGradient(int state, PG_Gradient& gradient) {
-	my_internaldata->gradState[state] = gradient;
+void PG_Button::SetGradient(STATE state, PG_Gradient& gradient) {
+	_mid->gradState[state] = gradient;
 }
 
-void PG_Button::SetBackground(int state, SDL_Surface* background, int mode) {
+void PG_Button::SetBackground(STATE state, SDL_Surface* background, int mode) {
 
 	if(!background) {
 		return;
 	}
 
-	my_internaldata->background[state] = background;
-	my_internaldata->backMode[state] = mode;
+	_mid->background[state] = background;
+	_mid->backMode[state] = mode;
 }
 
 /**  */
 bool PG_Button::GetPressed() {
-	if(my_internaldata->togglemode) {
-		return my_internaldata->isPressed;
+	if(_mid->togglemode) {
+		return _mid->isPressed;
 	} else {
-		return (my_state == BTN_STATE_PRESSED);
+		return (_mid->my_state == PRESSED);
 	}
 }
 
@@ -567,25 +530,25 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	Uint8 t = 0;
 
 	// get the right surface for the current state
-	switch(my_state) {
-		case BTN_STATE_NORMAL:
-			if(my_internaldata->srf_normal) {
-				t = my_transparency[0];
-				srf = my_internaldata->srf_normal;
+	switch(_mid->my_state) {
+		case UNPRESSED:
+			if(_mid->srf[UNPRESSED]) {
+				t = _mid->my_transparency[UNPRESSED];
+				srf = _mid->srf[UNPRESSED];
 			}
 			break;
 
-		case BTN_STATE_PRESSED:
-			if(my_internaldata->srf_down) {
-				t = my_transparency[1];
-				srf = my_internaldata->srf_down;
+		case PRESSED:
+			if(_mid->srf[PRESSED]) {
+				t = _mid->my_transparency[PRESSED];
+				srf = _mid->srf[PRESSED];
 			}
 			break;
 
-		case BTN_STATE_HIGH:
-			if(my_internaldata->srf_high) {
-				t = my_transparency[2];
-				srf = my_internaldata->srf_high;
+		case HIGHLITED:
+			if(_mid->srf[HIGHLITED]) {
+				t = _mid->my_transparency[HIGHLITED];
+				srf = _mid->srf[HIGHLITED];
 			}
 			break;
 	}
@@ -597,7 +560,7 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 		PG_Draw::BlitSurface(srf, src, my_srfScreen, dst);
 	}
 
-	int shift = (((my_state == BTN_STATE_PRESSED) || (my_internaldata->togglemode && my_internaldata->isPressed)) ? 1 : 0) * my_pressShift;
+	int shift = (((_mid->my_state == PRESSED) || (_mid->togglemode && _mid->isPressed)) ? 1 : 0) * _mid->my_pressShift;
 
 	r.my_xpos = rect.my_xpos + (rect.my_width >> 1) + shift;
 	r.my_ypos = rect.my_ypos + (rect.my_height >> 1) + shift;
@@ -605,23 +568,23 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 
 	// check for icon srf
 	//
-	//SDL_Surface* iconsrf = (my_state == BTN_STATE_PRESSED) ? ((my_internaldata->srf_icon[1] == 0) ? my_internaldata->srf_icon[0] : my_internaldata->srf_icon[1]) : my_internaldata->srf_icon[0];
+	//SDL_Surface* iconsrf = (my_state == BTN_STATE_PRESSED) ? ((_mid->srf_icon[1] == 0) ? _mid->srf_icon[0] : _mid->srf_icon[1]) : _mid->srf_icon[0];
 
 	SDL_Surface* iconsrf;
-	if(my_state ==  BTN_STATE_PRESSED) {
-		if(my_internaldata->srf_icon[1] == 0) {
-			iconsrf = my_internaldata->srf_icon[0];
+	if(_mid->my_state == PRESSED) {
+		if(_mid->srf_icon[PRESSED] == 0) {
+			iconsrf = _mid->srf_icon[UNPRESSED];
 		} else {
-			iconsrf = my_internaldata->srf_icon[1];
+			iconsrf = _mid->srf_icon[PRESSED];
 		}
-	} else if(my_state ==BTN_STATE_HIGH) {
-		if(my_internaldata->srf_icon[2] == 0) {
-			iconsrf = my_internaldata->srf_icon[0];
+	} else if(_mid->my_state == HIGHLITED) {
+		if(_mid->srf_icon[HIGHLITED] == 0) {
+			iconsrf = _mid->srf_icon[UNPRESSED];
 		} else {
-			iconsrf = my_internaldata->srf_icon[2];
+			iconsrf = _mid->srf_icon[HIGHLITED];
 		}
 	} else {
-		iconsrf = my_internaldata->srf_icon[0];
+		iconsrf = _mid->srf_icon[UNPRESSED];
 	}
 
 	int tw = my_width;
@@ -661,21 +624,21 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 
 	int i0, i1;
 
-	if(!my_internaldata->togglemode) {
-		i0 = (my_state == BTN_STATE_PRESSED) ? 1 : 0;
-		i1 = (my_state == BTN_STATE_PRESSED) ? 0 : 1;
+	if(!_mid->togglemode) {
+		i0 = (_mid->my_state == PRESSED) ? 1 : 0;
+		i1 = (_mid->my_state == PRESSED) ? 0 : 1;
 	} else {
-		i0 = (my_internaldata->isPressed) ? 1 : 0;
-		i1 = (my_internaldata->isPressed) ? 0 : 1;
+		i0 = (_mid->isPressed) ? 1 : 0;
+		i1 = (_mid->isPressed) ? 0 : 1;
 	}
 
-	DrawBorder(PG_Rect(0, 0, Width(), Height()), my_bordersize[my_state], i1);
+	DrawBorder(PG_Rect(0, 0, Width(), Height()), _mid->my_bordersize[_mid->my_state], i1);
 }
 
-void PG_Button::SetBlendLevel(int mode, Uint8 blend) {
-	my_internaldata->backBlend[mode] = blend;
+void PG_Button::SetBlendLevel(STATE mode, Uint8 blend) {
+	_mid->backBlend[mode] = blend;
 }
 
-Uint8 PG_Button::GetBlendLevel(int mode) {
-	return my_internaldata->backBlend[mode];
+Uint8 PG_Button::GetBlendLevel(STATE mode) {
+	return _mid->backBlend[mode];
 }

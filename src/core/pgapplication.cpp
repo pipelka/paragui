@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:55 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.1 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.2 $
     Status:           $State: Exp $
 */
 
@@ -67,7 +67,7 @@ PG_CURSOR_MODE PG_Application::my_mouse_mode = PG_CURSOR_HARDWARE;
 PG_Font* PG_Application::DefaultFont = NULL;
 SDL_Surface* PG_Application::my_background = NULL;
 SDL_Surface* PG_Application::my_scaled_background = NULL;
-SDL_Color PG_Application::my_backcolor;
+PG_Color PG_Application::my_backcolor;
 int PG_Application::my_backmode = BKMODE_TILE;
 bool PG_Application::disableDirtyUpdates = false;
 
@@ -435,8 +435,7 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 	PG_Rect fillrect = rect;
 
 	if(!my_background) {
-		SDL_Color c = my_backcolor;
-		SDL_FillRect(screen, (SDL_Rect*)&fillrect, SDL_MapRGB(screen->format, c.r, c.g, c.b));
+		SDL_FillRect(screen, (SDL_Rect*)&fillrect, my_backcolor.MapRGB(screen->format));
 		return;
 	}
 	if(my_backmode == BKMODE_STRETCH &&
@@ -630,11 +629,9 @@ PG_Theme* PG_Application::LoadTheme(const char* xmltheme, bool asDefault, const 
 		PG_LogMSG("size: %i", DefaultFont->GetSize());
 
 		my_background = theme->FindSurface("Background", "Background", "background");
-		my_backmode = theme->FindProperty("Background", "Background", "backmode");
-		SDL_Color* bc = theme->FindColor("Background", "Background", "backcolor");
-		if(bc != NULL) {
-			my_backcolor = *bc;
-		}
+		theme->GetProperty("Background", "Background", "backmode", my_backmode);
+		theme->GetColor("Background", "Background", "backcolor", my_backcolor);
+
 		if(my_scaled_background) {
 			// Destroyed scaled background if present
 			SDL_FreeSurface(my_scaled_background);
@@ -879,24 +876,8 @@ PG_Widget *PG_Application::GetWidgetById(int id) {
         return (FindInChildObjects(PG_Widget::GetWidgetList(), id));
 }
 
-void PG_Application::SetFontColor(const SDL_Color& Color) {
+void PG_Application::SetFontColor(const PG_Color& Color) {
 	DefaultFont->SetColor(Color);
-}
-
-void PG_Application::SetFontColor(int Red, int Green, int Blue) {
-	SDL_Color Color;
-	Color.r = Red;
-	Color.g = Green;
-	Color.b = Blue;
-	SetFontColor(Color);
-}
-
-void PG_Application::SetFontColor(int c) {
-	SDL_Color Color;
-	Color.r = (c >> 16) & 0xff;
-	Color.g = (c >> 8) & 0xff;
-	Color.b = c & 0xff;
-	SetFontColor(Color);
 }
 
 void PG_Application::SetFontAlpha(int Alpha) {

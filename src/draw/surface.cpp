@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:55 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/surface.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
     Status:           $State: Exp $
 */
 
@@ -321,13 +321,12 @@ void Draw9Tile(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend
 
 }
 
-void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradient* gradient,
-                                      SDL_Surface* background, int bkmode, Uint8 blend) {
+void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradient* gradient,SDL_Surface* background, int bkmode, Uint8 blend) {
 	static PG_Rect srcrect;
 	static PG_Rect dstrect;
 	//int x,y;
 	bool bColorKey = false;
-	Uint32 uColorKey;
+	PG_Color uColorKey;
 	Uint32 c;
 		
 	// check if we have anything to do
@@ -366,7 +365,7 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 	Uint8 rc,gc,bc;
 	
 	SDL_GetRGB(background->format->colorkey, background->format, &rc, &gc, &bc);
-	uColorKey = (rc << 16) | (gc << 8) | bc;
+	uColorKey = (Uint32)((rc << 16) | (gc << 8) | bc);
 	
 	if(((gradient == NULL) || (blend == 0)) && bColorKey) {
 		SDL_SetColorKey(background, 0, 0);
@@ -434,18 +433,9 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 	}
 
 	if((/*(gradient == NULL) ||*/ (blend == 0)) && bColorKey) {
-    		c = SDL_MapRGB(
-			background->format,
-			(uColorKey>>16) & 0xFF,
-			(uColorKey>>8) & 0xFF,
-			uColorKey & 0xFF);
+		c = uColorKey.MapRGB(background->format);
 		SDL_SetColorKey(background, SDL_SRCCOLORKEY, c);
-		
-    		c = SDL_MapRGB(
-			surface->format,
-			(uColorKey>>16) & 0xFF,
-			(uColorKey>>8) & 0xFF,
-			uColorKey & 0xFF);
+		c = uColorKey.MapRGB(surface->format);
 		SDL_SetColorKey(surface, SDL_SRCCOLORKEY, c);
 	}
 }

@@ -63,7 +63,7 @@ protected:
 private:
 
 	// the color we want to draw the lines with
-	SDL_Color my_color;
+	PG_Color my_color;
 
 	int tickstate;
 };
@@ -120,7 +120,7 @@ void PlayField::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rec
 		tickstate = 1;
 	}
 	else if (tickstate == 1) {
-		DrawHLine(0, my_height/2, my_width-1, my_color.r, my_color.g, my_color.b);
+		DrawHLine(0, my_height/2, my_width-1, my_color);
 		tickstate = 0;
 	}
 }
@@ -150,7 +150,7 @@ protected:
 private:
 
 	// the color we want to draw the lines with
-	SDL_Color my_color;
+	PG_Color my_color;
 
 	int tickstate;
 };
@@ -194,7 +194,7 @@ void PlayField2::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Re
 		);
 	}
 
-	SDL_Color temp_color;
+	PG_Color temp_color;
 	PG_Rect temp_rect;
 	Uint32 temp_int;
 
@@ -207,7 +207,7 @@ void PlayField2::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Re
 	temp_color.g = (my_color.g * tickstate)/40;
 	temp_color.b = (my_color.b * tickstate)/40;
 
-	temp_int = SDL_MapRGB(my_srfScreen->format, temp_color.r, temp_color.g, temp_color.b);
+	temp_int = temp_color.MapRGB(my_srfScreen->format);
 	SDL_FillRect(my_srfScreen, (SDL_Rect *)&temp_rect, temp_int);
 }
 

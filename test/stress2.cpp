@@ -15,7 +15,6 @@
 #include "pglistbox.h"
 #include "pgcolumnitem.h"
 #include "pgdropdown.h"
-#include "pgeventobject.h"
 #include "pgpopupmenu.h"
 #include "pgspinnerbox.h"
 #include "pglog.h"

@@ -2,10 +2,9 @@
 #define PG_COLORSELECTOR_H
 
 #include "pgthemewidget.h"
-#include "pgeventobject.h"
 #include "pgslider.h"
 
-class DECLSPEC PG_ColorSelector : public PG_ThemeWidget, public PG_EventObject {
+class DECLSPEC PG_ColorSelector : public PG_ThemeWidget {
 protected:
 	
 	class PG_ColorBox : public PG_ThemeWidget {
@@ -17,7 +16,7 @@ protected:
 			return static_cast<PG_ColorSelector*>(PG_ThemeWidget::GetParent());
 		}
 		
-		SDL_Color GetBaseColor();
+		PG_Color GetBaseColor();
 
 	protected:
 		
@@ -38,7 +37,7 @@ public:
 	PG_ColorSelector(PG_Widget* parent, const PG_Rect&r, const char* style="colorselector");
 	~PG_ColorSelector();
 
-	void SetColor(const SDL_Color& c);
+	void SetColor(const PG_Color& c);
 	
 	inline void SetColorGradient(PG_Gradient g) {
 		my_colorbox->SetGradient(g);
@@ -48,14 +47,14 @@ protected:
 	
 	bool handle_colorslide(long data);
 
-	void SetBaseColor(const SDL_Color& c);
+	void SetBaseColor(const PG_Color& c);
 	
 	PG_ColorBox* my_colorbox;
 	PG_Slider* my_colorslider;
 	PG_ThemeWidget* my_colorresult;
 	
-	SDL_Color my_color;
-	SDL_Color my_basecolor;
+	PG_Color my_color;
+	PG_Color my_basecolor;
 	
 	friend class PG_ColorBox;
 };

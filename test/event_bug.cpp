@@ -2,9 +2,8 @@
 #include <pgwindow.h>
 #include <pglineedit.h>
 #include <pgbutton.h>
-#include <pgeventobject.h>
 
-class MyDialog : public PG_Window, public PG_EventObject
+class MyDialog : public PG_Window
 {
     public:
         MyDialog();

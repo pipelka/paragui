@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
     Status:           $State: Exp $
 */
 
@@ -90,7 +90,7 @@ void PG_LineEdit::DrawTextCursor() {
 
 	// draw simple cursor
 	if(my_srfTextCursor == NULL) {
-		DrawVLine(GetCursorXPos() + 2, 2, h-4, 0,0,0);
+		DrawVLine(GetCursorXPos() + 2, 2, h-4, PG_Color(0,0,0));
 	}
 
 	// draw a nice cursor bitmap

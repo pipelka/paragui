@@ -20,13 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:41 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
     Status:           $State: Exp $
 */
 
 #include "theme_priv.h"
+#include "pgcolor.h"
 
 THEME_THEME::~THEME_THEME() {
 	// clean up
@@ -84,15 +85,74 @@ PG_Gradient* THEME_THEME::FindGradient(const char* widgettype, const char* objec
 	return object->FindGradient(name);
 }
 
-long THEME_THEME::FindProperty(const char* widgettype, const char* objectname, const char* name) {
-	THEME_OBJECT* object = FindObject(widgettype, objectname);
+void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, const char* name, long& prop) {
+	THEME_OBJECT* o = FindObject(widgettype, objectname);
 
-	if(object == NULL) {
-		return -1;
+	if(o == NULL) {
+		return;
 	}
 
-	return object->FindProperty(name);
+	long n = o->FindProperty(name);
+	if(n == -1) {
+		return;
+	}
+	
+	prop = n;
 }
+
+void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, const char* name, Uint8& prop) {
+	THEME_OBJECT* o = FindObject(widgettype, objectname);
+
+	if(o == NULL) {
+		return;
+	}
+
+	long n = o->FindProperty(name);
+	if(n == -1) {
+		return;
+	}
+	
+	prop = (Uint8)n;
+}
+
+void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, const char* name, bool& prop) {
+	THEME_OBJECT* o = FindObject(widgettype, objectname);
+
+	if(o == NULL) {
+		return;
+	}
+
+	long n = o->FindProperty(name);
+	if(n == -1) {
+		return;
+	}
+	
+	prop = (n == 1);
+}
+
+void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, const char* name, int& prop) {
+	THEME_OBJECT* o = FindObject(widgettype, objectname);
+
+	if(o == NULL) {
+		return;
+	}
+
+	long n = o->FindProperty(name);
+	if(n == -1) {
+		return;
+	}
+	
+	prop = (int)n;
+}
+
+/*Uint8 THEME_THEME::FindTransparency(const char* widgettype, const char* objectname, const char* name, Uint8 def) {
+	int result = FindProperty(widgettype, objectname, name, def);
+	if(result == -1) {
+		return def;
+	}
+	
+	return (Uint8)result;
+}*/
 
 const char* THEME_THEME::FindString(const char* widgettype, const char* objectname, const char* name) {
 	THEME_OBJECT* object = FindObject(widgettype, objectname);
@@ -246,22 +306,18 @@ PG_Gradient* THEME_OBJECT::FindGradient(const char* name) {
 		return NULL;
 	}
 
-	return &(result->gradient);
+	return static_cast<PG_Gradient*>(result);
 }
 
-SDL_Color* THEME_THEME::FindColor(const char* widgettype, const char* object, const char* name) {
-	static SDL_Color c;
-	long b = FindProperty(widgettype, object, name);
+void THEME_THEME::GetColor(const char* widgettype, const char* object, const char* name, PG_Color& color) {
+	long b = -1;
+	GetProperty(widgettype, object, name, b);
 
 	if(b == -1) {
-		return NULL;
+		return;
 	}
 
-	c.r = ((Uint32)b >> 16) & 0xFF;
-	c.g = ((Uint32)b >> 8) & 0xFF;
-	c.b = (Uint32)b & 0xFF;
-
-	return &c;
+	color = (Uint32)b;
 }
 
 long THEME_OBJECT::FindProperty(const char* name) {

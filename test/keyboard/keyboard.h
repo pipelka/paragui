@@ -12,10 +12,9 @@
 #include "pglabel.h"
 #include "pgbutton.h"
 #include "pglineedit.h"
-#include "pgeventobject.h"
 #include <string>
 
-class TKey_LineEdit : public PG_LineEdit, public PG_EventObject
+class TKey_LineEdit : public PG_LineEdit
 {
  private:
 	unsigned int nReturnValue;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:51 $
+    Update Date:      $Date: 2003/11/24 09:17:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.2 $
     Status:           $State: Exp $
 */
 
@@ -401,34 +401,10 @@ public:
     
 	/**
 	Set default font color
-	@param	Color SDL_Color structure contains color information (RGB)
+	@param	Color PG_Color class contains color information (RGB)
 	@return   0 when OK
 	*/
-	static void SetFontColor(const SDL_Color& Color);
-
-	/**
-	Set default font color
-	@param	Red	Red color value 0 - 255
-	@param	Green	Green color value 0 - 255
-	@param	Blue	Blue color value 0 - 255
-	@return   0 when OK
-	*/
-#ifdef SWIG
-	%name(SetFontColorRGB) static void SetFontColor(int Red, int Green, int Blue);
-#else
-	static void SetFontColor(int Red, int Green, int Blue);
-#endif
-
-	/**
-	Set default font color
-	@param	Color Value of the color 0x00RRGGBB (RGB)
-	@return   0 when OK
-	*/
-#ifdef SWIG
-	%name(SetFontColor32) static void SetFontColor(int Color);
-#else
-	static void SetFontColor(int Color);
-#endif
+	static void SetFontColor(const PG_Color& Color);
 
 	/**
 	Set default font transparency (!!!)
@@ -576,7 +552,7 @@ private:
 	bool my_freeBackground;
 	static SDL_Surface* my_background;
 	static SDL_Surface* my_scaled_background;
-	static SDL_Color my_backcolor;
+	static PG_Color my_backcolor;
 	static int my_backmode;
 	
 	static PG_Theme* my_Theme;

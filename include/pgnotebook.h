@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:38 $
+    Update Date:      $Date: 2003/11/24 09:17:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgnotebook.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
     Status:           $State: Exp $
 */
 
@@ -45,7 +45,6 @@
 #include "pgbutton.h"
 #include "pgwidgetlist.h"
 #include "pgapplication.h"
-#include "pgeventobject.h"
 
 #include <vector>
 #include MAP_INC
@@ -240,7 +239,7 @@ class DECLSPEC PG_NotebookPage : public PG_Widget
         SDL_Surface  *srf_icon;
         SDL_Surface  *srf_inactiveIcon;
         SDL_Surface  *srf_back;
-        SDL_Color     col_back;
+        PG_Color     col_back;
         bool          bmp_back;
         Uint32        alpha_back;
         

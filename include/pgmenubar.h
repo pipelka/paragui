@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:52 $
+    Update Date:      $Date: 2003/11/24 09:17:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmenubar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
@@ -39,7 +39,6 @@
 #include "pgthemewidget.h"
 #include "pgbutton.h"
 #include "pgpopupmenu.h"
-#include "pgeventobject.h"
 
 /**
 	@author Alexander Pipelka
@@ -49,7 +48,7 @@
 	PopupMenu is opened.
 */
 
-class DECLSPEC PG_MenuBar : public PG_ThemeWidget, public PG_EventObject {
+class DECLSPEC PG_MenuBar : public PG_ThemeWidget {
 public:
 
 	/**

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/11/21 12:27:56 $
+   Update Date:      $Date: 2003/11/24 09:17:22 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.1 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.2 $
    Status:           $State: Exp $
  */
 
@@ -39,15 +39,11 @@ bool PG_Widget::bBulkUpdate = false;
 PG_RectList PG_Widget::widgetList;
 int PG_Widget::my_ObjectCounter = 0;
 
-typedef STL_MAP<int, PG_Widget*> PG_IdToWidgetMap;
-typedef map<string, PG_Widget*> PG_NameToWidgetMap;
-
-struct PG_WidgetDataInternal{
+class PG_WidgetDataInternal {
+public:
+	PG_WidgetDataInternal() {};
 
 	PG_Font* font;
-
-	PG_IdToWidgetMap childrenIdMap;
-	PG_NameToWidgetMap childrenNameMap;
 
 	bool quitModalLoop;
 	bool dirtyUpdate;
@@ -100,6 +96,25 @@ void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
 	my_internaldata = new PG_WidgetDataInternal;
 	
 	my_internaldata->inDestruct = false;
+	my_internaldata->font = NULL;
+	my_internaldata->dirtyUpdate = false;
+	my_internaldata->widgetParent = parent;
+	my_internaldata->id = -1;
+	my_internaldata->transparency = 0;
+	my_internaldata->quitModalLoop = false;
+	my_internaldata->visible = false;
+	my_internaldata->hidden = false;
+	my_internaldata->firstredraw = true;
+	my_internaldata->childList = NULL;
+	my_internaldata->haveTooltip = false;
+	my_internaldata->fadeSteps = 10;
+	my_internaldata->mouseInside = false;
+	my_internaldata->userdata = NULL;
+	my_internaldata->userdatasize = 0;
+	my_internaldata->widthText = TXT_HEIGHT_UNDEF;
+	my_internaldata->heightText = TXT_HEIGHT_UNDEF;
+
+	my_internaldata->havesurface = bObjectSurface;
 
 	//Set default font
 	if(PG_Application::DefaultFont != NULL) {
@@ -108,13 +123,9 @@ void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
 					PG_Application::DefaultFont->GetSize());
 	}
 	else {
-		my_internaldata->font = NULL;
 		PG_LogWRN("Unable to get default font! Did you load a theme ?");
 	}
 
-	my_internaldata->dirtyUpdate = false;
-	my_internaldata->widgetParent = parent;
-	my_internaldata->havesurface = bObjectSurface;
 	my_srfScreen = PG_Application::GetScreen();
 
 	if(my_internaldata->havesurface) {
@@ -143,17 +154,6 @@ void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
 	my_colorBorder[1][1].g = 134;
 	my_colorBorder[1][1].b = 134;
 
-	my_internaldata->id = -1;
-	my_internaldata->transparency = 0;
-	my_internaldata->quitModalLoop = false;
-	my_internaldata->visible = false;
-	my_internaldata->hidden = false;
-	my_internaldata->firstredraw = true;
-
-	my_internaldata->childList = NULL;
-	my_internaldata->haveTooltip = false;
-	my_internaldata->fadeSteps = 10;
-
 	my_text = "";
 
 	if (my_internaldata->widgetParent != NULL) {
@@ -161,13 +161,6 @@ void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
 		my_ypos = my_internaldata->widgetParent->my_ypos + my_ypos;
 		my_internaldata->widgetParent->AddChild(this);
 	}
-
-	my_internaldata->mouseInside = false;
-	my_internaldata->userdata = NULL;
-	my_internaldata->userdatasize = 0;
-
-	my_internaldata->widthText = TXT_HEIGHT_UNDEF;
-	my_internaldata->heightText = TXT_HEIGHT_UNDEF;
 
 	my_internaldata->rectClip = *this;
 
@@ -349,11 +342,11 @@ void PG_Widget::AddChild(PG_Widget * child) {
 
 	my_internaldata->childList->Add(child);
 
-    AddChildToCache(child, child->GetName());
-	AddChildToCache(child,  child->GetID());
+    //AddChildToCache(child, child->GetName());
+	//AddChildToCache(child,  child->GetID());
 }
 
-void PG_Widget::AddChildToCache(PG_Widget *child, const char *name) {
+/*void PG_Widget::AddChildToCache(PG_Widget *child, const char *name) {
 	if (name == NULL) {
 		return;
 	}
@@ -365,9 +358,9 @@ void PG_Widget::AddChildToCache(PG_Widget *child, const char *name) {
 			string n = name;
 			my_internaldata->childrenNameMap[n] = child;
 	}
-}
+}*/
 
-void PG_Widget::AddChildToCache(PG_Widget *child, int id) {
+/*void PG_Widget::AddChildToCache(PG_Widget *child, int id) {
 	if (id <= 0) {
 		return;
 	}
@@ -378,7 +371,7 @@ void PG_Widget::AddChildToCache(PG_Widget *child, int id) {
 	else {
 		my_internaldata->childrenIdMap[id] = child;
 	}
-}
+}*/
 
 /**  */
 bool PG_Widget::MoveWindow(int x, int y) {
@@ -552,21 +545,18 @@ bool PG_Widget::ProcessEvent(const SDL_Event * event, bool bModal) {
 }
 
 bool PG_Widget::RemoveChild(PG_Widget * child) {
-	if(my_internaldata->childList == NULL) {
+	if(my_internaldata->childList == NULL || child == NULL) {
 		return false;
 	}
 
-    if (!child)
-        return false;
-    
-    const char *name = child->GetName();
-    int id = child->GetID();
+    //const char *name = child->GetName();
+    //int id = child->GetID();
 
-    if (FindChild(name))
+    /*if (FindChild(name))
         my_internaldata->childrenNameMap[name] = 0;
 
     if (FindChild(id))
-        my_internaldata->childrenIdMap[id] = 0;
+        my_internaldata->childrenIdMap[id] = 0;*/
 
 	return my_internaldata->childList->Remove(child);
 }
@@ -945,7 +935,7 @@ void PG_Widget::BulkBlit() {
 
 void PG_Widget::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	PG_Theme* t = PG_Application::GetTheme();
-	SDL_Color* c;
+	PG_Color c;
 
 	const char *font = t->FindFontName(widgettype, objectname);
 	int fontsize = t->FindFontSize(widgettype, objectname);
@@ -960,19 +950,12 @@ void PG_Widget::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	if (fontstyle >= 0)
 		SetFontStyle(fontstyle, true);
 
-	c = t->FindColor(widgettype, objectname, "textcolor");
-	if(c != NULL)
-		SetFontColor(*c);
+	c = GetFontColor();
+	t->GetColor(widgettype, objectname, "textcolor", c);
+	SetFontColor(c);
 
-	c = t->FindColor(widgettype, objectname, "bordercolor0");
-	if(c != NULL) {
-		my_colorBorder[0][0] = *c;
-	}
-
-	c = t->FindColor(widgettype, objectname, "bordercolor1");
-	if(c != NULL) {
-		my_colorBorder[1][0] = *c;
-	}
+	t->GetColor(widgettype, objectname, "bordercolor0", my_colorBorder[0][0]);
+	t->GetColor(widgettype, objectname, "bordercolor1", my_colorBorder[1][0]);
 }
 
 void PG_Widget::LoadThemeStyle(const char* widgettype) {}
@@ -1324,24 +1307,8 @@ void PG_Widget::SetTextFormat(const char* text, ...) {
 	va_end(ap);
 }
 
-void PG_Widget::SetFontColor(const SDL_Color& Color) {
+void PG_Widget::SetFontColor(const PG_Color& Color) {
 	my_internaldata->font->SetColor(Color);
-}
-
-void PG_Widget::SetFontColor(int Red, int Green, int Blue) {
-	SDL_Color c;
-	c.r = Red;
-	c.g = Green;
-	c.b = Blue;
-	SetFontColor(c);
-}
-
-void PG_Widget::SetFontColor(int Color) {
-	SDL_Color c;
-	c.r = (Color >> 16) & 0xff;
-	c.g = (Color >> 8) & 0xff;
-	c.b = Color & 0xff;
-	SetFontColor(c);
 }
 
 void PG_Widget::SetFontAlpha(int Alpha, bool bRecursive) {
@@ -1504,12 +1471,12 @@ void PG_Widget::DrawText(int x, int y, const char* text, const PG_Rect& cliprect
 	}
 }
 
-void PG_Widget::DrawText(const PG_Rect& rect, const char* text, const SDL_Color& c) {
+void PG_Widget::DrawText(const PG_Rect& rect, const char* text, const PG_Color& c) {
 	SetFontColor(c);
 	DrawText(rect, text);
 }
 
-void PG_Widget::DrawText(int x, int y, const char* text, const SDL_Color& c) {
+void PG_Widget::DrawText(int x, int y, const char* text, const PG_Color& c) {
 	DrawText(PG_Rect(x,y,w,h), text, c);
 }
 
@@ -1596,19 +1563,19 @@ void PG_Widget::DrawBorder(const PG_Rect& r, int size, bool up) {
 
 	// outer frame
 	if (size >= 1) {
-		DrawHLine(r.x + 0, r.y + 0, r.w, my_colorBorder[i0][0].r, my_colorBorder[i0][0].g, my_colorBorder[i0][0].b);
-		DrawVLine(r.x + 0, r.y + 0, r.h - 1, my_colorBorder[i0][0].r, my_colorBorder[i0][0].g, my_colorBorder[i0][0].b);
+		DrawHLine(r.x + 0, r.y + 0, r.w, my_colorBorder[i0][0]);
+		DrawVLine(r.x + 0, r.y + 0, r.h - 1, my_colorBorder[i0][0]);
 
-		DrawHLine(r.x + 0, r.y + r.h - 1, r.w - 1, my_colorBorder[i1][0].r, my_colorBorder[i1][0].g, my_colorBorder[i1][0].b);
-		DrawVLine(r.x + r.w - 1, r.y + 1, r.h - 1, my_colorBorder[i1][0].r, my_colorBorder[i1][0].g, my_colorBorder[i1][0].b);
+		DrawHLine(r.x + 0, r.y + r.h - 1, r.w - 1, my_colorBorder[i1][0]);
+		DrawVLine(r.x + r.w - 1, r.y + 1, r.h - 1, my_colorBorder[i1][0]);
 	}
 	// inner frame
 	if (size >= 2) {
-		DrawHLine(r.x + 1, r.y + 1, r.w - 1, my_colorBorder[i0][1].r, my_colorBorder[i0][1].g, my_colorBorder[i0][1].b);
-		DrawVLine(r.x + 1, r.y + 1, r.h - 2, my_colorBorder[i0][1].r, my_colorBorder[i0][1].g, my_colorBorder[i0][1].b);
+		DrawHLine(r.x + 1, r.y + 1, r.w - 1, my_colorBorder[i0][1]);
+		DrawVLine(r.x + 1, r.y + 1, r.h - 2, my_colorBorder[i0][1]);
 
-		DrawHLine(r.x + 1, r.y + r.h - 2, r.w - 2, my_colorBorder[i1][1].r, my_colorBorder[i1][1].g, my_colorBorder[i1][1].b);
-		DrawVLine(r.x + r.w - 2, r.y + 2, r.h - 2, my_colorBorder[i1][1].r, my_colorBorder[i1][1].g, my_colorBorder[i1][1].b);
+		DrawHLine(r.x + 1, r.y + r.h - 2, r.w - 2, my_colorBorder[i1][1]);
+		DrawVLine(r.x + r.w - 2, r.y + 2, r.h - 2, my_colorBorder[i1][1]);
 	}
 }
 
@@ -1641,21 +1608,21 @@ void PG_Widget::GetClipRects(PG_Rect& src, PG_Rect& dst, const PG_Rect& rect) {
 	src.my_height = dst.my_height;
 }
 
-void PG_Widget::SetPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b) {
+void PG_Widget::SetPixel(int x, int y, const PG_Color& c) {
 	static PG_Point p;
 
 	if(my_srfObject == NULL) {
 		p.x = my_xpos + x;
 		p.y = my_ypos + y;
 		if(my_internaldata->rectClip.IsInside(p)) {
-			PG_Draw::SetPixel(p.x, p.y, r, g, b, my_srfScreen);
+			PG_Draw::SetPixel(p.x, p.y, c, my_srfScreen);
 		}
 	} else {
-		PG_Draw::SetPixel(x, y, r, g, b, my_srfObject);
+		PG_Draw::SetPixel(x, y, c, my_srfObject);
 	}
 }
 
-void PG_Widget::DrawHLine(int x, int y, int w, Uint8 r, Uint8 g, Uint8 b) {
+void PG_Widget::DrawHLine(int x, int y, int w, const PG_Color& color) {
 	static PG_Rect rect;
 	SDL_Surface* surface = my_srfObject;
 	
@@ -1679,7 +1646,7 @@ void PG_Widget::DrawHLine(int x, int y, int w, Uint8 r, Uint8 g, Uint8 b) {
 	// clip to widget cliprect
 	int x0 = PG_MAX(x, my_internaldata->rectClip.x);
 	int x1 = PG_MIN(x+w, my_internaldata->rectClip.x+my_internaldata->rectClip.w);
-	Uint32 c = SDL_MapRGB(surface->format, r, g, b);
+	Uint32 c = color.MapRGB(surface->format);
 
 	// clip to surface cliprect
 	/*x0 = PG_MAX(x0, rect.x);
@@ -1700,7 +1667,7 @@ void PG_Widget::DrawHLine(int x, int y, int w, Uint8 r, Uint8 g, Uint8 b) {
 	SDL_FillRect(surface, &rect, c);
 }
 
-void PG_Widget::DrawVLine(int x, int y, int h, Uint8 r, Uint8 g, Uint8 b) {
+void PG_Widget::DrawVLine(int x, int y, int h, const PG_Color& color) {
 	static PG_Rect rect;
 	SDL_Surface* surface = my_srfObject;
 	
@@ -1724,7 +1691,7 @@ void PG_Widget::DrawVLine(int x, int y, int h, Uint8 r, Uint8 g, Uint8 b) {
 	// clip to widget cliprect
 	int y0 = PG_MAX(y, my_internaldata->rectClip.y);
 	int y1 = PG_MIN(y+h, my_internaldata->rectClip.y+my_internaldata->rectClip.h);
-	Uint32 c = SDL_MapRGB(surface->format, r, g, b);
+	Uint32 c = color.MapRGB(surface->format);
 
 	// clip to surface cliprect
 	/*y0 = PG_MAX(y0, rect.y);
@@ -1746,16 +1713,16 @@ void PG_Widget::DrawVLine(int x, int y, int h, Uint8 r, Uint8 g, Uint8 b) {
 }
 
 /**  */
-void PG_Widget::DrawRectWH(int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b) {
+void PG_Widget::DrawRectWH(int x, int y, int w, int h, const PG_Color& c) {
 
-	DrawHLine(x, y, w, r, g, b);
-	DrawHLine(x, y + h - 1, w, r, g, b);
-	DrawVLine(x, y, h, r, g, b);
-	DrawVLine(x + w - 1, y, h, r, g, b);
+	DrawHLine(x, y, w, c);
+	DrawHLine(x, y + h - 1, w, c);
+	DrawVLine(x, y, h, c);
+	DrawVLine(x + w - 1, y, h, c);
 
 }
 
-void PG_Widget::DrawLine(Uint32 x0, Uint32 y0, Uint32 x1, Uint32 y1, const SDL_Color& color, Uint8 width) {
+void PG_Widget::DrawLine(Uint32 x0, Uint32 y0, Uint32 x1, Uint32 y1, const PG_Color& color, Uint8 width) {
 	SDL_Surface* surface = my_srfObject;
 
 	if(surface == NULL) {
@@ -1811,24 +1778,17 @@ int PG_Widget::GetID() {
 }
 
 PG_Widget* PG_Widget::FindChild(int id) {
-	PG_IdToWidgetMap::iterator r = my_internaldata->childrenIdMap.find(id);
-
-	if(r == my_internaldata->childrenIdMap.end()) {
+	if(my_internaldata->childList == NULL) {
 		return NULL;
 	}
-
-	return (*r).second;
+	return my_internaldata->childList->Find(id);
 }
 
 PG_Widget* PG_Widget::FindChild(const char *name) {
-	string n = name;
-	PG_NameToWidgetMap::iterator r = my_internaldata->childrenNameMap.find(n);
-
-	if(r == my_internaldata->childrenNameMap.end()) {
+	if(my_internaldata->childList == NULL) {
 		return NULL;
 	}
-
-	return (*r).second;
+	return my_internaldata->childList->Find(name);
 }
 
 PG_RectList* PG_Widget::GetChildList() {
@@ -1845,9 +1805,6 @@ PG_RectList* PG_Widget::GetWidgetList() {
 
 void PG_Widget::SetName(const char *name) {
 	my_internaldata->name = name;
-	if (my_internaldata->widgetParent) {
-		my_internaldata->widgetParent->AddChildToCache(this, name);
-	}
 }
 
 const char* PG_Widget::GetName() {
@@ -1862,7 +1819,7 @@ int PG_Widget::GetFontHeight() {
 	return my_internaldata->font->GetFontHeight();
 }
 
-SDL_Color PG_Widget::GetFontColor() {
+PG_Color PG_Widget::GetFontColor() {
 	return my_internaldata->font->GetColor();
 }
 
@@ -1911,9 +1868,6 @@ bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
 
 void PG_Widget::SetID(int id) {
 	my_internaldata->id = id;
-	if (my_internaldata->widgetParent) {
-		my_internaldata->widgetParent->AddChildToCache(this, id);
-	}
 }
 
 void PG_Widget::SetDirtyUpdate(bool bDirtyUpdate) {

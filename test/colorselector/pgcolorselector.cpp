@@ -66,15 +66,15 @@ void PG_ColorSelector::PG_ColorBox::eventBlit(SDL_Surface* srf, const PG_Rect& s
 	PG_ThemeWidget::eventBlit(srf, src, dst);
 	
 	// draw crosshair
-	DrawHLine(0, p.y, w, 255,255,255);
-	DrawVLine(p.x, 0, h, 255,255,255);
+	DrawHLine(0, p.y, w, PG_Color(255,255,255));
+	DrawVLine(p.x, 0, h, PG_Color(255,255,255));
 }
 
-SDL_Color PG_ColorSelector::PG_ColorBox::GetBaseColor() {
-	SDL_Color result;
+PG_Color PG_ColorSelector::PG_ColorBox::GetBaseColor() {
+	PG_Color result;
 	
-	SDL_Color cy1, cy2;
-	SDL_Color r,g,b,w;
+	PG_Color cy1, cy2;
+	PG_Color r,g,b,w;
 	PG_Gradient gr = GetGradient();
 	
 	r = gr.colors[0];
@@ -146,11 +146,11 @@ PG_ColorSelector::PG_ColorSelector(PG_Widget* parent, const PG_Rect&r, const cha
 PG_ColorSelector::~PG_ColorSelector() {
 }
 
-void PG_ColorSelector::SetColor(const SDL_Color& c) {
+void PG_ColorSelector::SetColor(const PG_Color& c) {
 	my_color = c;
 }
 
-void PG_ColorSelector::SetBaseColor(const SDL_Color& c) {
+void PG_ColorSelector::SetBaseColor(const PG_Color& c) {
 	PG_Gradient g;
 	my_basecolor = c;
 
@@ -174,7 +174,7 @@ void PG_ColorSelector::SetBaseColor(const SDL_Color& c) {
 	
 	float v = my_colorslider->GetPosition();
 	
-	SDL_Color r;
+	PG_Color r;
 	r.r = (Uint8)(((float)c.r / 255.0) * (255.0 - v));
 	r.g = (Uint8)(((float)c.g / 255.0) * (255.0 - v));
 	r.b = (Uint8)(((float)c.b / 255.0) * (255.0 - v));

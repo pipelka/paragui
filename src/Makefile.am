@@ -4,8 +4,7 @@ DIST_SUBDIRS = draw font themes core widgets expat physfs
 
 lib_LTLIBRARIES = libparagui.la
 
-libparagui_la_SOURCES = \
-	paragui.cpp
+libparagui_la_SOURCES = paragui.cpp
 
 libparagui_la_LDFLAGS = \
 	-release $(LT_RELEASE) \

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:51 $
+    Update Date:      $Date: 2003/11/24 09:17:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
     Status:           $State: Exp $
 */
 
@@ -45,7 +45,6 @@
 #include "pglineedit.h"
 #include "pglistbox.h"
 #include "pglistboxitem.h"
-#include "pgeventobject.h"
 
 /**
 	@author Alexander Pipelka
@@ -56,7 +55,7 @@
 	predefined entries.
 */
 
-class DECLSPEC PG_DropDown : public PG_Widget, public PG_EventObject {
+class DECLSPEC PG_DropDown : public PG_Widget {
 public:
 
 	/**

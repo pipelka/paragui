@@ -65,11 +65,13 @@ Uint32 PG_TimerObject::eventTimer(Uint32 interval) {
 
 Uint32 PG_TimerObject::callbackTimer(Uint32 interval, void* data) {
 	PG_TimerID id = reinterpret_cast<PG_TimerID>(data);
+	timermap[id]->sigTimer(timermap[id], id);
 	return timermap[id]->eventTimer(id, interval);
 }
 
 Uint32 PG_TimerObject::callbackSingleTimer(Uint32 interval) {
 	if(objSingleTimer != NULL) {
+		objSingleTimer->sigTimer(objSingleTimer, (PG_TimerID)0);
 		return objSingleTimer->eventTimer(interval);
 	}
 	

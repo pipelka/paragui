@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/11/21 12:27:56 $
+   Update Date:      $Date: 2003/11/24 09:17:22 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.1 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.2 $
    Status:           $State: Exp $
  */
 
@@ -139,7 +139,7 @@ bool PG_PopupMenu::MenuItem::isPointInside(int x, int y) {
 	return false;
 }
 
-bool PG_PopupMenu::MenuItem::renderSurface(SDL_Surface *canvas, SDL_Surface **text, SDL_Color *tcol, SDL_Color *scol) {
+bool PG_PopupMenu::MenuItem::renderSurface(SDL_Surface *canvas, SDL_Surface **text, PG_Color* tcol, PG_Color* scol) {
 	if (/*!*text ||*/ !canvas)
 		return false;
 
@@ -163,21 +163,21 @@ inline bool PG_PopupMenu::MenuItem::isValidRect() {
 	return false;
 }
 
-inline bool PG_PopupMenu::MenuItem::paintNormal(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol) {
+inline bool PG_PopupMenu::MenuItem::paintNormal(SDL_Surface *canvas, PG_Color* tcol, PG_Color* scol) {
 	if (!isValidRect())
 		return false;
 
 	return renderSurface(canvas, &sNormal, tcol, scol);
 }
 
-inline bool PG_PopupMenu::MenuItem::paintSelected(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol) {
+inline bool PG_PopupMenu::MenuItem::paintSelected(SDL_Surface *canvas, PG_Color* tcol, PG_Color* scol) {
 	if (!isValidRect())
 		return false;
 
 	return renderSurface(canvas, &sSelected, tcol, scol);
 }
 
-inline bool PG_PopupMenu::MenuItem::paintDisabled(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol) {
+inline bool PG_PopupMenu::MenuItem::paintDisabled(SDL_Surface *canvas, PG_Color* tcol, PG_Color* scol) {
 	if (!isValidRect())
 		return false;
 
@@ -780,48 +780,20 @@ void PG_PopupMenu::LoadThemeStyle(const char *widgettype) {
 	PG_ThemeWidget::LoadThemeStyle(widgettype);
 
 	PG_Theme *theme = PG_Application::GetTheme();
-	long      color;
 
 	// Global
-	xPadding = theme->FindProperty(widgettype, "PopupMenu", "xPadding");
-	yPadding = theme->FindProperty(widgettype, "PopupMenu", "yPadding");
+	theme->GetProperty(widgettype, "PopupMenu", "xPadding", xPadding);
+	theme->GetProperty(widgettype, "PopupMenu", "yPadding", yPadding);
 
 	// caption
 	PG_ThemeWidget::LoadThemeStyle(widgettype, "Caption");
-	color = theme->FindProperty(widgettype, "Caption", "Active");
-	captionActiveColor.r = (color >> 16) & 0xFF;
-	captionActiveColor.g = (color >> 8) & 0xFF;
-	captionActiveColor.b = color & 0xFF;
-
-	color = theme->FindProperty(widgettype, "Caption", "Inactive");
-	captionInactiveColor.r = (color >> 16) & 0xFF;
-	captionInactiveColor.g = (color >> 8) & 0xFF;
-	captionInactiveColor.b = color & 0xFF;
-
-	color = theme->FindProperty(widgettype, "MenuItem", "Normal");
-	miNormalColor.r = (color >> 16) & 0xFF;
-	miNormalColor.g = (color >> 8) & 0xFF;
-	miNormalColor.b = color & 0xFF;
-
-	color = theme->FindProperty(widgettype, "MenuItem", "Selected");
-	miSelectedColor.r = (color >> 16) & 0xFF;
-	miSelectedColor.g = (color >> 8) & 0xFF;
-	miSelectedColor.b = color & 0xFF;
-
-	color = theme->FindProperty(widgettype, "MenuItem", "Disabled");
-	miDisabledColor.r = (color >> 16) & 0xFF;
-	miDisabledColor.g = (color >> 8) & 0xFF;
-	miDisabledColor.b = color & 0xFF;
-
-	color = theme->FindProperty(widgettype, "MenuItem", "SepNormal");
-	sepNormalColor.r = (color >> 16) & 0xFF;
-	sepNormalColor.g = (color >> 8) & 0xFF;
-	sepNormalColor.b = color & 0xFF;
-
-	color = theme->FindProperty(widgettype, "MenuItem", "SepShadow");
-	sepShadowColor.r = (color >> 16) & 0xFF;
-	sepShadowColor.g = (color >> 8) & 0xFF;
-	sepShadowColor.b = color & 0xFF;
+	theme->GetColor(widgettype, "Caption", "Active", captionActiveColor);
+	theme->GetColor(widgettype, "Caption", "Inactive", captionInactiveColor);
+	theme->GetColor(widgettype, "MenuItem", "Normal", miNormalColor);
+	theme->GetColor(widgettype, "MenuItem", "Selected", miSelectedColor);
+	theme->GetColor(widgettype, "MenuItem", "Disabled", miDisabledColor);
+	theme->GetColor(widgettype, "MenuItem", "SepNormal", sepNormalColor);
+	theme->GetColor(widgettype, "MenuItem", "SepShadow", sepShadowColor);
 
 	miGradients[0] = theme->FindGradient(widgettype, "MenuItem", "gradientNormal");
 	miGradients[1] = theme->FindGradient(widgettype, "MenuItem", "gradientSelected");
@@ -831,21 +803,13 @@ void PG_PopupMenu::LoadThemeStyle(const char *widgettype) {
 	miBackgrounds[1] = theme->FindSurface(widgettype, "MenuItem", "backSelected");
 	miBackgrounds[2] = theme->FindSurface(widgettype, "MenuItem", "backDisabled");
 
-	int b;
+	theme->GetProperty(widgettype, "MenuItem", "backmodeNormal", miBkModes[0]);
+	theme->GetProperty(widgettype, "MenuItem", "backmodeSelected", miBkModes[1]);
+	theme->GetProperty(widgettype, "MenuItem", "backmodeDisabled", miBkModes[2]);
 
-	b = theme->FindProperty(widgettype, "MenuItem", "backmodeNormal");
-	miBkModes[0] = b != -1 ? b : 0;
-	b = theme->FindProperty(widgettype, "MenuItem", "backmodeSelected");
-	miBkModes[1] = b != -1 ? b : 0;
-	b = theme->FindProperty(widgettype, "MenuItem", "backmodeDisabled");
-	miBkModes[2] = b != -1 ? b : 0;
-
-	b = theme->FindProperty(widgettype, "MenuItem", "blendNormal");
-	miBlends[0] = b != -1 ? b : 0;
-	b = theme->FindProperty(widgettype, "MenuItem", "blendSelected");
-	miBlends[1] = b != -1 ? b : 0;
-	b = theme->FindProperty(widgettype, "MenuItem", "blendDisabled");
-	miBlends[2] = b != -1 ? b : 0;
+	theme->GetProperty(widgettype, "MenuItem", "blendNormal", miBlends[0]);
+	theme->GetProperty(widgettype, "MenuItem", "blendSelected", miBlends[1]);
+	theme->GetProperty(widgettype, "MenuItem", "blendDisabled", miBlends[2]);
 }
 
 void PG_PopupMenu::LoadThemeStyle(const char *widgettype, const char *objectname) {

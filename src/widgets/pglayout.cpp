@@ -271,7 +271,7 @@ static int SetWidgetAtts(PG_Widget *Widget, const char **atts, ParseUserData_t *
 		int	r,g,b;
 
 		sscanf(c,"%d,%d,%d",&r,&g,&b);
-		Widget->SetFontColor(r,g,b);
+		Widget->SetFontColor(PG_Color(r,g,b));
 	}
 
 	c = PG_Layout::GetParamStr(atts, "fname");
@@ -450,11 +450,11 @@ static int SetButtonAtts(PG_Button *Widget, const char **atts, ParseUserData_t *
 	PG_Gradient grad;
 
 	if (PG_Layout::GetParamGrad(atts, "upgrad", &grad) != 0)
-		Widget->SetGradient(0,grad);
+		Widget->SetGradient(PG_Button::UNPRESSED, grad);
 	if (PG_Layout::GetParamGrad(atts, "downgrad", &grad) != 0)
-		Widget->SetGradient(1,grad);
+		Widget->SetGradient(PG_Button::PRESSED, grad);
 	if (PG_Layout::GetParamGrad(atts, "selgrad", &grad) != 0)
-		Widget->SetGradient(2,grad);
+		Widget->SetGradient(PG_Button::HIGHLITED, grad);
 
 	/*SetBackground*/
 

@@ -20,14 +20,21 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtheme.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_THEME_H
 #define PG_THEME_H
+
+#ifdef SWIG
+%module theme
+%{
+#include "pgtheme.h"
+%}
+#endif
 
 #include "paragui.h"
 
@@ -48,8 +55,19 @@ public:
 	virtual int FindFontStyle(const char* widgettype, const char* objectname) = 0;
 	virtual SDL_Surface* FindSurface(const char* widgettype, const char* object, const char* name) = 0;
 	virtual PG_Gradient* FindGradient(const char* widgettype, const char* object, const char* name) = 0;
-	virtual long FindProperty(const char* widgettype, const char* object, const char* name) = 0;
-	virtual SDL_Color* FindColor(const char* widgettype, const char* object, const char* name) = 0;
+	virtual void GetProperty(const char* widgettype, const char* object, const char* name, long& prop) = 0;
+	virtual void GetProperty(const char* widgettype, const char* object, const char* name, Uint8& prop) = 0;
+	virtual void GetProperty(const char* widgettype, const char* object, const char* name, bool& prop) = 0;
+	virtual void GetProperty(const char* widgettype, const char* object, const char* name, int& prop) = 0;
+	inline void GetProperty(const char* widgettype, const char* object, const char* name, Uint16& prop) {
+		long b=-1;
+		GetProperty(widgettype, object, name, b);
+		if(b == -1) {
+			return;
+		}
+		prop = (Uint16)b;
+	}
+	virtual void GetColor(const char* widgettype, const char* object, const char* name, PG_Color& color) = 0;
 	virtual const char* FindString(const char* widgettype, const char* object, const char* name) = 0;
 
 	/**

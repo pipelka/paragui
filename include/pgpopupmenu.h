@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:52 $
+    Update Date:      $Date: 2003/11/24 09:17:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -125,9 +125,9 @@ public:
 		inline SDL_Surface* getDisabled() const;
 		inline SDL_Surface* getSelected() const;
 	
-		bool paintNormal(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol = 0);
-		bool paintDisabled(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol = 0);
-		bool paintSelected(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol = 0);
+		bool paintNormal(SDL_Surface *canvas, PG_Color* tcol, PG_Color* scol = NULL);
+		bool paintDisabled(SDL_Surface *canvas, PG_Color* tcol, PG_Color* scol = NULL);
+		bool paintSelected(SDL_Surface *canvas, PG_Color* tcol, PG_Color* scol = NULL);
 	
 		inline void disable();
 		inline void enable();
@@ -152,7 +152,7 @@ public:
 	
 	private: // methods
 		void initItem();
-		bool renderSurface(SDL_Surface *canvas, SDL_Surface **text, SDL_Color *tcol, SDL_Color *scol = 0);
+		bool renderSurface(SDL_Surface *canvas, SDL_Surface **text, PG_Color* tcol, PG_Color* scol = 0);
 		bool isValidRect();
 	
 	protected: // data
@@ -313,15 +313,15 @@ protected: // data
 	string           myCaption; /** menu caption */
 #endif //SWIG
 
-	SDL_Color             captionActiveColor;
-	SDL_Color             captionInactiveColor;
+	PG_Color             captionActiveColor;
+	PG_Color             captionInactiveColor;
 
-	SDL_Color             miNormalColor;
-	SDL_Color             miSelectedColor;
-	SDL_Color             miDisabledColor;
+	PG_Color             miNormalColor;
+	PG_Color             miSelectedColor;
+	PG_Color             miDisabledColor;
 
-	SDL_Color             sepNormalColor;
-	SDL_Color             sepShadowColor;
+	PG_Color             sepNormalColor;
+	PG_Color             sepShadowColor;
 
 	int                   xPadding;
 	int                   yPadding;

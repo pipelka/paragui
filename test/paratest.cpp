@@ -15,7 +15,6 @@
 #include "pglistbox.h"
 #include "pgcolumnitem.h"
 #include "pgdropdown.h"
-#include "pgeventobject.h"
 #include "pgpopupmenu.h"
 #include "pgspinnerbox.h"
 #include "pglog.h"
@@ -52,7 +51,7 @@ bool handle_exit(PG_Pointer clientdata) {
 
 // A new widget with a callback member
 
-class MySliderLabel : public PG_Label , public PG_EventObject {
+class MySliderLabel : public PG_Label {
 public:
 	MySliderLabel(PG_Widget* parent, const PG_Rect& r, char* text) : PG_Label(parent,r,text) {
 	};
@@ -65,7 +64,7 @@ public:
 
 // A testwindow class
 
-class TestWindow : public PG_Window, public PG_EventObject {
+class TestWindow : public PG_Window {
 public:
 
 	TestWindow(PG_Widget* parent, const PG_Rect& r, char* windowtext);
@@ -340,10 +339,7 @@ int main(int argc, char* argv[]) {
 
 	//Splash();
 	
-	SDL_Color color;
-	color.r = 255;
-	color.g = 255;
-	color.b = 255;
+	PG_Color color(255,255,255);
 
 	PG_LogMSG("creating 'wnd' after %i ms", SDL_GetTicks() - start_ticks);
 

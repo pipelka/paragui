@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:55 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.2 $
     Status:           $State: Exp $
 */
 
 #include "paragui.h"
-
+#include "pgcolor.h"
 
 #include "theme_priv.h"
 #include "pglog.h"
@@ -69,12 +69,6 @@ PARSE_INFO;
 #define BUFFSIZE	512
 
 char buff[BUFFSIZE];
-
-void splitColor(SDL_Color*c, Uint32 v) {
-	c->r = (v >> 16) & 0xFF;
-	c->g = (v >> 8) & 0xFF;
-	c->b = v & 0xFF;
-}
 
 void parseGlobProps(PARSE_INFO* info, const XML_Char* name, const XML_Char** atts) {
 
@@ -196,9 +190,8 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 
 		// set the colorkey (if there is any)
 		if(filename->hasColorKey && filename->surface) {
-			SDL_Color c;
-			splitColor(&c, filename->colorkey);
-			Uint32 key = SDL_MapRGB(filename->surface->format, c.r, c.g, c.b);
+			PG_Color c = filename->colorkey;
+			Uint32 key = c.MapRGB(filename->surface->format);
 			SDL_SetColorKey(filename->surface, SDL_SRCCOLORKEY, key);
 		}
 		object->filename[filename->name] = filename;
@@ -295,31 +288,27 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 			} else if(tcscmp(T(atts[i]), T("color0")) == 0) {
 				val = atts[i+1];
 				sscanf(val.c_str(), "0x%08x", &c);
-				gradient->color[0].val = c;
-				splitColor(&(gradient->color[0].c), c);
+				gradient->colors[0] = c;
 			} else if(tcscmp(T(atts[i]), T("color1")) == 0) {
 				val = atts[i+1];
 				sscanf(val.c_str(), "0x%08x", &c);
-				gradient->color[1].val = c;
-				splitColor(&(gradient->color[1].c), c);
+				gradient->colors[1] = c;
 			} else if(tcscmp(T(atts[i]), T("color2")) == 0) {
 				val = atts[i+1];
 				sscanf(val.c_str(), "0x%08x", &c);
-				gradient->color[2].val = c;
-				splitColor(&(gradient->color[2].c), c);
+				gradient->colors[2] = c;
 			} else if(tcscmp(T(atts[i]), T("color3")) == 0) {
 				val = atts[i+1];
 				sscanf(val.c_str(), "0x%08x", &c);
-				gradient->color[3].val = c;
-				splitColor(&(gradient->color[3].c), c);
+				gradient->colors[3] = c;
 			} else {
 				cerr << "UNKNOWN PROPERTY ATTRIBUTE: " << atts[i] << endl;
 			}
 		}
 
-		for(i=0; i<4; i++) {
-			gradient->gradient.colors[i] = gradient->color[i].c;
-		}
+		/*for(i=0; i<4; i++) {
+			gradient->gradient.colors[i] = gradient->color[i];
+		}*/
 
 		object->gradient[gradient->name] = gradient;
 	}

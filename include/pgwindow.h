@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:54 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -76,13 +76,7 @@ public:
 
 	void LoadThemeStyle(const char* widgettype);
 
-#ifdef SWIG
-	%name(SetColorTitleBar32) void SetColorTitlebar(Uint32 color);
-#else
-	void SetColorTitlebar(Uint32 color);
-#endif
-
-	void SetColorTitlebar(const SDL_Color& c);
+	void SetColorTitlebar(const PG_Color& c);
 
 	/**
 	set window title and alignment

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/29 15:34:09 $
+    Update Date:      $Date: 2003/11/24 09:17:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5.4.1 $
+    CVS/RCS Revision: $Revision: 1.5.4.1.2.1 $
     Status:           $State: Exp $
 */
 
@@ -105,8 +105,6 @@ void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 }
 
 void PG_ListBoxItem::LoadThemeStyle(const char* widgettype, const char* objectname) {
-	int b;
-	long c;
 	static char prop[80];
 	PG_Theme* t = PG_Application::GetTheme();
 
@@ -115,18 +113,10 @@ void PG_ListBoxItem::LoadThemeStyle(const char* widgettype, const char* objectna
 		my_background[i] = t->FindSurface(widgettype, objectname, prop);
 
 		sprintf(prop, "blend%i", i);
-		b = t->FindProperty(widgettype, objectname, prop);
-
-		if(b != -1) {
-			my_blend[i] = b;
-		}
+		t->GetProperty(widgettype, objectname, prop, my_blend[i]);
 
 		sprintf(prop, "backmode%i", i);
-		b = t->FindProperty(widgettype, objectname, prop);
-
-		if(b != -1) {
-			my_bkmode[i] = b;
-		}
+		t->GetProperty(widgettype, objectname, prop, my_bkmode[i]);
 
 		sprintf(prop, "gradient%i", i);
 		PG_Gradient* g = t->FindGradient(widgettype, objectname, prop);
@@ -136,8 +126,8 @@ void PG_ListBoxItem::LoadThemeStyle(const char* widgettype, const char* objectna
 		}
 
 	}
-	c = t->FindProperty(widgettype, objectname, "textcolor");
-
-	if(c != -1)
-		SetFontColor((Uint32)c);
+	
+	PG_Color fontcolor(0xFFFFFF);
+	t->GetColor(widgettype, objectname, "textcolor", fontcolor);
+	SetFontColor(fontcolor);
 }

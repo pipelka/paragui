@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/06/29 17:09:49 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrectlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -105,6 +105,10 @@ public:
 		@return index of the rectangle / -1 if the rectangle wasn't found
 	*/
 	int FindIndexOf(PG_Rect* rect);
+
+	PG_Widget* Find(int id);
+
+	PG_Widget* Find(const char* name);
 
 	/**
 		blit all rectangles in the list to the screen

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2003/11/24 09:17:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdraw.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -84,6 +84,7 @@ DECLSPEC SDL_Surface* RotoScaleSurface(SDL_Surface *src, double angle,
 DECLSPEC SDL_Surface* ScaleSurface(SDL_Surface *src, double zoomx, double zoomy,
                                       bool smooth = true);
 
+#ifndef SWIG
 //! Scale an SDL_Surface
 /*!
   Scales a 32bit or 8bit SDL_Surface to newly created destination
@@ -119,6 +120,7 @@ static inline SDL_Surface *ScaleSurface(SDL_Surface *src, Uint16 newx, Uint16 ne
 	return ScaleSurface(src, static_cast<double>(newx) / src->w,
 	                       static_cast<double>(newy) / src->h, smooth);
 }
+#endif
 
 //! Scale and blit surface
 /*!
@@ -155,7 +157,7 @@ DECLSPEC SDL_Surface* CreateGradient(const PG_Rect& r, PG_Gradient& gradient);
 
 	This function creates a new surface filled with a given gradient defined by a set of colors
 */
-DECLSPEC SDL_Surface* CreateGradient(const PG_Rect& r, SDL_Color & ul, SDL_Color & ur, SDL_Color & dl, SDL_Color & dr);
+DECLSPEC SDL_Surface* CreateGradient(const PG_Rect& r, const PG_Color& ul, const PG_Color& ur, const PG_Color& dl, const PG_Color& dr);
 
 /**
 */
@@ -163,7 +165,7 @@ DECLSPEC void DrawGradient(SDL_Surface* surface, const PG_Rect& r, PG_Gradient& 
 
 /**
 */
-DECLSPEC void DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL_Color & ul, const SDL_Color & ur, const SDL_Color & dl, const SDL_Color & dr);
+DECLSPEC void DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_Color& ul, const PG_Color& ur, const PG_Color& dl, const PG_Color& dr);
 
 /**
 	Create a new SDL surface
@@ -199,7 +201,7 @@ DECLSPEC void DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 
 	Draws a line with given color and width onto a surface.
 */
-DECLSPEC void DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Uint32 y1, const SDL_Color& color, Uint8 width = 1);
+DECLSPEC void DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Uint32 y1, const PG_Color& color, Uint8 width = 1);
 
 /**
 	Set a pixel.
@@ -210,7 +212,7 @@ DECLSPEC void DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Ui
 	@param b blue color component
 	@param surface destination surface
 */
-DECLSPEC void SetPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b, SDL_Surface * surface);
+DECLSPEC void SetPixel(int x, int y, const PG_Color& c, SDL_Surface * surface);
 
 /**
 	replacement for SDL_BlitSurface

@@ -84,7 +84,7 @@ private:
     
     int starttimer;
     
-    SDL_Color themap[256];
+    PG_Color themap[256];
     
     unsigned char *vmem1, *vmem2;
 

@@ -20,9 +20,9 @@
   pipelka@teleweb.at
  
   Last Update:      $Author: braindead $
-  Update Date:      $Date: 2003/01/04 21:13:41 $
+  Update Date:      $Date: 2003/11/24 09:17:22 $
   Source File:      $Source: /sources/paragui/paragui/src/widgets/pgnotebook.cpp,v $
-  CVS/RCS Revision: $Revision: 1.3.6.1 $
+  CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
   Status:           $State: Exp $
 */
 #ifndef _GNU_SOURCE
@@ -62,7 +62,7 @@ void PG_NotebookPage::LoadThemeStyle(const char *widgettype)
         PG_Widget::LoadThemeStyle(widgettype);
 
         PG_Theme  *t = PG_Application::GetTheme();
-        SDL_Color *c;
+        PG_Color *c;
         
         // 1. Background (color or bitmap, gray64)
         col_back = gray64;
@@ -343,7 +343,7 @@ void PG_Notebook::LoadThemeStyle(const char *widgettype)
         PG_Widget::LoadThemeStyle(widgettype);
         
         PG_Theme   *t = PG_Application::GetTheme();
-        SDL_Color  *c;
+        PG_Color  *c;
         
         //  7. Frame left/top outer (color, LightGrey)
         my_colorBorder[0][0] = LightGrey;

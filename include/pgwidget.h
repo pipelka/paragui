@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:53 $
+    Update Date:      $Date: 2003/11/24 09:17:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -44,7 +44,7 @@
 #include MAP_INC
 
 class PG_Widget;
-struct PG_WidgetDataInternal;
+class PG_WidgetDataInternal;
 
 /**
 	@author Alexander Pipelka
@@ -582,37 +582,15 @@ public:
 
 	/**
 	Return the current text color
-	@return	SDL_Color struct
+	@return	PG_Color
 	*/
-	SDL_Color GetFontColor();
+	PG_Color GetFontColor();
 
 	/**
 	Set font color
-	@param	Color SDL_Color structure contains color information (RGB)
+	@param	Color PG_Color class contains color information (RGB)
 	*/
-	void SetFontColor(const SDL_Color& Color);
-
-	/**
-	Set font color
-	@param	Red	Red color value 0 - 255
-	@param	Green	Green color value 0 - 255
-	@param	Blue	Blue color value 0 - 255
-	*/
-#ifdef SWIG
-	%name(SetFontColorRGB) void SetFontColor(int Red, int Green, int Blue);
-#else
-	void SetFontColor(int Red, int Green, int Blue);
-#endif
-
-	/**
-	Set font color
-	@param	Color Value of the color 0x00RRGGBB (RGB)
-	*/
-#ifdef SWIG
-	%name(SetFontColor32) void SetFontColor(int Color);
-#else
-	void SetFontColor(int Color);
-#endif
+	void SetFontColor(const PG_Color& Color);
 
 	/**
 	Set font transparency (!!!)
@@ -713,9 +691,9 @@ public:
 	@param color color of the rendered text
 	*/
 #ifdef SWIG
-	%name(DrawTextColor) void DrawText(const PG_Rect& rect, const char* text, const SDL_Color& c);
+	%name(DrawTextColor) void DrawText(const PG_Rect& rect, const char* text, const PG_Color& c);
 #else
-	void DrawText(const PG_Rect& rect, const char* text, const SDL_Color& c);
+	void DrawText(const PG_Rect& rect, const char* text, const PG_Color& c);
 #endif
 
 	/**
@@ -726,9 +704,9 @@ public:
 	@param color color of the rendered text
 	*/
 #ifdef SWIG
-	%name(DrawTextXYColor) void DrawText(int x, int y, const char* text, const SDL_Color& c);
+	%name(DrawTextXYColor) void DrawText(int x, int y, const char* text, const PG_Color& c);
 #else
-	void DrawText(int x, int y, const char* text, const SDL_Color& c);
+	void DrawText(int x, int y, const char* text, const PG_Color& c);
 #endif
 
 	/**  */
@@ -776,19 +754,19 @@ public:
 #endif
 
 	/**  */
-	void SetPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b);
+	void SetPixel(int x, int y, const PG_Color& c);
 
 	/**  */
-	void DrawHLine(int x, int y, int w, Uint8 r, Uint8 g, Uint8 b);
+	void DrawHLine(int x, int y, int w, const PG_Color& c);
 
 	/**  */
-	void DrawVLine(int x, int y, int h, Uint8 r, Uint8 g, Uint8 b);
+	void DrawVLine(int x, int y, int h, const PG_Color& c);
 
 	/**  */
-	void DrawRectWH(int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b);
+	void DrawRectWH(int x, int y, int w, int h, const PG_Color& c);
 
 	/**  */
-	void DrawLine(Uint32 x0, Uint32 y0, Uint32 x1, Uint32 y1, const SDL_Color& color, Uint8 width=1);
+	void DrawLine(Uint32 x0, Uint32 y0, Uint32 x1, Uint32 y1, const PG_Color& color, Uint8 width=1);
 
 	/**
 	Enter modal mode
@@ -954,13 +932,13 @@ protected:
 	/**
 	array of border colors
 	*/
-	SDL_Color my_colorBorder[2][2];
+	PG_Color my_colorBorder[2][2];
 
 private:
 
 	void InitWidget(PG_Widget* parent, bool bObjectSurface);
-	void AddChildToCache(PG_Widget *child, const char *name);
-	void AddChildToCache(PG_Widget *child, int id);
+	//void AddChildToCache(PG_Widget *child, const char *name);
+	//void AddChildToCache(PG_Widget *child, int id);
     
 #ifndef SWIG
 	PG_Widget(const PG_Widget&);
