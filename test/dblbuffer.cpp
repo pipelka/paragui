@@ -179,6 +179,8 @@ int main(int argc, char *argv[])
 		exit(2);
 	}
 
+	PG_LogConsole::SetConsoleKey((SDLKey)0);
+	
 	app.SetBulkMode(true);
 	app.LoadTheme("default");
 
