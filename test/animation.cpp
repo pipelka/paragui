@@ -52,7 +52,7 @@ public:
 	// the destructor
 	~PlayField();
 
-	Uint32 eventTimer(Uint32 interval);
+	Uint32 eventTimer(PG_TimerID id, Uint32 interval);
 
 protected:
 
@@ -124,9 +124,9 @@ void PlayField::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rec
 	}
 }
 
-Uint32 PlayField::eventTimer(Uint32 interval) {
+Uint32 PlayField::eventTimer(PG_TimerID id, Uint32 interval) {
 	Update();
-	PG_TimerObject::eventTimer(interval);
+	PG_TimerObject::eventTimer(id, interval);
 }
 
 class PlayField2 : public PG_ThemeWidget, public PG_TimerObject
@@ -139,7 +139,7 @@ public:
 	// the destructor
 	~PlayField2();
 
-	Uint32 eventTimer(Uint32 interval);
+	Uint32 eventTimer(PG_TimerID id, Uint32 interval);
 
 protected:
 
@@ -210,7 +210,7 @@ void PlayField2::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Re
 	SDL_FillRect(my_srfScreen, (SDL_Rect *)&temp_rect, temp_int);
 }
 
-Uint32 PlayField2::eventTimer(Uint32 interval) {
+Uint32 PlayField2::eventTimer(PG_TimerID id, Uint32 interval) {
 	tickstate++;
 	
 	if(tickstate >= 40) {
@@ -218,7 +218,7 @@ Uint32 PlayField2::eventTimer(Uint32 interval) {
 	}
 	
 	Update();
-	PG_TimerObject::eventTimer(interval);
+	PG_TimerObject::eventTimer(id, interval);
 }
 
 int main(int argc, char* argv[]) {
