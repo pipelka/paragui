@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/10 09:18:27 $
+    Update Date:      $Date: 2002/11/01 20:24:57 $
     Source File:      $Source: /sources/paragui/paragui/include/paraconfig.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.11 $
     Status:           $State: Exp $
 */
 
@@ -65,7 +65,7 @@ using std::localtime;
 using std::time;
 #endif
 
-#if (defined(WIN32) || defined(__WIN32__)) && (defined(_MSC_VER) || defined(__BCPLUSPLUS__) || defined(__MWERKS__))
+#if (defined(WIN32) || defined(__WIN32__)) && (defined(__MINGW32__) || defined(_MSC_VER) || defined(__BCPLUSPLUS__) || defined(__MWERKS__))
 #include "paraconfig_win32.h"
 #elif defined(__MACOS__) 
 #include "paraconfig_macos.h"

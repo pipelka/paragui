@@ -1,6 +1,7 @@
 #ifndef WIN32_CONFIG_INCLUDED
 #define WIN32_CONFIG_INCLUDED
 
+#ifndef __MINGW32__
 // disable win32 warnings on exporting STL objects
 #pragma warning(disable: 4275)
 #pragma warning(disable: 4251)
@@ -10,6 +11,7 @@
 
 // strange thing but it works
 #define PATH_MAX MAX_PATH
+#endif
 
 /* Define if you the the SDL_image library */
 #define HAVE_SDLIMAGE 1

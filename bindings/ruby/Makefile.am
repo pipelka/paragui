@@ -13,7 +13,7 @@ PGHEADERS=$(shell ls $(top_srcdir)/include/*.h)
 LINK = $(COMPILE) -shared \
 	-L@prefix@/lib \
 	-L$(top_srcdir)/src \
-    $(PARAGUI_LIBS)
+	$(PARAGUI_LIBS)
 
 INCLUDES = \
 	$(SDL_CFLAGS) \
