@@ -26,6 +26,8 @@ Whats new in ParaGUI 1.0.2 ?
   Thanks Keith Swyer <ksswyer@adventus.com>
 - added wildcard matching for PG_FileArchive::GetFileList
 - added PG_FileArchive::OpenFileRWops
+- added PG_RadioButton:SetAlignment
+- missing DECLSPEC added to pgfont.h
 
 
 ----------------------------
