@@ -3,6 +3,18 @@
 @page tutorial	Some steps to take to get started with paragui
 @author Fred Ollinger
 
+@section Acknowledgements
+
+I would like to acknowledge the original authors of this document:
+Tony Gale <gale@gtk.org>, Ian Main <imain@gtk.org>. They had originally written
+this document for GTK. Copies can be found here:
+http://www.gtk.org/tutorial1.2/.
+
+I have taken their work and adapted it for use with paragui. All the decent
+organization is Tony and Ian's. Mistakes are my own. Please do not contact them
+with any questions regarding this document as they had nothing to do with the
+final version. 
+
 @section Introduction
 
 Paragui is a library for creating graphical user
@@ -17,6 +29,82 @@ framebuffer.
 Thus Paragui is very cross-platform as well full featured. The power
 of SDL is available in Paragui.
 
+The primary authors of SDL are:
+
+Special thanks go to Sam Lantinga <slouken@libsdl.org>
+for the great SDL library <http://www.libsdl.org>.
+
+The primary authors of Paragui are:
+
+Alexander Pipelka <pipelka@teleweb.at>
+
+Sebastian Haag <ulf82@users.sf.net>:
+Win32 maintenance
+bug fix wizard
+overall improvements
+
+Keith Swyer <ksswyer@hotmail.com>:
+MacOS support
+CodeWarrior 7 project files
+
+David Hedbor <david@hedbor.org>:
+GCC 3.0/Win32 testing
+VisualC++ workspaces
+bug fixes
+C++ standards checking
+SDL_rotozoom integration
+
+Marek Habersack <grendel@vip.net.pl>:
+PG_PopupMenu
+STLport integration
+
+Ales Teska <ales.teska@dbinvest.cz>:
+new freetype font rendering
+XML layout loader
+various small changes
+
+Jaroslav Vozab <vozab@dbsystem.cz>:
+PG_RichEdit, PG_WidgetListEx
+new text rendering
+
+Antonin Hildebrand <woid@centrum.cz>:
+Win32 testing
+
+Mike Dunston <atani@atani-software.net>:
+PG_SpinnerBox
+first version of zipped themes
+
+Michael Moerz <aon.912411198@aon.at>:
+Debian packaging
+
+Jacek Poplawski - OpenGL ideas
+Donald Molaro - bug fixes
+
+rotozoom.cpp is based on the LGPL package
+SDL_rotozoom by A. Schiffler <aschiffler@home.com>. Reworked to fit
+into the ParaGUI framework by David Hedbor <david@hedbor.org>.
+
+PhysicsFS <http://icculus.org/physfs/> is copyrighted by
+Ryan C. Gordon <icculus@clutteredmind.org> under the LGPL.
+ 
+Thanks to the many people providing patches, fixes & ideas:
+
+Andrew Ford
+Brian T. Crowder
+Oliver Lietz
+Henrik Edwards
+Paolo Ciccone
+David Hunt
+Jens Rieks
+Dave Robillard
+Ray Kelm
+Francis Irving
+Pete Shinners
+Franck Guillaud
+
+Sorry, if I forgot anyone. If I did, then please email me
+(follinge@piconap.com).
+
 This tutorial is an attempt to document as much as possible of Paragui,
 but it is by no means complete. This tutorial assumes a good
 understanding of C++, and how to create C++ programs. It would be a great
@@ -29,6 +117,7 @@ Check the bindings directory in the toplevel of the Paragui source code
 for details.
 
 @section Getting Started
+@subsection Getting Started
 
 The first thing to do, of course, is download the Paragui source and
 install it. You can always get the latest version from  
@@ -64,6 +153,8 @@ int main() {
 }
 
 @endcode
+
+@subsection Compiling Helloworld
 
 You can compile the above program with gcc using:
 
@@ -120,4 +211,29 @@ writing code each time to handle all that input, it would be automatically
 handled by the toolkit. Details of input handling will be explained in
 subsequent chapters on callbacks.
 
+FIXME: Start here and make this paragui style:
+
+@subsection Theory of Signals and Callbacks
+
+   Before we look in detail at helloworld, we'll discuss signals and callbacks.
+GTK is an event driven toolkit, which means it will sleep in gtk_main until an
+event occurs and control is passed to the appropriate function.
+
+   This passing of control is done using the idea of "signals". (Note that
+these signals are not the same as the Unix system signals, and are not
+implemented using them, although the terminology is almost identical.) When an
+event occurs, such as the press of a mouse button, the appropriate signal will
+be "emitted" by the widget that was pressed. This is how GTK does most of its
+useful work. There are signals that all widgets inherit, such as "destroy", and
+there are signals that are widget specific, such as "toggled" on a toggle
+button.
+
+   To make a button perform an action, we set up a signal handler to catch
+these signals and call the appropriate function. This is done by using a
+function such as:
+
+
+
 */
+
+
