@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:45:41 $
+    Update Date:      $Date: 2004/03/13 14:41:05 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.16 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.17 $
     Status:           $State: Exp $
 */
 
@@ -56,9 +56,9 @@ SDL_Surface* PG_Application::screen = NULL;
 PG_Theme* PG_Application::my_Theme = NULL;
 bool PG_Application::bulkMode = false;
 //bool PG_Application::glMode = false;
-bool PG_Application::emergencyQuit = false;
+//bool PG_Application::emergencyQuit = false;
 bool PG_Application::enableBackground = true;
-bool PG_Application::enableAppIdleCalls = false;
+//bool PG_Application::enableAppIdleCalls = false;
 SDL_Surface *PG_Application::my_mouse_pointer = NULL;
 SDL_Surface *PG_Application::my_mouse_backingstore = NULL;
 PG_Rect PG_Application::my_mouse_position = PG_Rect(0,0,0,0);
@@ -69,7 +69,7 @@ SDL_Surface* PG_Application::my_scaled_background = NULL;
 PG_Color PG_Application::my_backcolor;
 int PG_Application::my_backmode = BKMODE_TILE;
 bool PG_Application::disableDirtyUpdates = false;
-bool PG_Application::my_quitEventLoop = false;
+//bool PG_Application::my_quitEventLoop = false;
 
 /**
 	new shutdown procedure (called at application termination
@@ -82,6 +82,10 @@ void PARAGUI_ShutDownCode() {
 
 
 PG_Application::PG_Application() {
+
+	my_quitEventLoop = false;
+	emergencyQuit = false;
+	enableAppIdleCalls = false;
 
 	if(pGlobalApp != NULL) {
 		PG_LogWRN("PG_Application Object already exists !");
@@ -168,15 +172,8 @@ bool PG_Application::InitScreen(int w, int h, int depth, Uint32 flags) {
 }
 
 /**  */
-SDL_Thread* PG_Application::Run(bool threaded) {
-#ifndef WIN32
-	if(threaded) {
-		SDL_Thread* thrd = SDL_CreateThread(PG_Application::RunEventLoop, this);
-		return thrd;
-	}
-#endif
-	RunEventLoop(this);
-	return NULL;
+void PG_Application::Run() {
+	RunEventLoop();
 }
 
 void PG_Application::EnableAppIdleCalls(bool enable) {
@@ -190,12 +187,9 @@ bool PG_Application::GetAppIdleCallsEnabled()
 
 /** Event processing loop */
 
-int PG_Application::RunEventLoop(void* data) {
-	PG_Application* object = static_cast<PG_Application*>(data);
+void PG_Application::RunEventLoop() {
 	SDL_Event event;
 	my_quitEventLoop = false;
-
-	assert(data);
 
 	FlushEventQueue();
 	
@@ -209,18 +203,17 @@ int PG_Application::RunEventLoop(void* data) {
 
 		if(enableAppIdleCalls) {
 			if (SDL_PollEvent(&event) == 0) {
-				object->eventIdle();
+				eventIdle();
 			} else {
-				object->PumpIntoEventQueue(&event);
+				PumpIntoEventQueue(&event);
 			}
 		} else {
 			SDL_WaitEvent(&event);
-			object->PumpIntoEventQueue(&event);
+			PumpIntoEventQueue(&event);
 		}
 
 		DrawCursor();
 	}
-	return -1;
 }
 
 

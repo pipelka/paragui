@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:46:04 $
+    Update Date:      $Date: 2004/03/13 14:41:05 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.15 $
     Status:           $State: Exp $
 */
 
@@ -141,20 +141,17 @@ public:
 	PG_Theme* LoadTheme(const char* xmltheme, bool asDefault = true, const char* searchpath = NULL);
 
 	/**
-	Run the applications main eventloop
-
-	@param	threaded	run the eventloop in a separate thread
-	@return			pointer to event thread
+	Run the applications main eventloop.
 	If theaded is false this function will exit when the eventloop quits (MSG_QUIT). If threaded is true
 	it will return immediately and a thread processing events is started.
 	CAUTION: Threaded eventloops are unsuported under Win32 (windows specific behavior)
 	*/
-	SDL_Thread* Run(bool threaded = false);
+	void Run();
 
 	/**
 	Run the modal message pump. This function will exit when the main window was closed.
 	*/
-	static int RunEventLoop(void* data);
+	void RunEventLoop();
 
 	/**
 	Exit the main eventloop
@@ -529,7 +526,7 @@ public:
     
     @return the current behaviour of the application object
     */
-	static bool GetAppIdleCallsEnabled();
+	bool GetAppIdleCallsEnabled();
 
 	//! Flush the event queue
 	/*
@@ -570,9 +567,6 @@ public:
 	SignalXMLTag<> sigXMLTag;
 	SignalAppIdle<> sigAppIdle;
 
-	/** */
-	virtual void eventIdle();
-
 protected:
 
 	/**
@@ -595,6 +589,9 @@ protected:
 	/**  */
 	virtual void eventInit();
 
+	/** */
+	virtual void eventIdle();
+
 private:
 
 	// disable the copy operators
@@ -616,9 +613,9 @@ private:
 
 	static bool bulkMode;
 	//static bool glMode;
-	static bool emergencyQuit;
+	bool emergencyQuit;
 	static bool enableBackground;
-	static bool enableAppIdleCalls;
+	bool enableAppIdleCalls;
 
 	static SDL_Surface* my_mouse_pointer;
 	static SDL_Surface* my_mouse_backingstore;
@@ -626,7 +623,7 @@ private:
 	static CursorMode my_mouse_mode;
 	static SDL_mutex* mutexScreen;
 	static bool disableDirtyUpdates;
-	static bool my_quitEventLoop;
+	bool my_quitEventLoop;
 
 };
 
