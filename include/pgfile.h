@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/07 13:53:41 $
+    Update Date:      $Date: 2002/06/12 16:02:49 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfile.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -42,6 +42,11 @@
 #endif
 
 #include "paragui.h"
+
+// strange hack needed for GCC 2.91 - Alex
+#ifdef getc
+#undef getc
+#endif
 
 /**
  * @author Alexander Pipelka
