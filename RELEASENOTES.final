@@ -1,3 +1,34 @@
+----------------------------
+Whats new in ParaGUI 1.0.2 ?
+----------------------------
+
+- Fixed a bug in DrawLineH, DrawLineV
+  introduced in 1.0.1
+- updated PhysFS to version 0.1.5
+- removed unneccessary mutex locks while
+  message processing
+- fixed a crash in PG_ListBox when deleting an
+  item in the event handler
+
+
+----------------------------
+Whats new in ParaGUI 1.0.1 ?
+----------------------------
+
+- Fixed permissions on zipped theme files
+- 8bit surface fixes
+- Enabling/Disabling of symlinks
+- fixed a potential crash in PG_ListBox (SelectItem(NULL))
+- PG_Button: Added Get/SetBlendLevel() functions
+- SetBackground colorkey fixes
+- Borland C++ Builder fixes
+- remerge of expat (optional)
+- optimized DrawHLine, DrawVLine
+- fixed a widgetlist scrolling bug
+- fixed a window-resize bug
+- cached surfaces are generated in the screen format
+
+
 --------------------------------------
 Whats new in ParaGUI 1.0 RC1 (Beta3) ?
 --------------------------------------
