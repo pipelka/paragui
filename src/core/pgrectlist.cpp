@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 14:53:56 $
+    Update Date:      $Date: 2002/06/10 12:00:13 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.1 $
     Status:           $State: Exp $
 */
 
@@ -53,7 +53,7 @@ PG_RectList PG_RectList::Intersect(PG_Rect* rect, int first, int last) {
 		// get the next rectangle to test
 		testwidget = (*this)[i];
 
-		if(!testwidget->IsVisible()) {
+		if(!testwidget->IsVisible() || testwidget->IsHidden()) {
 			continue;
 		}
 
@@ -77,7 +77,7 @@ PG_Widget* PG_RectList::IsInside(const PG_Point& p) {
 		testrect = (*this)[i];
 
 		// check if the tested rect is visible
-		if(!testrect->IsVisible()) {
+		if(!testrect->IsVisible() || testrect->IsHidden()) {
 			continue;
 		}
 
