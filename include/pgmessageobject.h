@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:37 $
+    Update Date:      $Date: 2004/05/27 21:23:37 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -47,6 +47,19 @@ class DECLSPEC PG_MessageObject : public virtual SigC::Object {
 
 public:
 
+	/**
+	Signal type declaration
+	**/
+	template<class datatype = PG_Pointer> class SignalActive : public PG_Signal2<PG_MessageObject*, const SDL_ActiveEvent*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalKeyDown : public PG_Signal2<PG_MessageObject*, const SDL_KeyboardEvent*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalKeyUp : public PG_Signal2<PG_MessageObject*, const SDL_KeyboardEvent*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalMouseMotion : public PG_Signal2<PG_MessageObject*, const SDL_MouseMotionEvent*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalMouseButtonDown : public PG_Signal2<PG_MessageObject*, const SDL_MouseButtonEvent*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalMouseButtonUp : public PG_Signal2<PG_MessageObject*, const SDL_MouseButtonEvent*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalQuit : public PG_Signal1<PG_MessageObject*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalSysWM : public PG_Signal2<PG_MessageObject*, const SDL_SysWMEvent*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalVideoResize : public PG_Signal2<PG_MessageObject*, const SDL_ResizeEvent*, datatype> {};
+	
 	/**
 	Creates a PG_MessageObject
 	*/
@@ -112,6 +125,16 @@ public:
 	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
 	*/
 	virtual bool ProcessEvent(const SDL_Event* event);
+
+	SignalActive<> sigActive;
+	SignalKeyDown<> sigKeyDown;
+	SignalKeyUp<> sigKeyUp;
+	SignalMouseMotion<> sigMouseMotion;
+	SignalMouseButtonDown<> sigMouseButtonDown;
+	SignalMouseButtonUp<> sigMouseButtonUp;
+	SignalSysWM<> sigSysWM;
+	SignalVideoResize<> sigVideoResize;
+	SignalQuit<> sigQuit;
 
 protected:
 

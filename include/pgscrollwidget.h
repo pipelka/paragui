@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/05/27 21:23:38 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -97,6 +97,25 @@ public:
 	virtual void RemoveAll();
 	
 	void AddChild(PG_Widget* child);
+
+	/**
+	Shift widgets on removal.
+	@param shiftx shift all widgets to the right of the removed widgets.
+	@param shift shift all widgets beneath the removed one.
+	This method controls the behaviour if a widget will be removed from the client
+	context.
+	*/
+	void SetShiftOnRemove(bool shiftx, bool shifty);
+
+	/**
+	Get x offset of current scroll position.
+	*/
+	Uint16 GetScrollPosX();
+	
+	/**
+	Get y offset of current scroll position.
+	*/
+	Uint16 GetScrollPosY();
 
 protected:
 

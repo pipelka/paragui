@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/05/27 21:23:38 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -71,10 +71,6 @@ public:
 	*/
 	PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r = PG_Rect::null, const char* style = "SpinnerBox");
 
-	/**
-	*/
-	~PG_SpinnerBox();
-
 	void SetValue(int value) {
 		m_iValue = value;
 		SetTextValue();
@@ -105,8 +101,8 @@ public:
 
 protected:
 
-	virtual bool handleButtonClick(PG_Button* button);
-	virtual bool handleEditEnd(PG_LineEdit* edit);
+	bool handleButtonClick(PG_Button* button);
+	bool handleEditEnd(PG_LineEdit* edit);
 
 private:
 

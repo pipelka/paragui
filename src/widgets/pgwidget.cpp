@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/05/18 08:51:47 $
+   Update Date:      $Date: 2004/05/27 21:23:54 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.16 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.17 $
    Status:           $State: Exp $
  */
 
@@ -216,7 +216,6 @@ bool PG_Widget::AcceptEvent(const SDL_Event * event) {
 			if ((event->motion.x < _mid->rectClip.my_xpos) ||
 				(event->motion.x > (_mid->rectClip.my_xpos + _mid->rectClip.my_width - 1))) {
 				if (_mid->mouseInside) {
-					_mid->mouseInside = false;
 					eventMouseLeave();
 				}
 				return false;
@@ -224,7 +223,6 @@ bool PG_Widget::AcceptEvent(const SDL_Event * event) {
 			if ((event->motion.y < _mid->rectClip.my_ypos) ||
 				(event->motion.y > (_mid->rectClip.my_ypos + _mid->rectClip.my_height - 1))) {
 				if (_mid->mouseInside) {
-					_mid->mouseInside = false;
 					eventMouseLeave();
 				}
 				return false;
@@ -261,9 +259,13 @@ void PG_Widget::eventMouseEnter() {}
 void PG_Widget::eventMouseLeave() {
 	_mid->mouseInside = false;
 
-	if(GetParent()) {
+	if(GetParent() != NULL && !GetParent()->IsMouseInside()) {
 		GetParent()->eventMouseLeave();
 	}
+
+	/*if(GetParent()) {
+		GetParent()->eventMouseLeave();
+	}*/
 }
 
 /**  */

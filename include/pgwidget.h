@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/18 08:51:47 $
+    Update Date:      $Date: 2004/05/27 21:23:49 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.15 $
     Status:           $State: Exp $
 */
 
@@ -541,7 +541,7 @@ public:
 
 	/**
 	Set font style
-	@param	Style	Binary combination (OR) of PG_FSTYLE_NORMAL, PG_FSTYLE_BOLD, PG_FSTYLE_ITALIC and PG_FSTYLE_UNDERLINE
+	@param	Style	Binary combination (OR) of PG_Font::NORMAL, PG_Font::BOLD, PG_Font::ITALIC and PG_Font::UNDERLINE
 	@param	bRecursive alter all child widgets
 	*/
 	void SetFontStyle(PG_Font::Style Style, bool bRecursive = false);

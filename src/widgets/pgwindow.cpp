@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/05/27 21:23:54 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.12 $
     Status:           $State: Exp $
 */
 
@@ -31,8 +31,8 @@
 #include "pgtheme.h"
 #include "pgbutton.h" 
 
-PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext, WindowFlags flags, const char* style, int heightTitlebar) : PG_ThemeWidget(parent, r) {
-
+PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext, WindowFlags flags, const char* style, int heightTitlebar) 
+: PG_ThemeWidget(parent, r), my_moveable(true) {
 	my_moveMode = false;
 	my_heightTitlebar = heightTitlebar;
 	my_showCloseButton = flags & PG_Window::SHOW_CLOSE;
@@ -156,6 +156,9 @@ void PG_Window::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 }
 
 bool PG_Window::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
+	if (!my_moveable)
+		return false;
+	
 	PG_Rect ta(*this);
 	ta.my_width = my_titlebar->w;
 	ta.my_height = my_titlebar->h;
@@ -292,4 +295,8 @@ void PG_Window::SetTitlebarHeight(Uint8 height) {
 	
 Uint8 PG_Window::GetTitlebarHeight() {
 	return my_heightTitlebar;
+}
+
+void PG_Window::SetMoveable(bool moveable) {
+	my_moveable = moveable;
 }

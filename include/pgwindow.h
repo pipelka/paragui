@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/04/19 22:34:58 $
+    Update Date:      $Date: 2004/05/27 21:23:49 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
     Status:           $State: Exp $
 */
 
@@ -111,7 +111,7 @@ public:
 	/**
 	set window title and alignment
 	@param	title					new window title
-	@param	alignment	alignment of the text (PG_TA_LEFT | PG_TA_CENTER | PG_TA_RIGHT)
+	@param alignment	alignment of the text (PG_Label::LEFT | PG_Label::CENTER | PG_Label::RIGHT)
 	*/
 	void SetTitle(const char* title, PG_Label::TextAlign alignment = PG_Label::CENTER);
 
@@ -142,6 +142,11 @@ public:
 	@param icon		pointer to imagedata (SDL_Surface)
 	*/
 	void SetIcon(SDL_Surface* icon);
+	
+	/**
+	Make window handle / ignore dragging
+	*/
+	void SetMoveable(bool moveable = true);
 	
 	SignalWindowClose sigClose;
 	SignalWindowMinimize sigMinimize;
@@ -186,6 +191,7 @@ private:
 
 	bool my_showCloseButton;
 	bool my_showMinimizeButton;
+	bool my_moveable;
 
 private: // disable the copy operators
 	

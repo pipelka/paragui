@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/05/27 21:23:54 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgspinnerbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -69,11 +69,6 @@ PG_SpinnerBox::PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r, const char* st
 	SetMask( "##" );
 	m_pEditBox->SetText( "0" );
 	m_pEditBox->SetValidKeys("-0123456789");
-}
-
-PG_SpinnerBox::~PG_SpinnerBox() {
-	delete this->m_pButtonUp;
-	delete this->m_pButtonDown;
 }
 
 bool PG_SpinnerBox::handleButtonClick(PG_Button* button) {

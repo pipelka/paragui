@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/05/27 21:23:35 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.16 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.17 $
     Status:           $State: Exp $
 */
 
@@ -110,8 +110,7 @@ public:
 	/**
 	Signal type declaration
 	**/
-	template<class datatype = PG_Pointer> class SignalQuit : public PG_Signal1<PG_Application*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalVideoResize : public PG_Signal2<PG_Application*, const SDL_ResizeEvent*, datatype> {};
+	
 	template<class datatype = PG_Pointer> class SignalXMLTag : public PG_Signal1<PG_XMLTag*, datatype> {};
 	template<class datatype = PG_Pointer> class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {};
 
@@ -433,7 +432,7 @@ public:
 
 	/**
 	Set default font style
-	@param	Style	Binary combination (OR) of PG_FSTYLE_NORMAL, PG_FSTYLE_BOLD, PG_FSTYLE_ITALIC and PG_FSTYLE_UNDERLINE
+	@param	Style	Binary combination (OR) of PG_Font::NORMAL, PG_Font::BOLD, PG_Font::ITALIC and PG_Font::UNDERLINE
 	@return   0 when OK
 	*/
 	static void SetFontStyle(PG_Font::Style Style);
@@ -454,7 +453,7 @@ public:
 
 	/**
 	Set default font name
-	@param	Name	Filename of the font (this function don`t load the font - or check presention of the file !!!)
+	@param	Name	Filename of the font (this function doesn`t load the font - or check presention of the file !!!)
 	@return   0 when OK
 	*/
 	static void SetFontName(const char *Name);
@@ -562,8 +561,6 @@ public:
 
 	bool PumpIntoEventQueue(const SDL_Event* event);
 
-	SignalQuit<> sigQuit;
-	SignalVideoResize<> sigVideoResize;
 	SignalXMLTag<> sigXMLTag;
 	SignalAppIdle<> sigAppIdle;
 

@@ -60,6 +60,28 @@ Whats new in ParaGUI 1.1.8 ?
 - reset PG_RichEdit's scrollarea height to 0 when adding new text
 - added SetSizeByText() example to paratest.cpp
 - a bit of cleanup
+- added some small doc fixes
+- added signals to PG_MessageObject
+- added PG_LogConsole::SetMaxLogLines()
+- PG_RichEdit: replaced SetAutoVerticalResize() with SetAutoResize(bool bHorizontal = true, bool bVertical = true)
+- PG_RichEdit: changed tabSize parameter to Uint16
+- PG_RichEdit: fixed infinite loop bug which occured when a word was too big to be displayed in a row
+- PG_RichEdit: improved an algorithm by adding a 'break'
+- PG_RichEdit: added SetLineWidth()
+- PG_ScrollWidget: added SetShiftOnRemove(), GetScrollPosX() and GetScrollPosY()
+- added PG_Window::SetMovable()
+- made PG_Widget::eventMouseLeave() call its parent's eventMouseLeave() only if cursor actually leaves parent area too
+- PG_SpinnerBox: removed some virtual modifiers to fix a potential crash
+- theme_priv.h: added some namespace std references to make VC happy
+- removed some unnecessary code
+- made PG_ScrollArea::DeleteAll call area change signals
+
+- applied patches from Ulf Lorenz:
+- commented PG_Draw::DrawTile
+- commented PG_Draw::DrawGradient
+- PG_Rect: simplified some if-clauses
+- surface.cpp: tiny check added, another one removed
+- surface.cpp: preserved clip rect
 - PG_Widget::FadeOut: lock screen-surface before blitting
 - PG_Widget::RestoreBackground: properly restore screen-cliprect
 - PG_Widget::eventBlit: proper screen locking
@@ -71,13 +93,6 @@ Whats new in ParaGUI 1.1.8 ?
 - PG_Button::SetBorderSize: fixed a small bug where one bordersize would be set for all three cases
 - PG_Button::eventBlit: screen is now locked
   removed some obsolete lines of code, added comments
-
-- applied patches from Ulf Lorenz:
-- commented PG_Draw::DrawTile
-- commented PG_Draw::DrawGradient
-- PG_Rect: simplified some if-clauses
-- surface.cpp: tiny check added, another one removed
-- surface.cpp: preserved clip rect
 
 - applied patches from Fred Ollinger:
 - many many documentation updates

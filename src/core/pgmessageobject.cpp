@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:03 $
+    Update Date:      $Date: 2004/05/27 21:23:49 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.5 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.6 $
     Status:           $State: Exp $
 */
 
@@ -109,39 +109,39 @@ bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 	// dispatch message
 	switch(event->type) {
 		case SDL_ACTIVEEVENT:
-			rc = eventActive(&event->active);
+			rc = eventActive(&event->active) || sigActive(this, &event->active);
 			break;
 
 		case SDL_KEYDOWN:
-			rc = eventKeyDown(&event->key);
+			rc = eventKeyDown(&event->key) || sigKeyDown(this, &event->key);
 			break;
 
 		case SDL_KEYUP:
-			rc = eventKeyUp(&event->key);
+			rc = eventKeyUp(&event->key) || sigKeyUp(this, &event->key);;
 			break;
 
 		case SDL_MOUSEMOTION:
-			rc = eventMouseMotion(&event->motion);
+			rc = eventMouseMotion(&event->motion) || sigMouseMotion(this, &event->motion);
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
-			rc = eventMouseButtonDown(&event->button);
+			rc = eventMouseButtonDown(&event->button) || sigMouseButtonDown(this, &event->button);
 			break;
 
 		case SDL_MOUSEBUTTONUP:
-			rc = eventMouseButtonUp(&event->button);
+			rc = eventMouseButtonUp(&event->button) || sigMouseButtonUp(this, &event->button);
 			break;
 
 		case SDL_QUIT:
-			rc = eventQuit(PG_Application::IDAPPLICATION, NULL, (unsigned long)&event->quit);
+			rc = eventQuit(PG_Application::IDAPPLICATION, NULL, (unsigned long)&event->quit) || sigQuit(this);
 			break;
 
 		case SDL_SYSWMEVENT:
-			rc = eventSysWM(&event->syswm);
+			rc = eventSysWM(&event->syswm) || sigSysWM(this, &event->syswm);
 			break;
 
 		case SDL_VIDEORESIZE:
-			rc = eventResize(&event->resize);
+			rc = eventResize(&event->resize) || sigVideoResize(this, &event->resize);
 			break;
 
 		default:

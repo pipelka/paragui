@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/05/27 21:23:52 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -312,4 +312,16 @@ void PG_ScrollWidget::DeleteAll() {
 	
 void PG_ScrollWidget::RemoveAll() {
 	my_scrollarea->RemoveAll();
+}
+
+void PG_ScrollWidget::SetShiftOnRemove(bool shiftx, bool shifty) {
+	my_scrollarea->SetShiftOnRemove(shiftx, shifty);
+}
+
+Uint16 PG_ScrollWidget::GetScrollPosX() {
+	return my_scrollarea->GetScrollPosX();
+}
+
+Uint16 PG_ScrollWidget::GetScrollPosY() {
+	return my_scrollarea->GetScrollPosY();
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/01 18:10:29 $
+    Update Date:      $Date: 2004/05/27 21:23:36 $
     Source File:      $Source: /sources/paragui/paragui/include/pglog.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
     Status:           $State 
 */
 
@@ -159,6 +159,13 @@ namespace PG_LogConsole {
 	@param	alignment	the alingment of the title
 	*/
 	DECLSPEC void SetTitle(const char* title, PG_Label::TextAlign alignment = PG_Label::CENTER);	
+
+	/**
+	Set a limit for the amount of log lines (200 lines by default).
+
+	@param	maximum amount of log lines.
+	*/
+	DECLSPEC void SetMaxLogLines(Uint32 max);
 };
 
 #endif

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/12 18:46:37 $
+   Update Date:      $Date: 2004/05/27 21:23:37 $
    Source File:      $Source: /sources/paragui/paragui/include/pgrichedit.h,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.6 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.7 $
    Status:           $State: Exp $
 */
 
@@ -80,11 +80,27 @@ public:
 	*/
 	bool LoadText(const char* textfile);
 	
-	void SetAutoVerticalResize(bool bResize);
+	/**
+	Resize the widget automatically if there is not enough space.
+	@param resize horizontally
+	@param resize vertically
+	*/
+	void SetAutoResize(bool bHorizontal = true, bool bVertical = true);
 	
+	/**
+	Set default alignment.
+	*/
 	void SetAlignment(Uint8 align);
 
-	void SetTabSize(Uint32 tabSize);
+	/**
+	Set tab size.
+	*/
+	void SetTabSize(Uint16 tabSize);
+
+	/**
+	Set line width.
+	*/
+	void SetLineWidth(Uint16 lineWidth);
 
 protected:
 
@@ -93,6 +109,7 @@ protected:
 	//void UpdateScrollBarsPos();
 
 	bool my_AutoVerticalResize;
+	bool my_AutoHorizontalResize;
 
 	struct RichWordDescription {
 		std::string my_Word;
@@ -151,7 +168,8 @@ protected:
 
 	Uint32 my_ChildsBorderWidth;
 
-	Uint32 my_TabSize;
+	Uint16 my_TabSize;
+	Uint16 my_LineWidth;
 
 private:
 

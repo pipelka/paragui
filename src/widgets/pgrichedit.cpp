@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/23 19:06:58 $
+   Update Date:      $Date: 2004/05/27 21:23:50 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.9 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.10 $
    Status:           $State: Exp $
 */
 
@@ -37,19 +37,21 @@ const Uint32 PG_RichEdit::my_Marks[PG_RichEdit::MARKS_COUNT] = { ' ', 0x01, '\n'
 const Uint32 PG_RichEdit::my_FontBeginMark = 010;
 
 
-PG_RichEdit::PG_RichEdit(PG_Widget* parent, const PG_Rect& r, bool autoVerticalResize, Uint32 linewidth, Uint32 tabSize, Uint32 childsborderwidth, const char* style) :
+PG_RichEdit::PG_RichEdit(PG_Widget* parent, const PG_Rect& r, bool autoResize, Uint32 linewidth, Uint32 tabSize, Uint32 childsborderwidth, const char* style) :
 PG_ScrollWidget(parent, r, style) {
 
 	EnableScrollBar(true, PG_ScrollBar::HORIZONTAL);
 
-	my_scrollarea->SetAreaWidth((linewidth != 0) ? linewidth : r.my_width);
+	my_LineWidth = (linewidth != 0) ? linewidth : r.my_width;
+	my_scrollarea->SetAreaWidth(my_LineWidth);
 	my_ChildsBorderWidth = childsborderwidth;
 
 	//TO-DO : Value 5 is font size, witch is currently unknown ...
 	my_objHorizontalScrollbar->SetLineSize(5);
 	my_TabSize = tabSize;
 	my_Align = my_Marks[PG_RichEdit::PG_TEXT_LEFT];
-	my_AutoVerticalResize = autoVerticalResize;
+	my_AutoVerticalResize = autoResize;
+	my_AutoHorizontalResize = autoResize;
 
 	my_objVerticalScrollbar->sigScrollTrack.connect(slot(*this, &PG_RichEdit::handleScrollTrack));
 	my_objVerticalScrollbar->sigScrollPos.connect(slot(*this, &PG_RichEdit::handleScrollTrack));
@@ -61,8 +63,9 @@ void PG_RichEdit::SetAlignment(Uint8 align) {
 	my_Align = my_Marks[align];
 }
 
-void PG_RichEdit::SetAutoVerticalResize(bool bResize) {
-	my_AutoVerticalResize = bResize;
+void PG_RichEdit::SetAutoResize(bool bHorizontal, bool bVertical) {
+	my_AutoHorizontalResize = bHorizontal;
+	my_AutoVerticalResize = bVertical;
 }
 
 /*void PG_RichEdit::UpdateScrollBarsPos() {
@@ -125,15 +128,17 @@ void PG_RichEdit::SetText(const char *text) {
 		return;
 	}
 
+	my_scrollarea->SetAreaWidth(my_LineWidth);
 	my_scrollarea->SetAreaHeight(0);
 	
 	my_text = text;
 		
 	// trim the string
     bool bStop = false;
+	char c;
 
     while(!my_text.empty() && !bStop) {
-		char c = my_text[my_text.size()-1];
+		c = my_text[my_text.size()-1];
 		bStop = true;
 		switch(c) {
 			case '\n':
@@ -154,27 +159,35 @@ void PG_RichEdit::ParseWords() {
 
 	my_ParsedWords.clear();
 
-	do {
+	Uint16 my_sw = 0;
+	PG_FontEngine::GetTextSize(" ", GetFont(), &my_sw);
+
 		RichWordDescription wordDescr;
+	std::string word;
+
 		Uint16 w, h, sw = 0;
 		int bl, ls;
 		bool space = false;
-		std::string word;
+	int length = 0;
+	
+	do {		
+		sw = 0;		
+		space = false;		
 
 		searchFrom = GetWord(searchFrom, &word, &wordDescr.my_EndMark);
 
-		int length = word.length();
+		length = word.length();
 		if (length > 0) {
 			if (word[length - 1] == ' ') {
 				space = true;
 				word.erase(length-1, 1);
 			}
 		}
-		PG_FontEngine::GetTextSize(word.c_str(), GetFont(), &w, &h, &bl, &ls, NULL, NULL, NULL);
+		PG_FontEngine::GetTextSize(word.c_str(), GetFont(), &w, &h, &bl, &ls);
 		wordDescr.my_Width = w;
 		if (space) {
 			word += ' ';
-			PG_FontEngine::GetTextSize(" ", GetFont(), &sw);
+			sw = my_sw;
 		}
 		wordDescr.my_Word = word;
 		wordDescr.my_EndSpaceWidth = sw;
@@ -208,6 +221,7 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, std::string *word, Uint32 *endMar
 				result = ik;
 				jk = MARKS_COUNT;
 				ik = length;
+				break;
 			}
 		}
 	}
@@ -219,6 +233,21 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, std::string *word, Uint32 *endMar
 			increment = 0;
 		*word = my_text.substr(searchFrom, result - searchFrom + increment);
 		
+		// Candid - cut too long words, if wanted
+		if (!my_AutoHorizontalResize) {
+			Uint16 width, i = word->size() - 1, w;
+			PG_FontEngine::GetTextSize(word->c_str(), GetFont(), &width);
+
+			if (width > my_width) {			
+				for (; width > my_width && i > 0; --i) {				
+					PG_FontEngine::GetTextSize(word->substr(i, 1).c_str(), GetFont(), &w);
+					width -= w;
+				}
+				result -= word->size() - i + 1;
+				*word = word->substr(0, i);
+			}
+		}						
+
 		if ((Uint32)my_text[result] == my_Marks[MARK_NONBREAKABLE_SPACE]) {
 			std::string newword;
 
@@ -228,6 +257,19 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, std::string *word, Uint32 *endMar
 		}
 	} else {
 		*word = my_text.substr(searchFrom);
+		// Candid - cut too long words, if wanted
+		if (!my_AutoHorizontalResize) {
+			Uint16 width, i = word->size() - 1, w;
+			PG_FontEngine::GetTextSize(word->c_str(), GetFont(), &width);
+
+			if (width > my_width) {			
+				for (; width > my_width && i > 0; --i) {				
+					PG_FontEngine::GetTextSize(word->substr(i, 1).c_str(), GetFont(), &w);
+					width -= w;
+				}				
+				*word = word->substr(0, i);
+			}
+		}
 	}
 
 	return result;
@@ -272,13 +314,21 @@ Sint32 PG_RichEdit::CompleteLines() {
 		my_scrollarea->SetAreaHeight(top);
 	}
 
+	if(my_AutoVerticalResize || my_AutoHorizontalResize) {
+		Uint16 w = my_width, h = my_height;
 	if (my_AutoVerticalResize) {
-		SizeWidget(my_width, my_scrollarea->GetAreaHeight());
+			h = GetListHeight();
+		}
+		if(my_AutoHorizontalResize) {
+			w = GetListWidth();
 	}
+		SizeWidget(w, h, false);
+	}
+
 	else {
 		CheckScrollBars();
 	}
-	//UpdateScrollBarsPos();
+
 	Update();
 
 	return top;
@@ -457,11 +507,19 @@ Sint32 PG_RichEdit::CompleteLinePart(size_t searchFrom, Sint32 lineTop, Uint32 &
 			breakLine = false;
 			searchFrom = oldFind - 1;
 
-			if (actualLinePart->my_WordIndexes.size() == 0) {
+			if (w > actualLinePart->my_WidthMax) {				
+				if(my_AutoHorizontalResize) {					
+					searchFrom--;
+					linePartEnd = false;					
+					my_scrollarea->SetAreaWidth(lineWidth);					
+				}								
+			}
+
+			else if (actualLinePart->my_WordIndexes.size() == 0) {
 				//searchFrom++;
 				lineSpace = my_ParsedWords[searchFrom + 1].my_LineSkip;
 			}
-			linePartEnd = true;
+			//linePartEnd = true;
 		} else {
 			if ((my_ParsedWords[searchFrom].my_Word.length() > 0) || (tabSize > 0)) {
 				if ((Uint32)ls > lineSpace)
@@ -614,11 +672,16 @@ bool PG_RichEdit::LoadText(const char* textfile) {
 	return true;
 }
 
-void PG_RichEdit::SetTabSize(Uint32 tabSize) {
+void PG_RichEdit::SetTabSize(Uint16 tabSize) {
 	my_TabSize = tabSize;
 }
 
 bool PG_RichEdit::handleScrollTrack() {
 	my_scrollarea->Update();
 	return true;
+}
+
+void PG_RichEdit::SetLineWidth(Uint16 lineWidth) {
+	my_LineWidth = lineWidth;
+	SetText(GetText());
 }
