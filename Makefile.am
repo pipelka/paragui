@@ -1,8 +1,8 @@
 AUTOMAKE_OPTIONS = 1.4
 
-SUBDIRS = include src data test
+SUBDIRS = include src data bindings
 
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = $(SUBDIRS) doc test
 
 bin_SCRIPTS = paragui-config
 
@@ -15,8 +15,6 @@ EXTRA_DIST = \
 	COPYING \
 	INSTALL \
 	TODO \
-	RELEASENOTES.final \
-	VisualC.html \
 	VisualC.zip \
 	mkdist-beos.sh
 

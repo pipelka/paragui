@@ -551,6 +551,7 @@ AC_SUBST(RPM_ROOT)
 # Finally create all the generated files
 AC_OUTPUT([
 Makefile
+doc/Makefile
 include/Makefile
 src/Makefile
 src/physfs/Makefile

@@ -50,7 +50,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(-,root,root)
 %{prefix}/bin/*-config
-%{prefix}/lib/lib*.a
 %{prefix}/lib/lib*.so
 %{prefix}/include
 %{prefix}/share/aclocal/*
