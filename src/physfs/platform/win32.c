@@ -1,9 +1,10 @@
 /*
- * Skeleton platform-dependent support routines for PhysicsFS.
+ * Win32 platform-dependent support routines for PhysicsFS.
  *
  * Please see the file LICENSE in the source's root directory.
  *
  *  This file written by Ryan C. Gordon.
+ *  Modified for ParaGUI by Alexander Pipelka
  */
 
 #include <windows.h>
@@ -310,7 +311,7 @@ LinkedStringList *__PHYSFS_platformEnumerateFiles(const char *dirname,
     dir = FindFirstFile(dirname, &ent);
     BAIL_IF_MACRO(dir == INVALID_HANDLE_VALUE, win32strerror(), NULL);
 
-    for (; FindNextFile(dir, &ent) != 0; )
+    do
     {
         if (strcmp(ent.cFileName, ".") == 0)
             continue;
@@ -338,7 +339,7 @@ LinkedStringList *__PHYSFS_platformEnumerateFiles(const char *dirname,
 
         prev = l;
         l->next = NULL;
-    } /* while */
+    } while( FindNextFile(dir, &ent) != 0; )
 
     FindClose(dir);
     return(retval);
