@@ -1,7 +1,7 @@
 /**
 
 \page layoutformat XML format for the layout loader
-\subsection layout_basicscheme Basic scheme of the document :
+\section layout_basicscheme Basic scheme of the document :
 
 \code
 <?xml version="1.0"?>
@@ -25,7 +25,7 @@
 long form in the end tag a vice versa).
 
 
-\subsection layout_maintags Main section tags
+\section layout_maintags Main section tags
 
 \code
 <layout>	<LA>
@@ -36,7 +36,7 @@ Must be first tag in the doc and it`s allowed to have exactly one this tag in th
 No parameters.<br>
 
 
-\subsection layout_sectiontags Layout section tags
+\section layout_sectiontags Layout section tags
 
 \code
 <head>	<HD>
@@ -57,7 +57,7 @@ In this section are defined every objects (widgets) you want to use and/or show.
 No parameters.<br>
 
 
-\subsection layout_bodytags Body section tags
+\section layout_bodytags Body section tags
 
 Private params are only for this tag, public params are for use in the child`s tag.<br>
 * param must be used.
@@ -377,7 +377,7 @@ Public params:<br>
 Parent : staticframe<br>
 
 
-\subsection layout_dropdownsection DropDown section tags
+\section layout_dropdownsection DropDown section tags
 
 \code
 <dropdownitem>	<DI>
@@ -387,7 +387,7 @@ Params:<br>
  text="str"			(text of the item)<br>
 
 
-\subsection layout_listboxsection ListBox section tags
+\section layout_listboxsection ListBox section tags
 
 \code
 <listboxitem>	<LI>
@@ -417,7 +417,7 @@ Public params:<br>
 Parent : listboxitem<br>
 
 
-\subsection layout_columnitemsection ColumnItem section tags
+\section layout_columnitemsection ColumnItem section tags
 
 \code
 <column>	<CO>
@@ -429,7 +429,7 @@ Params:<br>
  width="int"		(width of the column)<br>
 
 
-\subsection layout_special Special tags
+\section layout_special Special tags
 
 \code
 <style>		<ST>

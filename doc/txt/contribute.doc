@@ -29,7 +29,7 @@ DSA: 1024 4d:c8:dc:9a:99:96:ae:cc:ce:d3:2b:b0:a3:a4:95:a5
 When you update from within the module's directory (with cvs update) you do not need the -d option anymore.
 <p>
 <b>Sync with the repository :</b>
-<pre>cvs -z3 update -d -P<pre>
+<pre>cvs -z3 update -d -P</pre>
 <p>
 <b>Create a patch/diff :</b>
 <p>
@@ -39,6 +39,6 @@ After editing the sources it's easy to create a difference set of the current re
 <p>
 <b>Get your patch commited :</b>
 <p>
-Send the resulting file to the "paragui-dev@nongnu.org" mailing list describing what it does and why do you want the patch to be commited.	<li>Make your changes<br>
+Send the resulting file to the "paragui-dev@nongnu.org" mailing list describing what it does and why do you want the patch to be commited.
 <br>
 */

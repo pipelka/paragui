@@ -38,5 +38,14 @@
 			additional packages for successful compilation:<br>
 			SWIG Version >= 1.3.5 (www.swig.org)<br>
 			Python Version >= 2.0<p>
+
+		<li><b>ParaGUI Version >= 1.1.0:</b>
+
+			SDL (Simple Directmedia Layer) Version >= 1.2.6 <br>
+			SDL_Image >= 1.1.0 (optional)<br>
+			FreeType >= 2.1.4<br>
+			libSigC++ >= 2.0.5<br>
+			expat >= 1.95.1 (optional)<br>
+			physfs >= 1.0.0 (optional)<p>
 	</ul>
 */

@@ -74,6 +74,9 @@ dist-beos:
 	cd $(top_builddir)/test ; make distclean || ./autogen.sh
 	sh $(top_builddir)/mkdist-beos.sh 
 
+htmldoc:
+	cd doc ; make htmldoc
+	mv -f doc/$(PACKAGE)doc-html-$(VERSION).tar.gz .
 
 style_cvs:
 	cd $(top_srcdir)/src && make style_cvs

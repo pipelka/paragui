@@ -2,3 +2,5 @@ Makefile
 Makefile.in
 paragui.doxy
 latex
+*.tar.gz
+doxygen.log
