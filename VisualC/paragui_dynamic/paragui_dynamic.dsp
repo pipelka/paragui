@@ -53,8 +53,13 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib /nologo /dll /machine:I386 /out:"../../bin/paragui.dll" /implib:"../../lib/paragui.lib" /libpath:"../../lib"
+# ADD LINK32 advapi32.lib sdl.lib freetype.lib sdl_image.lib physfs.lib /nologo /dll /machine:I386 /out:"../../bin/paragui.dll" /implib:"../../lib/paragui.lib" /libpath:"../../lib" /libpath:"../../src/physfs/Release"
 # SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Desc=Copying PhysFS DLL ...
+PostBuild_Cmds=copy ..\..\src\physfs\Release\physfs.dll ..\..\bin
+# End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "paragui_dynamic - Win32 Debug"
 
@@ -81,8 +86,13 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib /nologo /dll /debug /machine:I386 /out:"../../bin/paraguid.dll" /implib:"../../lib/paraguid.lib" /pdbtype:sept /libpath:"../../lib"
+# ADD LINK32 advapi32.lib sdl.lib freetype.lib sdl_image.lib physfs.lib /nologo /dll /debug /machine:I386 /out:"../../bin/paraguid.dll" /implib:"../../lib/paraguid.lib" /pdbtype:sept /libpath:"../../lib" /libpath:"../../src/physfs/Debug"
 # SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Desc=Copying PhysFS DLL ...
+PostBuild_Cmds=copy ..\..\src\physfs\Debug\physfs.dll ..\..\bin
+# End Special Build Tool
 
 !ENDIF 
 
@@ -107,46 +117,6 @@ SOURCE=..\..\src\themes\theme_priv.h
 # Begin Source File
 
 SOURCE=..\..\src\themes\themeloader.cpp
-# End Source File
-# End Group
-# Begin Group "PhysFS"
-
-# PROP Default_Filter "*.c, *.h *.cpp"
-# Begin Source File
-
-SOURCE=..\..\src\physfs\archivers\dir.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\physfs\physfs.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\physfs\physfs.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\physfs\physfs_byteorder.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\physfs\physfs_internal.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\physfs\archivers\unzip.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\physfs\archivers\unzip.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\physfs\platform\win32.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\physfs\archivers\zip.c
 # End Source File
 # End Group
 # Begin Group "draw"
