@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/04/27 15:36:55 $
+   Update Date:      $Date: 2002/05/30 13:54:47 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.5 $
+   CVS/RCS Revision: $Revision: 1.3.6.1 $
    Status:           $State: Exp $
  */
 
@@ -34,12 +34,13 @@
 #include "pgapplication.h"
 #include "pgpopupmenu.h"
 #include "pglog.h"
-#include "pgtheme.h"
+
+using namespace std;
 
 /***********************************
  * MenuItem
  */
-PG_MenuItem::PG_MenuItem(PG_PopupMenu *parent, char *caption, int id, MI_FLAGS flags)
+PG_PopupMenu::MenuItem::MenuItem(PG_PopupMenu *parent, char *caption, int id, MI_FLAGS flags)
 		: myFlags(flags),
 		myCaption(caption ? caption : ""),
 		myParent(parent),
@@ -54,7 +55,7 @@ needRecalc(true) {
 	myFlags &= ~MIF_SUBMENU;
 }
 
-PG_MenuItem::PG_MenuItem(PG_PopupMenu *parent, char *caption, PG_PopupMenu *submenu)
+PG_PopupMenu::MenuItem::MenuItem(PG_PopupMenu *parent, char *caption, PG_PopupMenu *submenu)
 : myFlags(MIF_SUBMENU),
 myCaption(caption ? caption : ""),
 myParent(parent),
@@ -68,9 +69,9 @@ needRecalc(true) {
 	initItem();
 }
 
-PG_MenuItem::~PG_MenuItem() {}
+PG_PopupMenu::MenuItem::~MenuItem() {}
 
-void PG_MenuItem::initItem() {
+void PG_PopupMenu::MenuItem::initItem() {
 	my_xpos = my_ypos = my_height = my_width = 0;
 	myPoint.x = myPoint.y = 0;
 
@@ -81,7 +82,7 @@ void PG_MenuItem::initItem() {
 		myFlags |= MIF_SEPARATOR;
 }
 
-bool PG_MenuItem::measureItem(PG_Rect* rect, bool full) {
+bool PG_PopupMenu::MenuItem::measureItem(PG_Rect* rect, bool full) {
 
 	rect->x = x;
 	rect->y = y;
@@ -127,7 +128,7 @@ bool PG_MenuItem::measureItem(PG_Rect* rect, bool full) {
 	return true;
 }
 
-bool PG_MenuItem::isPointInside(int x, int y) {
+bool PG_PopupMenu::MenuItem::isPointInside(int x, int y) {
 	int posx = x - my_xpos;
 	int posy = y - my_ypos;
 
@@ -138,7 +139,7 @@ bool PG_MenuItem::isPointInside(int x, int y) {
 	return false;
 }
 
-bool PG_MenuItem::renderSurface(SDL_Surface *canvas, SDL_Surface **text, SDL_Color *tcol, SDL_Color *scol) {
+bool PG_PopupMenu::MenuItem::renderSurface(SDL_Surface *canvas, SDL_Surface **text, SDL_Color *tcol, SDL_Color *scol) {
 	if (/*!*text ||*/ !canvas)
 		return false;
 
@@ -155,28 +156,28 @@ bool PG_MenuItem::renderSurface(SDL_Surface *canvas, SDL_Surface **text, SDL_Col
 	return true;
 }
 
-inline bool PG_MenuItem::isValidRect() {
+inline bool PG_PopupMenu::MenuItem::isValidRect() {
 	if ((my_width > 0) && (my_height > 0))
 		return true;
 
 	return false;
 }
 
-inline bool PG_MenuItem::paintNormal(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol) {
+inline bool PG_PopupMenu::MenuItem::paintNormal(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol) {
 	if (!isValidRect())
 		return false;
 
 	return renderSurface(canvas, &sNormal, tcol, scol);
 }
 
-inline bool PG_MenuItem::paintSelected(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol) {
+inline bool PG_PopupMenu::MenuItem::paintSelected(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol) {
 	if (!isValidRect())
 		return false;
 
 	return renderSurface(canvas, &sSelected, tcol, scol);
 }
 
-inline bool PG_MenuItem::paintDisabled(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol) {
+inline bool PG_PopupMenu::MenuItem::paintDisabled(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol) {
 	if (!isValidRect())
 		return false;
 
@@ -231,7 +232,7 @@ PG_PopupMenu::~PG_PopupMenu() {
 		delete (*j);
 }
 
-void PG_PopupMenu::appendItem(PG_MenuItem *item) {
+void PG_PopupMenu::appendItem(MenuItem *item) {
 	PG_Rect     rect;
 
 	items.push_back(item);
@@ -255,43 +256,74 @@ void PG_PopupMenu::appendItem(PG_MenuItem *item) {
 
 PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
                                         int ID,
-                                        PG_MenuItemSlot slot,
-                                        PG_Pointer* data,
-                                        PG_MenuItem::MI_FLAGS flags) {
+                                        MSG_CALLBACK handler,
+                                        void *data,
+                                        MenuItem::MI_FLAGS flags) {
 
-	PG_MenuItem* item = new PG_MenuItem(this, caption, ID, flags);
-	item->data = data;
+	MenuItem* item = new MenuItem(this, caption, ID, flags);
 	appendItem(item);
 
-	item->sigMenuItemSelect.connect(slot);
+	if (handler) {
+		//action = new PG_Action(ID, handler, data);
+		item->SetEventCallback(MSG_SELECTMENUITEM, handler, data);
+	}
 
 	return *this;
 }
 
 PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
                                         int ID,
-                                        PG_MenuItem::MI_FLAGS flags) {
-	PG_MenuItem* item = new PG_MenuItem(this, caption, ID, flags);
-	item->data = NULL;
+                                        MSG_CALLBACK_OBJ handler,
+                                        PG_EventObject *obj,
+                                        void *data,
+                                        MenuItem::MI_FLAGS flags) {
+	if (handler && !obj) {
+		//TODO: throw an exception here
+		return *this;
+	}
+
+	MenuItem* item = new MenuItem(this, caption, ID, flags);
 	appendItem(item);
+
+	if (handler) {
+		item->SetEventObject(MSG_SELECTMENUITEM, obj, handler, data);
+	}
 
 	return *this;
 }
 
 PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
                                         PG_PopupMenu *sub,
-                                        PG_MenuItem::MI_FLAGS flags) {
-											
-	PG_MenuItem* item = new PG_MenuItem(this, caption, sub);
-	item->data = NULL;
+                                        MenuItem::MI_FLAGS flags) {
+	MenuItem    *item = new MenuItem(this, caption, sub);
+
 	appendItem(item);
 
 	return *this;
 }
 
+/*PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
+                                        int ID,
+                                        PG_Action *action,
+                                        void *data,
+                                        MenuItem::MI_FLAGS flags) {
+	MenuItem    *item = new MenuItem(this, caption, ID, flags);
+
+	appendItem(item);
+
+	if (action) {
+		if (actions[ID])
+			//TODO: an exception here??
+			PG_LogWRN("Duplicate action ID %d - Replacing old value", ID);
+		actions[ID] = action;
+	};
+
+	return *this;
+}*/
+
 PG_PopupMenu& PG_PopupMenu::addSeparator() {
 	// Ugly
-	return addMenuItem((char*)0, -1, PG_MenuItem::MIF_SEPARATOR);
+	return addMenuItem((char*)0, -1, NULL, 0, MenuItem::MIF_SEPARATOR);
 }
 
 void PG_PopupMenu::disableItem(int id) {
@@ -299,7 +331,7 @@ void PG_PopupMenu::disableItem(int id) {
 
 	mi = std::find_if(start, stop, item_with_id(id));
 	if (*mi && mi != stop)
-		((PG_MenuItem*)*mi)->disable();
+		((MenuItem*)*mi)->disable();
 }
 
 void PG_PopupMenu::enableItem(int id) {
@@ -307,7 +339,7 @@ void PG_PopupMenu::enableItem(int id) {
 
 	mi = std::find_if(start, stop, item_with_id(id));
 	if (*mi && mi != stop)
-		((PG_MenuItem*)*mi)->enable();
+		((MenuItem*)*mi)->enable();
 }
 
 void PG_PopupMenu::trackMenu(int x, int y) {
@@ -363,7 +395,7 @@ void PG_PopupMenu::recalcRect() {
 		PG_Rect itemRect;
 
 		for (MII i = start; i != stop; i++) {
-			PG_MenuItem* item = *i;
+			MenuItem* item = *i;
 
 			item->measureItem(&itemRect);
 
@@ -406,9 +438,9 @@ void PG_PopupMenu::handleClick(int x, int y) {
 		if (!selected->isSubMenu()) {
 			if (!selected->isMute()) {
 				// call item's callback
-				selected->sigMenuItemSelect(selected, selected->data);
+				selected->SendMessage(NULL, MSG_SELECTMENUITEM, (unsigned int)selected->getId(), (unsigned long)selected);
 				// call general callback (PG_PopupMenu)
-				sigMenuItemSelect(selected, selected->data);
+				SendMessage(NULL, MSG_SELECTMENUITEM, (unsigned int)selected->getId(), (unsigned long)selected);
 			}
 		}
 
@@ -454,7 +486,7 @@ void PG_PopupMenu::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect
 		PG_Rect itemRect;
 
 		for (MII i = start; i != stop; i++) {
-			PG_MenuItem* item = *i;
+			MenuItem* item = *i;
 
 			item->measureItem(&itemRect, true);
 			itemRect.x += my_xpos;
@@ -499,7 +531,7 @@ void PG_PopupMenu::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect
 	}
 }
 
-bool PG_PopupMenu::selectItem(PG_MenuItem *item, MII iter) {
+bool PG_PopupMenu::selectItem(MenuItem *item, MII iter) {
 	if (selected)
 		selected->unselect();
 	item->select();
@@ -549,7 +581,7 @@ bool PG_PopupMenu::selectItem(PG_MenuItem *item, MII iter) {
 }
 
 bool PG_PopupMenu::handleMotion(PG_Point const &p) {
-	PG_MenuItem  *item = 0;
+	MenuItem  *item = 0;
 	PG_Rect    itemRect;
 
 	if (current != stop) {
@@ -605,7 +637,7 @@ bool PG_PopupMenu::eventMouseMotion(const SDL_MouseMotionEvent *motion) {
 	}
 
 	PG_Rect    itemRect;
-	PG_MenuItem  *oldSel = selected;
+	MenuItem  *oldSel = selected;
 
 	if (selected) {
 		selected->measureItem(&itemRect, true);
@@ -680,9 +712,9 @@ bool PG_PopupMenu::eventKeyDown(const SDL_KeyboardEvent *key) {
 
 				if (/*actions[selected->getId()] &&*/ !selected->isDisabled()) {
 					// call item's callback
-					selected->sigMenuItemSelect(selected, selected->data);
+					selected->SendMessage(NULL, MSG_SELECTMENUITEM, (unsigned int)selected->getId(), (unsigned long)selected);
 					// call general callback (PG_PopupMenu)
-					sigMenuItemSelect(selected, selected->data);
+					SendMessage(NULL, MSG_SELECTMENUITEM, (unsigned int)selected->getId(), (unsigned long)selected);
 				}
 
 				selected->unselect();
@@ -838,4 +870,45 @@ void PG_PopupMenu::eventMouseEnter() {
 
 void PG_PopupMenu::eventMouseLeave() {
 	PG_ThemeWidget::eventMouseLeave();
+}
+
+bool PG_PopupMenu::SetMenuItemHandler(int id,MSG_CALLBACK handler,void *data) {
+	MII it;
+	PG_PopupMenu::MenuItem* item;
+	int itid;
+	
+	it=items.begin();
+	
+	while(it!=items.end()) {
+		
+		itid=(*it)->getId();
+		
+		if(id==itid) {
+			item=*it;
+			item->SetEventCallback(MSG_SELECTMENUITEM, handler, data);
+			return true;
+		}
+		it++;
+	}
+	return false;
+}
+
+bool PG_PopupMenu::SetMenuItemEventObject(int id,PG_EventObject* calledobj, MSG_CALLBACK_OBJ cbfunc, void *clientdata) {
+	MII it;
+	PG_PopupMenu::MenuItem* item;
+	int itid;
+	
+	it=items.begin();
+	while(it!=items.end()) {
+		
+		itid=(*it)->getId();
+		
+		if(id==itid) {
+			item=*it;
+			item->SetEventObject(MSG_SELECTMENUITEM,calledobj,cbfunc,clientdata);
+			return true;
+		}
+		it++;
+	}
+	return false;
 }

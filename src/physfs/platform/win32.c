@@ -163,14 +163,16 @@ static char *copyEnvironmentVariable(const char *varname)
 
 char *__PHYSFS_platformGetUserDir(void)
 {
-    char *home = copyEnvironmentVariable("HOME");
+    char *home = NULL;
     const char *homedrive = getenv("HOMEDRIVE");
     const char *homepath = getenv("HOMEPATH");
 
-	if(getenv("USERPROFILE") != NULL) {
-		home = copyEnvironmentVariable("USERPROFILE");
-		return home;
-	}
+    if(getenv("USERPROFILE") != NULL) {
+	home = copyEnvironmentVariable("USERPROFILE");
+	return home;
+    }
+
+    char *home = copyEnvironmentVariable("HOME");
 
     if (home != NULL)
         return(home);
