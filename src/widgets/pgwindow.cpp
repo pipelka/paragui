@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/16 09:21:39 $
+    Update Date:      $Date: 2003/04/17 08:28:50 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.8 $
     Status:           $State: Exp $
 */
 
@@ -168,10 +168,10 @@ bool PG_Window::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		x=0;
 	if(y < 0)
 		y=0;
-	if(x > (my_srfScreen->w - my_width - 1))
-		x = (my_srfScreen->w - my_width - 1);
-	if(y > (my_srfScreen->h - my_height - 1))
-		y = (my_srfScreen->h - my_height -1);
+	if(x+my_width > (my_srfScreen->w - my_width))
+		x = (my_srfScreen->w - my_width);
+	if(y+my_height > (my_srfScreen->h - my_height))
+		y = (my_srfScreen->h - my_height);
 
 	if(my_moveMode) {
 		my_moveMode = false;
@@ -198,16 +198,16 @@ bool PG_Window::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 		PG_Point pos = GetParent()->ScreenToClient(x,y);
 		x = pos.x;
 		y = pos.y;         // Should not be moved out of the parent:
-		if(x >= GetParent()->Width() - my_width - 1)
-			x = GetParent()->Width() - my_width - 1;
-		if(y >= GetParent()->Height() - my_height -1)
-			y = GetParent()->Height() - my_height -1;
-	} else {                     // A top-level-widget
-		if(x > (my_srfScreen->w - my_width - 1))
-			x = (my_srfScreen->w - my_width - 1);
-		if(y > (my_srfScreen->h - my_height - 1))
-			y = (my_srfScreen->h - my_height - 1);
+		if(x+my_width > GetParent()->Width())
+			x = GetParent()->Width() - my_width;
+		if(y+my_height > GetParent()->Height())
+			y = GetParent()->Height() - my_height;
 	}
+
+	if(x+my_width > my_srfScreen->w)
+		x = (my_srfScreen->w - my_width);
+	if(y+my_height > my_srfScreen->h)
+		y = (my_srfScreen->h - my_height);
 
 	if(x < 0)
 		x=0;
