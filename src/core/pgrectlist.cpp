@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/02 07:36:56 $
+    Update Date:      $Date: 2004/03/02 20:08:24 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2.2.7 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.8 $
     Status:           $State: Exp $
 */
 
@@ -108,10 +108,10 @@ void PG_RectList::Add(PG_Widget* rect, bool front) {
 	if(front) {
 		if(my_first != NULL) {
 			my_first->my_prev = rect;
-			rect->index = index;
+			rect->index = my_first->index-1;
 		}
 		else {
-			rect->index = my_first->index-1;
+			rect->index = index;
 		}
 		rect->my_next = my_first;
 		rect->my_prev = NULL;
