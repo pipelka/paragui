@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 10:51:41 $
+    Update Date:      $Date: 2004/09/07 14:19:05 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollarea.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.11 $
+    CVS/RCS Revision: $Revision: 1.1.2.12 $
     Status:           $State: Exp $
 */
 
@@ -40,11 +40,11 @@ void PG_ScrollArea::ScrollTo(Uint16 x, Uint16 y) {
 	if (my_area.x == x && my_area.y == y)
 		return;
 
-	if(y > my_area.h - my_height) {
+	if(y > my_area.h - my_height && my_area.h > my_height) {
 		y = my_area.h - my_height;
 	}
 
-	if(x > my_area.w - my_width) {
+	if(x > my_area.w - my_width && my_area.w > my_width) {
 		x = my_area.w - my_width;
 	}
 

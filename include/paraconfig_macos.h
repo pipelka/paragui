@@ -56,6 +56,6 @@
 #define PACKAGE "paragui"
 
 /* Version number of package */
-#define VERSION "1.1.6"
+#define VERSION "1.1.8"
 
 #endif 

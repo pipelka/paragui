@@ -58,7 +58,7 @@
 #define PACKAGE "paragui"
 
 /* Version number of package */
-#define VERSION "1.1.6"
+#define VERSION "1.1.8"
 
 // Some stuff needed for Win32
 #ifdef WIN32
