@@ -12,12 +12,16 @@
 #  include <config.h>
 #endif
 
+#if (defined PHYSFS_PROFILING)
+#include <sys/time.h>
+#include <unistd.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
 #include <errno.h>
-#include <assert.h>
 #include "physfs.h"
 
 #define __PHYSICSFS_INTERNAL__
@@ -57,7 +61,13 @@ extern const PHYSFS_ArchiveInfo   __PHYSFS_ArchiveInfo_GRP;
 extern const DirFunctions         __PHYSFS_DirFunctions_GRP;
 #endif
 
+#if (defined PHYSFS_SUPPORTS_QPAK)
+extern const PHYSFS_ArchiveInfo   __PHYSFS_ArchiveInfo_QPAK;
+extern const DirFunctions         __PHYSFS_DirFunctions_QPAK;
+#endif
+
 extern const DirFunctions  __PHYSFS_DirFunctions_DIR;
+
 
 static const PHYSFS_ArchiveInfo *supported_types[] =
 {
@@ -67,6 +77,10 @@ static const PHYSFS_ArchiveInfo *supported_types[] =
 
 #if (defined PHYSFS_SUPPORTS_GRP)
     &__PHYSFS_ArchiveInfo_GRP,
+#endif
+
+#if (defined PHYSFS_SUPPORTS_QPAK)
+    &__PHYSFS_ArchiveInfo_QPAK,
 #endif
 
     NULL
@@ -80,6 +94,10 @@ static const DirFunctions *dirFunctions[] =
 
 #if (defined PHYSFS_SUPPORTS_GRP)
     &__PHYSFS_DirFunctions_GRP,
+#endif
+
+#if (defined PHYSFS_SUPPORTS_QPAK)
+    &__PHYSFS_DirFunctions_QPAK,
 #endif
 
     &__PHYSFS_DirFunctions_DIR,
@@ -105,6 +123,235 @@ static void *stateLock = NULL;     /* protects other PhysFS static state. */
 
 
 /* functions ... */
+
+void __PHYSFS_bubble_sort(void *a, PHYSFS_uint32 lo, PHYSFS_uint32 hi,
+                         int (*cmpfn)(void *, PHYSFS_uint32, PHYSFS_uint32),
+                         void (*swapfn)(void *, PHYSFS_uint32, PHYSFS_uint32))
+{
+    PHYSFS_uint32 i;
+    int sorted;
+
+    do
+    {
+        sorted = 1;
+        for (i = lo; i < hi; i++)
+        {
+            if (cmpfn(a, i, i + 1) > 0)
+            {
+                swapfn(a, i, i + 1);
+                sorted = 0;
+            } /* if */
+        } /* for */
+    } while (!sorted);
+} /* __PHYSFS_bubble_sort */
+
+
+void __PHYSFS_quick_sort(void *a, PHYSFS_uint32 lo, PHYSFS_uint32 hi,
+                         int (*cmpfn)(void *, PHYSFS_uint32, PHYSFS_uint32),
+                         void (*swapfn)(void *, PHYSFS_uint32, PHYSFS_uint32))
+{
+    PHYSFS_uint32 i;
+    PHYSFS_uint32 j;
+    PHYSFS_uint32 v;
+
+	if ((hi - lo) <= PHYSFS_QUICKSORT_THRESHOLD)
+        __PHYSFS_bubble_sort(a, lo, hi, cmpfn, swapfn);
+    else
+	{
+		i = (hi + lo) / 2;
+
+        if (cmpfn(a, lo, i) > 0) swapfn(a, lo, i);
+		if (cmpfn(a, lo, hi) > 0) swapfn(a, lo, hi);
+		if (cmpfn(a, i, hi) > 0) swapfn(a, i, hi);
+
+		j = hi - 1;
+		swapfn(a, i, j);
+		i = lo;
+		v = j;
+		while (1)
+		{
+			while(cmpfn(a, ++i, v) < 0) { /* do nothing */ }
+			while(cmpfn(a, --j, v) > 0) { /* do nothing */ }
+			if (j < i)
+                break;
+			swapfn(a, i, j);
+		} /* while */
+		swapfn(a, i, hi-1);
+		__PHYSFS_quick_sort(a, lo, j, cmpfn, swapfn);
+		__PHYSFS_quick_sort(a, i+1, hi, cmpfn, swapfn);
+	} /* else */
+} /* __PHYSFS_quick_sort */
+
+
+void __PHYSFS_sort(void *entries, PHYSFS_uint32 max,
+                   int (*cmpfn)(void *, PHYSFS_uint32, PHYSFS_uint32),
+                   void (*swapfn)(void *, PHYSFS_uint32, PHYSFS_uint32))
+{
+    /*
+     * Quicksort w/ Bubblesort fallback algorithm inspired by code from here:
+     *   http://www.cs.ubc.ca/spider/harrison/Java/sorting-demo.html
+     */
+    __PHYSFS_quick_sort(entries, 0, max - 1, cmpfn, swapfn);
+} /* __PHYSFS_sort */
+
+
+
+#if (defined PHYSFS_PROFILING)
+
+#define PHYSFS_TEST_SORT_ITERATIONS 150
+#define PHYSFS_TEST_SORT_ELEMENTS   (64 * 1024)
+
+static int __PHYSFS_test_sort_cmp(void *_a, PHYSFS_uint32 x, PHYSFS_uint32 y)
+{
+    PHYSFS_sint32 *a = (PHYSFS_sint32 *) _a;
+    PHYSFS_sint32 one = a[x];
+    PHYSFS_sint32 two = a[y];
+
+    if (one < two)
+        return(-1);
+    else if (one > two)
+        return(1);
+
+    return(0);
+} /* __PHYSFS_test_sort_cmp */
+
+
+static void __PHYSFS_test_sort_swap(void *_a, PHYSFS_uint32 x, PHYSFS_uint32 y)
+{
+    PHYSFS_sint32 *a = (PHYSFS_sint32 *) _a;
+    PHYSFS_sint32 tmp;
+    tmp = a[x];
+    a[x] = a[y];
+    a[y] = tmp;
+} /* __PHYSFS_test_sort_swap */
+
+
+static int __PHYSFS_test_sort_do(PHYSFS_uint32 *timer,
+                         PHYSFS_sint32 *a, PHYSFS_uint32 max,
+                         int (*cmpfn)(void *, PHYSFS_uint32, PHYSFS_uint32),
+                         void (*swapfn)(void *, PHYSFS_uint32, PHYSFS_uint32))
+{
+    PHYSFS_uint32 i;
+    struct timeval starttime, endtime;
+
+    gettimeofday(&starttime, NULL);
+    __PHYSFS_sort(a, max, cmpfn, swapfn);
+    gettimeofday(&endtime, NULL);
+
+    for (i = 1; i < max; i++)
+    {
+        if (a[i] < a[i - 1])
+            return(0);
+    } /* for */
+
+    if (timer != NULL)
+    {
+        *timer = ( ((endtime.tv_sec  - starttime.tv_sec) * 1000) +
+                   ((endtime.tv_usec - starttime.tv_usec) / 1000) );
+    } /* if */
+
+    return(1);
+} /* __PHYSFS_test_sort_time */
+
+
+static void __PHYSFS_test_sort(void)
+{
+    PHYSFS_uint32 elasped[PHYSFS_TEST_SORT_ITERATIONS];
+    PHYSFS_sint32 iter;
+    PHYSFS_sint32 a[PHYSFS_TEST_SORT_ELEMENTS];
+    PHYSFS_sint32 i, x;
+    int success;
+
+    printf("Testing __PHYSFS_sort (linear presorted) ... ");
+    for (iter = 0; iter < PHYSFS_TEST_SORT_ITERATIONS; iter++)
+    {
+        /* set up array to sort. */
+        for (i = 0; i < PHYSFS_TEST_SORT_ELEMENTS; i++)
+            a[i] = i;
+
+        /* sort it. */
+        success = __PHYSFS_test_sort_do(&elasped[iter],
+                                        a, PHYSFS_TEST_SORT_ELEMENTS,
+                                        __PHYSFS_test_sort_cmp,
+                                        __PHYSFS_test_sort_swap);
+        if (!success)
+            break;
+    } /* for */
+
+    if (!success)
+        printf("Failed!\n");
+    else
+    {
+        for (x = 0, iter = 0; iter < PHYSFS_TEST_SORT_ITERATIONS; iter++)
+            x += elasped[iter];
+
+        x /= PHYSFS_TEST_SORT_ITERATIONS;
+        printf("Average run (%lu) ms.\n", (unsigned long) x);
+    } /* else */
+
+    printf("Testing __PHYSFS_sort (linear presorted reverse) ... ");
+    for (iter = 0; iter < PHYSFS_TEST_SORT_ITERATIONS; iter++)
+    {
+        /* set up array to sort. */
+        for (i = 0, x = PHYSFS_TEST_SORT_ELEMENTS;
+             i < PHYSFS_TEST_SORT_ELEMENTS;
+             i++, x--)
+        {
+            a[i] = x;
+        } /* for */
+
+        /* sort it. */
+        success = __PHYSFS_test_sort_do(&elasped[iter],
+                                        a, PHYSFS_TEST_SORT_ELEMENTS,
+                                        __PHYSFS_test_sort_cmp,
+                                        __PHYSFS_test_sort_swap);
+        if (!success)
+            break;
+    } /* for */
+
+    if (!success)
+        printf("Failed!\n");
+    else
+    {
+        for (x = 0, iter = 0; iter < PHYSFS_TEST_SORT_ITERATIONS; iter++)
+            x += elasped[iter];
+
+        x /= PHYSFS_TEST_SORT_ITERATIONS;
+        printf("Average run (%lu) ms.\n", (unsigned long) x);
+    } /* else */
+
+
+    printf("Testing __PHYSFS_sort (randomized) ... ");
+    for (iter = 0; iter < PHYSFS_TEST_SORT_ITERATIONS; iter++)
+    {
+        /* set up array to sort. */
+        for (i = 0; i < PHYSFS_TEST_SORT_ELEMENTS; i++)
+            a[i] = (PHYSFS_uint32) rand();
+
+        /* sort it. */
+        success = __PHYSFS_test_sort_do(&elasped[iter],
+                                        a, PHYSFS_TEST_SORT_ELEMENTS,
+                                        __PHYSFS_test_sort_cmp,
+                                        __PHYSFS_test_sort_swap);
+        if (!success)
+            break;
+    } /* for */
+
+    if (!success)
+        printf("Failed!\n");
+    else
+    {
+        for (x = 0, iter = 0; iter < PHYSFS_TEST_SORT_ITERATIONS; iter++)
+            x += elasped[iter];
+
+        x /= PHYSFS_TEST_SORT_ITERATIONS;
+        printf("Average run (%lu) ms.\n", (unsigned long) x);
+    } /* else */
+
+    printf("__PHYSFS_test_sort() complete.\n\n");
+} /* __PHYSFS_test_sort */
+#endif
+
 
 static ErrMsg *findErrorForCurrentThread(void)
 {
@@ -493,6 +740,19 @@ int PHYSFS_init(const char *argv0)
 
     /* This makes sure that the error subsystem is initialized. */
     __PHYSFS_setError(PHYSFS_getLastError());
+
+#if (defined PHYSFS_PROFILING)
+    srand(time(NULL));
+    setbuf(stdout, NULL);
+    printf("\n");
+    printf("********************************************************\n");
+    printf("Warning! Profiling is built into this copy of PhysicsFS!\n");
+    printf("********************************************************\n");
+    printf("\n");
+    printf("\n");
+    __PHYSFS_test_sort();
+#endif
+
     return(1);
 } /* PHYSFS_init */
 
@@ -940,6 +1200,10 @@ int __PHYSFS_verifySecurity(DirHandle *h, const char *fname)
     char *end;
     char *str;
 
+    if (*fname == '\0')  /* quick rejection. */
+        return(1);
+
+    /* !!! FIXME: Can we ditch this malloc()? */
     start = str = malloc(strlen(fname) + 1);
     BAIL_IF_MACRO(str == NULL, ERR_OUT_OF_MEMORY, 0);
     strcpy(str, fname);
@@ -960,11 +1224,17 @@ int __PHYSFS_verifySecurity(DirHandle *h, const char *fname)
             break;
         } /* if */
 
-        if ((!allowSymLinks) && (h->funcs->isSymLink(h, str)))
+        if (!allowSymLinks)
         {
-            __PHYSFS_setError(ERR_SYMLINK_DISALLOWED);
-            retval = 0;
-            break;
+            if (h->funcs->isSymLink(h, str, &retval))
+            {
+                __PHYSFS_setError(ERR_SYMLINK_DISALLOWED);
+                retval = 0;
+            } /* if */
+
+            /* break out early if path element is missing or it's a symlink. */
+            if (!retval)
+                break;
         } /* if */
 
         if (end == NULL)
@@ -994,7 +1264,6 @@ int PHYSFS_mkdir(const char *dname)
     __PHYSFS_platformGrabMutex(stateLock);
     BAIL_IF_MACRO_MUTEX(writeDir == NULL, ERR_NO_WRITE_DIR, stateLock, 0);
     h = writeDir->dirHandle;
-    BAIL_IF_MACRO_MUTEX(!h->funcs->mkdir, ERR_NOT_SUPPORTED, stateLock, 0);
     BAIL_IF_MACRO_MUTEX(!__PHYSFS_verifySecurity(h, dname), NULL, stateLock, 0);
     start = str = malloc(strlen(dname) + 1);
     BAIL_IF_MACRO_MUTEX(str == NULL, ERR_OUT_OF_MEMORY, stateLock, 0);
@@ -1037,7 +1306,6 @@ int PHYSFS_delete(const char *fname)
 
     BAIL_IF_MACRO_MUTEX(writeDir == NULL, ERR_NO_WRITE_DIR, stateLock, 0);
     h = writeDir->dirHandle;
-    BAIL_IF_MACRO_MUTEX(!h->funcs->remove, ERR_NOT_SUPPORTED, stateLock, 0);
     BAIL_IF_MACRO_MUTEX(!__PHYSFS_verifySecurity(h, fname), NULL, stateLock, 0);
     retval = h->funcs->remove(h, fname);
 
@@ -1049,28 +1317,24 @@ int PHYSFS_delete(const char *fname)
 const char *PHYSFS_getRealDir(const char *filename)
 {
     PhysDirInfo *i;
+    const char *retval = NULL;
 
     while (*filename == '/')
         filename++;
 
     __PHYSFS_platformGrabMutex(stateLock);
-    for (i = searchPath; i != NULL; i = i->next)
+    for (i = searchPath; ((i != NULL) && (retval == NULL)); i = i->next)
     {
         DirHandle *h = i->dirHandle;
         if (__PHYSFS_verifySecurity(h, filename))
         {
-            if (!h->funcs->exists(h, filename))
-                __PHYSFS_setError(ERR_NO_SUCH_FILE);
-            else
-            {
-                __PHYSFS_platformReleaseMutex(stateLock);
-                return(i->dirName);
-            } /* else */
+            if (h->funcs->exists(h, filename))
+                retval = i->dirName;
         } /* if */
     } /* for */
     __PHYSFS_platformReleaseMutex(stateLock);
 
-    return(NULL);
+    return(retval);
 } /* PHYSFS_getRealDir */
 
 
@@ -1205,6 +1469,8 @@ int PHYSFS_exists(const char *fname)
 PHYSFS_sint64 PHYSFS_getLastModTime(const char *fname)
 {
     PhysDirInfo *i;
+    PHYSFS_sint64 retval = -1;
+    int fileExists = 0;
 
     BAIL_IF_MACRO(fname == NULL, ERR_INVALID_ARGUMENT, 0);
     while (*fname == '/')
@@ -1214,95 +1480,67 @@ PHYSFS_sint64 PHYSFS_getLastModTime(const char *fname)
         return(1);
 
     __PHYSFS_platformGrabMutex(stateLock);
-    for (i = searchPath; i != NULL; i = i->next)
+    for (i = searchPath; ((i != NULL) && (!fileExists)); i = i->next)
     {
         DirHandle *h = i->dirHandle;
         if (__PHYSFS_verifySecurity(h, fname))
-        {
-            if (!h->funcs->exists(h, fname))
-                __PHYSFS_setError(ERR_NO_SUCH_FILE);
-            else
-            {
-                PHYSFS_sint64 retval = -1;
-                if (h->funcs->getLastModTime == NULL)
-                    __PHYSFS_setError(ERR_NOT_SUPPORTED);
-                else
-                    retval = h->funcs->getLastModTime(h, fname);
-
-                __PHYSFS_platformReleaseMutex(stateLock);
-                return(retval);
-            } /* else */
-        } /* if */
+            retval = h->funcs->getLastModTime(h, fname, &fileExists);
     } /* for */
     __PHYSFS_platformReleaseMutex(stateLock);
 
-    return(-1);  /* error set in verifysecurity/exists */
+    return(retval);
 } /* PHYSFS_getLastModTime */
 
 
 int PHYSFS_isDirectory(const char *fname)
 {
     PhysDirInfo *i;
+    int retval = 0;
+    int fileExists = 0;
 
     BAIL_IF_MACRO(fname == NULL, ERR_INVALID_ARGUMENT, 0);
     while (*fname == '/')
         fname++;
 
-    if (*fname == '\0')
-        return(1);
+    BAIL_IF_MACRO(*fname == '\0', NULL, 1); /* Root is always a dir.  :) */
 
     __PHYSFS_platformGrabMutex(stateLock);
-    for (i = searchPath; i != NULL; i = i->next)
+    for (i = searchPath; ((i != NULL) && (!fileExists)); i = i->next)
     {
         DirHandle *h = i->dirHandle;
         if (__PHYSFS_verifySecurity(h, fname))
-        {
-            if (!h->funcs->exists(h, fname))  /* !!! FIXME: Let archivers figure this out. */
-                __PHYSFS_setError(ERR_NO_SUCH_FILE);
-            else
-            {
-                int retval = h->funcs->isDirectory(h, fname);
-                __PHYSFS_platformReleaseMutex(stateLock);
-                return(retval);
-            } /* else */
-        } /* if */
+            retval = h->funcs->isDirectory(h, fname, &fileExists);
     } /* for */
     __PHYSFS_platformReleaseMutex(stateLock);
 
-    return(0);
+    return(retval);
 } /* PHYSFS_isDirectory */
 
 
 int PHYSFS_isSymbolicLink(const char *fname)
 {
     PhysDirInfo *i;
+    int retval = 0;
+    int fileExists = 0;
 
-    if (!allowSymLinks)
-        return(0);
+    BAIL_IF_MACRO(!allowSymLinks, ERR_SYMLINK_DISALLOWED, 0);
 
     BAIL_IF_MACRO(fname == NULL, ERR_INVALID_ARGUMENT, 0);
     while (*fname == '/')
         fname++;
 
+    BAIL_IF_MACRO(*fname == '\0', NULL, 0);   /* Root is never a symlink */
+
     __PHYSFS_platformGrabMutex(stateLock);
-    for (i = searchPath; i != NULL; i = i->next)
+    for (i = searchPath; ((i != NULL) && (!fileExists)); i = i->next)
     {
         DirHandle *h = i->dirHandle;
         if (__PHYSFS_verifySecurity(h, fname))
-        {
-            if (!h->funcs->exists(h, fname))
-                __PHYSFS_setError(ERR_NO_SUCH_FILE);
-            else
-            {
-                int retval = h->funcs->isSymLink(h, fname);
-                __PHYSFS_platformReleaseMutex(stateLock);
-                return(retval);
-            } /* else */
-        } /* if */
+            retval = h->funcs->isSymLink(h, fname, &fileExists);
     } /* for */
     __PHYSFS_platformReleaseMutex(stateLock);
 
-    return(0);
+    return(retval);
 } /* PHYSFS_isSymbolicLink */
 
 
@@ -1358,9 +1596,10 @@ PHYSFS_file *PHYSFS_openAppend(const char *filename)
 
 PHYSFS_file *PHYSFS_openRead(const char *fname)
 {
-    PHYSFS_file *retval;
+    PHYSFS_file *retval = NULL;
     FileHandle *rc = NULL;
     FileHandleList *list;
+    int fileExists = 0;
     PhysDirInfo *i;
 
     BAIL_IF_MACRO(fname == NULL, ERR_INVALID_ARGUMENT, NULL);
@@ -1369,17 +1608,12 @@ PHYSFS_file *PHYSFS_openRead(const char *fname)
 
     __PHYSFS_platformGrabMutex(stateLock);
     BAIL_IF_MACRO_MUTEX(!searchPath, ERR_NOT_IN_SEARCH_PATH, stateLock, NULL);
-    for (i = searchPath; i != NULL; i = i->next)
+    for (i = searchPath; ((i != NULL) && (!fileExists)); i = i->next)
     {
         DirHandle *h = i->dirHandle;
         if (__PHYSFS_verifySecurity(h, fname))
-        {
-            rc = h->funcs->openRead(h, fname);
-            if (rc != NULL)
-                break;
-        } /* if */
+            rc = h->funcs->openRead(h, fname, &fileExists);
     } /* for */
-
     BAIL_IF_MACRO_MUTEX(rc == NULL, NULL, stateLock, NULL);
 
     list = (FileHandleList *) malloc(sizeof (FileHandleList));
@@ -1449,9 +1683,6 @@ PHYSFS_sint64 PHYSFS_read(PHYSFS_file *handle, void *buffer,
                           PHYSFS_uint32 objSize, PHYSFS_uint32 objCount)
 {
     FileHandle *h = (FileHandle *) handle->opaque;
-    assert(h != NULL);
-    assert(h->funcs != NULL);
-    BAIL_IF_MACRO(h->funcs->read == NULL, ERR_NOT_SUPPORTED, -1);
     return(h->funcs->read(h, buffer, objSize, objCount));
 } /* PHYSFS_read */
 
@@ -1460,9 +1691,6 @@ PHYSFS_sint64 PHYSFS_write(PHYSFS_file *handle, const void *buffer,
                            PHYSFS_uint32 objSize, PHYSFS_uint32 objCount)
 {
     FileHandle *h = (FileHandle *) handle->opaque;
-    assert(h != NULL);
-    assert(h->funcs != NULL);
-    BAIL_IF_MACRO(h->funcs->write == NULL, ERR_NOT_SUPPORTED, -1);
     return(h->funcs->write(h, buffer, objSize, objCount));
 } /* PHYSFS_write */
 
@@ -1470,9 +1698,6 @@ PHYSFS_sint64 PHYSFS_write(PHYSFS_file *handle, const void *buffer,
 int PHYSFS_eof(PHYSFS_file *handle)
 {
     FileHandle *h = (FileHandle *) handle->opaque;
-    assert(h != NULL);
-    assert(h->funcs != NULL);
-    BAIL_IF_MACRO(h->funcs->eof == NULL, ERR_NOT_SUPPORTED, -1);
     return(h->funcs->eof(h));
 } /* PHYSFS_eof */
 
@@ -1480,9 +1705,6 @@ int PHYSFS_eof(PHYSFS_file *handle)
 PHYSFS_sint64 PHYSFS_tell(PHYSFS_file *handle)
 {
     FileHandle *h = (FileHandle *) handle->opaque;
-    assert(h != NULL);
-    assert(h->funcs != NULL);
-    BAIL_IF_MACRO(h->funcs->tell == NULL, ERR_NOT_SUPPORTED, -1);
     return(h->funcs->tell(h));
 } /* PHYSFS_tell */
 
@@ -1490,10 +1712,6 @@ PHYSFS_sint64 PHYSFS_tell(PHYSFS_file *handle)
 int PHYSFS_seek(PHYSFS_file *handle, PHYSFS_uint64 pos)
 {
     FileHandle *h = (FileHandle *) handle->opaque;
-    assert(h != NULL);
-    assert(h->funcs != NULL);
-    BAIL_IF_MACRO(h->funcs->seek == NULL, ERR_NOT_SUPPORTED, 0);
-    BAIL_IF_MACRO(pos < 0, ERR_INVALID_ARGUMENT, 0);
     return(h->funcs->seek(h, pos));
 } /* PHYSFS_seek */
 
@@ -1501,10 +1719,6 @@ int PHYSFS_seek(PHYSFS_file *handle, PHYSFS_uint64 pos)
 PHYSFS_sint64 PHYSFS_fileLength(PHYSFS_file *handle)
 {
     FileHandle *h = (FileHandle *) handle->opaque;
-    assert(h != NULL);
-    assert(h->funcs != NULL);
-    BAIL_IF_MACRO(h->funcs->fileLength == NULL, ERR_NOT_SUPPORTED, 0);
-
     return(h->funcs->fileLength(h));
 } /* PHYSFS_filelength */
 
@@ -1541,8 +1755,6 @@ LinkedStringList *__PHYSFS_addToLinkedStringList(LinkedStringList *retval,
     l->next = NULL;
     return(retval);
 } /* __PHYSFS_addToLinkedStringList */
-
-
 
 /* end of physfs.c ... */
 

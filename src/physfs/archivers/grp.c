@@ -41,18 +41,11 @@
 #define __PHYSICSFS_INTERNAL__
 #include "physfs_internal.h"
 
-/*
- * When sorting the grp entries in an archive, we use a modified QuickSort.
- *  When there are less then GRP_QUICKSORT_THRESHOLD entries left to sort,
- *  we switch over to an InsertionSort for the remainder. Tweak to taste.
- */
-#define GRP_QUICKSORT_THRESHOLD 4
-
 typedef struct
 {
     char name[13];
-    PHYSFS_uint64 startPos;
-    PHYSFS_uint64 size;
+    PHYSFS_uint32 startPos;
+    PHYSFS_uint32 size;
 } GRPentry;
 
 typedef struct
@@ -67,13 +60,15 @@ typedef struct
 {
     void *handle;
     GRPentry *entry;
-    PHYSFS_sint64 curPos;
+    PHYSFS_uint32 curPos;
 } GRPfileinfo;
 
 
 static void GRP_dirClose(DirHandle *h);
 static PHYSFS_sint64 GRP_read(FileHandle *handle, void *buffer,
                               PHYSFS_uint32 objSize, PHYSFS_uint32 objCount);
+static PHYSFS_sint64 GRP_write(FileHandle *handle, const void *buffer,
+                               PHYSFS_uint32 objSize, PHYSFS_uint32 objCount);
 static int GRP_eof(FileHandle *handle);
 static PHYSFS_sint64 GRP_tell(FileHandle *handle);
 static int GRP_seek(FileHandle *handle, PHYSFS_uint64 offset);
@@ -85,10 +80,14 @@ static LinkedStringList *GRP_enumerateFiles(DirHandle *h,
                                             const char *dirname,
                                             int omitSymLinks);
 static int GRP_exists(DirHandle *h, const char *name);
-static int GRP_isDirectory(DirHandle *h, const char *name);
-static int GRP_isSymLink(DirHandle *h, const char *name);
-static PHYSFS_sint64 GRP_getLastModTime(DirHandle *h, const char *name);
-static FileHandle *GRP_openRead(DirHandle *h, const char *name);
+static int GRP_isDirectory(DirHandle *h, const char *name, int *fileExists);
+static int GRP_isSymLink(DirHandle *h, const char *name, int *fileExists);
+static PHYSFS_sint64 GRP_getLastModTime(DirHandle *h, const char *n, int *e);
+static FileHandle *GRP_openRead(DirHandle *h, const char *name, int *exist);
+static FileHandle *GRP_openWrite(DirHandle *h, const char *name);
+static FileHandle *GRP_openAppend(DirHandle *h, const char *name);
+static int GRP_remove(DirHandle *h, const char *name);
+static int GRP_mkdir(DirHandle *h, const char *name);
 
 const PHYSFS_ArchiveInfo __PHYSFS_ArchiveInfo_GRP =
 {
@@ -102,7 +101,7 @@ const PHYSFS_ArchiveInfo __PHYSFS_ArchiveInfo_GRP =
 static const FileFunctions __PHYSFS_FileFunctions_GRP =
 {
     GRP_read,       /* read() method       */
-    NULL,           /* write() method      */
+    GRP_write,      /* write() method      */
     GRP_eof,        /* eof() method        */
     GRP_tell,       /* tell() method       */
     GRP_seek,       /* seek() method       */
@@ -122,10 +121,10 @@ const DirFunctions __PHYSFS_DirFunctions_GRP =
     GRP_isSymLink,          /* isSymLink() method      */
     GRP_getLastModTime,     /* getLastModTime() method */
     GRP_openRead,           /* openRead() method       */
-    NULL,                   /* openWrite() method      */
-    NULL,                   /* openAppend() method     */
-    NULL,                   /* remove() method         */
-    NULL,                   /* mkdir() method          */
+    GRP_openWrite,          /* openWrite() method      */
+    GRP_openAppend,         /* openAppend() method     */
+    GRP_remove,             /* remove() method         */
+    GRP_mkdir,              /* mkdir() method          */
     GRP_dirClose            /* dirClose() method       */
 };
 
@@ -146,26 +145,33 @@ static PHYSFS_sint64 GRP_read(FileHandle *handle, void *buffer,
 {
     GRPfileinfo *finfo = (GRPfileinfo *) (handle->opaque);
     GRPentry *entry = finfo->entry;
-    PHYSFS_uint64 bytesLeft = entry->size - finfo->curPos;
-    PHYSFS_uint64 objsLeft = (bytesLeft / objSize);
+    PHYSFS_uint32 bytesLeft = entry->size - finfo->curPos;
+    PHYSFS_uint32 objsLeft = (bytesLeft / objSize);
     PHYSFS_sint64 rc;
 
     if (objsLeft < objCount)
-        objCount = (PHYSFS_uint32) objsLeft;
+        objCount = objsLeft;
 
     rc = __PHYSFS_platformRead(finfo->handle, buffer, objSize, objCount);
     if (rc > 0)
-        finfo->curPos += (rc * objSize);
+        finfo->curPos += (PHYSFS_uint32) (rc * objSize);
 
     return(rc);
 } /* GRP_read */
+
+
+static PHYSFS_sint64 GRP_write(FileHandle *handle, const void *buffer,
+                               PHYSFS_uint32 objSize, PHYSFS_uint32 objCount)
+{
+    BAIL_MACRO(ERR_NOT_SUPPORTED, -1);
+} /* GRP_write */
 
 
 static int GRP_eof(FileHandle *handle)
 {
     GRPfileinfo *finfo = (GRPfileinfo *) (handle->opaque);
     GRPentry *entry = finfo->entry;
-    return(finfo->curPos >= (PHYSFS_sint64) entry->size);
+    return(finfo->curPos >= entry->size);
 } /* GRP_eof */
 
 
@@ -179,14 +185,13 @@ static int GRP_seek(FileHandle *handle, PHYSFS_uint64 offset)
 {
     GRPfileinfo *finfo = (GRPfileinfo *) (handle->opaque);
     GRPentry *entry = finfo->entry;
-    PHYSFS_uint64 newPos = (entry->startPos + offset);
     int rc;
 
     BAIL_IF_MACRO(offset < 0, ERR_INVALID_ARGUMENT, 0);
-    BAIL_IF_MACRO(newPos > entry->startPos + entry->size, ERR_PAST_EOF, 0);
-    rc = __PHYSFS_platformSeek(finfo->handle, newPos);
+    BAIL_IF_MACRO(offset >= entry->size, ERR_PAST_EOF, 0);
+    rc = __PHYSFS_platformSeek(finfo->handle, entry->startPos + offset);
     if (rc)
-        finfo->curPos = offset;
+        finfo->curPos = (PHYSFS_uint32) offset;
 
     return(rc);
 } /* GRP_seek */
@@ -194,7 +199,8 @@ static int GRP_seek(FileHandle *handle, PHYSFS_uint64 offset)
 
 static PHYSFS_sint64 GRP_fileLength(FileHandle *handle)
 {
-    return(((GRPfileinfo *) handle->opaque)->entry->size);
+    GRPfileinfo *finfo = ((GRPfileinfo *) handle->opaque);
+    return((PHYSFS_sint64) finfo->entry->size);
 } /* GRP_fileLength */
 
 
@@ -258,78 +264,22 @@ static int GRP_isArchive(const char *filename, int forWriting)
 } /* GRP_isArchive */
 
 
-static void grp_entry_swap(GRPentry *a, PHYSFS_uint32 one, PHYSFS_uint32 two)
+static int grp_entry_cmp(void *_a, PHYSFS_uint32 one, PHYSFS_uint32 two)
+{
+    GRPentry *a = (GRPentry *) _a;
+    return(strcmp(a[one].name, a[two].name));
+} /* grp_entry_cmp */
+
+
+static void grp_entry_swap(void *_a, PHYSFS_uint32 one, PHYSFS_uint32 two)
 {
     GRPentry tmp;
-    memcpy(&tmp, &a[one], sizeof (GRPentry));
-    memcpy(&a[one], &a[two], sizeof (GRPentry));
-    memcpy(&a[two], &tmp, sizeof (GRPentry));
+    GRPentry *first = &(((GRPentry *) _a)[one]);
+    GRPentry *second = &(((GRPentry *) _a)[two]);
+    memcpy(&tmp, first, sizeof (GRPentry));
+    memcpy(first, second, sizeof (GRPentry));
+    memcpy(second, &tmp, sizeof (GRPentry));
 } /* grp_entry_swap */
-
-
-static void grp_quick_sort(GRPentry *a, PHYSFS_uint32 lo, PHYSFS_uint32 hi)
-{
-    PHYSFS_uint32 i;
-    PHYSFS_uint32 j;
-    GRPentry *v;
-
-	if ((hi - lo) > GRP_QUICKSORT_THRESHOLD)
-	{
-		i = (hi + lo) / 2;
-
-		if (strcmp(a[lo].name, a[i].name) > 0) grp_entry_swap(a, lo, i);
-		if (strcmp(a[lo].name, a[hi].name) > 0) grp_entry_swap(a, lo, hi);
-		if (strcmp(a[i].name, a[hi].name) > 0) grp_entry_swap(a, i, hi);
-
-		j = hi - 1;
-		grp_entry_swap(a, i, j);
-		i = lo;
-		v = &a[j];
-		while (1)
-		{
-			while(strcmp(a[++i].name, v->name) < 0) {}
-			while(strcmp(a[--j].name, v->name) > 0) {}
-			if (j < i)
-                break;
-			grp_entry_swap(a, i, j);
-		} /* while */
-		grp_entry_swap(a, i, hi-1);
-		grp_quick_sort(a, lo, j);
-		grp_quick_sort(a, i+1, hi);
-	} /* if */
-} /* grp_quick_sort */
-
-
-static void grp_insertion_sort(GRPentry *a, PHYSFS_uint32 lo, PHYSFS_uint32 hi)
-{
-    PHYSFS_uint32 i;
-    PHYSFS_uint32 j;
-    GRPentry tmp;
-
-    for (i = lo + 1; i <= hi; i++)
-    {
-        memcpy(&tmp, &a[i], sizeof (GRPentry));
-        j = i;
-        while ((j > lo) && (strcmp(a[j - 1].name, tmp.name) > 0))
-        {
-            memcpy(&a[j], &a[j - 1], sizeof (GRPentry));
-            j--;
-        } /* while */
-        memcpy(&a[j], &tmp, sizeof (GRPentry));
-    } /* for */
-} /* grp_insertion_sort */
-
-
-static void grp_sort_entries(GRPentry *entries, PHYSFS_uint32 max)
-{
-    /*
-     * Fast Quicksort algorithm inspired by code from here:
-     *   http://www.cs.ubc.ca/spider/harrison/Java/sorting-demo.html
-     */
-    if (max <= GRP_QUICKSORT_THRESHOLD)
-        grp_quick_sort(entries, 0, max - 1);
-	grp_insertion_sort(entries, 0, max - 1);
-} /* grp_sort_entries */
 
 
 static int grp_load_entries(const char *name, int forWriting, GRPinfo *info)
@@ -376,7 +326,8 @@ static int grp_load_entries(const char *name, int forWriting, GRPinfo *info)
 
     __PHYSFS_platformClose(fh);
 
-    grp_sort_entries(info->entries, info->entryCount);
+    __PHYSFS_sort(info->entries, info->entryCount,
+                  grp_entry_cmp, grp_entry_swap);
     return(1);
 } /* grp_load_entries */
 
@@ -489,37 +440,44 @@ static int GRP_exists(DirHandle *h, const char *name)
 } /* GRP_exists */
 
 
-static int GRP_isDirectory(DirHandle *h, const char *name)
+static int GRP_isDirectory(DirHandle *h, const char *name, int *fileExists)
 {
+    *fileExists = GRP_exists(h, name);
     return(0);  /* never directories in a groupfile. */
 } /* GRP_isDirectory */
 
 
-static int GRP_isSymLink(DirHandle *h, const char *name)
+static int GRP_isSymLink(DirHandle *h, const char *name, int *fileExists)
 {
+    *fileExists = GRP_exists(h, name);
     return(0);  /* never symlinks in a groupfile. */
 } /* GRP_isSymLink */
 
 
-static PHYSFS_sint64 GRP_getLastModTime(DirHandle *h, const char *name)
+static PHYSFS_sint64 GRP_getLastModTime(DirHandle *h,
+                                        const char *name,
+                                        int *fileExists)
 {
     GRPinfo *info = ((GRPinfo *) h->opaque);
-    if (grp_find_entry(info, name) == NULL)
-        return(-1);  /* no such entry. */
+    PHYSFS_sint64 retval = -1;
 
-    /* Just return the time of the GRP itself in the physical filesystem. */
-    return(((GRPinfo *) h->opaque)->last_mod_time);
+    *fileExists = (grp_find_entry(info, name) != NULL);
+    if (*fileExists)  /* use time of GRP itself in the physical filesystem. */
+        retval = ((GRPinfo *) h->opaque)->last_mod_time;
+
+    return(retval);
 } /* GRP_getLastModTime */
 
 
-static FileHandle *GRP_openRead(DirHandle *h, const char *name)
+static FileHandle *GRP_openRead(DirHandle *h, const char *fnm, int *fileExists)
 {
     GRPinfo *info = ((GRPinfo *) h->opaque);
     FileHandle *retval;
     GRPfileinfo *finfo;
     GRPentry *entry;
 
-    entry = grp_find_entry(info, name);
+    entry = grp_find_entry(info, fnm);
+    *fileExists = (entry != NULL);
     BAIL_IF_MACRO(entry == NULL, NULL, NULL);
 
     retval = (FileHandle *) malloc(sizeof (FileHandle));
@@ -547,6 +505,30 @@ static FileHandle *GRP_openRead(DirHandle *h, const char *name)
     retval->dirHandle = h;
     return(retval);
 } /* GRP_openRead */
+
+
+static FileHandle *GRP_openWrite(DirHandle *h, const char *name)
+{
+    BAIL_MACRO(ERR_NOT_SUPPORTED, NULL);
+} /* GRP_openWrite */
+
+
+static FileHandle *GRP_openAppend(DirHandle *h, const char *name)
+{
+    BAIL_MACRO(ERR_NOT_SUPPORTED, NULL);
+} /* GRP_openAppend */
+
+
+static int GRP_remove(DirHandle *h, const char *name)
+{
+    BAIL_MACRO(ERR_NOT_SUPPORTED, 0);
+} /* GRP_remove */
+
+
+static int GRP_mkdir(DirHandle *h, const char *name)
+{
+    BAIL_MACRO(ERR_NOT_SUPPORTED, 0);
+} /* GRP_mkdir */
 
 #endif  /* defined PHYSFS_SUPPORTS_GRP */
 

@@ -700,7 +700,6 @@ extern "C" {
 
 /* end LANG section. */
 
-
 struct __PHYSFS_DIRHANDLE__;
 struct __PHYSFS_FILEFUNCTIONS__;
 
@@ -843,6 +842,7 @@ typedef struct __PHYSFS_DIRFUNCTIONS__
         /*
          * Returns non-zero if filename can be opened for reading.
          *  This filename is in platform-independent notation.
+         *  You should not follow symlinks.
          */
     int (*exists)(DirHandle *r, const char *name);
 
@@ -851,22 +851,34 @@ typedef struct __PHYSFS_DIRFUNCTIONS__
          *  This filename is in platform-independent notation.
          *  Symlinks should be followed; if what the symlink points
          *  to is missing, or isn't a directory, then the retval is zero.
+         *
+         * Regardless of success or failure, please set *fileExists to
+         *  non-zero if the file existed (even if it's a broken symlink!),
+         *  zero if it did not.
          */
-    int (*isDirectory)(DirHandle *r, const char *name);
+    int (*isDirectory)(DirHandle *r, const char *name, int *fileExists);
 
         /*
          * Returns non-zero if filename is really a symlink.
          *  This filename is in platform-independent notation.
+         *
+         * Regardless of success or failure, please set *fileExists to
+         *  non-zero if the file existed (even if it's a broken symlink!),
+         *  zero if it did not.
          */
-    int (*isSymLink)(DirHandle *r, const char *name);
+    int (*isSymLink)(DirHandle *r, const char *name, int *fileExists);
 
         /*
 	     * Retrieve the last modification time (mtime) of a file.
     	 *  Returns -1 on failure, or the file's mtime in seconds since
     	 *  the epoch (Jan 1, 1970) on success.
          *  This filename is in platform-independent notation.
+         *
+         * Regardless of success or failure, please set *exists to
+         *  non-zero if the file existed (even if it's a broken symlink!),
+         *  zero if it did not.
     	 */
-    PHYSFS_sint64 (*getLastModTime)(DirHandle *r, const char *filename);
+    PHYSFS_sint64 (*getLastModTime)(DirHandle *r, const char *fnm, int *exist);
 
         /*
          * Open file for reading, and return a FileHandle.
@@ -875,8 +887,12 @@ typedef struct __PHYSFS_DIRFUNCTIONS__
          *  you can opt to fail for the second call.
          * Fail if the file does not exist.
          * Returns NULL on failure, and calls __PHYSFS_setError().
+         *
+         * Regardless of success or failure, please set *fileExists to
+         *  non-zero if the file existed (even if it's a broken symlink!),
+         *  zero if it did not.
          */
-    FileHandle *(*openRead)(DirHandle *r, const char *filename);
+    FileHandle *(*openRead)(DirHandle *r, const char *fname, int *fileExists);
 
         /*
          * Open file for writing, and return a FileHandle.
@@ -981,6 +997,30 @@ LinkedStringList *__PHYSFS_addToLinkedStringList(LinkedStringList *retval,
                                                  const char *str,
                                                  PHYSFS_sint32 len);
 
+
+/*
+ * When sorting the entries in an archive, we use a modified QuickSort.
+ *  When there are less then PHYSFS_QUICKSORT_THRESHOLD entries left to sort,
+ *  we switch over to a BubbleSort for the remainder. Tweak to taste.
+ *
+ * You can override this setting by defining PHYSFS_QUICKSORT_THRESHOLD
+ *  before #including "physfs_internal.h".
+ */
+#ifndef PHYSFS_QUICKSORT_THRESHOLD
+#define PHYSFS_QUICKSORT_THRESHOLD 4
+#endif
+
+/*
+ * Sort an array (or whatever) of (max) elements. This uses a mixture of
+ *  a QuickSort and BubbleSort internally.
+ * (cmpfn) is used to determine ordering, and (swapfn) does the actual
+ *  swapping of elements in the list.
+ *
+ *  See zip.c for an example.
+ */
+void __PHYSFS_sort(void *entries, PHYSFS_uint32 max,
+                   int (*cmpfn)(void *, PHYSFS_uint32, PHYSFS_uint32),
+                   void (*swapfn)(void *, PHYSFS_uint32, PHYSFS_uint32));
 
 
 /* These get used all over for lessening code clutter. */
@@ -1222,8 +1262,10 @@ int __PHYSFS_platformStricmp(const char *str1, const char *str2);
 
 /*
  * Return non-zero if filename (in platform-dependent notation) exists.
- *  Symlinks should be followed; if what the symlink points to is missing,
- *  then the retval is false.
+ *  Symlinks should NOT be followed; at this stage, we do not care what the
+ *  symlink points to. Please call __PHYSFS_SetError() with the details of
+ *  why the file does not exist, if it doesn't; you are in a better position
+ *  to know (path not found, bogus filename, file itself is missing, etc).
  */
 int __PHYSFS_platformExists(const char *fname);
 
@@ -1234,7 +1276,6 @@ int __PHYSFS_platformExists(const char *fname);
  *  then the retval is -1.
  */
 PHYSFS_sint64 __PHYSFS_platformGetLastModTime(const char *fname);
-
 
 /*
  * Return non-zero if filename (in platform-dependent notation) is a symlink.

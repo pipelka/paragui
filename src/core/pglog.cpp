@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/11 08:25:57 $
+    Update Date:      $Date: 2002/11/01 10:43:36 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.4 $
+    CVS/RCS Revision: $Revision: 1.1.6.5 $
     Status:           $State  
 */
 
@@ -37,6 +37,8 @@
 #include <cstring>
 #include <cstdarg>
 #include <ctime>
+
+using namespace std;
 
 Uint32 PG_LogMaxMessages = 200;
 int PG_LogMethod = PG_LOGMTH_STDOUT;

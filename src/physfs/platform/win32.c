@@ -125,7 +125,7 @@ static char *getExePath(const char *argv0)
 
             /* make sure the string was not truncated. */
         if (__PHYSFS_platformStricmp(&retval[buflen - 4], ".exe") != 0)
-            __PHYSFS_setError(ERR_GOTMODFN_TRUNC);
+            __PHYSFS_setError(ERR_GETMODFN_TRUNC);
         else
         {
             ptr = strrchr(retval, '\\');
@@ -369,7 +369,9 @@ int __PHYSFS_platformStricmp(const char *x, const char *y)
 
 int __PHYSFS_platformExists(const char *fname)
 {
-    return(GetFileAttributes(fname) != INVALID_FILE_ATTRIBUTES);
+    BAIL_IF_MACRO(GetFileAttributes(fname) == INVALID_FILE_ATTRIBUTES,
+                  win32strerror(), 0);
+    return(1);
 } /* __PHYSFS_platformExists */
 
 
@@ -647,7 +649,8 @@ static int getOSInfo(void)
  */
 static int loadLibraries(void)
 {
-    /* !!! FIXME: Make this table driven? */
+    /* If this get unwieldy, make it table driven. */
+
     int allNeededLibrariesLoaded = 1;  /* flip to zero as needed. */
 
     libKernel32 = LoadLibrary("kernel32.dll");

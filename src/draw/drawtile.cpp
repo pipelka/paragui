@@ -22,13 +22,15 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/11/01 10:43:36 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/drawtile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
 #include "pgdraw.h"
+
+using namespace std;
 
 void PG_Draw::DrawTile(SDL_Surface* surface, const PG_Rect& ref, const PG_Rect& drawrect, SDL_Surface* tilemap) {
 	PG_Point index1;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/30 20:50:26 $
+    Update Date:      $Date: 2002/11/01 10:43:36 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.12 $
+    CVS/RCS Revision: $Revision: 1.2.4.13 $
     Status:           $State: Exp $
 */
 
@@ -47,6 +47,9 @@
 #define PARAGUI_THEMEDIR        "./"
 #endif  // macintosh
 #endif  // PARAGUI_THEMEDIR
+
+using namespace std;
+
 
 SDL_mutex* PG_Application::mutexScreen = NULL;
 PG_Application* PG_Application::pGlobalApp = NULL;

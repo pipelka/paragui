@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 08:10:23 $
+    Update Date:      $Date: 2002/11/01 10:43:36 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgnavigator.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.6.1 $
+    CVS/RCS Revision: $Revision: 1.2.6.2 $
     Status:           $State: Exp $
 */
 
@@ -30,6 +30,8 @@
 
 #include <algorithm>
 #include <cmath>
+
+using namespace std;
 
 PG_Widget* PG_Navigator::my_currentWidget = NULL;
 

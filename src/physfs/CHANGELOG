@@ -2,6 +2,46 @@
  * CHANGELOG.
  */
 
+10222002 - Fixed segfault in test_physfs.c when user hits CTRL-D (and
+           readline() thus returns NULL)...now gracefully exits, as it should.
+10142002 - Added check for AMD's x86-64 ("Hammer") architecture when
+           determining platform byte order.
+10112002 - Fixed "setsaneconfig" command in test_physfs.c ...
+09232002 - Happy September. Updated VC++6 project files, fixed some
+           VC++ compile nags (more work to be done in zip.c).
+08302002 - Cleaned tab stops out of zip.c, and fixed a possible infinite loop
+           in zip_find_entry().
+08292002 - Fixed a mistake in makeos2.cmd, and updated the INSTALL docs.
+           Added physfs.spec.in to EXTRA_DIST in Makefile.am*
+08292002 - Added a physfs/stdio wrapper header to the "extras" dir,
+           compliments of Adam D. Moss (file is "abs-file.h").
+08282002 - Cleanups in grp.c so that Visual C++ doesn't complain anymore.
+           zip.c now works correctly when PhysicsFS is disallowing symlinks.
+           A few minor optimizations in zip.c, with a few more to come later.
+           Added VS.NET project files to CVS.
+08222002 - Fixed ZIP_exists() to work with directories. Now breaks out of
+           __PHYSFS_verifySecurity() early if a path element is missing
+           (since all the others will be, too)...this check is only done
+           if symlinks are disabled, but we might as well save easy cycles
+           where we can.
+08212002 - Did a couple tedious-for-small-rewards cleanups, optimizations,
+           corrections and streamlinings I've been meaning to do. Touched a
+           lot of code. One of the side results is that ZIP_isDirectory()
+           got fixed.
+08192002 - Generalized sorting routines, moved them into physfs.c and removed
+           the multiple copies from the various archivers. Adding profiling
+           code (currently only for sort routines)...enable it with
+           --enable-profiling in the configure script. Fixed incorrect
+           behaviours in configure.in.
+08172002 - Patched configure.in to work around buggy autoconfs.
+08162002 - Fixed QPAK archiver, since I broke it (sorry!). Also fixed a
+           qpak memory leak.
+08092002 - Added Quake PAK archiver (qpak.c) by Ed Sinjiashvili. Thanks!
+           Made (successful?) attempt to fix pthread-to-ui64 cast problem.
+           Check for OS/2 in configure.in, in case anyone gets autoconf and
+           such to work right on their OS/2 box.
+08012002 - Patched win32.c to compile.
+07302002 - Minor error handling fix (thanks, Alexander!)
 07292002 - Found some memory leaks, thanks to Valgrind (which rules, btw).
            Added Russian translations (koi8-r, cp1251, cp866, and iso-8859-5)
            by Ed Sinjiashvili. Added Spanish translation by Pedro J. Pérez.
@@ -145,10 +185,10 @@
 05212002 - Cleaned up some FIXMEs.
 05202002 - Added .cvsignore files.
 05162002 - Edward Rudd also caught an embarrassing screwup by me in
-           unix.c: the open-for-append call was using "wb+" instead of 
-           "ab" when calling fopen(). Doh! 
-05152002 - configure script now deals with systems that have a readline 
-           lib, but require it to be linked with curses. Thanks to Edward 
+           unix.c: the open-for-append call was using "wb+" instead of
+           "ab" when calling fopen(). Doh!
+05152002 - configure script now deals with systems that have a readline
+           lib, but require it to be linked with curses. Thanks to Edward
            Rudd for the patch.
 05102002 - A trimmed-down zlib 1.1.4 is now included in the source distro, for
            use by win32, MacOS, and Unix systems that don't have it installed
@@ -163,12 +203,12 @@
 04202002 - Added a (very) quick and (very) dirty http server to the
            extras directory (public domain), as another example of using
            the library.
-04192002 - Corrected some win32 info in INSTALL. Changed Makefile to 
+04192002 - Corrected some win32 info in INSTALL. Changed Makefile to
            package releases as .tar.gz instead of .tar.bz2.
-04122002 - Some win32 cleanups and fixes across several files. Upped 
+04122002 - Some win32 cleanups and fixes across several files. Upped
            version to 0.1.5.
 04082002 - Fixed problem when calling __PHYSFS_setError before PHYSFS_init.
-04062002 - Added MacOS info, etc to INSTALL. Patched unix.c and 
+04062002 - Added MacOS info, etc to INSTALL. Patched unix.c and
            test_physfs.c to compile on Darwin again.
 04052002 - Added byte ordering API. Byte ordering fixes in grp.c, and some
            cleanups in unzip.c. Mac work is more or less complete.
@@ -191,7 +231,7 @@
            a type exposed by MacOS's namespace-polluting API, and some
            typecasting issues). Found a call to ferror() I had missed in
            unzip.c.
-03302002 - Mutexes! PhysicsFS should be thread safe now, so long as you 
+03302002 - Mutexes! PhysicsFS should be thread safe now, so long as you
            don't try to do something like close a file at the same time as
            you are reading from it in another thread. All reasonable race
            conditions should now be gone, but the new code will need some
@@ -208,7 +248,7 @@
            to rely on stdio anymore. Updated TODO with my comments on the
            physfs mailing list. 1.0, here we come! Removed race condition from
            grp.c and converted to file i/o abstraction layer calls from stdio.
-           Tons of other fixes and enhancements. 
+           Tons of other fixes and enhancements.
 03202002 - Patched platform/win32.c to compile.
 03152002 - PHYSFS_setSaneConfig() now handles failure to set the write dir
            better. Patched makefile to link the test program. Changed all the
@@ -224,8 +264,8 @@
            crucial line from dir.c a few revisions ago, and no one noticed. :(
            Fixed. The win32 userdir will default to the base dir, now.
 09252001 - Changed API: PHYSFS_setSaneConfig() takes an organization name, and
-           sets up less directories. Be warned. Fixes from David Hedbor: 
-           make setSaneConfig() set write directory correctly if it had to 
+           sets up less directories. Be warned. Fixes from David Hedbor:
+           make setSaneConfig() set write directory correctly if it had to
            create the directory, and make sure that the writing functions
            get used in dir.c when a file is opened for writing/appending.
            Updated CREDITS.

@@ -1,7 +1,10 @@
 noinst_LTLIBRARIES = libphysfs.la
 
-SUBDIRS = platform archivers zlib114 extras
-DIST_SUBDIRS = $(SUBDIRS) test
+SUBDIRS = platform archivers zlib114 . test extras
+
+libphysfsincludedir = $(includedir)
+libphysfsinclude_HEADERS =	\
+	physfs.h
 
 libphysfs_la_SOURCES =	\
 	physfs.c	\
@@ -30,10 +33,11 @@ EXTRA_DIST =	\
 	TODO \
 	Doxyfile \
 	CWProjects.sit \
+	physfs.spec.in \
+	physfs.spec \
 	physfs.dsp \
 	test_physfs.dsp \
-	physfs.h \
-	physfs.spec.in
+	makeos2.cmd
 
 dist-hook:
 	mkdir $(distdir)/docs

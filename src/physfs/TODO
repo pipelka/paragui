@@ -3,7 +3,6 @@ Stuff that needs to be done and wishlist:
 These are in no particular order. A 1.0 release is reliant on doing most of
  this stuff. Some might be dupes, some might be done already.
 
-- Include the Visual Studio.NET project file in CVS directly.
 - Other archivers: perhaps tar(.gz|.bz2), RPM, ARJ, etc. These are less
   important, since streaming archives aren't of much value to games (which
   is why zipfiles are king: random access), but it could have uses for, say,
@@ -11,16 +10,23 @@ These are in no particular order. A 1.0 release is reliant on doing most of
   support so that both "archives" look identical to an application; might be
   nice for an email program. That's blue sky, unless someone wants to tackle
   it.
-- Need PHYSFS_LANG_FRENCH, PHYSFS_LANG_SPANISH, and PHYSFS_LANG_GERMAN.
-- Figure out that pesky pthread casting problem.
+- Need PHYSFS_LANG_GERMAN.
+- I'm a little nervous about the use of linked lists in qpak.c.
+- Add qpak.c and PHYSFS_SUPPORTS_QPAK to mac classic projects.
 - macclassic.c :
   "/* (Hmm. Default behaviour is broken in the base library.  :)  )  */"
 - Platforms to be verified as working: Solaris, WinNT 3.1, WinME, WinXP,
   MacOS 8.1
 - Platforms to port to: PocketPC (Maybe can just use win32.c?),
-  Amiga (needs platform driver).
+  Amiga (needs platform driver), DOS4GW (platform driver).
+- profile string list interpolation.
+- We have two different ways to find dir entries in zip.c.
+- Do symlinks in zip archiver work when they point to dirs?
+- Is building internal zlib broken?
+- Enable more warnings?
 - Use __cdecl in physfs.h?
 - Look for FIXMEs (many marked with "!!!" in comments).
+- Check for tab chars in the source.
 - Probably other stuff. Requests and recommendations are welcome.
 
 // end of TODO ...

@@ -22,9 +22,9 @@
     cosmetical (interface and naming) to fit the ParaGUI library.
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 08:10:23 $
+    Update Date:      $Date: 2002/11/01 10:43:36 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/rotozoom.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -38,6 +38,8 @@
 #define MAX(a,b)    (((a) > (b)) ? (a) : (b))
 
 /* ---- Structures */
+
+using namespace std;
 
 typedef struct tColorRGBA {
 	Uint8 r;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 08:10:23 $
+    Update Date:      $Date: 2002/11/01 10:43:36 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmain.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.2 $
     Status:           $State: Exp $
 */
 #ifndef _GNU_SOURCE
@@ -33,6 +33,8 @@
 #include "pglog.h"
 
 #include <cstdlib>
+
+using namespace std;
 
 int PG_main(int argc, char **argv, PG_Application *app)
 {
