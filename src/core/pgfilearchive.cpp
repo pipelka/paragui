@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/07 07:29:30 $
+    Update Date:      $Date: 2002/07/18 07:24:14 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.5 $
+    CVS/RCS Revision: $Revision: 1.2.4.6 $
     Status:           $State: Exp $
 */
 
@@ -279,7 +279,8 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 	SDL_RWops *rw = OpenFileRWops(filename);
 
 	if(rw == NULL) {
-		PG_LogWRN("Unable to load '%s' !", filename);
+		PG_LogWRN("Unable to open '%s' !", filename);
+		PG_LogERR("PhysFS reported: '%s'", PG_FileArchive::GetLastError());
 		return NULL;
 	}
 
@@ -288,6 +289,12 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 #else
 	surface = SDL_LoadBMP_RW(rw, 1);
 #endif
+	
+	if(surface == NULL) {
+		PG_LogERR("Unable to load imagedata from '%s'", filename);
+		PG_LogERR("PhysFS reported: '%s'", PG_FileArchive::GetLastError());
+		PG_LogERR("SDL reported: '%s'", SDL_GetError());
+	}
 	
 	if(convert && !PG_Application::GetGLMode()) {
 		SDL_Surface* tmpsrf = SDL_DisplayFormat(surface);
