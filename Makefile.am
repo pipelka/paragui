@@ -1,7 +1,5 @@
 DISTCHECK_CONFIGURE_FLAGS=--enable-internalexpat --enable-internalphysfs
 
-AUTOMAKE_OPTIONS = 1.4
-
 SUBDIRS = include src data bindings
 
 DIST_SUBDIRS = $(SUBDIRS) doc test sdk
