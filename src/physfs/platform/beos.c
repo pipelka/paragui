@@ -7,27 +7,6 @@
  *  based on unix.c written by Ryan C. Gordon.
  */
 
-#if (defined __STRICT_ANSI__)
-#define __PHYSFS_DOING_STRICT_ANSI__
-#endif
-
-/*
- * We cheat a little: I want the symlink version of stat() (lstat), and
- *  GCC/Linux will not declare it if compiled with the -ansi flag.
- *  If you are really lacking symlink support on your platform,
- *  you should #define __PHYSFS_NO_SYMLINKS__ before compiling this
- *  file. That will open a security hole, though, if you really DO have
- *  symlinks on your platform; it renders PHYSFS_permitSymbolicLinks(0)
- *  useless, since every symlink will be reported as a regular file/dir.
- */
-#if (defined __PHYSFS_DOING_STRICT_ANSI__)
-#undef __STRICT_ANSI__
-#endif
-#include <stdio.h>
-#if (defined __PHYSFS_DOING_STRICT_ANSI__)
-#define __STRICT_ANSI__
-#endif
-
 #include <be/kernel/OS.h>
 #include <be/kernel/fs_info.h>
 #include <be/kernel/fs_query.h>
@@ -50,69 +29,27 @@
 #define __PHYSICSFS_INTERNAL__
 #include "physfs_internal.h"
 
-
 const char *__PHYSFS_platformDirSeparator = "/";
 
+
+int __PHYSFS_platformInit(void)
+{
+    return(1);  /* always succeed. */
+} /* __PHYSFS_platformInit */
+
+
+int __PHYSFS_platformDeinit(void)
+{
+    return(1);  /* always succeed. */
+} /* __PHYSFS_platformDeinit */
+
+// FIXME - needs to be implemented
 char **__PHYSFS_platformDetectAvailableCDs(void)
 {
-
-//    char **retval = (char **) malloc(sizeof (char *));
-//    int cd_count = 1;  /* We count the NULL entry. */
-//    FILE *mounts = NULL;
-//    struct mntent *ent = NULL;
-
-//    *retval = NULL;
-//    mounts = setmntent("/etc/mtab", "r");
-//    BAIL_IF_MACRO(mounts == NULL, ERR_IO_ERROR, retval);
-
-//    while ( (ent = getmntent(mounts)) != NULL )
-//    {
-//        int add_it = 0;
-//        if (strcmp(ent->mnt_type, "iso9660") == 0)
-//            add_it = 1;
-        /* !!! other mount types? */
-
-//        if (add_it)
-//        {
-//            char **tmp = realloc(retval, sizeof (char *) * cd_count + 1);
-//            if (tmp)
-//            {
-//                retval = tmp;
-//                retval[cd_count-1] = (char *) malloc(strlen(ent->mnt_dir) + 1);
-//                if (retval[cd_count-1])
-//                {
-//                    strcpy(retval[cd_count-1], ent->mnt_dir);
-//                    cd_count++;
-//                } /* if */
-//            } /* if */
-//        } /* if */
-//    } /* while */
-
-//    endmntent(mounts);
-
-//    retval[cd_count - 1] = NULL;
-//    return(retval);
     return NULL;
-} /* __PHYSFS_detectAvailableCDs */
+} /* __PHYSFS_platformDetectAvailableCDs */
 
 
-static char *copyEnvironmentVariable(const char *varname)
-{
-    const char *envr = getenv(varname);
-    char *retval = NULL;
-
-    if (envr != NULL)
-    {
-        retval = malloc(strlen(envr) + 1);
-        if (retval != NULL)
-            strcpy(retval, envr);
-    } /* if */
-
-    return(retval);
-} /* copyEnvironmentVariable */
-
-
-/* !!! this is ugly. */
 char *__PHYSFS_platformCalcBaseDir(const char *argv0)
 {
     /* If there isn't a path on argv0, then look through the $PATH for it. */
@@ -159,7 +96,7 @@ char *__PHYSFS_platformCalcBaseDir(const char *argv0)
     } while (ptr != NULL);
 
     free(envr);
-    return(retval);
+    return(retval);	
 } /* __PHYSFS_platformCalcBaseDir */
 
 
@@ -181,6 +118,15 @@ static char *getUserNameByUID(void)
 } /* getUserNameByUID */
 
 
+char *__PHYSFS_platformGetUserName(void)
+{
+    char *retval = getUserNameByUID();
+    if (retval == NULL)
+        retval = copyEnvironmentVariable("USER");
+    return(retval);	
+} /* __PHYSFS_platformGetUserName */
+
+
 static char *getUserDirByUID(void)
 {
     uid_t uid = getuid();
@@ -199,31 +145,21 @@ static char *getUserDirByUID(void)
 } /* getUserDirByUID */
 
 
-char *__PHYSFS_platformGetUserName(void)
-{
-    char *retval = getUserNameByUID();
-    if (retval == NULL)
-        retval = copyEnvironmentVariable("USER");
-    return(retval);
-} /* __PHYSFS_platformGetUserName */
-
-
 char *__PHYSFS_platformGetUserDir(void)
 {
     char *retval = copyEnvironmentVariable("HOME");
     if (retval == NULL)
         retval = getUserDirByUID();
-    return(retval);
+    return(retval);	
 } /* __PHYSFS_platformGetUserDir */
 
 
-int __PHYSFS_platformGetThreadID(void)
+PHYSFS_uint64 __PHYSFS_platformGetThreadID(void)
 {
-    return((int) find_thread(NULL));
+    return((PHYSFS_uint64)find_thread(NULL));	
 } /* __PHYSFS_platformGetThreadID */
 
 
-/* -ansi and -pedantic flags prevent use of strcasecmp() on Linux. */
 int __PHYSFS_platformStricmp(const char *x, const char *y)
 {
     int ux, uy;
@@ -240,14 +176,14 @@ int __PHYSFS_platformStricmp(const char *x, const char *y)
         y++;
     } while ((ux) && (uy));
 
-    return(0);
+    return(0);	
 } /* __PHYSFS_platformStricmp */
 
 
 int __PHYSFS_platformExists(const char *fname)
 {
     struct stat statbuf;
-    return(stat(fname, &statbuf) == 0);
+    return(stat(fname, &statbuf) == 0);	
 } /* __PHYSFS_platformExists */
 
 
@@ -268,7 +204,7 @@ int __PHYSFS_platformIsSymLink(const char *fname)
     
     return(retval);
 
-#endif
+#endif	
 } /* __PHYSFS_platformIsSymlink */
 
 
@@ -283,7 +219,7 @@ int __PHYSFS_platformIsDirectory(const char *fname)
             retval = 1;
     } /* if */
     
-    return(retval);
+    return(retval);	
 } /* __PHYSFS_platformIsDirectory */
 
 
@@ -314,10 +250,9 @@ char *__PHYSFS_platformCvtToDependent(const char *prepend,
 } /* __PHYSFS_platformCvtToDependent */
 
 
-/* Much like my college days, try to sleep for 10 milliseconds at a time... */
 void __PHYSFS_platformTimeslice(void)
 {
-    snooze(10);
+	snooze(10);	
 } /* __PHYSFS_platformTimeslice */
 
 
@@ -422,17 +357,8 @@ LinkedStringList *__PHYSFS_platformEnumerateFiles(const char *dirname,
     /* close the query */
     fs_close_query(dir);
     
-    return(retval);
+    return(retval);	
 } /* __PHYSFS_platformEnumerateFiles */
-
-
-int __PHYSFS_platformFileLength(FILE *handle)
-{
-    struct stat statbuf;
-    errno = 0;
-    BAIL_IF_MACRO(fstat(fileno(handle), &statbuf) == -1, strerror(errno), -1);
-    return(statbuf.st_size);
-} /* __PHYSFS_platformFileLength */
 
 
 char *__PHYSFS_platformCurrentDir(void)
@@ -463,28 +389,19 @@ char *__PHYSFS_platformCurrentDir(void)
 	    free(retval);
 	BAIL_IF_MACRO(1, ERR_NO_SUCH_FILE, NULL);
     }
-    return(retval);
+    return(retval);	
 } /* __PHYSFS_platformCurrentDir */
 
 
 char *__PHYSFS_platformRealPath(const char *path)
 {
-// hmm,.. didn't solve this from BeOS till now
-// trying the easy route (FIXME)
-
-//    char resolved_path[MAXPATHLEN];
-//    char *retval = NULL;
+	// hmm,.. didn't solve this for BeOS till now
+	// trying the easy route (FIXME)
 
     char *retval = malloc(strlen(path) + 1);
     strcpy(retval, path);
 
-//    errno = 0;
-//    BAIL_IF_MACRO(!realpath(path, resolved_path), strerror(errno), NULL);
-//    retval = malloc(strlen(resolved_path) + 1);
-//    BAIL_IF_MACRO(retval == NULL, ERR_OUT_OF_MEMORY, NULL);
-//    strcpy(retval, resolved_path);
-
-    return(retval);   
+    return(retval);   	
 } /* __PHYSFS_platformRealPath */
 
 
@@ -494,8 +411,150 @@ int __PHYSFS_platformMkDir(const char *path)
     errno = 0;
     rc = mkdir(path, S_IRWXU);
     BAIL_IF_MACRO(rc == -1, strerror(errno), 0);
-    return(1);
+    return(1);	
 } /* __PHYSFS_platformMkDir */
 
-/* end of beos.c ... */
+
+static void *doOpen(const char *filename, const char *mode)
+{
+    FILE *retval;
+    errno = 0;
+
+    retval = fopen(filename, mode);
+    if (retval == NULL)
+        __PHYSFS_setError(strerror(errno));
+
+    return((void *) retval);
+} /* doOpen */
+
+
+void *__PHYSFS_platformOpenRead(const char *filename)
+{
+    return(doOpen(filename, "rb"));
+} /* __PHYSFS_platformOpenRead */
+
+
+void *__PHYSFS_platformOpenWrite(const char *filename)
+{
+    return(doOpen(filename, "wb"));	
+} /* __PHYSFS_platformOpenWrite */
+
+
+void *__PHYSFS_platformOpenAppend(const char *filename)
+{
+    return(doOpen(filename, "wb+"));	
+} /* __PHYSFS_platformOpenAppend */
+
+
+PHYSFS_sint64 __PHYSFS_platformRead(void *opaque, void *buffer,
+                                    PHYSFS_uint32 size, PHYSFS_uint32 count)
+{
+    FILE *io = (FILE *) opaque;
+    int rc = fread(buffer, size, count, io);
+    if (rc < count)
+    {
+        int err = errno;
+        BAIL_IF_MACRO(ferror(io), strerror(err), rc);
+        BAIL_MACRO(ERR_PAST_EOF, rc);
+    } /* if */
+
+    return(rc);	
+} /* __PHYSFS_platformRead */
+
+
+PHYSFS_sint64 __PHYSFS_platformWrite(void *opaque, const void *buffer,
+                                     PHYSFS_uint32 size, PHYSFS_uint32 count)
+{
+    FILE *io = (FILE *) opaque;
+    int rc = fwrite((void *) buffer, size, count, io);
+    if (rc < count)
+        __PHYSFS_setError(strerror(errno));
+
+    return(rc);	
+} /* __PHYSFS_platformWrite */
+
+
+int __PHYSFS_platformSeek(void *opaque, PHYSFS_uint64 pos)
+{
+    FILE *io = (FILE *) opaque;
+
+    /* !!! FIXME: Use llseek where available. */
+    errno = 0;
+    BAIL_IF_MACRO(fseek(io, pos, SEEK_SET) != 0, strerror(errno), 0);
+
+    return(1);	
+} /* __PHYSFS_platformSeek */
+
+
+PHYSFS_sint64 __PHYSFS_platformTell(void *opaque)
+{
+    FILE *io = (FILE *) opaque;
+    PHYSFS_sint64 retval = ftell(io);
+    BAIL_IF_MACRO(retval == -1, strerror(errno), -1);
+    return(retval);	
+} /* __PHYSFS_platformTell */
+
+
+PHYSFS_sint64 __PHYSFS_platformFileLength(void *opaque)
+{
+    FILE *io = (FILE *) opaque;
+    struct stat statbuf;
+    errno = 0;
+    BAIL_IF_MACRO(fstat(fileno(io), &statbuf) == -1, strerror(errno), -1);
+    return((PHYSFS_sint64) statbuf.st_size);	
+} /* __PHYSFS_platformFileLength */
+
+
+int __PHYSFS_platformEOF(void *opaque)
+{
+    return(feof((FILE *) opaque));	
+} /* __PHYSFS_platformEOF */
+
+
+int __PHYSFS_platformFlush(void *opaque)
+{
+    errno = 0;
+    BAIL_IF_MACRO(fflush((FILE *) opaque) == EOF, strerror(errno), 0);
+    return(1);	
+} /* __PHYSFS_platformFlush */
+
+
+int __PHYSFS_platformClose(void *opaque)
+{
+    errno = 0;
+    BAIL_IF_MACRO(fclose((FILE *) opaque) == EOF, strerror(errno), 0);
+    return(1);	
+} /* __PHYSFS_platformClose */
+
+
+int __PHYSFS_platformDelete(const char *path)
+{
+    errno = 0;
+    BAIL_IF_MACRO(remove(path) == -1, strerror(errno), 0);
+    return(1);	
+} /* __PHYSFS_platformDelete */
+
+
+void *__PHYSFS_platformCreateMutex(void)
+{
+    return((void *) 0x0001);	
+} /* __PHYSFS_platformCreateMutex */
+
+
+void __PHYSFS_platformDestroyMutex(void *mutex)
+{
+} /* __PHYSFS_platformDestroyMutex */
+
+
+int __PHYSFS_platformGrabMutex(void *mutex)
+{
+	return(1);
+} /* __PHYSFS_platformGrabMutex */
+
+
+void __PHYSFS_platformReleaseMutex(void *mutex)
+{
+} /* __PHYSFS_platformReleaseMutex */
+
+/* end of skeleton.c ... */
 
