@@ -20,3 +20,6 @@ stress1
 stress2
 pgtestfile
 writefile
+widgetlistbug
+eventbug
+array
