@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 16:24:05 $
+    Update Date:      $Date: 2004/03/03 13:12:17 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -114,18 +114,18 @@ public:
 	void EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
 
 	/**
-	Scroll the list to a widget
-	@param	widget
-	@param direction scroll direction (PG_ScrollBar::VERTICAL | PG_ScrollBar::HORIZONTAL)
+	Scroll to a widget
+	@param widget the target widget
+	@param bVertical scroll direction
 	*/
-	void ScrollTo(PG_Widget* widget, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
+	void ScrollToWidget(PG_Widget* widget, bool bVertical = true);
 
 	/**
 	Scroll the list to a given index
 	@param index index of the widget to scroll to
-	@param direction scroll direction (PG_ScrollBar::VERTICAL | PG_ScrollBar::HORIZONTAL)
+	@param bVertical scroll direction
 	*/
-	void ScrollTo(int index, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
+	void ScrollToWidget(int index, bool bVertical = true);
 
 	/**
 	Scroll one page up
@@ -142,6 +142,8 @@ public:
 	Uint16 GetListWidth();
 
 	Uint16 GetWidgetCount();
+
+	PG_Widget* GetFirstInList();
 
 	void AddChild(PG_Widget* child);
 

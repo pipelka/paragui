@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/01 20:51:40 $
+    Update Date:      $Date: 2004/03/03 13:12:17 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollarea.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -70,6 +70,27 @@ void PG_ScrollArea::AddChild(PG_Widget* child) {
 		child->Show();
 	}
 }
+
+void PG_ScrollArea::ScrollToWidget(PG_Widget* widget, bool bVertical) {
+	if(GetWidgetCount() == 0) {
+		return;
+	}
+
+	Uint16 ypos = 0;
+	Uint16 xpos = 0;
+	
+	if(bVertical) {
+		ypos = widget->y - my_ypos + my_area.y;
+		xpos = my_area.x;
+	}
+	else {
+		xpos = widget->x - my_xpos + my_area.x;
+		ypos = my_area.y;
+	}
+	
+	ScrollTo(xpos, ypos);
+}
+
 
 bool PG_ScrollArea::RemoveChild(PG_Widget* child) {
 
@@ -186,4 +207,12 @@ void PG_ScrollArea::SetAreaHeight(Uint16 h) {
 	}
 	my_area.h = h;
 	sigAreaChangedHeight(this, my_area.h);
+}
+
+PG_Widget* PG_ScrollArea::GetFirstInList() {
+	PG_RectList* list = GetChildList();
+	if(list == NULL) {
+		return NULL;
+	}
+	return list->first();
 }

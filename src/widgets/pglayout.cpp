@@ -632,7 +632,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 	ParseUserData_t	*XMLParser = (ParseUserData_t	*)userData;
 
 	SaveUserData(XMLParser);
-	PG_Widget* parent = ((XMLParser->EndTagFlags & INHTAGFLAG_ADDWIDGET) == INHTAGFLAG_ADDWIDGET) ? NULL : XMLParser->ParentObject;
+	PG_Widget* parent = /*((XMLParser->EndTagFlags & INHTAGFLAG_ADDWIDGET) == INHTAGFLAG_ADDWIDGET) ? NULL :*/ XMLParser->ParentObject;
 
 	//Tag <layout> <LA>
 	if (IsTag("layout","LA",XML_SECTION_DOC)) {
@@ -694,11 +694,13 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		XMLParser->Section = XML_SECTION_BUTTON | XML_SECTION_BODY | XML_SECTION_COMWIDPARAMS;
 		PG_Layout::GetParamRect(atts, "pos", Rect, parent);
 
+		PG_LogDBG("layout: parent = %p", parent);
 		PG_Button	*Widget = new PG_Button(
 		                        parent,
-		                        //0,
 		                        Rect,
-		                        PG_Layout::GetParamStr(atts, "text"));
+		                        PG_Layout::GetParamStr(atts, "text"),
+								PG_Layout::GetParamInt(atts, "id"),
+								PG_Layout::GetParamStr(atts, "style"));
 
 		XMLParser->ParentObject = Widget;
 
@@ -711,7 +713,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		XMLParser->Section = XML_SECTION_LABEL | XML_SECTION_BODY | XML_SECTION_COMWIDPARAMS;
 		PG_Layout::GetParamRect(atts, "pos", Rect, parent);
 
-		PG_Label	*Widget = new PG_Label(parent, Rect, "");
+		PG_Label	*Widget = new PG_Label(parent, Rect, "", PG_Layout::GetParamStr(atts, "style"));
 		XMLParser->ParentObject = Widget;
 
 		XMLParser->InhTagFlags |=SetLabelAtts(Widget, atts, XMLParser);
@@ -1126,7 +1128,9 @@ static void XMLEndDoc(void *userData, const char *name) {
 		}
 
 		if ((XMLParser->InhTagFlags & INHTAGFLAG_HIDE) == 0) {
-			XMLParser->ParentObject->Show();
+			if(XMLParser->ParentObject->GetParent() == NULL) {
+				XMLParser->ParentObject->Show();
+			}
 		}
 		else {
 			XMLParser->ParentObject->Hide();

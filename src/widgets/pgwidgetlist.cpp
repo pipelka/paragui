@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/01 16:03:31 $
+    Update Date:      $Date: 2004/03/03 13:12:17 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.12 $
     Status:           $State: Exp $
 */
 
@@ -301,32 +301,18 @@ void PG_WidgetList::EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection d
 	CheckScrollBars();
 }
 
-void PG_WidgetList::ScrollTo(PG_Widget* widget, PG_ScrollBar::ScrollDirection direction) {
-	/*if(my_widgetCount == 0) {
-		return;
-	}
-
-	if (direction == PG_ScrollBar::VERTICAL) {
-		int ypos = widget->y - FindWidget(0)->y;
-
-		ypos = ScrollToY(ypos);
-		my_objVerticalScrollbar->SetPosition(ypos);
-	} else if (direction == PG_ScrollBar::HORIZONTAL) {
-		int xpos = widget->x - FindWidget(0)->x;
-
-		xpos = ScrollToX(xpos);
-		my_objHorizontalScrollbar->SetPosition(xpos);
-	}*/
+void PG_WidgetList::ScrollToWidget(PG_Widget* widget, bool bVertical) {
+	my_scrollarea->ScrollToWidget(widget, bVertical);
 }
 
-void PG_WidgetList::ScrollTo(int index, PG_ScrollBar::ScrollDirection direction) {
-	/*PG_Widget* w = FindWidget(index);
+void PG_WidgetList::ScrollToWidget(int index, bool bVertical) {
+	PG_Widget* w = FindWidget(index);
 
 	if(w == NULL) {
 		return;
 	}
 
-	ScrollTo(w, direction);*/
+	ScrollToWidget(w, bVertical);
 }
 
 void PG_WidgetList::PageUp() {
@@ -393,4 +379,8 @@ bool PG_WidgetList::handleAreaChangedWidth(PG_ScrollArea* area, Uint16 w) {
 
 	CheckScrollBars();
 	return true;
+}
+
+PG_Widget* PG_WidgetList::GetFirstInList() {
+	return my_scrollarea->GetFirstInList();
 }
