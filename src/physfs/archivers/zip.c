@@ -250,7 +250,7 @@ static PHYSFS_sint64 ZIP_read(FileHandle *handle, void *buf,
     if (avail < maxread)
     {
         maxread = avail - (avail % objSize);
-        objCount = maxread / objSize;
+        objCount = (PHYSFS_uint32)maxread / objSize;
         BAIL_IF_MACRO(objCount == 0, ERR_PAST_EOF, 0);  /* quick rejection. */
         __PHYSFS_setError(ERR_PAST_EOF);   /* this is always true here. */
     } /* if */
@@ -282,13 +282,13 @@ static PHYSFS_sint64 ZIP_read(FileHandle *handle, void *buf,
 
                     br = __PHYSFS_platformRead(finfo->handle,
                                                finfo->buffer,
-                                               1, br);
+                                               1, (PHYSFS_uint32)br);
                     if (br <= 0)
                         break;
 
-                    finfo->compressed_position += br;
+                    finfo->compressed_position += (PHYSFS_uint32)br;
                     finfo->stream.next_in = finfo->buffer;
-                    finfo->stream.avail_in = br;
+                    finfo->stream.avail_in = (PHYSFS_uint32)br;
                 } /* if */
             } /* if */
 
@@ -303,7 +303,7 @@ static PHYSFS_sint64 ZIP_read(FileHandle *handle, void *buf,
     } /* else */
 
     if (retval > 0)
-        finfo->uncompressed_position += (retval * objSize);
+        finfo->uncompressed_position += (PHYSFS_uint32)(retval * objSize);
 
     return(retval);
 } /* ZIP_read */
@@ -341,7 +341,7 @@ static int ZIP_seek(FileHandle *handle, PHYSFS_uint64 offset)
     {
         PHYSFS_sint64 newpos = offset + entry->offset;
         BAIL_IF_MACRO(!__PHYSFS_platformSeek(in, newpos), NULL, 0);
-        finfo->uncompressed_position = newpos;
+        finfo->uncompressed_position = (PHYSFS_uint32)newpos;
     } /* if */
 
     else
@@ -371,7 +371,7 @@ static int ZIP_seek(FileHandle *handle, PHYSFS_uint64 offset)
         while (finfo->uncompressed_position != offset)
         {
             PHYSFS_uint8 buf[512];
-            PHYSFS_uint32 maxread = offset - finfo->uncompressed_position;
+            PHYSFS_uint32 maxread = (PHYSFS_uint32)offset - finfo->uncompressed_position;
             if (maxread > sizeof (buf))
                 maxread = sizeof (buf);
 
@@ -442,7 +442,7 @@ static PHYSFS_sint64 zip_find_end_of_central_dir(void *in, PHYSFS_sint64 *len)
     else
     {
         filepos = 0;
-        maxread = filelen;
+        maxread = (PHYSFS_uint32)filelen;
     } /* else */
 
     while ((totalread < filelen) && (totalread < 65557))
@@ -1060,7 +1060,7 @@ static int zip_parse_end_of_central_dir(void *in, DirHandle *dirh,
      *  sizeof central dir)...the difference in bytes is how much arbitrary
      *  data is at the start of the physical file.
      */
-    *data_start = pos - (*central_dir_ofs + ui32);
+	*data_start = (PHYSFS_uint32) pos - (*central_dir_ofs + ui32);
 
     /* Now that we know the difference, fix up the central dir offset... */
     *central_dir_ofs += *data_start;

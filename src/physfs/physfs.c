@@ -1716,7 +1716,7 @@ static PHYSFS_sint64 doBufferedRead(PHYSFS_file *handle, void *buffer,
 
         if (buffered == 0) /* need to refill buffer? */
         {
-            PHYSFS_sint64 rc = h->funcs->read(h, h->buffer, 1, h->bufsize);
+            PHYSFS_sint64 rc = h->funcs->read(h, h->buffer, 1, (PHYSFS_uint32)h->bufsize);
             if (rc <= 0)
             {
                 h->bufpos -= remainder;
@@ -1734,8 +1734,8 @@ static PHYSFS_sint64 doBufferedRead(PHYSFS_file *handle, void *buffer,
         buffer = ((PHYSFS_uint8 *) buffer) + buffered;
         h->bufpos += buffered;
         buffered += remainder;  /* take remainder into account. */
-        copied = (buffered / objSize);
-        remainder = (buffered % objSize);
+        copied = (PHYSFS_uint32)(buffered / objSize);
+        remainder = (PHYSFS_uint32)(buffered % objSize);
         retval += copied;
         objCount -= copied;
     } /* while */
@@ -1858,7 +1858,7 @@ int PHYSFS_setBuffer(PHYSFS_file *handle, PHYSFS_uint64 bufsize)
 
     else
     {
-        PHYSFS_uint8 *newbuf = realloc(h->buffer, bufsize);
+        PHYSFS_uint8 *newbuf = realloc(h->buffer, (PHYSFS_uint32)bufsize);
         BAIL_IF_MACRO(newbuf == NULL, ERR_OUT_OF_MEMORY, 0);
         h->buffer = newbuf;
     } /* else */
@@ -1878,7 +1878,7 @@ int PHYSFS_flush(PHYSFS_file *handle)
         return(1);  /* open for read or buffer empty are successful no-ops. */
 
     /* dump buffer to disk. */
-    rc = h->funcs->write(h, h->buffer + h->bufpos, h->buffill - h->bufpos, 1);
+    rc = h->funcs->write(h, h->buffer + h->bufpos, (PHYSFS_uint32)(h->buffill - h->bufpos), 1);
     BAIL_IF_MACRO(rc <= 0, NULL, 0);
 
     h->bufpos = h->buffill = 0;
