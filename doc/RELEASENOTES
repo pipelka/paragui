@@ -36,6 +36,8 @@ Whats new in ParaGUI 1.0.4 ?
 - added new PG_FileArchive::LoadSurface method with an option to
   specify the surface colorkey (Thanks Keith)
 - added PG_Application::FlushEventQueue method
+- merged patch from Steffen Blume <abszisse@web.de>
+  Select[First,Next,Prev]Item for PG_DropDown
 
 ----------------------------
 Whats new in ParaGUI 1.0.3 ?
