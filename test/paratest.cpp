@@ -163,6 +163,7 @@ PG_Window(parent, r, windowtext, WF_SHOW_CLOSE | WF_SHOW_MINIMIZE)
 	drop->AddItem("Item 4");
 	drop->AddItem("Item 5");
 	drop->AddItem("Item 6");
+	drop->Hide();
 }
 
 bool TestWindow::eventScrollPos(int id, PG_Widget* widget, unsigned long data){

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/01/04 21:13:41 $
+   Update Date:      $Date: 2003/01/22 13:36:40 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.12 $
+   CVS/RCS Revision: $Revision: 1.4.4.13 $
    Status:           $State: Exp $
  */
 
@@ -1924,7 +1924,7 @@ bool PG_Widget::GetDirtyUpdate() {
 
 void PG_Widget::SetHidden(bool hidden) {
 	my_internaldata->hidden = hidden;
-	if(my_internaldata->childList == NULL) {
+	/*if(my_internaldata->childList == NULL) {
 		return;
 	}
 	PG_RectList::iterator list = my_internaldata->childList->begin();
@@ -1932,7 +1932,7 @@ void PG_Widget::SetHidden(bool hidden) {
 	while (list != my_internaldata->childList->end()) {
 		(*list)->SetHidden(hidden);
 		list++;
-	}
+	}*/
 }
 
 	
