@@ -1,7 +1,7 @@
 noinst_LTLIBRARIES = libpgcore.la
 
 libpgcore_la_SOURCES = \
-	physfsrwops.c \
+	physfsrwops.cpp \
 	missing.cpp \
 	pgdatacontainer.cpp \
 	pgapplication.cpp \
