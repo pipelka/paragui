@@ -1,6 +1,10 @@
 #include "pgcolorselector.h"
 
 PG_ColorSelector::PG_ColorBox::PG_ColorBox(PG_ColorSelector* parent, const PG_Rect& r) : PG_ThemeWidget(parent, r) {
+
+	SetBackground((SDL_Surface*)NULL);
+	SetSimpleBackground(false);
+	
 	my_btndown = false;
 
 	p.x = r.w/2;
@@ -102,8 +106,6 @@ PG_ColorSelector::PG_ColorSelector(PG_Widget* parent, const PG_Rect&r, const cha
 	g.colors[3].b = 255;
 	
 	my_colorbox->SetGradient(g);
-	my_colorbox->SetBackground((SDL_Surface*)NULL);
-	my_colorbox->SetSimpleBackground(false);
 
 	my_colorslider = new PG_Slider(this, -1, PG_Rect(r.h, 5, 20, r.h-10), PG_SB_VERTICAL);
 	my_colorslider->SetRange(0, 255);
@@ -111,8 +113,7 @@ PG_ColorSelector::PG_ColorSelector(PG_Widget* parent, const PG_Rect&r, const cha
 	my_colorslider->SetBackground((SDL_Surface*)NULL);
 	my_colorslider->SetSimpleBackground(false);
 
-	SetBaseColor(my_color);
-
+	SetBaseColor(my_colorbox->GetBaseColor());
 }
 
 PG_ColorSelector::~PG_ColorSelector() {

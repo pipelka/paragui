@@ -16,6 +16,8 @@ protected:
 			return static_cast<PG_ColorSelector*>(PG_ThemeWidget::GetParent());
 		}
 		
+		SDL_Color GetBaseColor();
+
 	protected:
 		
 		void eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst);
@@ -23,9 +25,7 @@ protected:
 		bool eventMouseMotion(const SDL_MouseMotionEvent* motion);
 		bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);
 		bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
-		
-		SDL_Color GetBaseColor();
-		
+				
 	private:
 		
 		bool my_btndown;
