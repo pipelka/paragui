@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/30 20:50:26 $
+    Update Date:      $Date: 2002/11/01 15:00:59 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.3 $
+    CVS/RCS Revision: $Revision: 1.1.6.4 $
     Status:           $State: Exp $
 */
 
@@ -158,8 +158,8 @@ bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 		case SDL_USEREVENT:
 			msg = (MSG_MESSAGE*)(event->user.data1);
 
-			if(msg->to != NULL) {
-				return msg->to->eventMessage(msg);
+			if(msg->_to != NULL) {
+				return msg->_to->eventMessage(msg);
 			}
 
 			rc = eventMessage(msg);
@@ -238,18 +238,18 @@ bool PG_MessageObject::eventMessage(MSG_MESSAGE* msg) {
 		return false;
 	}
     
-	if((msg->to != this) && (msg->to != NULL)) {
+	if((msg->_to != this) && (msg->_to != NULL)) {
 		return false;
 	}
 
 	// dispatch user message
 	switch(msg->type) {
 		case MSG_QUIT:
-			rc = eventQuit(msg->widget_id, (PG_MessageObject*)(msg->from), msg->data);
+			rc = eventQuit(msg->widget_id, (PG_MessageObject*)(msg->_from), msg->data);
 			break;
 
 		case MSG_MODALQUIT:
-			rc = eventQuitModal(msg->widget_id, (PG_MessageObject*)(msg->from), msg->data);
+			rc = eventQuitModal(msg->widget_id, (PG_MessageObject*)(msg->_from), msg->data);
 
 			default:
 			rc = false;
@@ -444,8 +444,8 @@ bool PG_MessageObject::SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, M
 
 	if(!rc) {
 		MSG_MESSAGE* msg = new MSG_MESSAGE;
-		msg->to = target;
-		msg->from = this;
+		msg->_to = target;
+		msg->_from = this;
 		msg->type = type;
 		msg->widget_id = id;
 		msg->data = data;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/17 11:32:59 $
+    Update Date:      $Date: 2002/11/01 15:00:59 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui_types.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -197,8 +197,8 @@ typedef bool (PG_EventObject::*MSG_CALLBACK_OBJ)(int id, PG_Widget* widget, unsi
 #ifndef DOXYGEN_SKIP
 typedef struct {
 	PG_MSG_TYPE	type;
-	PG_MessageObject* from;
-	PG_MessageObject* to;
+	PG_MessageObject* _from;
+	PG_MessageObject* _to;
 	unsigned long widget_id;
 	unsigned long data;
 	PG_Point pt;

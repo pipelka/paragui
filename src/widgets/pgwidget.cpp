@@ -19,10 +19,10 @@
    Alexander Pipelka
    pipelka@teleweb.at
  
-   Last Update:      $Author: eross $
-   Update Date:      $Date: 2002/09/12 06:34:59 $
+   Last Update:      $Author: braindead $
+   Update Date:      $Date: 2002/11/01 15:00:59 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.10 $
+   CVS/RCS Revision: $Revision: 1.4.4.11 $
    Status:           $State: Exp $
  */
 
@@ -1873,7 +1873,7 @@ bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
     if (!msg)
         return false;
 
-	if((msg->to != this) && (msg->to != NULL)) {
+	if((msg->_to != this) && (msg->_to != NULL)) {
 		return false;
 	}
 
@@ -1883,15 +1883,15 @@ bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
 
 	switch(msg->type) {
 		case MSG_BUTTONCLICK:
-			rc = eventButtonClick(msg->widget_id, (PG_Widget*)(msg->from));
+			rc = eventButtonClick(msg->widget_id, (PG_Widget*)(msg->_from));
 			break;
 
 		case MSG_SCROLLPOS:
-			rc = eventScrollPos(msg->widget_id, (PG_Widget*)(msg->from), msg->data);
+			rc = eventScrollPos(msg->widget_id, (PG_Widget*)(msg->_from), msg->data);
 			break;
 
 		case MSG_SCROLLTRACK:
-			rc = eventScrollTrack(msg->widget_id, (PG_Widget*)(msg->from), msg->data);
+			rc = eventScrollTrack(msg->widget_id, (PG_Widget*)(msg->_from), msg->data);
 			break;
 
 		default:

@@ -1,0 +1,13 @@
+* no need to deal with EventObject, that kind of functionality is handled
+  internally
+
+* PG_TimerObject should be a mixin
+  - or perhaps use a different SDL library?
+* PG_Navigator as well, but what is it?
+  - it makes the cursor jump
+
+* How in the world are we going to bridge RUDL and Paragui?
+  - the SDL_Surface objects need to be shared
+  - also, the clipping rect if any
+  - Idea: typemap to convert SDL_Surface to unsigned long (out)
+  - Idea: typemap to convert unsigned long *sdl_surface_ptr to SDL_Surface (in)

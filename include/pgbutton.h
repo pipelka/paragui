@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2002/11/01 15:00:59 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -34,9 +34,16 @@
 #ifndef PG_BUTTON_H
 #define PG_BUTTON_H
 
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgbutton
+%{
+#include "pgbutton.h"
+    %}
+#endif
+
 #include "pgwidget.h"
 #include <string>
-#include "pgsignals.h"
 
 /**
 	@author Alexander Pipelka
@@ -136,8 +143,10 @@ public:
 	/**  */
 	void LoadThemeStyle(const char* widgettype);
 
+#ifndef SWIG
 	/**  */
 	void LoadThemeStyle(const char* widgettype, const char* objectname);
+#endif
 
 	/**
 		Set the gradient.
@@ -191,8 +200,9 @@ public:
 	bool SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down = NULL, SDL_Surface* icon_over = NULL);
 
 	// 1.0.1 versions (surface)
-
+#ifndef SWIG
 	bool SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down = NULL);
+#endif
 
 	/**
 	Set the bordersize of the button
@@ -210,10 +220,7 @@ public:
 	void SetPressed(bool pressed);
 
 	/**  */
-	void SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high);
-
-	/**  */
-	void SetTransparency(Uint8 t);
+	void SetTransparency(int norm, int pressed, int high);
 
 	/**
 	 * Set the moving distance of the image when we press on it
@@ -240,8 +247,6 @@ public:
 	@return the current blend level
 	*/
 	Uint8 GetBlendLevel(int mode);
-	
-	PG_SignalButtonClick sigButtonClick;
 	
 protected:
 
@@ -274,8 +279,11 @@ protected:
 
 private:
 
+#ifndef SWIG
+
 	PG_Button(const PG_Button&);
 	PG_Button& operator=(const PG_Button&);
+#endif
 
 	/**  */
 	void FreeSurfaces();

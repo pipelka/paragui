@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 11:03:36 $
+    Update Date:      $Date: 2002/11/01 15:00:59 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -49,6 +49,7 @@
 %include "pgeventobject.h"
 %include "pgwidget.h"
 %include "pgthemewidget.h"
+%include "pglayout.h"
 %include "pgwidgetdnd.h"
 %include "pgwidgetlist.h"
 %include "pgfilearchive.h"
@@ -73,6 +74,8 @@
 %include "pgspinnerbox.h"
 %include "pgimage.h"
 %include "pgpopupmenu.h"
+%include "pgdropdown.h"
+%include "pgmenubar.h"
 #endif
 
 // SDL

@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<layout>
+	<head>
+	</head>
+	<body>
+
+		<menubar pos="100,50,300,25">
+			<popupmenu text="test" hide="1">
+				<popupmenuitem caption="item1" id="1"/>
+				<popupmenuitem caption="item2" id="2"/>
+				<popupmenuitem caption="item3" id="3"/>
+				<popupmenuitem caption="item4" id="4"/>
+			</popupmenu>
+			<popupmenu text="test2" hide="1">
+				<popupmenuitem caption="item1" id="1"/>
+			</popupmenu>
+		</menubar>
+		
+		<button text="button3" id="7" pos="10,10,80,30" toggle="1" pressed="1" border="5,10,15" transparency="0,128,255"/>
+		<button text="grad button" id="7" pos="90,150,100,20" upgrad="255,0,0, 0,255,0, 0,0,255, 255,255,0" downgrad="0,255,0, 0,0,255, 0,0,0, 255,255,255" selgrad="0,0,255, 0,0,0, 255,0,0, 0,255,255"/>
+
+		<dropdown pos="490,50,100,20" indent="10" edit="1" text="pretext">
+			<dropdownitem text="First"/>
+			<dropdownitem text="Second"/>
+			<dropdownitem text="Third"/>
+		</dropdown>
+
+		<label pos="300,50,200,30" text="Label" fsize="20" fstyle="7" indent="20" align="left" icon="icon.bmp"/>
+		
+		<image pos="300,90" iimage="icon.bmp"/>
+
+		<gradientwidget pos="100,300,100,100" image="icon.bmp" imode="stretch" blend="128" gradient="255,0,0, 0,255,0, 0,0,255, 255,255,0"/>
+
+		<themewidget pos="250,300,100,100" bimage="icon.bmp" transparency="128"/>
+		<themewidget pos="400,300,100,100" bimage="icon.bmp"/>
+
+		<lineedit pos="10,500,100,30" length="8" text="pokus"/>
+		<maskedit pos="10,540,100,30" mask="##.##.####" spacer="_"/>
+		<progressbar pos="130,500,100,30" progress="20"/>
+		<spinnerbox pos="130,540,100,30" value="20" min="5" max="35" mask="##"/>
+		
+		<window pos="20%,20%,60%,60%" title="Experimental window" titlecolor="0,0,255" flags="2">
+			<label pos="20%,20%,60%,60%" text="Close this window !!!" align="center" textcolor="255,0,0"/>
+		</window>
+		
+		<widgetlist pos="250,500,100,90" scrollbar="1">
+			<label pos="0,0,100,30" text="hepci !" align="left"/>
+		</widgetlist>
+
+		<listbox pos="360,500,100,90" multisel="0">
+			<listboxitem height="15" ltext="First" select="1"/>
+			<listboxitem height="15" ltext="Second"/>
+			<listboxitem height="15" ltext="Third" select="1"/>
+			<listboxitem height="15" ltext="Fouth" select="1"/>
+			<listboxitem height="15" ltext="Fifth"/>
+			<listboxitem height="15" ltext="Sixth"/>
+			<listboxitem height="15" ltext="Seventh"/>
+		</listbox>
+
+		<listbox pos="480,500,200,90" multisel="1">	
+			<columnitem height="15" select="1" columns="1">
+				<column number="0" text="heh"/>
+			</columnitem>
+			<columnitem height="15" columns="2">
+				<column number="1" text="heh"/>
+			</columnitem>
+			<columnitem height="15" select="1" columns="3">
+				<column/>
+			</columnitem>
+			<columnitem height="15" select="1" columns="4">
+				<column/>
+			</columnitem>
+			<columnitem height="15" columns="5">
+				<column/>
+			</columnitem>
+			<columnitem height="15" columns="6">
+				<column/>
+			</columnitem>
+			<columnitem height="15" columns="7">
+				<column/>
+			</columnitem>
+		</listbox>
+		
+		<radiobutton pos="700,400,90,20" text="radio1" name="radiogroup1" transparency="255"/>
+		<radiobutton pos="700,420,90,20" text="radio2" pressed="1" group="radiogroup1" transparency="255"/>
+		<radiobutton pos="700,440,90,20" text="radio3" group="radiogroup1" transparency="255"/>
+		
+		<checkbutton pos="700,480,90,20" text="check" transparency="255"/>
+		
+		<scrollbar pos="690,10,20,90" dir="1"/>
+		<scrollbar pos="710,10,90,20" />
+	</body>
+</layout>
