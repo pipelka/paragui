@@ -14,7 +14,6 @@ libparagui_la_LDFLAGS = \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 libparagui_la_LIBADD = \
-	-L@prefix@/lib \
 	$(SDL_LIBS) \
 	$(IMAGE_LIBS) \
 	$(EXPAT_LIB) \

@@ -8,13 +8,17 @@ See the file COPYING for copying permission.
 
 #include <stdlib.h>
 
-#ifndef XMLPARSEAPI
-#  if defined(__declspec) && !defined(__BEOS__)
-#    define XMLPARSEAPI(type) __declspec(dllimport) type __cdecl
-#  else
-#    define XMLPARSEAPI(type) type
-#  endif
-#endif  /* not defined XMLPARSEAPI */
+// This block messes up with Win32 & mingw -- Alex
+
+//#ifndef XMLPARSEAPI
+//#  if defined(__declspec) && !defined(__BEOS__)
+//#    define XMLPARSEAPI(type) __declspec(dllimport) type __cdecl
+//#  else
+//#    define XMLPARSEAPI(type) type
+//#  endif
+//#endif  /* not defined XMLPARSEAPI */
+
+#define XMLPARSEAPI(type) type
 
 #ifdef __cplusplus
 extern "C" {

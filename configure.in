@@ -61,10 +61,10 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_EXEEXT
 
-if test "$prefix" = "NONE"; then
-  prefix="/usr/local"
-fi
-LIBS="-L$prefix/lib $LIBS"
+dnl if test "$prefix" = "NONE"; then
+dnl   prefix="/usr/local"
+dnl fi
+dnl LIBS="-L$prefix/lib $LIBS"
 
 dnl Check for zip (needed to pack themes and VC++ workspace)
 dnl I deactivated this because it isn't needed for compiling
