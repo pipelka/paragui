@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 14:53:56 $
+    Update Date:      $Date: 2002/04/26 12:43:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -68,11 +68,17 @@ int PG_Application::my_backmode;
 	new shutdown procedure (called at application termination
 */
 void PARAGUI_ShutDownCode() {
-	// shutdown SDL
-	SDL_Quit();
+	// shutdown log
+	PG_LogConsole::Done();
+
+	// remove all archives from PG_FileArchive
+	PG_FileArchive::RemoveAllArchives();
 
 	// shutdown PhysFS
-	PG_Application::Deinit();
+	PG_FileArchive::Deinit();
+
+	// shutdown SDL
+	SDL_Quit();
 }
 
 
@@ -659,12 +665,6 @@ void PG_Application::Shutdown() {
 		delete my_Theme;
 		my_Theme = NULL;
 	}
-
-	// shutdown log
-	PG_LogConsole::Done();
-
-	// remove all archives from PG_FileArchive
-	RemoveAllArchives();
 
 	// destroy screen mutex
 	SDL_DestroyMutex(mutexScreen);

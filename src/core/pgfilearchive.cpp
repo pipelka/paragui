@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 14:53:56 $
+    Update Date:      $Date: 2002/04/26 12:43:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -41,33 +41,35 @@ PG_SurfaceCache PG_FileArchive::my_cache;
 
 PG_FileArchive::PG_FileArchive() {
 
+	// increment instance count
+	my_instance_count++;
+
 	// First instance ? -> initialize PhysFS
-	if(my_instance_count == 0) {
+	if(my_instance_count == 1) {
 		if(PHYSFS_init("paragui") == 0) {
 			PG_LogERR("Unable to initialize PhysicsFS !");
 			return;
 		}
 	}
 
-	// increment instance count
-	my_instance_count = 1;
 }
 
 PG_FileArchive::~PG_FileArchive() {
 
+	if(my_instance_count == 0) {
+		return;
+	}
+	
 	// decrement instance count
-	//my_instance_count--;
+	my_instance_count--;
 
-	// i think there's a bug in PhysFS.
-	// it constantly crashed when calling init, deinit multiple times
-
-	/*if(my_instance_count == 0) {
-		PHYSFS_deinit();
-	}*/
+	if(my_instance_count == 0) {
+		Deinit();
+	}
 }
 
 void PG_FileArchive::Deinit() {
-	PHYSFS_deinit();
+	//PHYSFS_deinit();
 }
 
 std::string *PG_FileArchive::PathToPlatform(const char *path) {

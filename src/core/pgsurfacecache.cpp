@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 14:53:56 $
+    Update Date:      $Date: 2002/04/26 12:43:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgsurfacecache.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -117,9 +117,9 @@ void PG_SurfaceCache::CreateKey(std::string &key, Uint16 w, Uint16 h,
 
 	assert(w != 0 && h != 0);
 	
-	sprintf(tmpkey, "%04x%04x%08x%01i%01i",
+	sprintf(tmpkey, "%04x%04x%08lx%01i%01i",
 		w, h,
-		reinterpret_cast<unsigned int>(background),
+		reinterpret_cast<unsigned long>(background),
 		bkmode,
 		blend);
 		
