@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /G5 /MD /W3 /vmg /GX /O1 /I "../../src/physfs" /I "../../src/themes" /I "../../src/core" /I "../../include" /D "ZLIB_DLL" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /FD /c
+# ADD CPP /nologo /G5 /MD /W3 /vmg /GX /O1 /I "../../src/expat" /I "../../src/physfs" /I "../../src/themes" /I "../../src/core" /I "../../include" /D "ZLIB_DLL" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x405 /d "NDEBUG"
@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src/physfs" /I "../../src/core" /I "../../include" /I "../../src/themes" /D "ZLIB_DLL" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /FD /GZ /c
+# ADD CPP /nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src/expat" /I "../../src/physfs" /I "../../src/core" /I "../../include" /I "../../src/themes" /D "ZLIB_DLL" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /FD /GZ /c
 # SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
