@@ -31,12 +31,12 @@ int sprites_visible;
 int done = 0;
 int bForeground = 0;
 
-PARAGUI_CALLBACK(handle_quit) {
+bool handle_quit(PG_Button* button, PG_Pointer* data) {
 	done = 1;
 	return true;
 }
 
-PARAGUI_CALLBACK(handle_toggle) {
+bool handle_toggle(PG_RadioButton* button, PG_Pointer* data) {
 	bForeground = 1-bForeground;
 	return true;
 }
@@ -206,11 +206,11 @@ int main(int argc, char *argv[])
 	app.ShowCursor(PG_CURSOR_SOFTWARE);
 	// get a pointer to the "quit" button
 	PG_Button* btn = static_cast<PG_Button*>(app.GetWidgetByName("quit"));
-	btn->SetEventCallback(MSG_BUTTONCLICK, handle_quit);
+	btn->sigButtonClick.connect(slot(handle_quit));
 
 	// get the checkbutton
 	PG_CheckButton* toggle = static_cast<PG_CheckButton*>(app.GetWidgetByName("toggle"));
-	toggle->SetEventCallback(MSG_BUTTONCLICK, handle_toggle);
+	toggle->sigButtonClick.connect(slot(handle_toggle));
 
 	// get the label
 	PG_Label* fps = static_cast<PG_Label*>(app.GetWidgetByName("fps"));

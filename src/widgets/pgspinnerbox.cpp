@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/27 11:57:23 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgspinnerbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -48,15 +48,17 @@ PG_SpinnerBox::PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r, const char* st
 	down_rect.SetRect( box_rect.my_width, my_height - (my_height/2), (my_height/2), (my_height/2));
 
 	m_pEditBox = new PG_MaskEdit( this, box_rect, style );
-	m_pEditBox->SetEventObject(MSG_EDITEND, this, (MSG_CALLBACK_OBJ)&PG_SpinnerBox::handle_editend);
+	m_pEditBox->sigEditEnd.connect(slot(this, &PG_SpinnerBox::handleEditEnd));
 
 	m_pButtonUp = new PG_Button( this, PG_IDSPINNERBOX_UP, up_rect, "" );
 	// load a specific style
 	m_pButtonUp->LoadThemeStyle(style, "ButtonUp");
+	m_pButtonUp->sigButtonClick.connect(slot(this, &PG_SpinnerBox::handleButtonClick));
 
 	m_pButtonDown = new PG_Button( this, PG_IDSPINNERBOX_DOWN, down_rect, "" );
 	// load a specific style
 	m_pButtonDown->LoadThemeStyle(style, "ButtonDown");
+	m_pButtonDown->sigButtonClick.connect(slot(this, &PG_SpinnerBox::handleButtonClick));
 
 	m_iMinValue = 0;
 	m_iMaxValue = 99;
@@ -65,14 +67,6 @@ PG_SpinnerBox::PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r, const char* st
 	m_pEditBox->SetText( "0" );
 	m_pEditBox->SetValidKeys("-0123456789");
 
-	// we don't need to call Show() in the constructor -- Alex
-	/*
-	m_pButtonUp->Show( false );
-	m_pButtonDown->Show( false );
-	m_pEditBox->Show( false );
-		
-	Show( true );
-	*/
 }
 
 PG_SpinnerBox::~PG_SpinnerBox() {
@@ -80,25 +74,24 @@ PG_SpinnerBox::~PG_SpinnerBox() {
 	delete this->m_pButtonDown;
 }
 
-bool PG_SpinnerBox::eventButtonClick(int id, PG_Widget *widget) {
+bool PG_SpinnerBox::handleButtonClick(PG_Button* widget, PG_Pointer* data) {
 
-	switch( id ) {
-
-		case PG_IDSPINNERBOX_UP: // Up
-			if( m_iValue < m_iMaxValue ) {
-				m_iValue++;
-				SetTextValue();
-				return true;
-			}
-			return false;
-
-		case PG_IDSPINNERBOX_DOWN: // Down
-			if( m_iValue > m_iMinValue ) {
-				m_iValue--;
-				SetTextValue();
-				return true;
-			}
-			return false;
+	if(widget == m_pButtonUp) {
+		if( m_iValue < m_iMaxValue ) {
+			m_iValue++;
+			SetTextValue();
+			return true;
+		}
+		return false;
+	}
+	
+	if(widget == m_pButtonDown) {
+		if( m_iValue > m_iMinValue ) {
+			m_iValue--;
+			SetTextValue();
+			return true;
+		}
+		return false;
 	}
 
 	return false;
@@ -107,7 +100,7 @@ bool PG_SpinnerBox::eventButtonClick(int id, PG_Widget *widget) {
 void PG_SpinnerBox::SetTextValue() {
 	m_pEditBox->SetTextFormat("%u", m_iValue );
 	m_pEditBox->Update();
-	SendMessage( NULL, MSG_SPINNER_CHANGE, GetID(), (unsigned long)m_iValue );
+	sigSpinnerChange(this, m_iValue);
 }
 
 void PG_SpinnerBox::AdjustSize() {
@@ -127,7 +120,7 @@ void PG_SpinnerBox::AdjustSize() {
 	Show();
 }
 
-PARAGUI_CALLBACK(PG_SpinnerBox::handle_editend) {
+bool PG_SpinnerBox::handleEditEnd(PG_LineEdit* edit) {
 	const char* text = m_pEditBox->GetText();
 	m_iValue = (text != NULL) ? atoi(text) : 0;
 

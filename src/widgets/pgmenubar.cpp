@@ -45,22 +45,31 @@ void PG_MenuBar::Add(const char* text, PG_PopupMenu* menu, Uint16 indent, Uint16
 
 	last->button->SetFontSize(GetFontSize());
 
-	last->button->SetEventObject(
-							MSG_BUTTONCLICK,
-							this, (MSG_CALLBACK_OBJ)&PG_MenuBar::handle_button, last);
+	last->button->sigButtonClick.connect(slot(this, &PG_MenuBar::handleButtonClick), last);
 
 	last->popupmenu = menu;
 
 	ItemList.push_back(last);
 }
 
-PARAGUI_CALLBACK(PG_MenuBar::handle_button) {
-	PG_Button* button = static_cast<PG_Button*>(widget);
-	MenuBarItem* item = static_cast<MenuBarItem*>(clientdata);
-
+bool PG_MenuBar::handleButtonClick(PG_Button* button, PG_Pointer* data) {
+	MenuBarItem* last = static_cast<MenuBarItem*>(data);
+	
+	// find the button
+	/*for(std::vector<MenuBarItem*>::iterator i=ItemList.begin(); i != ItemList.end(); i++) {
+		if((*i)->button == button) {
+			last = (*i);
+			break;
+		}
+	}*/
+	
+	if(last == NULL) {
+		return false;
+	}
+	
 	// check if we are visible
-	if(item->popupmenu->IsVisible()) {
-		item->popupmenu->Hide();
+	if(last->popupmenu->IsVisible()) {
+		last->popupmenu->Hide();
 		my_active = NULL;
 		return true;
 	}
@@ -70,7 +79,7 @@ PARAGUI_CALLBACK(PG_MenuBar::handle_button) {
 		my_active = NULL;
 	}
 
-	my_active = item->popupmenu;
+	my_active = last->popupmenu;
 	my_active->trackMenu(button->x, button->y + button->h);
 
 	return true;

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/04/26 12:43:23 $
+   Update Date:      $Date: 2002/04/27 11:57:23 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4 $
+   CVS/RCS Revision: $Revision: 1.5 $
    Status:           $State: Exp $
  */
 
@@ -849,7 +849,8 @@ void PG_Widget::Update(bool doBlit) {
 				index = children->FindIndexOf(this);
 				if(index != -1) {
 					SDL_SetClipRect(my_srfScreen, &my_internaldata->rectClip);
-					children->Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
+					//children->Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
+					children->Intersect(&my_internaldata->rectClip, index+1, -1).Blit();
 				}
 			}
 		}
@@ -862,7 +863,8 @@ void PG_Widget::Update(bool doBlit) {
 
 		if(index != -1) {
 			SDL_SetClipRect(my_srfScreen, &my_internaldata->rectClip);
-			widgetList.Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
+			//widgetList.Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
+			widgetList.Intersect(&my_internaldata->rectClip, index+1, -1).Blit();
 		}
 
 		PG_Application::DrawCursor();
@@ -1119,7 +1121,8 @@ bool PG_Widget::RestoreBackground(PG_Rect* clip, bool force) {
 
 		if(index != -1) {
 			SDL_SetClipRect(my_srfScreen, clip);
-			widgetList.Intersect(clip, 0, index).Blit(*clip);
+			//widgetList.Intersect(clip, 0, index).Blit(*clip);
+			widgetList.Intersect(clip, 0, index).Blit();
 		}
 		return true;
 	}
@@ -1174,7 +1177,8 @@ void PG_Widget::UpdateRect(const PG_Rect& r) {
 	PG_Application::LockScreen();
 	PG_Application::RedrawBackground(r);
 	SDL_SetClipRect(screen, (PG_Rect*)&r);
-	widgetList.Intersect((PG_Rect*)&r).Blit(r);
+	//widgetList.Intersect((PG_Rect*)&r).Blit(r);
+	widgetList.Blit(r);
 	SDL_SetClipRect(screen, NULL);
 	PG_Application::UnlockScreen();
 }
@@ -1508,7 +1512,7 @@ void PG_Widget::DrawText(int x, int y, const char* text, const SDL_Color& c) {
 }
 
 void PG_Widget::QuitModal() {
-		SendMessage(this, MSG_MODALQUIT, 0, 0);
+		eventQuitModal(0, this, 0);
 }
 
 int PG_Widget::RunModal() {
@@ -1858,55 +1862,6 @@ bool PG_Widget::IsClippingEnabled() {
 
 void PG_Widget::GetClipRects(PG_Rect& src, PG_Rect& dst) {
 	GetClipRects(src, dst, *this);
-}
-
-bool PG_Widget::eventButtonClick(int id, PG_Widget* widget) {
-	return false;
-}
-
-
-bool PG_Widget::eventScrollPos(int id, PG_Widget* widget, unsigned long data) {
-	return false;
-}
-
-
-bool PG_Widget::eventScrollTrack(int id, PG_Widget* widget, unsigned long data) {
-	return false;
-}
-
-bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
-	bool rc = false;
-
-    if (!msg)
-        return false;
-
-	if((msg->to != this) && (msg->to != NULL)) {
-		return false;
-	}
-
-	if(PG_MessageObject::eventMessage(msg)) {
-		return true;
-	}
-
-	switch(msg->type) {
-		case MSG_BUTTONCLICK:
-			rc = eventButtonClick(msg->widget_id, (PG_Widget*)(msg->from));
-			break;
-
-		case MSG_SCROLLPOS:
-			rc = eventScrollPos(msg->widget_id, (PG_Widget*)(msg->from), msg->data);
-			break;
-
-		case MSG_SCROLLTRACK:
-			rc = eventScrollTrack(msg->widget_id, (PG_Widget*)(msg->from), msg->data);
-			break;
-
-		default:
-			rc = false;
-			break;
-	}
-
-	return rc;
 }
 
 void PG_Widget::SetID(int id) {

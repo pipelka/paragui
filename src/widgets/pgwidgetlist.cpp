@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/27 11:57:23 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -74,12 +74,16 @@ PG_WidgetList::PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const char* st
 	my_widthScrollbar = my_objVerticalScrollbar->Width();
 	my_objVerticalScrollbar->MoveWidget(r.my_width - my_widthScrollbar, 0);
 	my_objVerticalScrollbar->SizeWidget(my_widthScrollbar, r.my_height);
-
+	my_objVerticalScrollbar->sigScrollPos.connect(slot(this, &PG_WidgetList::handleScrollPos));
+	my_objVerticalScrollbar->sigScrollTrack.connect(slot(this, &PG_WidgetList::handleScrollTrack));
+	
 	my_objHorizontalScrollbar = new PG_ScrollBar(this, PG_IDWIDGETLIST_SCROLL, my_rectHorizontalScrollbar, PG_SB_HORIZONTAL, style);
 	my_objHorizontalScrollbar->SetRange(0,0);
 	my_heightHorizontalScrollbar = my_objHorizontalScrollbar->Height();
 	my_objHorizontalScrollbar->MoveWidget(0, r.my_height - my_heightHorizontalScrollbar);
 	my_objHorizontalScrollbar->SizeWidget(r.my_width, my_heightHorizontalScrollbar);
+	my_objHorizontalScrollbar->sigScrollPos.connect(slot(this, &PG_WidgetList::handleScrollPos));
+	my_objHorizontalScrollbar->sigScrollTrack.connect(slot(this, &PG_WidgetList::handleScrollTrack));
 
 	my_rectList.SetRect(
 	    my_bordersize,
@@ -153,32 +157,32 @@ void PG_WidgetList::eventSizeWidget(Uint16 w, Uint16 h) {
 	CheckScrollBars();
 }
 
-bool PG_WidgetList::eventScrollPos(int id, PG_Widget* widget, unsigned long data) {
+bool PG_WidgetList::handleScrollPos(PG_ScrollBar* widget, long pos) {
 	if(widget == my_objVerticalScrollbar) {
-		ScrollToY(data);
+		ScrollToY(pos);
 		return true;
 	}
 
 	if(widget == my_objHorizontalScrollbar) {
-		ScrollToX(data);
+		ScrollToX(pos);
 		return true;
 	}
 
-	return true; //PG_ThemeWidget::eventScrollPos(id, widget, data);
+	return false;
 }
 
-bool PG_WidgetList::eventScrollTrack(int id, PG_Widget* widget, unsigned long data) {
+bool PG_WidgetList::handleScrollTrack(PG_ScrollBar* widget, long pos) {
 	if(widget == my_objVerticalScrollbar) {
-		ScrollToY(data);
+		ScrollToY(pos);
 		return true;
 	}
 
 	if(widget == my_objHorizontalScrollbar) {
-		ScrollToX(data);
+		ScrollToX(pos);
 		return true;
 	}
 
-	return true; // PG_ThemeWidget::eventScrollTrack(id, widget, data);
+	return false;
 }
 
 void PG_WidgetList::eventShow() {

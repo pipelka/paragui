@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -47,6 +47,110 @@
 #endif
 
 #include "pgthemewidget.h"
+#include "pgsignals.h"
+
+class PG_PopupMenu;
+class PG_MenuItem;
+
+typedef Slot2<bool, PG_MenuItem*, PG_Pointer*> PG_MenuItemSlot;
+
+/**
+ * @author Marek Habersack
+ *
+ * @short A menu item data structure
+ *
+ * Even though implemented as a class, MenuItem is not intended to be a new
+ * kind of widget - therefore it is derived only from PG_Rect for
+ * convenience. The idea is to have a "smart" data type (or a dumb class,
+ * if you prefer) that knows how to perform simple and specific actions on
+ * itself. The intention is to provide PG_PopupMenu with a fast mechanism
+ * for processing menu items - if MenuItem was derived from any of ParaGUI
+ * classes it would incurr unnecessary processing overhead.
+ *
+ * @todo better separator code
+ * @todo icon drawing
+ */
+
+class PG_MenuItem : public PG_Rect, public PG_MessageObject {
+public: // types
+	enum MI_FLAGS {
+		MIF_NONE = 0,
+		MIF_DISABLED = 0x01,
+		MIF_SEPARATOR = 0x02,
+		MIF_SUBMENU = 0x04
+	};
+
+public: // methods
+	PG_MenuItem(PG_PopupMenu *parent,
+			 char *caption,
+			 int id,
+			 MI_FLAGS flags);
+	PG_MenuItem(PG_PopupMenu *parent,
+			 char *caption,
+			 PG_PopupMenu *submenu);
+	~PG_MenuItem();
+
+	bool measureItem(PG_Rect* rect,  bool full = false);
+	bool isPointInside(int x, int y);
+	inline void moveTo(int x, int y);
+
+	inline SDL_Surface* getNormal() const;
+	inline SDL_Surface* getDisabled() const;
+	inline SDL_Surface* getSelected() const;
+
+	bool paintNormal(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol = 0);
+	bool paintDisabled(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol = 0);
+	bool paintSelected(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol = 0);
+
+	inline void disable();
+	inline void enable();
+	inline bool isDisabled() const;
+	inline bool isEnabled() const;
+	inline void select();
+	inline void unselect();
+	inline bool isSelected() const;
+	inline bool isSeparator() const;
+	inline bool isSubMenu() const;
+	inline bool isMute() const;
+
+	inline int Width() const;
+	inline int Height() const;
+
+	inline int getId() const;
+	inline PG_PopupMenu *getSubMenu() const;
+
+	inline const std::string& getCaption() const;
+
+	inline operator PG_Point const&() const;
+
+	PG_SignalMenuItemSelected sigMenuItemSelect;
+	
+	PG_Pointer* data;
+	
+private: // methods
+	void initItem();
+	bool renderSurface(SDL_Surface *canvas, SDL_Surface **text, SDL_Color *tcol, SDL_Color *scol = 0);
+	bool isValidRect();
+
+protected: // data
+	unsigned      myFlags;
+	std::string   myCaption;
+	PG_PopupMenu *myParent;
+
+	PG_PopupMenu *mySubMenu;
+	int           myId;
+
+	SDL_Surface  *sNormal;
+	SDL_Surface  *sSelected;
+	SDL_Surface  *sDisabled;
+
+	bool          selected;
+
+private: // data
+	bool          needRecalc;
+	SDL_Rect      blitRect;
+	PG_Point      myPoint;
+};
 
 /**
  * @author Marek Habersack
@@ -71,114 +175,20 @@
 class DECLSPEC PG_PopupMenu : public PG_ThemeWidget {
 public:
 	
-	/**
-	 * @author Marek Habersack
-	 *
-	 * @short A menu item data structure
-	 *
-	 * Even though implemented as a class, MenuItem is not intended to be a new
-	 * kind of widget - therefore it is derived only from PG_Rect for
-	 * convenience. The idea is to have a "smart" data type (or a dumb class,
-	 * if you prefer) that knows how to perform simple and specific actions on
-	 * itself. The intention is to provide PG_PopupMenu with a fast mechanism
-	 * for processing menu items - if MenuItem was derived from any of ParaGUI
-	 * classes it would incurr unnecessary processing overhead.
-	 *
-	 * @todo better separator code
-	 * @todo icon drawing
-	 */
-#ifndef SWIG
-	class MenuItem : public PG_Rect, public PG_MessageObject {
-	public: // types
-		enum MI_FLAGS {
-			MIF_NONE = 0,
-			MIF_DISABLED = 0x01,
-			MIF_SEPARATOR = 0x02,
-			MIF_SUBMENU = 0x04
-		};
-	
-	public: // methods
-		MenuItem(PG_PopupMenu *parent,
-				 char *caption,
-				 int id,
-				 MI_FLAGS flags);
-		MenuItem(PG_PopupMenu *parent,
-				 char *caption,
-				 PG_PopupMenu *submenu);
-		~MenuItem();
-	
-		bool measureItem(PG_Rect* rect,  bool full = false);
-		bool isPointInside(int x, int y);
-		inline void moveTo(int x, int y);
-	
-		inline SDL_Surface* getNormal() const;
-		inline SDL_Surface* getDisabled() const;
-		inline SDL_Surface* getSelected() const;
-	
-		bool paintNormal(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol = 0);
-		bool paintDisabled(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol = 0);
-		bool paintSelected(SDL_Surface *canvas, SDL_Color *tcol, SDL_Color *scol = 0);
-	
-		inline void disable();
-		inline void enable();
-		inline bool isDisabled() const;
-		inline bool isEnabled() const;
-		inline void select();
-		inline void unselect();
-		inline bool isSelected() const;
-		inline bool isSeparator() const;
-		inline bool isSubMenu() const;
-		inline bool isMute() const;
-	
-		inline int Width() const;
-		inline int Height() const;
-	
-		inline int getId() const;
-		inline PG_PopupMenu *getSubMenu() const;
-	
-		inline const std::string& getCaption() const;
-	
-		inline operator PG_Point const&() const;
-	
-	private: // methods
-		void initItem();
-		bool renderSurface(SDL_Surface *canvas, SDL_Surface **text, SDL_Color *tcol, SDL_Color *scol = 0);
-		bool isValidRect();
-	
-	protected: // data
-		unsigned      myFlags;
-		std::string   myCaption;
-		PG_PopupMenu *myParent;
-	
-		PG_PopupMenu *mySubMenu;
-		int           myId;
-	
-		SDL_Surface  *sNormal;
-		SDL_Surface  *sSelected;
-		SDL_Surface  *sDisabled;
-	
-		bool          selected;
-	
-	private: // data
-		bool          needRecalc;
-		SDL_Rect      blitRect;
-		PG_Point      myPoint;
-	};
 
 #ifndef DOXYGEN_SKIP
-class item_with_id : public std::unary_function<MenuItem*, bool> {
+class item_with_id : public std::unary_function<PG_MenuItem*, bool> {
 	int id;
 
 public:
 	explicit item_with_id(int i)
 			: id(i) {}
 
-	bool operator() (const MenuItem* const mi) const {
+	bool operator() (const PG_MenuItem* const mi) const {
 		return mi->getId() == id;
 	}
 };
 #endif // DOXYGEN_SKIP
-#endif // SWIG
 
 public: // methods
 
@@ -211,34 +221,17 @@ public: // methods
 	 */
 	PG_PopupMenu& addMenuItem(char *caption,
 	                          int ID,
-							  MSG_CALLBACK handler = 0,
-	                          void *data = 0,
-	                          MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
+							  PG_MenuItemSlot slot,
+	                          PG_Pointer* data = NULL,
+	                          PG_MenuItem::MI_FLAGS flags = PG_MenuItem::MIF_NONE);
 
-	/**
-	 * Adds a menu item whose handler (if any) is set to be a member
-	 * method of some object.
-	 *
-	 * @param caption   the item caption
-	 * @param ID        the item identifier
-	 * @param handler   function to handle the menu item click
-	 * @param obj       object the 'handler' function lives in.
-	 * @param data      application-specific data associated with the menu
-	 *                  item action.
-	 * @param flags     menu item flags
-	 *
-	 * @note @code obj @endcode cannot be 0 if @code handler @endcode is present
-	 */
 	PG_PopupMenu& addMenuItem(char *caption,
 	                          int ID,
-							  MSG_CALLBACK_OBJ handler,
-	                          PG_EventObject *obj,
-	                          void *data = 0,
-	                          MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
+	                          PG_MenuItem::MI_FLAGS flags = PG_MenuItem::MIF_NONE);
 
 	PG_PopupMenu& addMenuItem(char *caption,
 	                          PG_PopupMenu *sub,
-	                          MenuItem::MI_FLAGS flags = MenuItem::MIF_SUBMENU);
+	                          PG_MenuItem::MI_FLAGS flags = PG_MenuItem::MIF_SUBMENU);
 #endif // SWIG
 
 	/**
@@ -266,10 +259,12 @@ public: // methods
 	 */
 	void trackMenu(int x = -1, int y = -1);
 
+	PG_SignalMenuItemSelected sigMenuItemSelect;
+
 protected: // methods
 
 #ifndef SWIG
-	typedef std::list<MenuItem*>::iterator MII;
+	typedef std::list<PG_MenuItem*>::iterator MII;
 #endif // SWIG
 
 	// reimplemented
@@ -299,14 +294,14 @@ protected: // methods
 
 private: // methods
 #ifndef SWIG
-	bool selectItem(MenuItem *item, MII iter);
+	bool selectItem(PG_MenuItem *item, MII iter);
 	bool handleMotion(PG_Point const&);
-	void appendItem(MenuItem *item);
+	void appendItem(PG_MenuItem *item);
 #endif //SWIG
 
 protected: // data
 #ifndef SWIG
-	std::list<MenuItem*>  items; /** the menu items collection */
+	std::list<PG_MenuItem*>  items; /** the menu items collection */
 	std::string           myCaption; /** menu caption */
 #endif //SWIG
 
@@ -333,7 +328,7 @@ private: // data
 	Uint8                 miBlends[3];
 	int                   itemHeight;
 	int                   lastH;
-	MenuItem             *selected;
+	PG_MenuItem             *selected;
 
 	bool                  tracking;
 	bool                  wasTracking;
@@ -345,7 +340,7 @@ private: // data
 
 	PG_PopupMenu         *activeSub;
 	PG_PopupMenu         *myMaster;
-	MenuItem             *subParent;
+	PG_MenuItem             *subParent;
 };
 
 #ifndef SWIG
@@ -353,85 +348,85 @@ inline int PG_PopupMenu::maxItemWidth() const {
 	return w - xPadding;
 }
 
-inline void PG_PopupMenu::MenuItem::moveTo(int _x, int _y) {
+inline void PG_MenuItem::moveTo(int _x, int _y) {
 	myPoint.x = x = _x;
 	myPoint.y = y = _y;
 };
 
-inline SDL_Surface* PG_PopupMenu::MenuItem::getNormal() const {
+inline SDL_Surface* PG_MenuItem::getNormal() const {
 	return sNormal;
 }
 
-inline SDL_Surface* PG_PopupMenu::MenuItem::getDisabled() const {
+inline SDL_Surface* PG_MenuItem::getDisabled() const {
 	return sDisabled;
 }
 
-inline SDL_Surface* PG_PopupMenu::MenuItem::getSelected() const {
+inline SDL_Surface* PG_MenuItem::getSelected() const {
 	return sSelected;
 }
 
-inline void PG_PopupMenu::MenuItem::disable() {
+inline void PG_MenuItem::disable() {
 	myFlags |= MIF_DISABLED;
 }
 
-inline void PG_PopupMenu::MenuItem::enable() {
+inline void PG_MenuItem::enable() {
 	myFlags &= ~MIF_DISABLED;
 }
 
-inline bool PG_PopupMenu::MenuItem::isDisabled() const {
+inline bool PG_MenuItem::isDisabled() const {
 	return (myFlags & MIF_DISABLED);
 }
 
-inline bool PG_PopupMenu::MenuItem::isEnabled() const {
+inline bool PG_MenuItem::isEnabled() const {
 	return !(myFlags & MIF_DISABLED);
 }
 
-inline void PG_PopupMenu::MenuItem::select() {
+inline void PG_MenuItem::select() {
 	selected = true;
 }
 
-inline void PG_PopupMenu::MenuItem::unselect() {
+inline void PG_MenuItem::unselect() {
 	selected = false;
 }
 
-inline bool PG_PopupMenu::MenuItem::isSelected() const {
+inline bool PG_MenuItem::isSelected() const {
 	return selected;
 }
 
-inline bool PG_PopupMenu::MenuItem::isSeparator() const {
+inline bool PG_MenuItem::isSeparator() const {
 	return (myFlags & MIF_SEPARATOR);
 }
 
-inline bool PG_PopupMenu::MenuItem::isSubMenu() const {
+inline bool PG_MenuItem::isSubMenu() const {
 	return (myFlags & MIF_SUBMENU);
 }
 
-inline bool PG_PopupMenu::MenuItem::isMute() const {
+inline bool PG_MenuItem::isMute() const {
 	return ((myFlags & MIF_DISABLED) ||
 	        (myFlags & MIF_SEPARATOR));
 }
 
-inline int PG_PopupMenu::MenuItem::Width() const {
+inline int PG_MenuItem::Width() const {
 	return w;
 }
 
-inline int PG_PopupMenu::MenuItem::Height() const {
+inline int PG_MenuItem::Height() const {
 	return h;
 }
 
-inline int PG_PopupMenu::MenuItem::getId() const {
+inline int PG_MenuItem::getId() const {
 	return myId;
 }
 
-inline PG_PopupMenu *PG_PopupMenu::MenuItem::getSubMenu() const {
+inline PG_PopupMenu *PG_MenuItem::getSubMenu() const {
 	return mySubMenu;
 }
 
-inline const std::string& PG_PopupMenu::MenuItem::getCaption() const {
+inline const std::string& PG_MenuItem::getCaption() const {
 	return myCaption;
 }
 
-inline PG_PopupMenu::MenuItem::operator PG_Point const&() const {
+inline PG_MenuItem::operator PG_Point const&() const {
 	return myPoint;
 }
 

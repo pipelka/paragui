@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/27 11:57:23 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgscrollbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -93,11 +93,13 @@ PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, int dire
 	                      this,
 	                      (direction == PG_SB_VERTICAL) ? PG_IDSCROLLBAR_UP : PG_IDSCROLLBAR_LEFT,
 	                      position[0]);
-
+	scrollbutton[0]->sigButtonClick.connect(slot(this,&PG_ScrollBar::handleButtonClick));
+	
 	scrollbutton[1] = new PG_Button(
 	                      this,
 	                      (direction == PG_SB_VERTICAL) ? PG_IDSCROLLBAR_DOWN : PG_IDSCROLLBAR_RIGHT,
 	                      position[1]);
+	scrollbutton[1]->sigButtonClick.connect(slot(this,&PG_ScrollBar::handleButtonClick));
 
 	dragbutton = new ScrollButton(this, PG_IDSCROLLBAR_DRAG, position[3]);
 
@@ -231,7 +233,8 @@ bool PG_ScrollBar::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 				}
 			}
 
-			SendMessage(GetParent(), MSG_SCROLLPOS, GetID(), scroll_current);
+			sigScrollPos(this, scroll_current);
+			//SendMessage(GetParent(), MSG_SCROLLPOS, GetID(), scroll_current);
 			return true;
 
 		case 4:
@@ -240,12 +243,15 @@ bool PG_ScrollBar::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 			} else {
 				SetPosition(scroll_current - my_linesize);
 			}
-			SendMessage(GetParent(), MSG_SCROLLPOS, GetID(), scroll_current);
+
+			sigScrollPos(this, scroll_current);
+			//SendMessage(GetParent(), MSG_SCROLLPOS, GetID(), scroll_current);
 			return true;
 
 		case 5:
 			SetPosition(scroll_current + my_linesize);
-			SendMessage(GetParent(), MSG_SCROLLPOS, GetID(), scroll_current);
+			sigScrollPos(this, scroll_current);
+			//SendMessage(GetParent(), MSG_SCROLLPOS, GetID(), scroll_current);
 			return true;
 	}
 
@@ -318,8 +324,10 @@ bool PG_ScrollBar::ScrollButton::eventMouseMotion(const SDL_MouseMotionEvent* mo
 
 		int pos = GetPosFromPoint(p);
 		if(GetParent()->scroll_current != pos || my_tickMode) {
-			GetParent()->scroll_current = pos;
-			GetParent()->SendMessage(GetParent()->GetParent(), MSG_SCROLLTRACK, GetParent()->GetID(), pos);
+			PG_ScrollBar* parent = GetParent();
+			parent->scroll_current = pos;
+			parent->sigScrollTrack(parent, pos);
+			//GetParent()->SendMessage(GetParent()->GetParent(), MSG_SCROLLTRACK, GetParent()->GetID(), pos);
 		}
 
 	}
@@ -375,30 +383,32 @@ int PG_ScrollBar::GetPosition() {
 	return scroll_current;
 }
 
-/**  */
-bool PG_ScrollBar::eventButtonClick(int id, PG_Widget* widget) {
-
-	if(widget == scrollbutton[0]) {		// UP | LEFT
+bool PG_ScrollBar::handleButtonClick(PG_Button* button, PG_Pointer* data) {
+	
+	if(button == scrollbutton[0]) {		// UP | LEFT
 		if(scroll_current == scroll_min) {
 			return false;
 		}
 		SetPosition(scroll_current - my_linesize);
-		SendMessage(GetParent(), MSG_SCROLLPOS, GetID(), scroll_current);
+		sigScrollPos(this, scroll_current);
+		//SendMessage(GetParent(), MSG_SCROLLPOS, GetID(), scroll_current);
 		return true;
 	}
 
-	if(widget == scrollbutton[1]) {		// DOWN | RIGHT
+	if(button == scrollbutton[1]) {		// DOWN | RIGHT
 		if(scroll_current == scroll_max) {
 			return false;
 		}
 		SetPosition(scroll_current + my_linesize);
-		SendMessage(GetParent(), MSG_SCROLLPOS, GetID(), scroll_current);
+		sigScrollPos(this, scroll_current);
+		//SendMessage(GetParent(), MSG_SCROLLPOS, GetID(), scroll_current);
 		return true;
 
 	}
 
-	return PG_ThemeWidget::eventButtonClick(id, widget);
+	return false;
 }
+
 
 /**  */
 bool PG_ScrollBar::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
@@ -415,8 +425,8 @@ bool PG_ScrollBar::ScrollButton::eventMouseButtonUp(const SDL_MouseButtonEvent* 
 
 	PG_Button::eventMouseButtonUp(button);
 
-	//GetParent()->SetPosition(pos);
-	GetParent()->SendMessage(GetParent()->GetParent(), MSG_SCROLLPOS, GetParent()->GetID(), pos);
+	GetParent()->sigScrollPos(GetParent(), pos);
+	//GetParent()->SendMessage(GetParent()->GetParent(), MSG_SCROLLPOS, GetParent()->GetID(), pos);
 
 	return true;
 }

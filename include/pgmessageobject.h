@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -38,6 +38,7 @@
 #endif
 
 #include "paragui.h"
+#include "pgsignals.h"
 #include <vector>
 
 class PG_Widget;
@@ -50,7 +51,7 @@ class PG_Widget;
 	Provides a message pump and global handlers for all other PG_MessageObject instances.
 */
 
-class DECLSPEC PG_MessageObject {
+class DECLSPEC PG_MessageObject : public SigC::Object {
 
 public:
 	/**
@@ -108,32 +109,6 @@ public:
 	bool IsEnabled();
 
 	/**
-	Send a message to an object
-	@param	target		object which will receive the message
-	@param	type			type of the message (MSG_TYPE)
-	@param	id
-	@param	data			message specific data value
-	*/
-	bool SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, MSG_ID id, MSG_DATA data);
-
-	/**
-	Set a callback function for an event
-	@param	type				message type to trigger
-	@param	cbfunc			the function to call when the defined event is triggerd
-	@param	clientdata	client specific message data
-	*/
-	void SetEventCallback(PG_MSG_TYPE type, MSG_CALLBACK cbfunc, void *clientdata = NULL);
-
-	/**
-	Set an object member function for an event
-	@param	type				message type to trigger
-	@param	calledobj		pointer to called object
-	@param	cbfunc			member function to call
-	@param	clientdata	client specific message data
-	*/
-	void SetEventObject(PG_MSG_TYPE type, PG_EventObject* calledobj, MSG_CALLBACK_OBJ cbfunc, void *clientdata = NULL);
-
-	/**
 	Sends an event to the global message queue.
 
 	@param event SDL_Event message
@@ -162,6 +137,10 @@ public:
 	*/
 	virtual bool ProcessEvent(const SDL_Event* event);
 
+	PG_SignalAppIdle sigAppIdle;
+
+	PG_SignalVideoResize sigVideoResize;
+	
 protected:
 
 	/**
@@ -264,24 +243,14 @@ protected:
 	virtual bool eventSysWM(const SDL_SysWMEvent* syswm);
 
 	/**
-	Overridable Eventhandler for a SDL_ResizeEvent message.
+	Overridable Eventhandler for a SDL_VideoResize message.
 	The default implementation returns 'false' which indicates that this message is not processed by this object.
 
-	@param event SDL_ResizeEvent message
+	@param syswm SDL_VideoResize message
 
 	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
 	*/
 	virtual bool eventResize(const SDL_ResizeEvent* event);
-
-	/**
-	Overridable Eventhandler for a SDL_SysUserEvent message.
-	The default implementation returns 'false' which indicates that this message is not processed by this object.
-
-	@param event SDL_SysUserEvent message
-
-	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
-	*/
-	virtual bool eventMessage(MSG_MESSAGE* msg);
 
 	/** */
 	virtual void eventInputFocusLost(PG_MessageObject* newfocus);

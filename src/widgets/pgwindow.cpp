@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/27 11:57:23 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -46,7 +46,10 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext
 	my_labelTitle->SetAlignment(PG_TA_CENTER);
 
 	my_buttonClose = new PG_Button(this, PG_WINDOW_CLOSE, rb, NULL);
+	my_buttonClose->sigButtonClick.connect(slot(this, &PG_Window::handleButtonClick));
+	
 	my_buttonMinimize = new PG_Button(this, PG_WINDOW_MINIMIZE, rb, NULL);
+	my_buttonMinimize->sigButtonClick.connect(slot(this, &PG_Window::handleButtonClick));
 
 	LoadThemeStyle(style);
 }
@@ -203,19 +206,19 @@ bool PG_Window::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 	return true;
 }
 
-bool PG_Window::eventButtonClick(int id, PG_Widget* widget) {
-	switch(id) {
-		// close window
-		case PG_WINDOW_CLOSE:
-			Hide();
-			SendMessage(NULL, MSG_WINDOWCLOSE, GetID(), 0);
-			return true;
-
-		// minimize window
-		case PG_WINDOW_MINIMIZE:
-			Hide();
-			SendMessage(NULL, MSG_WINDOWMINIMIZE, GetID(), 0);
-			return true;
+bool PG_Window::handleButtonClick(PG_Button* widget, PG_Pointer* data) {
+	// close window
+	if(widget == my_buttonClose) {
+		Hide();
+		sigWindowClose(this);
+		return true;
+	}
+	
+	// minimize window
+	if(widget == my_buttonMinimize) {
+		Hide();
+		sigWindowMinimize(this);
+		return true;
 	}
 
 	return false;

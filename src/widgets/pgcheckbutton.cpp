@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcheckbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -50,16 +50,11 @@ bool PG_CheckButton::eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetBut
 	return true;
 }
 
-bool PG_CheckButton::eventButtonClick(int id, PG_Widget* widget) {
-	return false;
-}
-
 void PG_CheckButton::SetUnpressed() {
 	my_widgetButton->SetPressed(false);
 	my_isPressed = false;
 
 	Update();
 
-	// Notify parent
-	SendMessage(GetParent(), MSG_BUTTONCLICK, (MSG_ID)GetID(), (MSG_DATA)0);
+	sigButtonClick(this);
 }

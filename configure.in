@@ -1,4 +1,4 @@
-fidnl Process this file with autoconf to produce a configure script.
+dnl Process this file with autoconf to produce a configure script.
 AC_INIT(Makefile.am)
 AM_CONFIG_HEADER(include/paraconfig_gnu.h:include/paraconfig_gnu.h.in)
 
@@ -8,6 +8,8 @@ AC_SUBST(TOP_BUILDDIR)
 
 dnl The minimum SDL version required
 SDL_VERSION=1.2.0
+SIGC_VERSION=1.0.4
+
 dnl Set various version strings - taken gratefully from the GTk sources
 
 # Making releases:
@@ -225,6 +227,13 @@ AC_ARG_WITH(libstdcppstatic,[  --with-libstdcppstatic=NAME   link NAME staticall
             LIBSTDCPP="$withval")
 
 AC_SUBST(LIBSTDCPP)
+
+dnl Check for libSigC++
+
+AM_PATH_SIGC($SIGC_VERSION,
+            :,
+	    AC_MSG_ERROR([*** libSigC++ version $SIGC_VERSION not found!])
+)
 
 dnl Check for SDL
 
@@ -525,8 +534,8 @@ dnl LIBS="$OLDLIBS"
 AC_CHECK_FUNCS(vsnprintf)
 AC_CHECK_FUNCS(strsep)
 
-PARAGUI_CFLAGS="$STL_CFLAGS $FREETYPE_CFLAGS $SDL_CFLAGS $RTTI_FLAGS $EXTRA_FLAGS"
-PARAGUI_LIBS="-lparagui $SDL_LIBS -lz $IMAGE_LIBS $LIBEXPAT $FREETYPE_LIBS $EXTRA_LIBS $LIBSTDCPP"
+PARAGUI_CFLAGS="$STL_CFLAGS $SIGC_CFLAGS $FREETYPE_CFLAGS $SDL_CFLAGS $RTTI_FLAGS $EXTRA_FLAGS"
+PARAGUI_LIBS="-lparagui $SIGC_LIBS $SDL_LIBS -lz $IMAGE_LIBS $LIBEXPAT $FREETYPE_LIBS $EXTRA_LIBS $LIBSTDCPP"
 
 CXXFLAGS="$STLPORT_FLAGS $CFLAGS $IMAGE_INCLUDE $RTTI_FLAGS $EXCEPTIONS_FLAGS -I$prefix/include"
 

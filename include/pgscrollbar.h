@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -125,6 +125,9 @@ public:
 	/**  */
 	void SetPageSize(int ps);
 
+	PG_SignalScrollPos sigScrollPos;
+	PG_SignalScrollTrack sigScrollTrack;
+	
 protected:
 
 	/**  */
@@ -137,7 +140,7 @@ protected:
 	bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);
 
 	/**  */
-	bool eventButtonClick(int id, PG_Widget* widget);
+	virtual bool handleButtonClick(PG_Button* button, PG_Pointer* data);
 
 	/**  */
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);

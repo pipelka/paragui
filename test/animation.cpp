@@ -18,11 +18,11 @@
 
 #define ID_APP_EXIT		1
 
-PARAGUI_CALLBACK(exit_handler) {
+bool exit_handler(PG_Button* button, PG_Pointer* data) {
 
-	// we can pass in some pointer to any userdata
+	// we can pass in some pointer to data
 	// (in this case we get a pointer to the application object)
-	PG_Application* app = (PG_Application*) clientdata;
+	PG_Application* app = static_cast<PG_Application*>(data);
 
 	// exit the application eventloop
 	app->Quit();
@@ -31,11 +31,12 @@ PARAGUI_CALLBACK(exit_handler) {
 	return true;
 }
 
-PARAGUI_CALLBACK_SELECTMENUITEM(handle_menu_click) {
-
-	switch (id) {
+bool handle_menu_click(PG_MenuItem* item, PG_Pointer* data) {
+	PG_Application* app = static_cast<PG_Application*>(data);
+	
+	switch (item->getId()) {
 	  case ID_APP_EXIT:
-		static_cast<PG_Application*>(clientdata)->Quit();
+		app->Quit();
 		break;
 	}
 
@@ -229,8 +230,8 @@ Uint32 timer_callback(Uint32 interval, void* parameter) {
 	return interval;
 }
 
-PARAGUI_CALLBACK(appidle_handler) {
-	((PlayField *)clientdata)->timer_callback();
+bool appidle_handler(PG_MessageObject* object, PG_Pointer* data) {
+	((PlayField *)data)->timer_callback();
 	return true;
 }
 
@@ -272,14 +273,14 @@ int main(int argc, char* argv[]) {
 	PG_MenuBar menubar(NULL, PG_Rect(100, 0, 400, 30));
 	PG_PopupMenu   popmenu(NULL, 425, 140, "File");
 
-	popmenu.addMenuItem("Nail", 99, handle_menu_click).
-        addMenuItem("Quit", ID_APP_EXIT, handle_menu_click, &app);
+	popmenu.addMenuItem("Nail", 99, slot(handle_menu_click)).
+        addMenuItem("Quit", ID_APP_EXIT, slot(handle_menu_click), &app);
  
 	menubar.Add("File", &popmenu);
 
 	menubar.Show();
 
-	myButton.SetEventCallback(MSG_BUTTONCLICK, exit_handler, &app);
+	myButton.sigButtonClick.connect(slot(exit_handler), &app);
 
 	// now we have to make the button visible
 
@@ -325,7 +326,7 @@ int main(int argc, char* argv[]) {
 	SDL_Init(SDL_INIT_TIMER);
 	SDL_AddTimer(20, timer_callback, (void *)&anim_test2);
 
-	app.SetEventCallback(MSG_APPIDLE, appidle_handler, (void *)&anim_test);
+	app.sigAppIdle.connect(slot(appidle_handler), &anim_test);
 	app.EnableAppIdleCalls();
 
 	app.Run();

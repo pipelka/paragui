@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -44,6 +44,7 @@
 
 #include "pgwidget.h"
 #include <string>
+#include "pgsignals.h"
 
 /**
 	@author Alexander Pipelka
@@ -246,6 +247,8 @@ public:
 	@return the current blend level
 	*/
 	Uint8 GetBlendLevel(int mode);
+	
+	PG_SignalButtonClick sigButtonClick;
 	
 protected:
 

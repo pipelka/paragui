@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -56,7 +56,7 @@ public:
 	~PG_ListBox();
 
 	/** */
-	void AddItem(PG_ListBoxBaseItem* item);
+	void AddItem(PG_ListBoxItem* item);
 
 	/** */
 	void SetMultiSelect(bool multi = true);
@@ -65,7 +65,7 @@ public:
 	bool GetMultiSelect();
 
 	/** */
-	PG_ListBoxBaseItem* GetSelectedItem();
+	PG_ListBoxItem* GetSelectedItem();
 
 	/** */
 	void SelectItem(PG_ListBoxBaseItem* item, bool select = true);
@@ -95,10 +95,9 @@ public:
 	*/
 	void SetIndent(int indent);
 
-protected:
+	PG_SignalSelectItem sigSelectItem;
 
-	/** */
-	virtual bool eventSelectItem(PG_ListBoxBaseItem* item);
+protected:
 
 	/** */
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
@@ -117,7 +116,7 @@ private:
 	int my_indent;
 	int my_selectindex;
 
-	PG_ListBoxBaseItem* my_selectedItem;
+	PG_ListBoxItem* my_selectedItem;
 
 };
 

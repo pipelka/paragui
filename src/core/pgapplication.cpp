@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/26 12:43:22 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2 $
+    CVS/RCS Revision: $Revision: 1.3 $
     Status:           $State: Exp $
 */
 
@@ -243,7 +243,8 @@ void PG_Application::DrawCursor() {
 	}
 }
 void PG_Application::Quit() {
-	SendMessage(this, MSG_QUIT, PG_IDAPPLICATION, 0);
+	eventQuit(PG_IDAPPLICATION, this, 0);
+	sigAppQuit(this);
 }
 
 /**  */
@@ -280,7 +281,7 @@ bool PG_Application::eventResize(const SDL_ResizeEvent* event) {
 
 	PG_Widget::UpdateRect(PG_Rect(0,0,event->w,event->h));
 	SDL_UpdateRect(screen,0,0,event->w,event->h);
-	SendMessage(NULL, MSG_VIDEORESIZE, 0, 0);
+	sigVideoResize(event);
 
 	return true;
 }

@@ -35,6 +35,7 @@ EXTRA_DIST =
 
 INCLUDES = \
 	$(EXPAT_INCLUDE) \
+	$(SIGC_CFLAGS) \
 	$(SDL_CFLAGS) \
 	-I$(top_srcdir)/include
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgradiobutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -73,17 +73,14 @@ public:
 	/** */
 	void SetPressed();
 
-//#ifndef SWIG
-	/** Sets formated text (like printf)*/
-//	void SetTextFormat(const char* text, ...);
-//#endif
-
 	/** */
 	void SetText(const char* text);
 
 	/** */
 	const char* GetText();
 
+	PG_SignalRadioButtonClick sigButtonClick;
+	
 protected:
 
 	/** */
@@ -102,7 +99,7 @@ protected:
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
 
 	/** */
-	bool eventButtonClick(int id, PG_Widget* widget);
+	virtual bool handleButtonClick(PG_Button* widget, PG_Pointer* data);
 
 	PG_RadioButton* my_groupFirst;
 	PG_RadioButton* my_groupNext;

@@ -20,16 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 14:53:56 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
 #include <iostream>
 #include "pgmessageobject.h"
 #include "pgwidget.h"
-#include "pgmsgmap.h"
 #include "pglog.h"
 #include <algorithm>
 
@@ -70,8 +69,6 @@ PG_MessageObject::~PG_MessageObject() {
 
 	RemoveObject(this);
 
-	PG_UnregisterEventObject(this);
-
 	if (inputFocusObject == this)
 		inputFocusObject = NULL;
 	if (lastwidget == this)
@@ -88,7 +85,6 @@ void PG_MessageObject::EnableReceiver(bool enable) {
 /** message dispatcher */
 
 bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
-	MSG_MESSAGE* msg = NULL;
 	SDL_Event e;
 	
 	if(SDL_mutexP(my_mutexReceiveMessage) == -1)
@@ -154,16 +150,6 @@ bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 			rc = eventResize(&event->resize);
 			break;
 
-		case SDL_USEREVENT:
-			msg = (MSG_MESSAGE*)(event->user.data1);
-
-			if(msg->to != NULL) {
-				return msg->to->eventMessage(msg);
-			}
-
-			rc = eventMessage(msg);
-			break;
-
 		default:
 			rc = false;
 			break;
@@ -176,6 +162,10 @@ bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 
 
 /** virtual message handlers */
+
+bool PG_MessageObject::eventResize(const SDL_ResizeEvent* event) {
+	return false;
+}
 
 bool PG_MessageObject::eventActive(const SDL_ActiveEvent* active) {
 	return false;
@@ -220,42 +210,8 @@ bool PG_MessageObject::eventSysWM(const SDL_SysWMEvent* syswm) {
 	return false;
 }
 
-
-bool PG_MessageObject::eventResize(const SDL_ResizeEvent* event) {
-	return false;
-}
-
 bool PG_MessageObject::AcceptEvent(const SDL_Event* event) {
 	return true;				// PG_MessageObject accepts all events
-}
-
-
-bool PG_MessageObject::eventMessage(MSG_MESSAGE* msg) {
-	bool rc = false;
-
-	if (!msg) {
-		return false;
-	}
-    
-	if((msg->to != this) && (msg->to != NULL)) {
-		return false;
-	}
-
-	// dispatch user message
-	switch(msg->type) {
-		case MSG_QUIT:
-			rc = eventQuit(msg->widget_id, (PG_MessageObject*)(msg->from), msg->data);
-			break;
-
-		case MSG_MODALQUIT:
-			rc = eventQuitModal(msg->widget_id, (PG_MessageObject*)(msg->from), msg->data);
-
-			default:
-			rc = false;
-			break;
-	}
-
-	return rc;
 }
 
 /** capture handling (an object can capture all messages) */
@@ -373,17 +329,12 @@ bool PG_MessageObject::PumpIntoEventQueue(const SDL_Event* event) {
 		list++;
 	}
 
-	// delete user message
-	if(event->type == SDL_USEREVENT) {
-		delete (MSG_MESSAGE*)(event->user.data1);
-	}
-
 	return processed;
 }
 
 
 void PG_MessageObject::eventIdle() {
-	SendMessage(this, MSG_APPIDLE, (long)0, (long)0);
+	sigAppIdle(this);
 	SDL_Delay(1);
 }
 
@@ -421,60 +372,6 @@ bool PG_MessageObject::RemoveObject(PG_MessageObject* obj) {
 	objectList.erase(list);
 
 	return true;
-}
-
-/**  */
-bool PG_MessageObject::SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, MSG_ID id, MSG_DATA data) {
-	bool rc = false;
-
-	if(SDL_mutexP(my_mutexSendMessage) == -1)
-		return false;
-
-	// check if there is a callback function
-	PG_EVENTHANDLERDATA* cbdata = PG_FindEventHandler(type, this);
-
-	if(cbdata != NULL) {
-
-		// callback function
-		if(cbdata->cbfunc != NULL) {
-			rc = cbdata->cbfunc(id, (PG_Widget*)this, data, cbdata->data);
-		}
-
-		// object to call
-		if(cbdata->calledobj != NULL) {
-			rc = ((cbdata->calledobj)->*(cbdata->obj_cbfunc))(id, (PG_Widget*)this, data, cbdata->data);
-		}
-	}
-
-	if(!rc) {
-		MSG_MESSAGE* msg = new MSG_MESSAGE;
-		msg->to = target;
-		msg->from = this;
-		msg->type = type;
-		msg->widget_id = id;
-		msg->data = data;
-
-		SDL_Event event;
-		event.type = SDL_USEREVENT;						// USEREVENT
-		event.user.code = 0;							// RESERVED
-		event.user.data1 = (void*)msg;					// OUR MESSAGE OBJECT
-		event.user.data2 = NULL;						// RESERVED;
-
-		rc = (SDL_PushEvent(&event) == 0);
-	}
-
-	SDL_mutexV(my_mutexSendMessage);
-
-	return rc;
-}
-
-
-void PG_MessageObject::SetEventCallback(PG_MSG_TYPE type, MSG_CALLBACK cbfunc, void *clientdata) {
-	PG_RegisterEventHandler(type, this, cbfunc, clientdata);
-}
-
-void PG_MessageObject::SetEventObject(PG_MSG_TYPE type, PG_EventObject* calledobj, MSG_CALLBACK_OBJ cbfunc, void *clientdata) {
-	PG_RegisterEventHandlerObj(type, this, calledobj, cbfunc, clientdata);
 }
 
 void PG_MessageObject::TranslateNumpadKeys(SDL_KeyboardEvent *key) {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/27 11:57:23 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -51,7 +51,8 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, cons
 	my_widgetButton = new PG_Button(this, 1, rectButton);
 	my_widgetButton->SetToggle(true);
 	my_widgetButton->EnableReceiver(false);
-
+	my_widgetButton->sigButtonClick.connect(slot(this, &PG_RadioButton::handleButtonClick));
+	
 	rectLabel.SetRect(rectButton.my_width, 0, r.my_width - rectButton.my_width, r.my_height);
 	my_widgetLabel = new PG_Label(this, rectLabel, text, style);
 	my_widgetLabel->SetAlignment(PG_TA_LEFT);
@@ -110,7 +111,7 @@ bool PG_RadioButton::eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetBut
 	return true;
 }
 
-bool PG_RadioButton::eventButtonClick(int id, PG_Widget* widget) {
+bool PG_RadioButton::handleButtonClick(PG_Button* widget, PG_Pointer* data) {
 
 	if(widget == my_widgetButton) {
 		SetPressed();
@@ -138,9 +139,8 @@ void PG_RadioButton::SetPressed() {
 	my_isPressed = true;
 
 	Update();
-
-	// Notify parent
-	SendMessage(GetParent(), MSG_BUTTONCLICK, (MSG_ID)GetID(), (MSG_DATA)1);
+	
+	sigButtonClick(this);
 }
 
 bool PG_RadioButton::GetPressed() {

@@ -29,7 +29,6 @@ libparaguiinclude_HEADERS = \
 	pgcolumnitem.h \
 	pgdropdown.h \
 	pgsurfacecache.h \
-	pgeventobject.h \
 	pgpopupmenu.h \
 	pgmessagebox.h \
 	pgmaskedit.h \
@@ -48,7 +47,8 @@ libparaguiinclude_HEADERS = \
 	pginfo.h \
 	pgmenubar.h \
 	pgcompat.h \
-	pgdatacontainer.h
+	pgdatacontainer.h \
+	pgsignals.h
 
 EXTRA_DIST = \
 	paraconfig_win32.h \

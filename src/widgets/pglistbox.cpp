@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/27 11:57:23 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -43,7 +43,7 @@ void PG_ListBox::AddWidget(PG_Widget* w) {
 	PG_WidgetList::AddWidget(w);
 }
 
-void PG_ListBox::AddItem(PG_ListBoxBaseItem* item) {
+void PG_ListBox::AddItem(PG_ListBoxItem* item) {
     if (!item)
         return;
     
@@ -81,15 +81,10 @@ void PG_ListBox::SelectItem(PG_ListBoxBaseItem* item, bool select) {
 			my_selectedItem->Select(false);
 		}
 
-		my_selectedItem = item;
+		my_selectedItem = (PG_ListBoxItem*)item;
 	}
 
-	SendMessage(NULL, MSG_SELECTITEM, GetID(), (unsigned long)item);
-	eventSelectItem(item);
-}
-
-bool PG_ListBox::eventSelectItem(PG_ListBoxBaseItem* item) {
-	return false;
+	sigSelectItem((PG_ListBoxItem*)item, item->GetUserData());
 }
 
 bool PG_ListBox::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
@@ -114,7 +109,7 @@ void PG_ListBox::DeleteAll() {
 	PG_WidgetList::DeleteAll();
 }
 
-PG_ListBoxBaseItem* PG_ListBox::GetSelectedItem() {
+PG_ListBoxItem* PG_ListBox::GetSelectedItem() {
 	return my_selectedItem;
 }
 
@@ -124,7 +119,7 @@ void PG_ListBox::SetIndent(int indent) {
 
 void PG_ListBox::SelectFirstItem() {
 	my_selectindex = 0;
-	PG_ListBoxBaseItem* item = (PG_ListBoxBaseItem*)FindWidget(0);
+	PG_ListBoxItem* item = static_cast<PG_ListBoxItem*>(FindWidget(0));
 
 	if(item == NULL) {
 		return;
@@ -134,7 +129,7 @@ void PG_ListBox::SelectFirstItem() {
 }
 
 void PG_ListBox::SelectNextItem() {
-	PG_ListBoxBaseItem* item = (PG_ListBoxBaseItem*)FindWidget(my_selectindex+1);
+	PG_ListBoxItem* item = (PG_ListBoxItem*)FindWidget(my_selectindex+1);
 
 	if(item == NULL) {
 		return;
@@ -145,7 +140,7 @@ void PG_ListBox::SelectNextItem() {
 }
 
 void PG_ListBox::SelectPrevItem() {
-	PG_ListBoxBaseItem* item = (PG_ListBoxBaseItem*)FindWidget(my_selectindex-1);
+	PG_ListBoxItem* item = (PG_ListBoxItem*)FindWidget(my_selectindex-1);
 
 	if(item == NULL) {
 		return;

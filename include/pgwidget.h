@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -834,22 +834,11 @@ public:
 	
 protected:
 
-	/**
-		main eventhandler for messages
-		@param msg pointer to a MSG_MESSAGE structure
-		@return this eventhandler should return "true" if the message was proccessed.
-		This messagehandler can be overridden to perform custom operations.
-	*/	
-	bool eventMessage(MSG_MESSAGE* msg);
+	/**  */
+	//virtual bool eventScrollPos(int id, PG_Widget* widget, unsigned long data);
 
 	/**  */
-	virtual bool eventButtonClick(int id, PG_Widget* widget);
-
-	/**  */
-	virtual bool eventScrollPos(int id, PG_Widget* widget, unsigned long data);
-
-	/**  */
-	virtual bool eventScrollTrack(int id, PG_Widget* widget, unsigned long data);
+	//virtual bool eventScrollTrack(int id, PG_Widget* widget, unsigned long data);
 
 	/**
 	Callback for the MoveWidget event

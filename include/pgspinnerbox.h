@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/04/27 11:57:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -40,7 +40,6 @@
 #include "pgmaskedit.h"
 #include "pgbutton.h"
 #include "pgthemewidget.h"
-#include "pgeventobject.h"
 
 /**
  * @author Atani - Mike Dunston
@@ -61,7 +60,7 @@
  * added soon.  Note: using SetValue above will fire this event.
  */
 
-class DECLSPEC PG_SpinnerBox : public PG_ThemeWidget, public PG_EventObject {
+class DECLSPEC PG_SpinnerBox : public PG_ThemeWidget {
 public:
 
 	/**
@@ -101,10 +100,12 @@ public:
 		return( m_sMask );
 	}
 
+	PG_SignalSpinnerChange sigSpinnerChange;
+	
 protected:
 
-	bool eventButtonClick(int id, PG_Widget *widget);
-	PARAGUI_CALLBACK(handle_editend);
+	virtual bool handleButtonClick(PG_Button* widget, PG_Pointer* data);
+	virtual bool handleEditEnd(PG_LineEdit* edit);
 
 private:
 
