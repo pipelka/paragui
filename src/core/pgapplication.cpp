@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/17 16:02:07 $
+    Update Date:      $Date: 2004/02/19 16:50:11 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.9 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.10 $
     Status:           $State: Exp $
 */
 
@@ -833,24 +833,24 @@ static PG_Widget *FindInChildObjects(PG_RectList *RectList, const char *Name) {
 	if (!Name)
             return NULL;
     
-	PG_RectList::iterator list = RectList->begin();
+	PG_Widget* list = static_cast<PG_Widget*>(RectList->first());
 
-	while(list != RectList->end()) {
-		if (strcmp((*list)->GetName(), Name) == 0) {
-			return((*list));
+	while(list != NULL) {
+		if (strcmp(list->GetName(), Name) == 0) {
+			return list;
 		}
 
-		PG_Widget* result = (*list)->FindChild(Name);
+		PG_Widget* result = list->FindChild(Name);
 		if(result != NULL) {
 			return result;
 		}
 
-		retWidget = FindInChildObjects((*list)->GetChildList(), Name);
+		retWidget = FindInChildObjects(list->GetChildList(), Name);
 		if (retWidget != NULL) {
 			return retWidget;
 		}
 
-		list++;
+		list = static_cast<PG_Widget*>(list->next);
 	}
 
 	return NULL;
@@ -866,25 +866,25 @@ static inline PG_Widget *FindInChildObjects(PG_RectList *RectList, int id) {
 	if (id < 0)
             return 0;
     
-	PG_RectList::iterator list = RectList->begin();
+	PG_Widget* list = static_cast<PG_Widget*>(RectList->first());
 
-	while(list != RectList->end()) {
-		if ((*list)->GetID() == id) {
-			return((*list));
+	while(list != NULL) {
+		if (list->GetID() == id) {
+			return list;
 		}
 
 
-		PG_Widget* result = (*list)->FindChild(id);
+		PG_Widget* result = list->FindChild(id);
 		if(result != NULL) {
 			return result;
 		}
         
-		retWidget = FindInChildObjects((*list)->GetChildList(), id);
+		retWidget = FindInChildObjects(list->GetChildList(), id);
 		if (retWidget != NULL) {
 			return retWidget;
 		}
 
-		list++;
+		list = static_cast<PG_Widget*>(list->next);
 	}
 
 	return NULL;

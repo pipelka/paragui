@@ -255,18 +255,18 @@ void PrintChildObjects(PG_RectList *RectList, char *TabSpace) {
 		return;
 	}
 
-    PG_RectList::iterator list = RectList->begin();
+    PG_Widget* list = static_cast<PG_Widget*>(RectList->first());
 	const char* name = NULL;
 
-    while(list != RectList->end()) {
-		name = (*list)->GetName();
+    while(list != NULL) {
+		name = list->GetName();
 
 		PG_LogMSG("%s %s",TabSpace,name);
 
 		sprintf(tab,"  %s",TabSpace);	
-		PrintChildObjects((*list)->GetChildList(), tab);
+		PrintChildObjects(list->GetChildList(), tab);
 
-		list++;
+		list = static_cast<PG_Widget*>(list->next);
 	}
     
 }

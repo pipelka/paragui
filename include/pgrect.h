@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/13 11:54:34 $
+    Update Date:      $Date: 2004/02/19 16:50:10 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrect.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -173,7 +173,7 @@ public:
 	\param p, c rectangles to check for overlap
 	\return true if the rectangles overlap, false otherwise
 	*/
-	inline bool OverlapRect(const PG_Rect& p, const PG_Rect& c) {
+	inline bool OverlapRect(const PG_Rect& p, const PG_Rect& c) const {
 		return !( (p.x + p.w < c.x) || (p.x > c.x + c.w) || (p.y + p.h < c.y) || (p.y > c.y + c.h)  || (p.IntersectRect(c).IsNull()) );
 	}
 
@@ -182,7 +182,7 @@ public:
 	\param p rectangle to check for overlap
 	\return true if this rectangle an p overlap, false otherwise
 	*/
-	inline bool OverlapRect(const PG_Rect& p) {
+	inline bool OverlapRect(const PG_Rect& p) const {
 		return OverlapRect(p, *this);
 	}
 
@@ -199,6 +199,29 @@ public:
 	Sint16& my_ypos;
 	Uint16& my_width;
 	Uint16& my_height;
+	
+	PG_Rect* next;
+	PG_Rect* prev;
+	Uint32 index;
+	
+protected:
+	
+	/**
+	Get the next Rectangle from the list
+	Moves to the next rectangle in the list
+	*/
+	inline PG_Rect* operator++() {
+		return next;
+	}
+	
+	/**
+	Get the previous Rectangle from the list
+	Moves to the previous rectangle in the list
+	*/
+	inline PG_Rect* operator--() {
+		return prev;
+	}
+
 };
 
 #endif	// PG_RECT_H

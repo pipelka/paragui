@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/17 12:41:17 $
+    Update Date:      $Date: 2004/02/19 16:50:11 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -131,7 +131,6 @@ bool PG_DropDown::eventSelectItem(PG_ListBoxBaseItem* item) {
 	return false;
 }
 
-// TODO: Fill me with code :)
 void PG_DropDown::eventSizeWidget(Uint16 w, Uint16 h) {}
 
 void PG_DropDown::eventMoveWidget(int x, int y) {
@@ -141,16 +140,10 @@ void PG_DropDown::eventMoveWidget(int x, int y) {
 }
 
 bool PG_DropDown::select_handler(PG_ListBoxBaseItem* item) {
-	//PG_ListBoxItem* item = (PG_ListBoxItem*)data;
-
 	my_EditBox->SetText(item->GetText());
 	item->Select(false);
 	my_DropList->SelectItem(NULL);
 	my_DropList->Hide();
-
-	if(GetParent()) {
-		GetParent()->RemoveChild(my_DropList);
-	}
 
 	eventSelectItem(item);
 	sigSelectItem(item);
@@ -158,7 +151,6 @@ bool PG_DropDown::select_handler(PG_ListBoxBaseItem* item) {
 	return true;
 }
 
-// 1. try to fix the problems when running PG_DropDown in a modal loop
 bool PG_DropDown::ProcessEvent(const SDL_Event * event, bool bModal) {
 
 	if(bModal && my_DropList->IsVisible()) {
@@ -189,4 +181,4 @@ void PG_DropDown::SelectItem(const int n) {
 	
 	for (i=0; i < n; i++)
 	  my_DropList->SelectNextItem();
-}	
+}

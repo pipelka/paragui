@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/02/19 16:50:11 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2.2.3 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.4 $
     Status:           $State: Exp $
 */
 
@@ -33,65 +33,50 @@
 
 #include <algorithm>
 
-PG_RectList::PG_RectList() {}
+PG_RectList::PG_RectList() :
+my_first(NULL),
+my_last(NULL) {
+}
 
 PG_RectList::~PG_RectList() {}
 
-PG_RectList PG_RectList::Intersect(PG_Rect* rect, int first, int last) {
-	// <DEBUG>
-	static long total_calls = 0;
-	static long total_iterations = 0;
-	
-	total_calls++;
-	// </DEBUG>
-	
+/*PG_RectList PG_RectList::Intersect(PG_Rect* rect, PG_Rect* first, PG_Rect* last) {
 	PG_RectList result;
-	int s = (last == -1) ? size() : last;
 
-	PG_Widget* testwidget;
+	if(first == NULL) {
+		return result;
+	}
+
+	//PG_Widget* testwidget;
 	PG_Rect* testrect;
 
-	// clear previous list
-	result.clear();
-
 	// loop through all rects
-	for(int i=first; i<s; i++) {
+	for(PG_Widget* i = static_cast<PG_Widget*>(first); i != last; i = static_cast<PG_Widget*>(i->next)) {
 
-		// <DEBUG>
-		total_iterations++;
-		// </DEBUG>
-		
 		// get the next rectangle to test
-		testwidget = (*this)[i];
+		//testwidget = (*i).second;
 
-		if(!testwidget->IsVisible() || testwidget->IsHidden()) {
+		if(!i->IsVisible() || i->IsHidden()) {
 			continue;
 		}
 
-		testrect = testwidget->GetClipRect();
+		testrect = i->GetClipRect();
 		if(rect->OverlapRect(*testrect)) {
 			// append the matching rectangle
-			result.Add(testwidget);
+			result.Add(new PG_Rect(*i));
 		}
 	}
 
-	// <DEBUG>
-	//PG_LogDBG("Total calls: %d", total_calls);
-	//PG_LogDBG("Total iterations: %d", total_iterations);
-	//PG_LogDBG("Avg. iterations per call: %lf", (double)total_iterations/(double)total_calls);
-	// </DEBUG>
-
 	return result;
-}
+}*/
 
 PG_Widget* PG_RectList::IsInside(const PG_Point& p) {
-	PG_Widget* result = NULL;
 	PG_Widget* testrect;
 
 	// loop down all rects till we find a match
-	for(int i=size()-1; i>=0; i--) {
+	for(PG_Rect* i = last(); i != NULL; i = i->prev) {
 
-		testrect = (*this)[i];
+		testrect = static_cast<PG_Widget*>(i);
 
 		// check if the tested rect is visible
 		if(!testrect->IsVisible() || testrect->IsHidden()) {
@@ -100,99 +85,134 @@ PG_Widget* PG_RectList::IsInside(const PG_Point& p) {
 
 		// check for a match
 		if(testrect->GetClipRect()->IsInside(p)) {
-			result = testrect;
-			break;
+			return testrect;
 		}
 	}
 
-	return result;
+	return NULL;
 }
 
-void PG_RectList::Add(PG_Widget* rect) {
-	indexmap[rect] = size();
-	
-	/*iterator i = find(begin(), end(), rect);
-		
-	if(i != end()) {
-		PG_LogWRN("Trying to add an existing entry to the rectlist!");
+void PG_RectList::Add(PG_Widget* rect, bool front) {
+	if(rect->next != NULL || rect->prev != NULL) {
+		PG_LogWRN("PG_RectList::Add(...) Trying to add a linked PG_Rect object");
 		return;
-	}*/
-	
-	push_back(rect);
-}
-
-void PG_RectList::UpdateIndexMap() {
-	indexmap.clear();
-
-	int index = 0;
-	for(iterator i = begin(); i != end(); i++) {
-		indexmap[(*i)] = index;
-		index++;
 	}
+
+	Uint32 index = 2^31;
+	my_count++;
+
+	// get highest index
+	if(my_last != NULL) {
+		index = my_last->index;
+	}
+	index++;
+	
+	if(front) {
+		if(my_first != NULL) {
+			my_first->prev = rect;
+			rect->index = index;
+		}
+		else {
+			rect->index = my_first->index-1;
+		}
+		rect->next = my_first;
+		rect->prev = NULL;
+		my_first = rect;
+		return;
+	}
+
+	if(my_first == NULL) {
+		my_first = rect;
+		rect->prev = NULL;
+		rect->next = NULL;
+	}
+	else {
+		my_last->next = rect;
+		rect->next = NULL;
+		rect->prev = my_last;
+	}
+	my_last = rect;
+	rect->index = index;
 }
 
 bool PG_RectList::Remove(PG_Rect* rect) {
-	iterator mark = end();
+	if(rect == NULL) {
+		return false;
+	}
 
-	int index = 0;
-	for(iterator i = begin(); i != end(); i++) {
-		indexmap.erase((*i));
-		if(*i == rect) {
-			mark = i;
-		} else {
-			indexmap[(*i)] = index;
-			index++;
+	if((rect->next == NULL) && (rect->prev == NULL) && (my_first != rect)) {
+		//PG_LogWRN("PG_RectList::Add(...) Trying to remove an unlinked PG_Rect object");
+		return false;
+	}
+	
+	my_count--;
+
+	// first in list
+	if(rect == my_first) {
+		my_first = rect->next;
+		if(my_first != NULL) {
+			my_first->prev = NULL;
 		}
 	}
-
-	if(mark != end()) {
-		erase(mark);
-		return true;
+	// last
+	else if(rect == my_last) {
+		my_last = rect->prev;
+		if(my_last != NULL) {
+			my_last->next = NULL;
+		}
+	}
+	// in between
+	else {
+		rect->prev->next = rect->next;
+		rect->next->prev = rect->prev;
 	}
 
-	return false;
-}
+	rect->next = NULL;
+	rect->prev = NULL;
 
-int PG_RectList::FindIndexOf(PG_Rect* rect) {
-	int index = -1;
-
-	PG_RectListMap::iterator im = indexmap.find(rect);
-
-	if(im != indexmap.end()) {
-		index = (*im).second;
-	}
-
-	return index;
+	return true;
 }
 
 void PG_RectList::Blit(const PG_Rect& rect) {
+	Blit(rect, first());
+}
+
+void PG_RectList::Blit(const PG_Rect& rect, PG_Rect* start, PG_Rect* end) {
+	if(start == NULL) {
+		return;
+	}
+
 	PG_RectList* childs;
-	static SDL_Surface* screen = PG_Application::GetScreen();
+	SDL_Surface* screen = PG_Application::GetScreen();
 
 	// store old clipping rectangle
 	PG_Rect o;
 	SDL_GetClipRect(screen, &o);
 
 	// blit all objects in the list
-	for(iterator i = begin(); i != end(); i++) {
+	for(PG_Widget* i = static_cast<PG_Widget*>(start); i != end; i = static_cast<PG_Widget*>(i->next)) {
 
-		if(!(*i)->IsVisible() || (*i)->IsHidden()) {
+		if(!i->IsVisible() || i->IsHidden()) {
 			continue;
 		}
 
 		// calculate the clipping rectangle
 		// cliprect = blittingregion / widgetcliprect
-		PG_Rect* cr = (*i)->GetClipRect();
+		PG_Rect* cr = i->GetClipRect();
+		if(!rect.OverlapRect(*cr)) {
+			continue;
+		}
+		
 		PG_Rect c = cr->IntersectRect(rect);
 		SDL_SetClipRect(screen, &c);
 
 		// blit it
-		(*i)->Blit(false, false);
+		i->Blit(false, false);
 
 		// blit all children of the widget
-		childs = (*i)->GetChildList();
+		childs = i->GetChildList();
 		if(childs) {
-			childs->Intersect((PG_Rect*)&rect).Blit(rect);
+			childs->Blit(rect);
 		}
 	}
 
@@ -202,23 +222,19 @@ void PG_RectList::Blit(const PG_Rect& rect) {
 
 void PG_RectList::Blit() {
 	// blit all objects in the list
-	for(iterator i = begin(); i != end(); i++) {
-		if(!(*i)->IsVisible() || (*i)->IsHidden()) {
+	for(PG_Widget* i = static_cast<PG_Widget*>(first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+		if(!i->IsVisible() || i->IsHidden()) {
 			continue;
 		}
 
-		(*i)->Blit(true, false);
+		i->Blit(true, false);
 	}
 }
 
 bool PG_RectList::BringToFront(PG_Widget* rect) {
-	PG_RectListMap::iterator i = indexmap.find(rect);
-
-	if(i == indexmap.end()) {
+	if(!Remove(rect)) {
 		return false;
 	}
-
-	Remove(rect);
 	Add(rect);
 
 	return true;
@@ -228,27 +244,31 @@ bool PG_RectList::SendToBack(PG_Widget* rect) {
 	if(!Remove(rect)) {
 		return false;
 	}
-
-	insert(begin(), rect);
-	UpdateIndexMap();
+	Add(rect, true);
 
 	return true;
 }
 
 PG_Widget* PG_RectList::Find(int id) {
-	for(iterator i = begin(); i != end(); i++) {
-		if((*i)->GetID() == id) {
-			return (*i);
+	for(PG_Widget* i = static_cast<PG_Widget*>(first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+		if(i->GetID() == id) {
+			return i;
 		}
 	}
 	return NULL;
 }
 
 PG_Widget* PG_RectList::Find(const char* name) {
-	for(iterator i = begin(); i != end(); i++) {
-		if(strcmp((*i)->GetName(), name) == 0) {
-			return (*i);
+	for(PG_Widget* i = static_cast<PG_Widget*>(first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+		if(strcmp(i->GetName(), name) == 0) {
+			return i;
 		}
 	}
 	return NULL;
+}
+
+void PG_RectList::clear() {
+	my_first = NULL;
+	my_last = NULL;
+	my_count = 0;
 }

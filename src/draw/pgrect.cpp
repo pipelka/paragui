@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/13 11:54:35 $
+    Update Date:      $Date: 2004/02/19 16:50:11 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/pgrect.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.2 $
+    CVS/RCS Revision: $Revision: 1.3.8.3 $
     Status:           $State: Exp $
 */
 
@@ -32,7 +32,10 @@ PG_Rect::PG_Rect(Sint16 xv, Sint16 yv, Uint16 wv, Uint16 hv) :
 my_xpos(x), 
 my_ypos(y), 
 my_width(w), 
-my_height(h) {
+my_height(h),
+next(NULL),
+prev(NULL),
+index(0) {
 	SetRect(xv, yv, wv, hv);
 }
 
@@ -40,7 +43,10 @@ PG_Rect::PG_Rect() :
 my_xpos(x),
 my_ypos(y),
 my_width(w),
-my_height(h) {
+my_height(h),
+next(NULL),
+prev(NULL),
+index(0) {
 	SetRect(0, 0, 0, 0);
 }
 
@@ -48,7 +54,10 @@ PG_Rect::PG_Rect(const PG_Rect& src) :
 my_xpos(x),
 my_ypos(y),
 my_width(w),
-my_height(h) {
+my_height(h),
+next(NULL),
+prev(NULL)
+{
 	*this = src;
 }
 
@@ -56,7 +65,10 @@ PG_Rect::PG_Rect(const SDL_Rect& src) :
 my_xpos(x),
 my_ypos(y),
 my_width(w),
-my_height(h) {
+my_height(h),
+next(NULL),
+prev(NULL)
+{
 	*this = src;
 }
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/17 12:41:17 $
+    Update Date:      $Date: 2004/02/19 16:50:11 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5.4.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.5.4.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -64,16 +64,13 @@ void PG_ListBoxItem::eventSizeWidget(Uint16 w, Uint16 h) {
 }
 
 void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {
-	SDL_Surface* temp = NULL;
 
 	if((dst.my_width == 0) || (dst.my_height == 0)) {
 		return;
 	}
 
-	PG_Rect my_src = src;
-	PG_Rect my_dst = dst;
-
-	temp = NULL;
+	//PG_Rect my_src = src;
+	//PG_Rect my_dst = dst;
 
 	if(my_srfHover == NULL) {
 		my_srfHover = PG_ThemeWidget::CreateThemedSurface(
@@ -100,7 +97,7 @@ void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 		PG_Widget::eventBlit(my_srfHover, src, dst);
 	}
 
-	PG_Label::eventBlit(NULL, my_src, my_dst);
+	PG_Label::eventBlit(NULL, /*my_*/src, /*my_*/dst);
 }
 
 void PG_ListBoxItem::LoadThemeStyle(const char* widgettype, const char* objectname) {

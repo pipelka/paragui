@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/17 12:41:17 $
+    Update Date:      $Date: 2004/02/19 16:50:11 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
     Status:           $State: Exp $
 */
 
@@ -43,7 +43,13 @@ THEME_WIDGET* THEME_THEME::FindWidget(const char* widgettype) {
 	if (!widgettype)
 		return NULL;
 
-	return widget[widgettype];
+	MAP_WIDGET::iterator i = widget.find(widgettype);
+	if(i == widget.end()) {
+		return NULL;
+	}
+	
+	return (*i).second;
+	//return widget[widgettype];
 }
 
 THEME_OBJECT* THEME_THEME::FindObject(const char* widgettype, const char* objectname) {
