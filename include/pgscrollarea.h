@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/01 20:51:40 $
+   Update Date:      $Date: 2004/03/01 20:55:35 $
    Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollarea.h,v $
-   CVS/RCS Revision: $Revision: 1.1.2.3 $
+   CVS/RCS Revision: $Revision: 1.1.2.4 $
    Status:           $State: Exp $
 */
 
@@ -47,7 +47,7 @@ public:
 	class SignalAreaChangedHeight : public PG_Signal2<PG_ScrollArea*, Uint16> {};
 	class SignalAreaChangedWidth : public PG_Signal2<PG_ScrollArea*, Uint16> {};
 
-	/*
+	/**
 	Create a scrollarea widget.
 	@param parent parent widget if the scrollarea should be within the client
 	context of an other widget, or NULL if this widget has no parent.
@@ -57,7 +57,7 @@ public:
 
 	~PG_ScrollArea();
 
-	/*
+	/**
 	Shift widgets on removal.
 	@param shiftx shift all widgets to the right of the removed widgets.
 	@param shift shift all widgets beneath the removed one.
@@ -66,21 +66,21 @@ public:
 	*/
 	void SetShiftOnRemove(bool shiftx, bool shifty);
 
-	/*
+	/**
 	scroll to a give X/Y-Coordinate within the client area.
 	@param x X-Position
 	@param y Y-Position
 	*/
 	void ScrollTo(Uint16 x, Uint16 y);
 
-	/*
+	/**
 	Set the width of the scrollable area manually.
 	@param w new width of the scrollable area.
 	This method overrides the automatically computed width of the scrollable area.
 	*/
 	void SetAreaWidth(Uint16 w);
 
-	/*
+	/**
 	Set the height of the scrollable area manually.
 	@param h new height of the scrollable area.
 	This method overrides the automatically computed height of the scrollable area.
