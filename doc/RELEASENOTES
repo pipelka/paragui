@@ -32,6 +32,7 @@ Whats new in ParaGUI 1.0.2 ?
   (text, gradient).
 - added new messagetype to process XML layout tags
   from the <head> section (MSG_XMLTAG).
+- fixed a clipping bug in PG_Widget::Hide() with simple backgrounds
 
 
 ----------------------------
