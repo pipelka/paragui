@@ -32,6 +32,8 @@ Whats new in ParaGUI 1.1.6 ?
 - removed all the SWIG crap (need to find a better way)
 - moved WF_WINDOWFLAGS into PG_Window class
 - moved PG_SB_xxx flags to PG_ScrollBar::ScrollDirection
+- fixed SigC::Object clashes for multiple class inheritances
+  (inspired by Ulf)
 - more coming up
 
 

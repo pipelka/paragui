@@ -21,9 +21,9 @@ This library is a complete GUI/Windowing system for SDL
 Summary: Libraries, includes and more to develop SDL GUI applications.
 Group: Development/Libraries
 Requires: %{name}
-Requires: libSDL-devel
-Requires: libSDL_image-devel
-Requires: libexpat0-devel
+Requires: SDL-devel
+Requires: SDL_image-devel
+Requires: expat-devel
 
 %description devel
 This library is a complete GUI/Windowing system for SDL
