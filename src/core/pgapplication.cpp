@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/05/27 17:03:57 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.2.4.1 $
     Status:           $State: Exp $
 */
 
@@ -36,7 +36,6 @@
 #include "pglayout.h"
 #include "pglog.h"
 #include "pgdraw.h"
-#include "pgtheme.h"
 
 // usually PARAGUI_THEMEDIR is defined by the configure script
 // or passed to the compiler. This is just a kind of last resort.
@@ -244,8 +243,7 @@ void PG_Application::DrawCursor() {
 	}
 }
 void PG_Application::Quit() {
-	eventQuit(PG_IDAPPLICATION, this, 0);
-	sigAppQuit(this);
+	SendMessage(this, MSG_QUIT, PG_IDAPPLICATION, 0);
 }
 
 /**  */
@@ -282,7 +280,7 @@ bool PG_Application::eventResize(const SDL_ResizeEvent* event) {
 
 	PG_Widget::UpdateRect(PG_Rect(0,0,event->w,event->h));
 	SDL_UpdateRect(screen,0,0,event->w,event->h);
-	sigVideoResize(event);
+	SendMessage(NULL, MSG_VIDEORESIZE, 0, 0);
 
 	return true;
 }
@@ -431,7 +429,7 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 		}
 		SDL_GetClipRect(screen, (SDL_Rect*)&fillrect);
 		SDL_SetClipRect(screen, (SDL_Rect*)&rect);
-		SDL_BlitSurface(my_scaled_background, 0, screen, 0);
+		SDL_BlitSurface(my_scaled_background, (SDL_Rect*)&rect, screen, (SDL_Rect*)&rect);
 		SDL_SetClipRect(screen, (SDL_Rect*)&fillrect);
 
 	} else {
