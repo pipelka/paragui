@@ -6,6 +6,8 @@
 # stolen from Manish Singh
 # Shamelessly stolen from Owen Taylor
 
+# modified by Ulf Lorenz to prevent a stupid problem
+
 dnl AM_PATH_PARAGUI([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
 dnl Test for PARAGUI, and define PARAGUI_CFLAGS and PARAGUI_LIBS
 dnl
@@ -62,7 +64,7 @@ dnl
       AC_LANG_CPLUSPLUS
       AC_TRY_RUN([
 #include "paragui.h"
-#include "pgapplication.h"
+#include "pglog.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -88,12 +90,12 @@ int main (int argc, char *argv[])
   int major, minor, micro;
   char *tmp_version;
 
-  PG_Application app;
-  
   /* This hangs on some systems (?)
   system ("touch conf.paraguitest");
   */
   { FILE *fp = fopen("conf.paraguitest", "a"); if ( fp ) fclose(fp); }
+
+  PG_LogConsole::SetLogLevel(PG_LOG_NONE);
 
   /* HP/UX 9 (%@#!) writes to sscanf strings */
   tmp_version = my_strdup("$min_paragui_version");
