@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/02/29 11:23:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -68,19 +68,11 @@ public:
 
 	/**
 	Add a widget to the list
-
+	OBSOLETE - Please specify the WidgetList in the constructor of
+	the child widget
 	@param	w			pointer to a widget
 	*/
 	virtual void AddWidget(PG_Widget* w);
-
-	/**
-	Remove a widget from the list
-
-	@param	w			pointer to a widget
-	@param shiftx	reposition all widgets to the right of the removed widget
-	@param shifty	reposition all widgets below
-	*/
-	//virtual bool RemoveWidget(PG_Widget* w, bool shiftx = false, bool shifty = false);
 
 	/**
 	Remove a widget from the list
@@ -90,15 +82,6 @@ public:
 	@param shifty	reposition all widgets below
 	*/
 	bool RemoveWidgetAt(int index);
-
-	/**
-	Remove and delete a widget from the list
-
-	@param w pointer to a widget
-	@param shiftx	reposition all widgets to the right of the removed widget
-	@param shifty	reposition all widgets below
-	*/
-	//bool DeleteWidget(PG_Widget* w, bool shiftx = false, bool shifty = false);
 
 	/**
 	Remove and delete a widget from the list
@@ -199,7 +182,6 @@ protected:
 	bool my_enableVerticalScrollbar;
 	bool my_enableHorizontalScrollbar;
 
-	//virtual void UpdateScrollBarsPos();
 	void CheckScrollBars();
 
 private:

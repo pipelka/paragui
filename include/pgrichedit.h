@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/02/28 18:49:06 $
+   Update Date:      $Date: 2004/02/29 11:23:24 $
    Source File:      $Source: /sources/paragui/paragui/include/pgrichedit.h,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.2 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.3 $
    Status:           $State: Exp $
 */
 
@@ -40,7 +40,7 @@
 	through in a smaller 'portal' with scrollbars.
 */
 
-class DECLSPEC PG_RichEdit : public PG_WidgetListEx {
+class DECLSPEC PG_RichEdit : public PG_WidgetList {
 public:
 
 	/**
@@ -61,18 +61,16 @@ public:
 
 	/**
 	Add a widget to the list
-	@param w pointer to a widget
+	@param child pointer to a widget
 	*/
-	void AddWidget(PG_Widget* w);
+	void AddChild(PG_Widget* child);
 
 	/**
 	Remove a widget from the list
-	@param w pointer to a widget
-	@param shiftx shift widgets to the right of the removed one to the left (!)
-	@param shifty shift widgets beneath of the removed one up (!)
+	@param child pointer to a widget
 	*/
 
-	bool RemoveWidget(PG_Widget* w, bool shiftx = false, bool shifty = false);
+	bool RemoveChild(PG_Widget* child);
 
 	//! Load the content of the widget from a text file
 	/*!
@@ -92,7 +90,7 @@ protected:
 
 	void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);
 
-	void UpdateScrollBarsPos();
+	//void UpdateScrollBarsPos();
 
 	bool my_AutoVerticalResize;
 
@@ -156,6 +154,8 @@ protected:
 	Uint32 my_TabSize;
 
 private:
+
+	bool handleScrollTrack();
 
 	enum { MARK_SPACE, MARK_NONBREAKABLE_SPACE, MARK_ENTER, MARK_TAB,
 	       MARK_TEXT_LEFT, MARK_TEXT_CENTER, MARK_TEXT_RIGHT, MARK_TEXT_BLOCK,

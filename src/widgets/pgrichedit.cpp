@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/02/28 18:49:06 $
+   Update Date:      $Date: 2004/02/29 11:23:24 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.2 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.3 $
    Status:           $State: Exp $
 */
 
@@ -37,9 +37,9 @@ const Uint32 PG_RichEdit::my_FontBeginMark = 010;
 
 
 PG_RichEdit::PG_RichEdit(PG_Widget* parent, const PG_Rect& r, bool autoVerticalResize, Uint32 linewidth, Uint32 tabSize, Uint32 childsborderwidth, const char* style) :
-PG_WidgetListEx(parent, r, style) {
+PG_WidgetList(parent, r, style) {
 
-	//EnableScrollBar(true, PG_SB_HORIZONTAL);
+	EnableScrollBar(true, PG_ScrollBar::HORIZONTAL);
 
 	my_scrollarea->SetAreaWidth((linewidth != 0) ? linewidth : r.my_width);
 	my_ChildsBorderWidth = childsborderwidth;
@@ -49,6 +49,11 @@ PG_WidgetListEx(parent, r, style) {
 	my_TabSize = tabSize;
 	my_Align = my_Marks[PG_RichEdit::PG_TEXT_LEFT];
 	my_AutoVerticalResize = autoVerticalResize;
+
+	my_objVerticalScrollbar->sigScrollTrack.connect(slot(*this, &PG_RichEdit::handleScrollTrack));
+	my_objVerticalScrollbar->sigScrollPos.connect(slot(*this, &PG_RichEdit::handleScrollTrack));
+	my_objHorizontalScrollbar->sigScrollTrack.connect(slot(*this, &PG_RichEdit::handleScrollTrack));
+	my_objHorizontalScrollbar->sigScrollPos.connect(slot(*this, &PG_RichEdit::handleScrollTrack));
 }
 
 void PG_RichEdit::SetAlignment(Uint8 align) {
@@ -59,17 +64,17 @@ void PG_RichEdit::SetAutoVerticalResize(bool bResize) {
 	my_AutoVerticalResize = bResize;
 }
 
-void PG_RichEdit::UpdateScrollBarsPos() {
+/*void PG_RichEdit::UpdateScrollBarsPos() {
 	//PG_WidgetList::UpdateScrollBarsPos();
 
 	//TO-DO : Value 5 is font size, witch is currently unknown ...
 	my_objVerticalScrollbar->SetLineSize(5);
 	my_objHorizontalScrollbar->SetLineSize(5);
-}
+}*/
 
 void PG_RichEdit::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {
 
-	PG_WidgetListEx::eventBlit(srf, src, dst);
+	PG_WidgetList::eventBlit(srf, src, dst);
 
 	RichLineArray::iterator line;
 
@@ -95,15 +100,14 @@ void PG_RichEdit::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect&
 	}
 }
 
-void PG_RichEdit::AddWidget(PG_Widget* w) {
-	PG_WidgetListEx::AddWidget(w);
+void PG_RichEdit::AddChild(PG_Widget* child) {
+	PG_WidgetList::AddChild(child);
 	CompleteLines();
 }
 
-bool PG_RichEdit::RemoveWidget(PG_Widget* w, bool shiftx, bool shifty) {
-	bool result = PG_WidgetListEx::RemoveWidget(w, shiftx, shifty);
+bool PG_RichEdit::RemoveChild(PG_Widget* child) {
+	bool result = PG_WidgetList::RemoveChild(child);
 	CompleteLines();
-
 	return result;
 }
 
@@ -267,7 +271,7 @@ Sint32 PG_RichEdit::CompleteLines() {
 	}
 
 	CheckScrollBars();
-	UpdateScrollBarsPos();
+	//UpdateScrollBarsPos();
 	Update();
 
 	return top;
@@ -605,4 +609,9 @@ bool PG_RichEdit::LoadText(const char* textfile) {
 
 void PG_RichEdit::SetTabSize(Uint32 tabSize) {
 	my_TabSize = tabSize;
+}
+
+bool PG_RichEdit::handleScrollTrack() {
+	my_scrollarea->Update();
+	return true;
 }

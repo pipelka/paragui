@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/02/29 11:23:24 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.8 $
     Status:           $State: Exp $
 */
 
@@ -275,18 +275,18 @@ void PG_WidgetList::CheckScrollBars() {
 	PG_ScrollBar *scrollBars[] = { my_objVerticalScrollbar, my_objHorizontalScrollbar };
 	Uint32 listsizes[] = { GetListHeight(), GetListWidth() };
 	Uint16 sizes[] = { my_scrollarea->Height(), my_scrollarea->Width() };
-	if(GetWidgetCount() != 0) {
-		for (i = 0; i < 2; i++) {
+	for (i = 0; i < 2; i++) {
+		if(GetWidgetCount() != 0) {
 			ls = listsizes[i] / GetWidgetCount();
 
 			if(ls == 0) {
 				ls = 1;
 			}
 			scrollBars[i]->SetLineSize(ls);
-			scrollBars[i]->SetRange(0, listsizes[i] - sizes[i]);
-			scrollBars[i]->SetPageSize(sizes[i]);
-			scrollBars[i]->SetPosition(scrollBars[i]->GetPosition());
 		}
+		scrollBars[i]->SetRange(0, listsizes[i] - sizes[i]);
+		scrollBars[i]->SetPageSize(sizes[i]);
+		scrollBars[i]->SetPosition(scrollBars[i]->GetPosition());
 	}
 
 }
