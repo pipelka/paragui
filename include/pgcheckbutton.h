@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:05 $
+    Update Date:      $Date: 2004/05/05 06:43:36 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcheckbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -39,6 +39,8 @@
 	@author Alexander Pipelka
  
 	@short A single check button.
+
+	@image html pgcheckbutton.png "pgcheckbutton screenshot"
 */
 
 class DECLSPEC PG_CheckButton : public PG_RadioButton {
