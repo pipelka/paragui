@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/31 09:15:53 $
+    Update Date:      $Date: 2004/02/01 18:10:29 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.8 $
     Status:           $State: Exp $
 */
 
@@ -297,6 +297,16 @@ public:
 	*/
 	static bool GetBulkMode();
 
+	/**
+	Set the bulk mode
+
+	@param bulk whether or not enable bulk mode
+	If bulk mode is enabled, all widgets are blitted at once. I.e.
+	paragui will not draw the mouse pointer if the mouse is moved. Note
+	however, that YOU have to care for the drawing process then. You
+	need to call PG_Widget::BulkUpdate() every now and then to redraw
+	the screen. See dblbuf.cpp for an example.
+	*/
 	static void SetBulkMode(bool bulk = true);
 
 	static bool GetGLMode();

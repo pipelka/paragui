@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/22 10:49:01 $
+    Update Date:      $Date: 2004/02/01 18:10:29 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgsurfacecache.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.4 $
+    CVS/RCS Revision: $Revision: 1.2.4.4.2.1 $
     Status:           $State: Exp $
 */
 
@@ -194,14 +194,21 @@ SDL_Surface* PG_SurfaceCache::AddSurface(const string &key, SDL_Surface* surface
 		return NULL;
 	}
 
+	// check if surface already exists
 	t = FindByKey(key);
+
+	// handle existing surface
 	if(t != NULL) {
 		PG_LogDBG("Trying to add surface with existing key!");
+		// existing surface has a different pointer
+		// than new one
 		if(t->surface != surface) {
 			PG_LogDBG("New and existing surfacepointers are NOT equal !!!");
+			// delete new surface (avoid mem-leak)
+			SDL_FreeSurface(surface);
 		}
 
-		SDL_FreeSurface(surface);
+		// increase refcount and return cached surface
 		t->refcount++;
 		return t->surface;
 	}
@@ -263,4 +270,3 @@ void PG_SurfaceCache::IncRef(const string &key) {
  * c-basic-offset: 8
  * End:
  */
-

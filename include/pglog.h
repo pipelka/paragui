@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/02/01 18:10:29 $
     Source File:      $Source: /sources/paragui/paragui/include/pglog.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State 
 */
 
@@ -73,17 +73,91 @@ typedef enum {
 	These functions can be used for any purpose logging
 */
 namespace PG_LogConsole {
+	/**
+	Log a message
+
+	Don't use this function directly, it is unconvenient and meant for
+	internal use only. Use The PG_Log functions instead if you want to
+	log something.
+
+	@param	id		the log level of the message
+	@param	Text	the message text *printf format string)
+	@param	ap		the variable list
+	*/
 	DECLSPEC void LogVA(PG_LOG_LEVEL id, const char *Text, va_list ap);
+
+	/**
+	Clears the list of log messages and removes the log window
+	*/
 	DECLSPEC void Done();
+
+	/**
+	Updates the log window
+
+	This function creates a log window if it doesn't exist and writes
+	all log messages to this window.
+	*/
 	DECLSPEC void Update();
+
+	/**
+	Set the minimum log level
+
+	@param	newlevel	the new minimum log level
+	All log messages with a log level smaller than newlevel will be
+	quietly discarded.
+	*/
 	DECLSPEC void SetLogLevel(PG_LOG_LEVEL newlevel);
+
+	/**
+	Show the log window
+	*/
 	DECLSPEC void Show();
+
+	/**
+	Hide the log window
+	*/
 	DECLSPEC void Hide();
+
+	/**
+	Toggle between log window shown/hidden
+	*/
 	DECLSPEC void Toggle();
+
+	/**
+	Set the log method
+
+	@param	method	determines where to log messages to
+	*/
 	DECLSPEC void SetMethod(int method);
+
+	/**
+	Get the log method
+
+	@return	current log method
+	*/
 	DECLSPEC int GetMethod();
+
+	/**
+	Set the key to toggle the console (default F12)
+
+	@param	key	the key to toggle the console
+	The key will be used by PG_Application to toggle the log console.
+	*/
 	DECLSPEC void SetConsoleKey(SDLKey key);
+
+	/**
+	Get the current key to toggle console
+
+	@return	current key to toggle the console
+	*/
 	DECLSPEC SDLKey GetConsoleKey();
+
+	/**
+	Set the title of the log console window
+
+	@param	title	the title of the window
+	@param	alignment	the alingment of the title
+	*/
 	DECLSPEC void SetTitle(const char* title, PG_Label::TextAlign alignment = PG_Label::CENTER);	
 };
 
@@ -93,10 +167,40 @@ namespace PG_LogConsole {
 extern "C" {
 #endif
 
+/**
+Log a message
+
+@param	id	the log level id of the message
+@param	Text	a printf format string, arbitrary arguments may follow
+*/
 DECLSPEC void PG_Log(PG_LOG_LEVEL id, const char *Text, ...);
+
+/**
+Log a message with log level "message"
+
+@param	fmt	printf format log string
+*/
 DECLSPEC void PG_LogMSG(const char *fmt, ...);
+
+/**
+Log a message with log level "error"
+
+@param	fmt	printf format string
+*/
 DECLSPEC void PG_LogERR(const char *fmt, ...);
+
+/**
+Log a message with log level "warning"
+
+@param	fmt	printf format string
+*/
 DECLSPEC void PG_LogWRN(const char *fmt, ...);
+
+/**
+Log a message with log level "debug"
+
+@param	fmt	printf format string
+*/
 DECLSPEC void PG_LogDBG(const char *fmt, ...);
 
 #ifdef __cplusplus

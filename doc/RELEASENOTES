@@ -37,6 +37,7 @@ Whats new in ParaGUI 1.1.6 ?
   (inspired by Ulf)
 - moved constant widget id's into the corresponding classes
 - moved PG_OPEN_MODE into PG_FileArchive (now Mode)
+- fixed potential glitch in PG_SurfaceCache::Add(...)
 - applied patches from Ulf Lorenz:
   added a few comments to pgapplication.h
   removed obsolete function calls from pgapplication.cpp
@@ -44,6 +45,10 @@ Whats new in ParaGUI 1.1.6 ?
   documented PG_Application::PrintVideoTest()
   in PG_Application::Shutdown calling DeleteBackground() for freeing
   PG_Application::DeleteBackground(): setting my_background to 0
+  commented PG_Application::SetBulkMode()
+  PG_LogConsole::LogVa(): removed useless function call
+  PG_LogConsole::Done():  function now deletes PG_LogWindow
+  added comments to pglog.h
 - applied patches from "H. C." :))
   Win32 support. Requires VisualC.NET or GCC
 - more coming up
