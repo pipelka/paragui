@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 16:24:05 $
+    Update Date:      $Date: 2004/02/29 19:39:01 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.7 $
     Status:           $State: Exp $
 */
 
@@ -129,6 +129,16 @@ PG_ListBoxBaseItem* PG_ListBox::GetSelectedItem() {
 
 void PG_ListBox::SetIndent(Uint16 indent) {
 	my_indent = indent;
+	PG_RectList* list = my_scrollarea->GetChildList();
+	if(list == NULL) {
+		return;
+	}
+
+	for(PG_Widget* w = list->first(); w != NULL; w = w->next()) {
+		PG_ListBoxBaseItem* item = static_cast<PG_ListBoxBaseItem*>(w);
+		item->SetIndent(my_indent);
+	}
+	Update();
 }
 
 void PG_ListBox::SelectFirstItem() {

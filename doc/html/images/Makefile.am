@@ -9,3 +9,4 @@ EXTRA_DIST = \
 	paragui-logo-small.png \
 	shot1.png \
 	shot1-small.png
+

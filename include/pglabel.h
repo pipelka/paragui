@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 16:24:05 $
+    Update Date:      $Date: 2004/02/29 19:39:01 $
     Source File:      $Source: /sources/paragui/paragui/include/pglabel.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
     Status:           $State: Exp $
 */
 
@@ -108,8 +108,6 @@ private:
 	TextAlign my_alignment;
 	Uint16 my_indent;
 	bool my_freeicon;
-
-	PG_Rect my_rectLabel;
 };
 
 #endif // PG_LABEL_H

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 16:24:05 $
+    Update Date:      $Date: 2004/02/29 19:39:01 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -38,8 +38,6 @@ my_indent(0) {
 
 	my_alignment = LEFT;
 	my_srfIcon = NULL;
-	// might be set by PG_ListBox::AddChild()!
-	//my_indent = 0;
 	my_freeicon = false;
 
 	SetText(text);
@@ -74,6 +72,7 @@ void PG_Label::LoadThemeStyle(const char* widgettype, const char* object) {
 }
 
 void PG_Label::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {
+	PG_Rect my_rectLabel;
 	int xshift = my_indent;
 
 	// should we blit an icon ?
@@ -158,7 +157,6 @@ SDL_Surface* PG_Label::GetIcon() {
 
 void PG_Label::SetIndent(Uint16 indent) {
 	my_indent = indent;
-	PG_LogDBG("PG_Label::SetIndent(%i)", my_indent);
 }
 
 Uint16 PG_Label::GetIndent() {

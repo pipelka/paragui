@@ -52,6 +52,12 @@ bool handle_exit(PG_Pointer clientdata) {
 	return true;
 }
 
+bool hande_slideIndent(PG_ScrollBar* s, long pos, PG_Pointer data)  {
+	PG_DropDown* drop = static_cast<PG_DropDown*>(data);
+	drop->SetIndent(pos);
+	return true;
+}
+
 // A new widget with a callback member
 
 class MySliderLabel : public PG_Label {
@@ -125,7 +131,6 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	b = new PG_Button(WidgetList, PG_Rect(0,0, 400,50), "YES", PG_Button::YES);
 	b->SetTransparency(128,128,128);
 	b->SetFontName("qnx/font.ttf");
-	//WidgetList->AddWidget(b);
 
 	PG_Slider* s = new PG_Slider(WidgetList, PG_Rect(0, 0, 200,20), PG_ScrollBar::HORIZONTAL);
 	s->SetRange(0,255);
@@ -135,13 +140,8 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	s->sigSlide.connect(slot(*this, &TestWindow::handler_slider_btntrans));
 	s->sigSlideEnd.connect(slot(*this, &TestWindow::handler_slider_btntrans));
 
-	//WidgetList->AddWidget(s);
-		
-	//WidgetList->AddWidget(new PG_LineEdit(NULL, PG_Rect(0,0,80,30)));
 	new PG_LineEdit(WidgetList, PG_Rect(0,0,80,30));
-
 	new PG_CheckButton(WidgetList, PG_Rect(0,0,200,25), "CheckButton 2");
-	//WidgetList->AddWidget(check);
 
 	progress = new PG_ProgressBar(this, PG_Rect(260, 90, 150, 25));
 	progress->SetTransparency(128);
@@ -215,8 +215,6 @@ bool TestWindow::handleButtonClick(PG_Button* button) {
 		PG_Label* l = new PG_Label(WidgetList, PG_Rect(0,0,220,25), "");
 		l->SetAlignment(PG_Label::CENTER);
 		l->SetTextFormat("Label %i", ++label);
-		//WidgetList->AddWidget(l);
-	
 		return true;
 	}
 
@@ -224,7 +222,6 @@ bool TestWindow::handleButtonClick(PG_Button* button) {
 		PG_Widget* w = WidgetList->FindWidget(4);
 		PG_LogDBG("FindWidget(4) = %p", w);
 		if(w != NULL) {
-			//WidgetList->RemoveWidget(w, true, true);
 			delete w;
 		}
 		
@@ -298,7 +295,6 @@ int main(int argc, char* argv[]) {
 	
 	// construct the application object
 	PG_Application app;
-	//app.DisableDirtyUpdates(true);
 		
 	for(int c=1; c<argc; c++) {
 
@@ -442,8 +438,7 @@ int main(int argc, char* argv[]) {
 
 	// create the slider
 	PG_Slider slider(NULL, PG_Rect(50, 250, 300,20), PG_ScrollBar::HORIZONTAL);
-	slider.SetRange(5,20);
-	//slider.SetTransparency(128);
+	slider.SetRange(5,50);
 
 	// connect the "MSG_SLIDE" event with "handler_slider" of slider_label
 	slider.sigSlide.connect(slot(slider_label, &MySliderLabel::handler_slider));
@@ -459,7 +454,6 @@ int main(int argc, char* argv[]) {
 	spin.Show();
 
 	PG_DropDown drop(NULL, PG_Rect(50, 280, 300,25));
-	drop.SetIndent(5);
 	
 	//<obsolete>
 	drop.AddItem("Under construction");
@@ -475,9 +469,11 @@ int main(int argc, char* argv[]) {
 	// and the static objects will be destroyed when leaving the
 	// application). Let's use dynamic objects.
 	PG_ListBoxItem* item = new PG_ListBoxItem(&drop, 25, "Item 7");
-	item->SetIndent(20);
 	new PG_ListBoxItem(&drop, 25, "Item 8");
 	new PG_ListBoxItem(&drop, 25, "Item 9");
+	drop.SetIndent(5);
+
+	slider.sigSlide.connect(slot(hande_slideIndent), (PG_Pointer)&drop);
 	drop.Show();
 
 	PG_Button list(NULL, PG_Rect(400,450,100,30), "List", PG_Button::OK);
