@@ -66,7 +66,10 @@ int main(int argc,char *argv[])
 
 	msgbox->Show();
 	msgbox->WaitForClick();
-
+	msgbox->Hide();
+	
+	app->Run();
+	
 	// Get rid of mywidget, msgbox, and app buttons and context
 	delete mywidget;
 	delete msgbox;
@@ -74,7 +77,7 @@ int main(int argc,char *argv[])
 	
 
 	// Start the process over exactly the same
-	// Crash happens here in physfs.c
+
 	app=new PG_Application();
 	app->SetEmergencyQuit(true);
 	app->LoadTheme("simple");
