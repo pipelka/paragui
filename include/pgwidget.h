@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/22 16:52:42 $
+    Update Date:      $Date: 2004/02/17 12:41:17 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -167,18 +167,6 @@ public:
 	bool MoveWidget(int x, int y);
 
 	/**
-	Move a widget -- OBSOLETE
-
-	@param x	new x-position (in parent context)
-	@param y	new y-position (in parent context)
-	@return		function succeeded
-
-	This function moves the widget.
-	CAUTION: This function will be removed in the final version. Please use MoveWidget(int x, int y)
-	*/
-	bool MoveWindow(int x, int y);
-
-	/**
 	Move and resize widget
 
 	@param r	new widget rectangle (client coordinates)
@@ -187,29 +175,6 @@ public:
 	This function moves and resizes the widget to fit the given rectangle.
 	*/
 	bool MoveWidget(const PG_Rect& r);
-
-	/**
-	Move and resize widget -- OBSOLETE
-
-	@param r	new widget rectangle (client coordinates)
-	@return		function succeeded
-
-	This function moves and resizes the widget to fit the given rectangle.
-	CAUTION: This function will be removed in the final version. Please use MoveWidget(const PG_Rect& r)
-	*/
-	bool MoveWindow(const PG_Rect& r);
-
-	/**
-	Resize a widget -- OBSOLETE
-
-	@param w	new widget-width
-	@param w	new widget-height
-	@return		function succeeded
-
-	This function resizes the widget. This member function will be removed in the final version.
-	Please use SizeWidget().
-	*/
-	virtual bool SizeWindow(Uint16 w, Uint16 h);
 
 	/**
 	Resize a widget

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/07 10:01:32 $
+    Update Date:      $Date: 2004/02/17 12:41:17 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.7 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.8 $
     Status:           $State: Exp $
 */
 
@@ -63,6 +63,7 @@ bool PG_Application::emergencyQuit = false;
 bool PG_Application::enableBackground = true;
 bool PG_Application::enableAppIdleCalls = false;
 SDL_Surface *PG_Application::my_mouse_pointer = NULL;
+SDL_Surface *PG_Application::my_mouse_backingstore = NULL;
 PG_Rect PG_Application::my_mouse_position = PG_Rect(0,0,0,0);
 PG_Application::CursorMode PG_Application::my_mouse_mode = PG_Application::HARDWARE;
 PG_Font* PG_Application::DefaultFont = NULL;
@@ -122,13 +123,14 @@ PG_Application::PG_Application() {
 }
 
 PG_Application::~PG_Application() {
+	// shutdown log (before deleting all the widgets)
+	PG_LogConsole::Done();
+	
+	// remove remaining widgets
 	Shutdown();
 	
 	pGlobalApp = NULL;
 
-	// shutdown log
-	PG_LogConsole::Done();
-	
 	// remove all archives from PG_FileArchive
 	PG_FileArchive::RemoveAllArchives();
 }
@@ -205,6 +207,8 @@ int PG_Application::RunEventLoop(void* data) {
 		while(SDL_PeepEvents(&event, 1, SDL_GETEVENT, SDL_MOUSEMOTIONMASK) > 0)
 			;
 		
+		ClearOldMousePosition();
+
 		if(enableAppIdleCalls) {
 			if (SDL_PollEvent(&event) == 0) {
 				object->eventIdle();
@@ -227,21 +231,16 @@ void PG_Application::ClearOldMousePosition() {
 		return;
 	}
 
-	PG_RectList *widgetList = PG_Widget::GetWidgetList();
-	PG_Application::RedrawBackground(my_mouse_position);
+	if(GetBulkMode() || my_mouse_backingstore==NULL) {
+		return;
+	}
 
-//widgetlist::Blit() already performs all the other operations done here,
-//so one can safely remove the rest of the function calls
-//	SDL_SetClipRect(screen, &my_mouse_position);
-//	PG_RectList backlist = widgetList->Intersect(&my_mouse_position);
-//	backlist.Blit(my_mouse_position);
-//	SDL_SetClipRect(screen, 0);
-    widgetList->Blit(my_mouse_position);
+	SDL_BlitSurface(my_mouse_backingstore, NULL, GetScreen(), &my_mouse_position);
     
 	return;
 }
 
-void PG_Application::DrawCursor() {
+void PG_Application::DrawCursor(bool update) {
 	int x, y;
 	PG_Rect saved;
 	if(!my_mouse_pointer || my_mouse_mode != SOFTWARE) {
@@ -251,16 +250,24 @@ void PG_Application::DrawCursor() {
 		// Hide hardware cursor if visible
 		SDL_ShowCursor(SDL_DISABLE);
 	}
-	//SDL_PumpEvents();
+
 	SDL_GetMouseState(&x, &y);
 	saved = my_mouse_position;
-	if(!GetBulkMode()) {
-		ClearOldMousePosition();
-	}
+
 	my_mouse_position.my_xpos = x;
 	my_mouse_position.my_ypos = y;
+	my_mouse_position.my_width = my_mouse_pointer->w;
+	my_mouse_position.my_height = my_mouse_pointer->h;
+	
+	// backup current cursor area
+	if(my_mouse_backingstore == NULL) {
+		my_mouse_backingstore = PG_Draw::CreateRGBSurface(my_mouse_pointer->w, my_mouse_pointer->h);
+	}
+	SDL_BlitSurface(GetScreen(), &my_mouse_position, my_mouse_backingstore, NULL);
+	
+	// draw cursor
 	SDL_BlitSurface(my_mouse_pointer, 0, screen, &my_mouse_position);
-	if(!GetBulkMode()) {
+	if(!GetBulkMode() && update) {
 		SDL_UpdateRects(screen, 1, &saved);
 		SDL_UpdateRects(screen, 1, &my_mouse_position);
 	}
@@ -318,8 +325,10 @@ void PG_Application::SetCursor(SDL_Surface *image) {
 		if(!my_mouse_pointer) {
 			return;
 		}
+		UnloadSurface(my_mouse_backingstore);
+		my_mouse_backingstore = NULL;
 		UnloadSurface(my_mouse_pointer);
-		my_mouse_pointer = 0;
+		my_mouse_pointer = NULL;
 		ClearOldMousePosition();
 		SDL_UpdateRects(screen, 1, &my_mouse_position);
 		SDL_ShowCursor(SDL_ENABLE);
@@ -331,6 +340,9 @@ void PG_Application::SetCursor(SDL_Surface *image) {
 		UnloadSurface(my_mouse_pointer);
 		my_mouse_pointer = image;
 	}
+
+	UnloadSurface(my_mouse_backingstore);
+	my_mouse_backingstore = NULL;
 	image->refcount++;
 	DrawCursor();
 }
@@ -433,8 +445,6 @@ bool PG_Application::SetBackground(SDL_Surface* surface, int mode) {
 
 /**  */
 void PG_Application::RedrawBackground(const PG_Rect& rect) {
-	static PG_Rect screenrect(0,0,screen->w,screen->h);
-
 	if(GetBulkMode()) {
 		return;
 	}
@@ -451,13 +461,15 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 		if(my_scaled_background && 
 		   (my_scaled_background->w != screen->w ||
 		    my_scaled_background->h != screen->h)) {
-			SDL_FreeSurface(my_scaled_background); // size mismatch
-			my_scaled_background = 0;
+			UnloadSurface(my_scaled_background); // size mismatch
+			my_scaled_background = NULL;
 		}
 		if(!my_scaled_background) {
-			my_scaled_background =
-				PG_Draw::ScaleSurface(my_background,
-						      static_cast<Uint16>(screen->w), static_cast<Uint16>(screen->h));
+			SDL_Surface* temp = PG_Draw::ScaleSurface(my_background, static_cast<Uint16>(screen->w), static_cast<Uint16>(screen->h));
+			my_scaled_background = SDL_DisplayFormat(temp);
+			UnloadSurface(temp);
+			/*PG_Draw::ScaleSurface(my_background,
+						      static_cast<Uint16>(screen->w), static_cast<Uint16>(screen->h));*/
 		}
 		SDL_GetClipRect(screen, (SDL_Rect*)&fillrect);
 		SDL_SetClipRect(screen, (SDL_Rect*)&rect);
@@ -465,7 +477,7 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 		SDL_SetClipRect(screen, (SDL_Rect*)&fillrect);
 
 	} else {
-		PG_Draw::DrawTile(screen, screenrect, rect, my_background);
+		PG_Draw::DrawTile(screen, PG_Rect(0,0,screen->w,screen->h), rect, my_background);
 	}
 }
 
@@ -709,6 +721,10 @@ void PG_Application::Shutdown() {
 	// delete the default font
 	delete DefaultFont;
 	DefaultFont = NULL;
+
+	// remove cursor backing store	
+	UnloadSurface(my_mouse_backingstore);
+	my_mouse_backingstore = NULL;
 }
 
 void PG_Application::SetEmergencyQuit(bool esc) {
@@ -987,4 +1003,3 @@ void PG_Application::FlushEventQueue() {
  * c-basic-offset: 8
  * End:
  */
-

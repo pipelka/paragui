@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/13 22:07:54 $
+    Update Date:      $Date: 2004/02/17 12:41:17 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -230,23 +230,6 @@ void PG_Button::eventSizeWidget(Uint16 w, Uint16 h) {
 	}
 
 	FreeSurfaces();
-
-	/*
-	eventButtonSurface(&(_mid->srf[UNPRESSED]), UNPRESSED, w, h);
-	if(_mid->srf[UNPRESSED]) {
-			SDL_SetAlpha(_mid->srf[UNPRESSED], SDL_SRCALPHA, 255-_mid->my_transparency[UNPRESSED]);
-	}
-
-	eventButtonSurface(&(_mid->srf[PRESSED]), PRESSED, w, h);
-	if(_mid->srf[PRESSED]) {
-		SDL_SetAlpha(_mid->srf[PRESSED], SDL_SRCALPHA, 255-_mid->my_transparency[PRESSED]);
-	}
-
-	eventButtonSurface(&(_mid->srf[HIGHLITED]), HIGHLITED, w, h);
-	if(_mid->srf[HIGHLITED]) {
-		SDL_SetAlpha(_mid->srf[HIGHLITED], SDL_SRCALPHA, 255-_mid->my_transparency[HIGHLITED]);
-	}
-	*/
 
 	return;
 }
@@ -572,7 +555,9 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	// blit it
 
 	if(t != 255) {
-		SDL_SetAlpha(srf, SDL_SRCALPHA, 255-t);
+		if(srf->format->alpha != 255-t) {
+			SDL_SetAlpha(srf, SDL_SRCALPHA, 255-t);
+		}
 		PG_Draw::BlitSurface(srf, src, my_srfScreen, dst);
 	}
 
@@ -583,9 +568,6 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	r.my_height = 0;
 
 	// check for icon srf
-	//
-	//SDL_Surface* iconsrf = (my_state == BTN_STATE_PRESSED) ? ((_mid->srf_icon[1] == 0) ? _mid->srf_icon[0] : _mid->srf_icon[1]) : _mid->srf_icon[0];
-
 	SDL_Surface* iconsrf;
 	if(_mid->my_state == PRESSED) {
 		if(_mid->srf_icon[PRESSED] == 0) {

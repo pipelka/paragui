@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:01:03 $
+    Update Date:      $Date: 2004/02/17 12:41:17 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -43,8 +43,9 @@ PG_DropDown::PG_DropDown(PG_Widget* parent, int id, const PG_Rect& r, const char
 	my_DropButton = new PG_Button(this, IDDROPDOWN_BOX, rbutton, NULL, style);
 	my_DropButton->sigClick.connect(slot(*this, &PG_DropDown::handleButtonClick));
 
-	PG_Rect rlist(r.my_xpos, r.my_ypos + r.my_height +1, r.my_width, r.my_height * 5);
+	PG_Rect rlist(r.my_xpos, r.my_ypos + r.my_height +1, r.my_width, r.my_height /* * 5 */);
 	my_DropList = new PG_ListBox(NULL, rlist, style);
+	my_DropList->EnableScrollBar(false);
 	my_DropList->sigSelectItem.connect(slot(*this, &PG_DropDown::select_handler));
 
 	//LoadThemeStyle(style);
@@ -60,13 +61,18 @@ void PG_DropDown::LoadThemeStyle(const char* style) {
 	my_DropList->LoadThemeStyle(style);
 }
 
-void PG_DropDown::AddItem(const char* text, void* userdata) {
-	Uint16 h;
+void PG_DropDown::AddItem(const char* text, void* userdata, Uint16 height) {
+	Uint16 h = height;
 
-	PG_FontEngine::GetTextSize(text, GetFont(), NULL, NULL, NULL, NULL, &h);
-
-	PG_ListBoxItem* item = new PG_ListBoxItem(h+2, text, NULL, userdata);
+	if(height == 0) {
+	    PG_FontEngine::GetTextSize(text, GetFont(), NULL, NULL, NULL, NULL, &h);
+	    h += 2;
+	}
+	
+	PG_ListBoxItem* item = new PG_ListBoxItem(h, text, NULL, userdata);
 	my_DropList->AddItem(item);
+	
+	my_DropList->SizeWidget(my_width, my_DropList->GetListHeight() + my_DropList->GetBorderSize()*2);
 }
 
 void PG_DropDown::RemoveAll() {

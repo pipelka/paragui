@@ -329,7 +329,7 @@ int main(int argc, char* argv[]) {
 	}
 
 	Uint32 start_ticks = SDL_GetTicks();
-	
+
 	if(!app.LoadTheme(theme)) {
 	    PG_LogERR("Unable to load theme \"%s\"", theme);
 	    return -1;
@@ -337,13 +337,13 @@ int main(int argc, char* argv[]) {
 
 	PG_LogMSG("Loaded theme in %i ms", SDL_GetTicks() - start_ticks);
 
-	if(!app.InitScreen(resx, resy, bpp, flags)){
-		printf("Resolution %dx%d not supported\n", resx, resy);
-		exit(-1);
-	}
-
-	PG_LogMSG("screen initialized after %i ms", SDL_GetTicks() - start_ticks);
-
+        if(!app.InitScreen(resx, resy, bpp, flags)){
+                printf("Resolution %dx%d not supported\n", resx, resy);
+                exit(-1);
+        }
+                                                                                                                    
+        PG_LogMSG("screen initialized after %i ms", SDL_GetTicks() - start_ticks);
+	
 	app.SetCursor(app.GetTheme()->FindSurface("Pointer", "Pointer", "normal"));
 
 	//Splash();

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/02/13 11:54:50 $
+   Update Date:      $Date: 2004/02/17 12:41:17 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.5 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.6 $
    Status:           $State: Exp $
  */
 
@@ -345,11 +345,6 @@ void PG_Widget::AddChild(PG_Widget * child) {
 	my_internaldata->childList->Add(child);
 }
 
-/**  */
-bool PG_Widget::MoveWindow(int x, int y) {
-	return MoveWidget(x, y);
-}
-
 bool PG_Widget::MoveWidget(int x, int y) {
 
 	if (GetParent() != NULL) {
@@ -425,18 +420,10 @@ bool PG_Widget::MoveWidget(int x, int y) {
 	return true;
 }
 
-bool PG_Widget::MoveWindow(const PG_Rect& r) {
-	return MoveWidget(r);
-}
-
 bool PG_Widget::MoveWidget(const PG_Rect& r) {
 	MoveWidget(r.x, r.y);
 	SizeWidget(r.w, r.h);
 	return true;
-}
-
-bool PG_Widget::SizeWindow(Uint16 w, Uint16 h) {
-	return SizeWidget(w, h);
 }
 
 bool PG_Widget::SizeWidget(Uint16 w, Uint16 h) {
@@ -809,13 +796,13 @@ void PG_Widget::Update(bool doBlit) {
 			widgetList.Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
 		}
 
-		PG_Application::DrawCursor();
 	}
 
 	// Update screen surface
 #ifdef DEBUG
 	PG_LogDBG("UPD: x:%d y:%d w:%d h:%d",dst.x,dst.y,dst.w,dst.h);
 #endif // DEBUG
+	
 	SDL_UpdateRects(my_srfScreen, 1, &my_internaldata->rectClip);
 
 	SDL_SetClipRect(my_srfScreen, NULL);

@@ -19,6 +19,16 @@ take a look into "TODO".
 
 
 ----------------------------
+Whats new in ParaGUI 1.1.7 ?
+----------------------------
+
+- optimized (software)cursor drawing
+- removed obsoleted PG_Widget::[Move|Size]Window methods
+- added custom itemheight to PG_DropDown::AddItem()
+- dynamic resizing of listbox height in PG_DropDown
+
+
+----------------------------
 Whats new in ParaGUI 1.1.6 ?
 ----------------------------
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/01 18:10:29 $
+    Update Date:      $Date: 2004/02/17 12:41:16 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.9 $
     Status:           $State: Exp $
 */
 
@@ -484,8 +484,9 @@ public:
 	/*!
 	  This will redraw the graphical curser pointer, if enabled. You
 	  might need to call this if you stop the normal event loop from running.
+	  @param update true if you want to "Update" the screen content immediately.
 	*/
-	static void DrawCursor();
+	static void DrawCursor(bool update = true);
 	
 	//! Set or query the type of mouse cursor to use.
 	/*!
@@ -534,6 +535,15 @@ public:
 	*/
 	static void FlushEventQueue();
 
+    //!Reblit the old mouse position
+    /**
+    If software cursors are enabled and you move the mouse, the old
+    location has to be refreshed somehow with the underlying graphics.
+    This is done by this function. Note that bulkmode has to be
+    disabled for this function to be called.
+    */
+	static void ClearOldMousePosition();
+
 	SignalQuit<> sigQuit;
 	SignalVideoResize<> sigVideoResize;
 	SignalXMLTag<> sigXMLTag;
@@ -544,15 +554,6 @@ protected:
 	Cleanup the application data
 	*/
 	void Shutdown();
-
-    //!Reblit the old mouse position
-    /**
-    If software cursors are enabled and you move the mouse, the old
-    location has to be refreshed somehow with the underlying graphics.
-    This is done by this function. Note that bulkmode has to be
-    disabled for this function to be called.
-    */
-	static void ClearOldMousePosition();
 
 	/**  */
 	bool eventKeyUp(const SDL_KeyboardEvent* key);
@@ -594,7 +595,8 @@ private:
 	static bool enableBackground;
 	static bool enableAppIdleCalls;
 
-	static SDL_Surface *my_mouse_pointer;
+	static SDL_Surface* my_mouse_pointer;
+	static SDL_Surface* my_mouse_backingstore;
 	static PG_Rect my_mouse_position;
 	static CursorMode my_mouse_mode;
 	static SDL_mutex* mutexScreen;

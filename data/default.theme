@@ -13,6 +13,7 @@
 	<object>
 	    <name value="Background"/>
 	    <filename name="background" value="default/background.png"/>
+	    <property name="backmode" value="TILE"/>
 	</object>
     </widget>
     
@@ -436,4 +437,3 @@
 	</widget>
 
 </theme>
-
