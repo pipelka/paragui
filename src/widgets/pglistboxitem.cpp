@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/19 11:12:35 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.4 $
     Status:           $State: Exp $
 */
 
@@ -93,11 +93,11 @@ void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 
 	temp = NULL;
 
-	if(my_hover) {
-		PG_Widget::eventBlit(my_srfHover, src, dst);
-	}
-	else if(my_selected) {
+	if(my_selected) {
 		PG_Widget::eventBlit(my_srfSelected, src, dst);
+	}
+	else if(my_hover) {
+		PG_Widget::eventBlit(my_srfHover, src, dst);
 	}
 
 	PG_Label::eventBlit(NULL, my_src, my_dst);
