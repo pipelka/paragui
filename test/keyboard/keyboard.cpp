@@ -19,7 +19,7 @@ TKey_LineEdit::TKey_LineEdit(PG_Widget* pParent,const PG_Rect& r,const char* sty
 {
 }
 	
-bool TKey_LineEdit::SendKey(int,PG_Widget* pWidget,unsigned long,void* data)
+bool TKey_LineEdit::SendKey(PG_Button* pWidget)
 {
 	// this check is needed because, if the keyboard is superimposed to the
 	// edited field, the keyboard captures a ButtonDown event that was not
@@ -171,7 +171,7 @@ PG_CATCH_ALL {
 
 	// registers callback
 	for (int i = 0; i <= 42; i++)
-		Buttons[i]->SetEventObject(MSG_BUTTONCLICK,(PG_EventObject*)this,(MSG_CALLBACK_OBJ)&TKeyAlpha_LineEdit::SendKey,this);
+		Buttons[i]->sigClick.connect(slot(*this, &TKeyAlpha_LineEdit::SendKey));
 }
 
 	/////////////////////////
@@ -224,7 +224,7 @@ PG_CATCH_ALL {
 }	
 	// registers callback
 	for (int i = 0; i <= 15; i++)
-		Buttons[i]->SetEventObject(MSG_BUTTONCLICK,(PG_EventObject*)this,(MSG_CALLBACK_OBJ)&TKeyNum_LineEdit::SendKey,this);
+		Buttons[i]->sigClick.connect(slot(*this, &TKeyNum_LineEdit::SendKey));
 }
 
 // adjusts field: an incoming "0" field is converted into empty

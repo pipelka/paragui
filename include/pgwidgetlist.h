@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/06/29 17:09:49 $
+    Update Date:      $Date: 2003/11/21 12:27:54 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -185,10 +185,10 @@ protected:
 	void eventSizeWidget(Uint16 w, Uint16 h);
 
 	/**  */
-	bool eventScrollPos(int id, PG_Widget* widget, unsigned long data);
+	bool handleScrollPos(PG_ScrollBar* widget, long data);
 
 	/**  */
-	bool eventScrollTrack(int id, PG_Widget* widget, unsigned long data);
+	bool handleScrollTrack(PG_ScrollBar* widget, long data);
 
 	/**  */
 	Sint32 ScrollToY(Sint32 position);

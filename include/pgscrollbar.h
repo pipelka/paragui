@@ -20,14 +20,22 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2003/11/21 12:27:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_SCROLLBAR_H
 #define PG_SCROLLBAR_H
+
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgscrollbar
+%{
+#include "pgscrollbar.h"
+    %}
+#endif
 
 #include "pgwidget.h"
 #include "pgbutton.h"
@@ -46,6 +54,7 @@ class DECLSPEC PG_ScrollBar : public PG_ThemeWidget {
 
 protected:
 
+#ifndef SWIG
 #ifndef DOXYGEN_SKIP
 class ScrollButton : public PG_Button {
 	public:
@@ -79,9 +88,16 @@ class ScrollButton : public PG_Button {
 		int my_tempPos;
 	};
 #endif		// DOXYGEN_SKIP
+#endif		// SWIG
 
 
 public:
+
+	/**
+	Signal type declaration
+	**/
+	template<class datatype> class SignalScrollPos : public PG_Signal2<PG_ScrollBar*, datatype> {};
+	template<class datatype> class SignalScrollTrack : public PG_Signal2<PG_ScrollBar*, datatype> {};
 
 	/**  */
 	PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, int direction = PG_SB_VERTICAL, const char* style="Scrollbar");
@@ -115,8 +131,8 @@ public:
 	/**  */
 	void SetPageSize(int ps);
 
-	PG_SignalScrollPos sigScrollPos;
-	PG_SignalScrollTrack sigScrollTrack;
+	SignalScrollPos<long> sigScrollPos;
+	SignalScrollTrack<long> sigScrollTrack;
 	
 protected:
 
@@ -130,7 +146,7 @@ protected:
 	bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);
 
 	/**  */
-	virtual bool handleButtonClick(PG_Button* button, PG_Pointer* data);
+	bool handleButtonClick(PG_Button* button);
 
 	/**  */
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
@@ -150,12 +166,18 @@ protected:
 	int sb_direction;
 	int id;
 
+#ifndef SWIG
+
 	friend class ScrollButton;
+#endif
 
 private:
 
+#ifndef SWIG
+
 	PG_ScrollBar(const PG_ScrollBar&);
 	PG_ScrollBar& operator=(PG_ScrollBar&);
+#endif
 
 };
 

@@ -9,7 +9,7 @@ class MyDialog : public PG_Window, public PG_EventObject
     public:
         MyDialog();
 
-        PARAGUI_CALLBACK(ok_clicked);
+        bool ok_clicked();
 
         PG_LineEdit* e;
         PG_Button* ok;
@@ -21,12 +21,12 @@ MyDialog::MyDialog()
             e = new PG_LineEdit(this, PG_Rect(0, 0, 200, 20));
             ok = new PG_Button(this, 0, PG_Rect(10, 100, 180, 20));
 
-            ok->SetEventObject(MSG_BUTTONCLICK, this, (MSG_CALLBACK_OBJ)&MyDialog::ok_clicked);
+            ok->sigClick.connect(slot(*this, &MyDialog::ok_clicked));
 }
 
-PARAGUI_CALLBACK(MyDialog::ok_clicked)
-{
-    SendMessage(this, MSG_MODALQUIT, 0, 0);
+bool MyDialog::ok_clicked() {
+	QuitModal();
+	return true;
 }
 
 int main(int argc, char** argv)

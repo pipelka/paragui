@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/06/29 17:09:49 $
+    Update Date:      $Date: 2003/11/21 12:27:56 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.1 $
     Status:           $State: Exp $
 */
 
@@ -45,10 +45,20 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext
 	my_labelTitle = new PG_Label(my_titlebar, PG_Rect(0, 0, my_width, my_heightTitlebar), windowtext, style);
 	my_labelTitle->SetAlignment(PG_TA_CENTER);
 
-	my_buttonClose = new PG_Button(this, PG_WINDOW_CLOSE, rb, NULL);
-	my_buttonMinimize = new PG_Button(this, PG_WINDOW_MINIMIZE, rb, NULL);
+	my_buttonClose = new PG_Button(my_titlebar, PG_WINDOW_CLOSE, rb, NULL);
+	my_buttonClose->sigClick.connect(slot(*this, &PG_Window::handleButtonClick));
+	
+	my_buttonMinimize = new PG_Button(my_titlebar, PG_WINDOW_MINIMIZE, rb, NULL);
+	my_buttonMinimize->sigClick.connect(slot(*this, &PG_Window::handleButtonClick));
 
 	LoadThemeStyle(style);
+
+	if(!my_showCloseButton) {
+		my_buttonClose->Hide();
+	}
+	if(!my_showMinimizeButton) {
+		my_buttonMinimize->Hide();
+	}
 }
 
 PG_Window::~PG_Window() {
@@ -58,11 +68,11 @@ void PG_Window::SetTitle(const char* title, int alignment) {
 	my_labelTitle->SetAlignment(alignment);
 	my_labelTitle->SetText(title);
 
-	if (my_showCloseButton)
+	/*if (my_showCloseButton)
 		my_buttonClose->Update();
 
 	if (my_showMinimizeButton)
-		my_buttonMinimize->Update();		
+		my_buttonMinimize->Update();*/
 }
 
 const char* PG_Window::GetTitle() {
@@ -106,10 +116,20 @@ void PG_Window::LoadThemeStyle(const char* widgettype) {
 
 void PG_Window::eventSizeWidget(Uint16 w, Uint16 h) {
 	my_titlebar->SizeWidget(w, my_heightTitlebar);
-	my_labelTitle->SizeWidget(w, my_heightTitlebar);
 
 	my_buttonClose->MoveWidget(PG_Rect(w - my_heightTitlebar, 0, my_heightTitlebar, my_heightTitlebar));
 	my_buttonMinimize->MoveWidget(PG_Rect(0, 0, my_heightTitlebar, my_heightTitlebar));
+
+	int lw = w;
+	int lx = 0;
+	if(my_showMinimizeButton) {
+		lw -= my_buttonMinimize->w;
+		lx += my_buttonMinimize->w;
+	}
+	if(my_showCloseButton) {
+		lw -= my_buttonMinimize->w;
+	}
+	my_labelTitle->MoveWidget(PG_Rect(lx, 0, lw, my_heightTitlebar));
 
 	PG_ThemeWidget::eventSizeWidget(w, h);
 }
@@ -218,22 +238,23 @@ bool PG_Window::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 	return true;
 }
 
-bool PG_Window::eventButtonClick(int id, PG_Widget* widget) {
-	switch(id) {
+bool PG_Window::handleButtonClick(PG_Button* button) {
+	switch(button->GetID()) {
 		// close window
 		case PG_WINDOW_CLOSE:
 			Hide();
-			SendMessage(NULL, MSG_WINDOWCLOSE, GetID(), 0);
-			return true;
+			sigClose(this);
 
 		// minimize window
 		case PG_WINDOW_MINIMIZE:
 			Hide();
-			SendMessage(NULL, MSG_WINDOWMINIMIZE, GetID(), 0);
-			return true;
+			sigMinimize(this);
 	}
 
-	return false;
+	// just in case we're modal
+	QuitModal();
+
+	return true;
 }
 
 void PG_Window::SetColorTitlebar(const SDL_Color& c) {
@@ -262,6 +283,7 @@ void PG_Window::SetIcon(SDL_Surface* icon) {
 }
 
 void PG_Window::eventShow() {
-	my_buttonClose->SetVisible(my_showCloseButton);
-	my_buttonMinimize->SetVisible(my_showMinimizeButton);
+	// don't ask me why
+	my_buttonClose->Update();
+	my_buttonMinimize->Update();
 }

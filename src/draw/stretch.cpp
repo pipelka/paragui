@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 10:43:36 $
+    Update Date:      $Date: 2003/11/21 12:27:55 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/stretch.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
     Status:           $State: Exp $
 */
 
@@ -408,12 +408,19 @@ CLIST	*contrib; 		/* array of contribution lists */
 static double filterLUT[4001];
 
 void PG_Draw::CreateFilterLUT() {
+	static bool bCreated = false;
 	double v;
 
+	if(bCreated) {
+		return;
+	}
+	
 	for (int i = -2000; i < 2001; i++) {
 		v = (double)i / 1000.0;
 		filterLUT[i + 2000] = B_spline_filter(v);
 	}
+	
+	bCreated = true;
 }
 
 typedef double (*filterfunc)(double);

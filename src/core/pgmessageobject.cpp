@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/18 10:40:37 $
+    Update Date:      $Date: 2003/11/21 12:27:55 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.1 $
     Status:           $State: Exp $
 */
 
@@ -375,7 +375,7 @@ bool PG_MessageObject::PumpIntoEventQueue(const SDL_Event* event) {
 
 
 void PG_MessageObject::eventIdle() {
-	SendMessage(this, MSG_APPIDLE, (long)0, (long)0);
+	sigAppIdle(this);
 	SDL_Delay(1);
 }
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:41 $
+    Update Date:      $Date: 2003/11/21 12:27:56 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
     Status:           $State: Exp $
 */
 
@@ -170,7 +170,7 @@ void PG_LineEdit::EditBegin() {
 	my_isCursorVisible = true;
 	Update();
 
-	SendMessage(this, MSG_EDITBEGIN, GetID(), 0);
+	sigEditBegin(this);
 	eventEditBegin(GetID(), this, 0,0);
 }
 
@@ -181,7 +181,7 @@ void PG_LineEdit::EditEnd() {
 	Update();
 	ReleaseInputFocus();
 
-	SendMessage(this, MSG_EDITEND, GetID(), 0);
+	sigEditEnd(this);
 	eventEditEnd(GetID(), this, 0,0);
 }
 
@@ -296,7 +296,7 @@ bool PG_LineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				return false;
 			}
 			EditEnd();
-			SendMessage(this, MSG_RETURN, GetID(), 0);
+			sigEditReturn(this);
 			return true;
 
 		case SDLK_HOME:

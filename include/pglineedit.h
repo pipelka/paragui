@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:37 $
+    Update Date:      $Date: 2003/11/21 12:27:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
     Status:           $State: Exp $
 */
 
@@ -38,6 +38,7 @@
 #endif
 
 #include "pgthemewidget.h"
+#include "pgsignals.h"
 #include <string>
 
 /**
@@ -53,6 +54,13 @@
 */
 class DECLSPEC PG_LineEdit : public PG_ThemeWidget {
 public:
+
+	/**
+	Signal type declaration
+	**/
+	template<class datatype = PG_Pointer> class SignalEditBegin : public PG_Signal1<PG_LineEdit*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalEditEnd : public PG_Signal1<PG_LineEdit*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalEditReturn : public PG_Signal1<PG_LineEdit*, datatype> {};
 
 	/** */
 	PG_LineEdit(PG_Widget* parent, const PG_Rect& r, const char* style="LineEdit", int maximumLength = 1000000);
@@ -138,6 +146,9 @@ public:
 
 	bool Action(PG_ACTION action);
 
+	SignalEditBegin<> sigEditBegin;
+	SignalEditEnd<> sigEditEnd;
+	SignalEditReturn<> sigEditReturn;
 
 protected:
 

@@ -21,9 +21,6 @@
 #include "pglog.h"
 #include "pgmenubar.h"
 
-#define SetConnection(MSG_TYPE, objDest, objFunc) \
-SetEventObject(MSG_TYPE, objDest, (MSG_CALLBACK_OBJ)&objFunc)
-
 #define RESX 800
 #define RESY 600
 
@@ -39,7 +36,7 @@ void Splash() {
     splash.Hide();
 }
 
-PARAGUI_CALLBACK(handle_popup) {
+bool handle_popup(PG_Pointer clientdata) {
 	PG_PopupMenu* pop = (PG_PopupMenu*)clientdata;
 
 	pop->trackMenu(10, 10);
@@ -47,7 +44,7 @@ PARAGUI_CALLBACK(handle_popup) {
 	return true;
 }
 
-PARAGUI_CALLBACK(handle_exit) {
+bool handle_exit(PG_Pointer clientdata) {
 	PG_Application* app = (PG_Application*)clientdata;
 	app->Quit();
 	return true;
@@ -60,7 +57,7 @@ public:
 	MySliderLabel(PG_Widget* parent, const PG_Rect& r, char* text) : PG_Label(parent,r,text) {
 	};
 
-	PARAGUI_CALLBACK(handler_slider) {
+	bool handler_slider(long data) {
 		SetTextFormat("%i", (int)data);
 		return true;
 	}
@@ -77,15 +74,13 @@ public:
 	void Dummy() {};
 
 	/** a new style callback member */
-	PARAGUI_CALLBACK(handle_show_window) {
+	bool handle_show_window() {
 		Show(true);
 		return true;
 	}
 
 	/** callback handler in another flavor */
-	PARAGUI_CALLBACK(handler_slider_btntrans) {
-		PG_Button* b = (PG_Button*)clientdata;
-	
+	bool handler_slider_btntrans(long data) {
 		// set transparency of passed in button
 		b->SetTransparency(data, data, data);
 		b->Update();
@@ -98,13 +93,14 @@ public:
 
 protected:
 
-	bool eventButtonClick(int id, PG_Widget* widget);
-	bool eventScrollPos(int id, PG_Widget* widget, unsigned long data);
-	bool eventScrollTrack(int id, PG_Widget* widget, unsigned long data);
+	bool handleButtonClick(PG_Button* button);
+	bool handleScrollPos(PG_ScrollBar* widget, long data);
+	bool handleScrollTrack(PG_ScrollBar* widget, long data);
 
 private:
 	PG_ProgressBar* progress;
 	PG_WidgetList* WidgetList;
+	PG_Button* b;
 };
 	
 
@@ -120,10 +116,11 @@ PG_Window(parent, r, windowtext, WF_SHOW_CLOSE | WF_SHOW_MINIMIZE)
 	WidgetList->EnableScrollBar(true, PG_SB_VERTICAL);
 	WidgetList->EnableScrollBar(true, PG_SB_HORIZONTAL);
 		
-	new PG_Button(this, 100, PG_Rect(260,130,110,30), "<< ADD");
-	new PG_Button(this, 101, PG_Rect(260,165,110,30), ">> REMOVE");
+	(new PG_Button(this, 100, PG_Rect(260,130,110,30), "<< ADD"))->sigClick.connect(slot(*this, &TestWindow::handleButtonClick));
 	
-	PG_Button* b = new PG_Button(NULL, BTN_ID_YES, PG_Rect(0,0, 400,50), "YES");
+	(new PG_Button(this, 101, PG_Rect(260,165,110,30), ">> REMOVE"))->sigClick.connect(slot(*this, &TestWindow::handleButtonClick));
+	
+	b = new PG_Button(NULL, BTN_ID_YES, PG_Rect(0,0, 400,50), "YES");
 	b->SetTransparency(128,128,128);
 	b->SetFontName("qnx/font.ttf");
 	WidgetList->AddWidget(b);
@@ -133,7 +130,7 @@ PG_Window(parent, r, windowtext, WF_SHOW_CLOSE | WF_SHOW_MINIMIZE)
 	s->SetTransparency(200);
 	s->SetPosition(50);
 
-	s->SetEventObject(MSG_SLIDE, this, (MSG_CALLBACK_OBJ)&TestWindow::handler_slider_btntrans, b);
+	s->sigSlide.connect(slot(*this, &TestWindow::handler_slider_btntrans));
 
 	WidgetList->AddWidget(s);
 		
@@ -149,9 +146,13 @@ PG_Window(parent, r, windowtext, WF_SHOW_CLOSE | WF_SHOW_MINIMIZE)
 	progress->SetFontAlpha(128);
 		
 	PG_ScrollBar* scroll = new PG_ScrollBar(this, 1, PG_Rect(415,90,20,150));
+	scroll->sigScrollPos.connect(slot(*this, &TestWindow::handleScrollPos));
+	scroll->sigScrollTrack.connect(slot(*this, &TestWindow::handleScrollPos));
 	scroll->SetRange(0, 100);
 
 	PG_ScrollBar* scroll1 = new PG_ScrollBar(this, 2, PG_Rect(435,90,20,150));
+	scroll1->sigScrollPos.connect(slot(*this, &TestWindow::handleScrollPos));
+	scroll1->sigScrollTrack.connect(slot(*this, &TestWindow::handleScrollPos));
 	scroll1->SetRange(0, 255);
 
 	PG_DropDown* drop = new PG_DropDown(this, 15, PG_Rect(260, 60, 200,25));
@@ -166,7 +167,9 @@ PG_Window(parent, r, windowtext, WF_SHOW_CLOSE | WF_SHOW_MINIMIZE)
 	drop->Hide();
 }
 
-bool TestWindow::eventScrollPos(int id, PG_Widget* widget, unsigned long data){
+bool TestWindow::handleScrollPos(PG_ScrollBar* widget, long data){
+	int id = widget->GetID();
+
 	if(id == 1){
 		progress->SetProgress(data);
 		return true;
@@ -181,7 +184,9 @@ bool TestWindow::eventScrollPos(int id, PG_Widget* widget, unsigned long data){
 	return false;
 }
 
-bool TestWindow::eventScrollTrack(int id, PG_Widget* widget, unsigned long data) {
+bool TestWindow::handleScrollTrack(PG_ScrollBar* widget, long data) {
+	int id = widget->GetID();
+
 	if(id == 1){
 		progress->SetProgress(data);
 		return true;
@@ -196,8 +201,9 @@ bool TestWindow::eventScrollTrack(int id, PG_Widget* widget, unsigned long data)
 	return false;
 }
 
-bool TestWindow::eventButtonClick(int id, PG_Widget* widget) {
-	static int label=0;
+bool TestWindow::handleButtonClick(PG_Button* button) {
+	int label=0;
+	int id = button->GetID();
 
 	if(id == 100) {
 		PG_Label* l = new PG_Label(NULL, PG_Rect(0,0,220,25), "");
@@ -218,14 +224,14 @@ bool TestWindow::eventButtonClick(int id, PG_Widget* widget) {
 		return true;
 	}
 	
-	return PG_Window::eventButtonClick(id, widget);
+	return false;
 }
 
-PARAGUI_CALLBACK_SELECTMENUITEM(handle_menu_click) {
-	cout << "menu item '" << id << "' (\""
+bool handle_menu_click(PG_PopupMenu::MenuItem* item, PG_Pointer clientdata) {
+	cout << "menu item '" << item->getId() << "' (\""
 		<< item->getCaption() << "\") clicked" << endl;
 
-	switch (id) {
+	switch (item->getId()) {
 		case 5:
 			static_cast<TestWindow*>(clientdata)->Show();
 			break;
@@ -262,7 +268,7 @@ void PrintChildObjects(PG_RectList *RectList, char *TabSpace) {
     
 }
 
-PARAGUI_CALLBACK(handle_list) {
+bool handle_list() {
 
 	PG_LogMSG(" ---- List of objects ----\n");
 	PrintChildObjects(PG_Widget::GetWidgetList(),"  +");
@@ -369,8 +375,8 @@ int main(int argc, char* argv[]) {
 	PG_PopupMenu   submenu(NULL, 425, 140, "My SubMenu");
 	PG_PopupMenu   subsubmenu(NULL, 425, 140, "");
 	
-	submenu.SetEventCallback(MSG_SELECTMENUITEM, handle_menu_click);
-	subsubmenu.SetEventCallback(MSG_SELECTMENUITEM, handle_menu_click);
+	submenu.sigSelectMenuItem.connect(slot(handle_menu_click), NULL);
+	subsubmenu.sigSelectMenuItem.connect(slot(handle_menu_click), NULL);
 
 	subsubmenu.addMenuItem("Mordor", 1).
 	    addMenuItem("Minas Morgul", 2).
@@ -381,14 +387,14 @@ int main(int argc, char* argv[]) {
 		addMenuItem("Hrothgar", 3).
         addMenuItem("Long ago", &subsubmenu);
 		
-    popmenu.addMenuItem("Tasty", 1, handle_menu_click).
-        addMenuItem("Even tastier", 2, handle_menu_click).
-        addMenuItem("I'm third here...", 3, handle_menu_click).
-        addMenuItem("And I'm fourth", 4, handle_menu_click).
+    popmenu.addMenuItem("Tasty", 1, slot(handle_menu_click)).
+        addMenuItem("Even tastier", 2, slot(handle_menu_click)).
+        addMenuItem("I'm third here...", 3, slot(handle_menu_click)).
+        addMenuItem("And I'm fourth", 4, slot(handle_menu_click)).
 		addMenuItem("Saga", &submenu).
         addSeparator().
-        addMenuItem("Open Window", 5, handle_menu_click, &wnd).
-        addMenuItem("Quit", 6, handle_menu_click, &app);
+        addMenuItem("Open Window", 5, slot(handle_menu_click), &wnd).
+        addMenuItem("Quit", 6, slot(handle_menu_click), &app);
     
 	popmenu.disableItem(2);
 	
@@ -430,16 +436,13 @@ int main(int argc, char* argv[]) {
 	slider.SetRange(5,20);
 	//slider.SetTransparency(128);
 
-	// connect the "MSG_SLIDE" event with "handler_slider" of slider_label (see macro above, just for testing)
-	slider.SetConnection(MSG_SLIDE, &slider_label, MySliderLabel::handler_slider);
-
-	// that's the real world implementation
-	//slider.SetEventObject(MSG_SLIDE, &slider_label, (MSG_CALLBACK_OBJ)&MySliderLabel::handler_slider);
+	// connect the "MSG_SLIDE" event with "handler_slider" of slider_label
+	slider.sigSlide.connect(slot(slider_label, &MySliderLabel::handler_slider));
 
 	slider.Show();
 
 	PG_Button popbtn(NULL, 20, PG_Rect(430, 250,100,25), "Pop me");
-	popbtn.SetEventCallback(MSG_BUTTONCLICK, handle_popup, &popmenu);
+	popbtn.sigClick.connect(slot(handle_popup), (PG_Pointer)&popmenu);
 	popbtn.Show();
 
 	PG_SpinnerBox spin(NULL, PG_Rect(550,250,130,25));
@@ -457,18 +460,18 @@ int main(int argc, char* argv[]) {
 	drop.Show();
 
 	PG_Button list(NULL, BTN_ID_OK, PG_Rect(400,450,100,30), "List");
-	list.SetEventCallback(MSG_BUTTONCLICK, handle_list, NULL);
+	list.sigClick.connect(slot(handle_list));
 	list.Show();
 
 	PG_Button quit(NULL, BTN_ID_CLOSE, PG_Rect(600,450,100,30), "Quit");
-	quit.SetEventCallback(MSG_BUTTONCLICK, handle_exit, &app);
+	quit.sigClick.connect(slot(handle_exit), (PG_Pointer)&app);
 	quit.Show();
 
 	// hehe, now it gets interesting ...
 	PG_Button show_wnd(NULL, BTN_ID_APPLY, PG_Rect(500,450,100,30), "Window");
 
 	// yeah, man.. believe your eyes
-	show_wnd.SetEventObject(MSG_BUTTONCLICK, &wnd, (MSG_CALLBACK_OBJ)&TestWindow::handle_show_window, (void*)&show_wnd);
+	show_wnd.sigClick.connect(slot(wnd, &TestWindow::handle_show_window));
     
 	show_wnd.Show();
 

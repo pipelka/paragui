@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/25 16:53:57 $
+    Update Date:      $Date: 2003/11/21 12:27:56 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.1 $
     Status:           $State: Exp $
 */
 
@@ -494,7 +494,11 @@ SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* 
 	                           Bmask,
 	                           Amask
 	                       );
-			       
+
+	if(SDL_MUSTLOCK(surface)) {
+		SDL_LockSurface(surface);
+	}
+
 	if ( bpp == 8 )
 		SDL_SetPalette ( surface, SDL_LOGPAL, screen->format->palette->colors, 0, 256 );
 
@@ -506,6 +510,10 @@ SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* 
 		}
 	}
 	
+	if(SDL_MUSTLOCK(surface)) {
+		SDL_UnlockSurface(surface);
+	}
+
 	my_SurfaceCache.AddSurface(key, surface);
 	return surface;
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/18 10:40:38 $
+    Update Date:      $Date: 2003/11/21 12:27:55 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.1 $
     Status:           $State: Exp $
 */
 
@@ -248,6 +248,8 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 					property->value = BKMODE_3TILEH;
 				} else if(tcscmp(T(atts[i+1]), T("3TILEV")) == 0) {
 					property->value = BKMODE_3TILEV;
+				} else if(tcscmp(T(atts[i+1]), T("9TILE")) == 0) {
+					property->value = BKMODE_9TILE;
 				} else {
 					property->value = atoi(atts[i+1]);
 				}

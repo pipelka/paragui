@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/06/29 17:09:49 $
+    Update Date:      $Date: 2003/11/21 12:27:51 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
     Status:           $State: Exp $
 */
 
@@ -43,6 +43,7 @@
 #endif
 
 #include "pgwidget.h"
+#include "pgsignals.h"
 #include <string>
 
 /**
@@ -127,6 +128,24 @@ struct PG_ButtonDataInternal;
 class DECLSPEC PG_Button : public PG_Widget  {
 public:
 
+	/**
+	Standard button IDs
+	*/
+	enum {
+		OK = 0x80000001,
+		YES = 0x80000002,
+		NO = 0x80000003,
+		APPLY = 0x80000004,
+		CANCEL = 0x80000005,
+		CLOSE = 0x80000006,
+		HELP = 0x80000007
+	};
+
+	/**
+	Signal type declaration
+	**/
+	template<class datatype = PG_Pointer> class SignalButtonClick : public PG_Signal1<PG_Button*, datatype> {};
+	
 	/**
 	Constructor for the PG_Button class
 	@param parent	pointer to the parent widget or NULL
@@ -249,7 +268,9 @@ public:
 	@return the current blend level
 	*/
 	Uint8 GetBlendLevel(int mode);
-	
+
+	SignalButtonClick<> sigClick;
+
 protected:
 
 	/**  */
@@ -299,31 +320,38 @@ private:
 // Standard button IDs
 /**
 	Standard button ID: OK.
+	DEPRECATED, USE PG_Button::OK
 */
-#define BTN_ID_OK      0x80000001
+#define BTN_ID_OK PG_Button::OK
 /**
 	Standard button ID: YES.
+	DEPRECATED, USE PG_Button::YES
 */
-#define BTN_ID_YES     0x80000002
+#define BTN_ID_YES PG_Button::YES
 /**
 	Standard button ID: NO.
+	DEPRECATED, USE PG_Button::NO
 */
-#define BTN_ID_NO      0x80000003
+#define BTN_ID_NO PG_Button::NO
 /**
 	Standard button ID: APPLY.
+	DEPRECATED, USE PG_Button::APPLY
 */
-#define BTN_ID_APPLY   0x80000004
+#define BTN_ID_APPLY PG_Button::APPLY
 /**
 	Standard button ID: CANCEL.
+	DEPRECATED, USE PG_Button::CANCEL
 */
-#define BTN_ID_CANCEL  0x80000005
+#define BTN_ID_CANCEL PG_Button::CANCEL
 /**
 	Standard button ID: CLOSE.
+	DEPRECATED, USE PG_Button::CLOSE
 */
-#define BTN_ID_CLOSE   0x80000006
+#define BTN_ID_CLOSE PG_Button::CLOSE
 /**
 	Standard button ID: HELP.
+	DEPRECATED, USE PG_Button::HELP
 */
-#define BTN_ID_HELP    0x80000007
+#define BTN_ID_HELP PG_Button::HELP
 
 #endif // PG_BUTTON_H

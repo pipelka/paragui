@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/01/04 21:13:41 $
+   Update Date:      $Date: 2003/11/21 12:27:56 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.1 $
    Status:           $State: Exp $
  */
 
@@ -256,38 +256,23 @@ void PG_PopupMenu::appendItem(MenuItem *item) {
 
 PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
                                         int ID,
-                                        MSG_CALLBACK handler,
-                                        void *data,
+                                        MenuItem::MenuItemSlot handler,
+                                        PG_Pointer data,
                                         MenuItem::MI_FLAGS flags) {
 
 	MenuItem* item = new MenuItem(this, caption, ID, flags);
 	appendItem(item);
-
-	if (handler) {
-		//action = new PG_Action(ID, handler, data);
-		item->SetEventCallback(MSG_SELECTMENUITEM, handler, data);
-	}
+	item->sigSelectMenuItem.connect(handler, data);
 
 	return *this;
 }
 
 PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
-                                        int ID,
-                                        MSG_CALLBACK_OBJ handler,
-                                        PG_EventObject *obj,
-                                        void *data,
-                                        MenuItem::MI_FLAGS flags) {
-	if (handler && !obj) {
-		//TODO: throw an exception here
-		return *this;
-	}
+				int ID,
+				MenuItem::MI_FLAGS flags) {
 
 	MenuItem* item = new MenuItem(this, caption, ID, flags);
 	appendItem(item);
-
-	if (handler) {
-		item->SetEventObject(MSG_SELECTMENUITEM, obj, handler, data);
-	}
 
 	return *this;
 }
@@ -323,7 +308,7 @@ PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
 
 PG_PopupMenu& PG_PopupMenu::addSeparator() {
 	// Ugly
-	return addMenuItem((char*)0, -1, NULL, 0, MenuItem::MIF_SEPARATOR);
+	return addMenuItem(NULL, -1, MenuItem::MIF_SEPARATOR);
 }
 
 void PG_PopupMenu::disableItem(int id) {
@@ -438,9 +423,9 @@ void PG_PopupMenu::handleClick(int x, int y) {
 		if (!selected->isSubMenu()) {
 			if (!selected->isMute()) {
 				// call item's callback
-				selected->SendMessage(NULL, MSG_SELECTMENUITEM, (unsigned int)selected->getId(), (unsigned long)selected);
+				selected->sigSelectMenuItem(selected);
 				// call general callback (PG_PopupMenu)
-				SendMessage(NULL, MSG_SELECTMENUITEM, (unsigned int)selected->getId(), (unsigned long)selected);
+				sigSelectMenuItem(selected);
 			}
 		}
 
@@ -712,9 +697,9 @@ bool PG_PopupMenu::eventKeyDown(const SDL_KeyboardEvent *key) {
 
 				if (/*actions[selected->getId()] &&*/ !selected->isDisabled()) {
 					// call item's callback
-					selected->SendMessage(NULL, MSG_SELECTMENUITEM, (unsigned int)selected->getId(), (unsigned long)selected);
+					selected->sigSelectMenuItem(selected);
 					// call general callback (PG_PopupMenu)
-					SendMessage(NULL, MSG_SELECTMENUITEM, (unsigned int)selected->getId(), (unsigned long)selected);
+					sigSelectMenuItem(selected);
 				}
 
 				selected->unselect();
@@ -875,28 +860,7 @@ void PG_PopupMenu::eventMouseLeave() {
 	PG_ThemeWidget::eventMouseLeave();
 }
 
-bool PG_PopupMenu::SetMenuItemHandler(int id,MSG_CALLBACK handler,void *data) {
-	MII it;
-	PG_PopupMenu::MenuItem* item;
-	int itid;
-	
-	it=items.begin();
-	
-	while(it!=items.end()) {
-		
-		itid=(*it)->getId();
-		
-		if(id==itid) {
-			item=*it;
-			item->SetEventCallback(MSG_SELECTMENUITEM, handler, data);
-			return true;
-		}
-		it++;
-	}
-	return false;
-}
-
-bool PG_PopupMenu::SetMenuItemEventObject(int id,PG_EventObject* calledobj, MSG_CALLBACK_OBJ cbfunc, void *clientdata) {
+bool PG_PopupMenu::SetMenuItemSlot(int id, MenuItem::MenuItemSlot slot, PG_Pointer clientdata) {
 	MII it;
 	PG_PopupMenu::MenuItem* item;
 	int itid;
@@ -908,7 +872,7 @@ bool PG_PopupMenu::SetMenuItemEventObject(int id,PG_EventObject* calledobj, MSG_
 		
 		if(id==itid) {
 			item=*it;
-			item->SetEventObject(MSG_SELECTMENUITEM,calledobj,cbfunc,clientdata);
+			item->sigSelectMenuItem.connect(slot, clientdata);
 			return true;
 		}
 		it++;

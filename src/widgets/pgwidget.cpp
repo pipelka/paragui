@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/06/19 10:59:26 $
+   Update Date:      $Date: 2003/11/21 12:27:56 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.1 $
    Status:           $State: Exp $
  */
 
@@ -788,7 +788,7 @@ void PG_Widget::Blit(bool recursive, bool restore) {
 	if(recursive) {
 		// draw the children-list
 		if(my_internaldata->childList != NULL) {
-			my_internaldata->childList->Blit();
+			my_internaldata->childList->Blit(my_internaldata->rectClip);
 		}
 	}
 	
@@ -828,7 +828,7 @@ void PG_Widget::Update(bool doBlit) {
 		eventBlit(my_srfObject, src, dst);
 
 		if(my_internaldata->childList != NULL) {
-			my_internaldata->childList->Blit();
+			my_internaldata->childList->Blit(my_internaldata->rectClip);
 		}
 
 		int index = 0;
@@ -1514,7 +1514,8 @@ void PG_Widget::DrawText(int x, int y, const char* text, const SDL_Color& c) {
 }
 
 void PG_Widget::QuitModal() {
-		SendMessage(this, MSG_MODALQUIT, 0, 0);
+	PG_LogDBG("PG_Widget::QuitModal()");
+	eventQuitModal(GetID(), this, 0);
 }
 
 bool PG_Widget::WillQuitModal()
@@ -1552,6 +1553,7 @@ int PG_Widget::RunModal() {
 }
 
 bool PG_Widget::eventQuitModal(int id, PG_MessageObject* widget, unsigned long data) {
+	PG_LogDBG("PG_Widget::eventQuitModal()");
 	my_internaldata->quitModalLoop = true;
 	return true;
 }
@@ -1884,20 +1886,6 @@ void PG_Widget::GetClipRects(PG_Rect& src, PG_Rect& dst) {
 	GetClipRects(src, dst, *this);
 }
 
-bool PG_Widget::eventButtonClick(int id, PG_Widget* widget) {
-	return false;
-}
-
-
-bool PG_Widget::eventScrollPos(int id, PG_Widget* widget, unsigned long data) {
-	return false;
-}
-
-
-bool PG_Widget::eventScrollTrack(int id, PG_Widget* widget, unsigned long data) {
-	return false;
-}
-
 bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
 	bool rc = false;
 
@@ -1913,18 +1901,6 @@ bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
 	}
 
 	switch(msg->type) {
-		case MSG_BUTTONCLICK:
-			rc = eventButtonClick(msg->widget_id, (PG_Widget*)(msg->_from));
-			break;
-
-		case MSG_SCROLLPOS:
-			rc = eventScrollPos(msg->widget_id, (PG_Widget*)(msg->_from), msg->data);
-			break;
-
-		case MSG_SCROLLTRACK:
-			rc = eventScrollTrack(msg->widget_id, (PG_Widget*)(msg->_from), msg->data);
-			break;
-
 		default:
 			rc = false;
 			break;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/18 11:15:28 $
+    Update Date:      $Date: 2003/11/21 12:27:55 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.1 $
     Status:           $State: Exp $
 */
 
@@ -32,14 +32,15 @@
 #include "pglog.h"
 #include "pgfont.h"
 
-#ifdef HAVE_SDLIMAGE
-#include "SDL_image.h"
-#endif
-
+#include "SDL_loadso.h"
 #include "physfsrwops.h"
 
 Uint32 PG_FileArchive::my_instance_count = 0;
 PG_SurfaceCache PG_FileArchive::my_cache;
+static void* SDL_image_obj = NULL;
+
+typedef SDL_Surface* (*IMG_Load_RW_FT)(SDL_RWops* src, int freesrc);
+static IMG_Load_RW_FT IMG_Load_RW_FUNC = NULL;
 
 PG_FileArchive::PG_FileArchive() {
 
@@ -51,6 +52,23 @@ PG_FileArchive::PG_FileArchive() {
 		if(PHYSFS_init("paragui") == 0) {
 			cerr << "Unable to initialize PhysicsFS !" << endl;
 			return;
+		}
+
+		// try different names to find SDL_image
+		SDL_image_obj = SDL_LoadObject("libSDL_image.so");
+		if(SDL_image_obj == NULL) {
+			SDL_image_obj = SDL_LoadObject("libSDL_image-1.2.so.0");
+		}
+		if(SDL_image_obj == NULL) {
+			PG_LogMSG("SDL_image not found! Only bmp images can be loaded!");
+		}
+		else {
+			IMG_Load_RW_FUNC = (IMG_Load_RW_FT)SDL_LoadFunction(SDL_image_obj, "IMG_Load_RW");
+			if(IMG_Load_RW_FUNC == NULL) {
+				PG_LogERR("Unable to load IMG_Load_RW function. SDL_image disabled!");
+				SDL_UnloadObject(SDL_image_obj);
+				SDL_image_obj = NULL;
+			}
 		}
 	}
 
@@ -67,6 +85,10 @@ PG_FileArchive::~PG_FileArchive() {
 
 	if(my_instance_count == 0) {
 		Deinit();
+		if(SDL_image_obj != NULL) {
+			SDL_UnloadObject(SDL_image_obj);
+			SDL_image_obj = NULL;
+		}
 	}
 }
 
@@ -287,11 +309,12 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool usekey, Uint
 		return NULL;
 	}
 
-#ifdef HAVE_SDLIMAGE
-	surface = IMG_Load_RW(rw, 1);
-#else
-	surface = SDL_LoadBMP_RW(rw, 1);
-#endif
+	if(IMG_Load_RW_FUNC != NULL) {
+		surface = IMG_Load_RW_FUNC(rw, 1);
+	}
+	else {
+		surface = SDL_LoadBMP_RW(rw, 1);
+	}
 
 	if(surface == NULL) {
 		PG_LogWRN("Failed to load imagedata from '%s' !", filename);

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/06/29 17:09:49 $
+    Update Date:      $Date: 2003/11/21 12:27:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pgradiobutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -59,6 +59,11 @@
 class DECLSPEC PG_RadioButton : public PG_ThemeWidget {
 public:
 
+	/**
+	Signal type declaration
+	**/
+	template<class datatype = PG_Pointer> class SignalButtonClick : public PG_Signal2<PG_RadioButton*, datatype> {};
+
 	/** */
 	PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, const char* text, PG_RadioButton* firstOfGroup = NULL, const char* style="RadioButton");
 
@@ -90,6 +95,8 @@ public:
 
 	void SetSizeByText(int Width = 0, int Height = 0, const char *Text = NULL);
 
+	SignalButtonClick<bool> sigClick;
+
 protected:
 
 	/** */
@@ -108,7 +115,7 @@ protected:
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
 
 	/** */
-	bool eventButtonClick(int id, PG_Widget* widget);
+	bool handleButtonClick(PG_Button* button);
 
 	PG_RadioButton* my_groupFirst;
 	PG_RadioButton* my_groupNext;

@@ -20,33 +20,34 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/28 16:35:30 $
+    Update Date:      $Date: 2003/11/21 12:27:56 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.1 $
     Status:           $State: Exp $
 */
 
 #include "pgmessagebox.h"
 #include "pgwidget.h"
+#include "pglog.h"
 
 //create PopUp and 2 Buttons
 PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, const PG_Rect& btn2, const char* btn2text, int textalign, const char* style) :
 PG_Window(parent, r, windowtitle, WF_MODAL) {
 
 	my_btnok = new PG_Button(this, 1, btn1, btn1text);
-	my_btnok->sigButtonClick.connect(slot(this, &PG_MessageBox::handleButtonClick));
+	my_btnok->sigClick.connect(slot(*this, &PG_MessageBox::handleButton));
 	
 	my_btncancel = new PG_Button(this, 2, btn2, btn2text);
-	my_btncancel->sigButtonClick.connect(slot(this, &PG_MessageBox::handleButtonClick));
+	my_btncancel->sigClick.connect(slot(*this, &PG_MessageBox::handleButton));
 
 	Init(windowtext, textalign, style);
 }
 
 PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, int textalign, const char* style) :
-PG_Window(parent, r, windowtitle, WF_DEFAULT) {
+PG_Window(parent, r, windowtitle, WF_MODAL) {
 
 	my_btnok = new PG_Button(this, 1, btn1, btn1text);
-	my_btnok->sigButtonClick.connect(slot(this, &PG_MessageBox::handleButtonClick));
+	my_btnok->sigClick.connect(slot(*this, &PG_MessageBox::handleButton));
 	my_btncancel = NULL;
 
 	Init(windowtext, textalign, style);
@@ -80,24 +81,16 @@ void PG_MessageBox::LoadThemeStyle(const char* widgettype) {
 }
 
 //Event?
-bool PG_MessageBox::handleButtonClick(PG_Button* widget, PG_Pointer* data) {
-	//Button clicked?
-	if(widget == my_btnok) {
-		buttonflag=1;
-		QuitModal();
-		return true;
-	}
-	
-	if(widget == my_btncancel) {
-		buttonflag=2;
-		QuitModal();
-		//SendMessage(this, MSG_MODALQUIT, 0, 0);
-		return true;
-	}
-	return false;
+bool PG_MessageBox::handleButton(PG_Button* button) {
+	PG_LogDBG("PG_MessageBox::handleButton()");
+
+	//Set Buttonflag to ButtonID
+	buttonflag = button->GetID();
+	QuitModal();
+	return true;
 }
 
 int PG_MessageBox::WaitForClick() {
-	PG_Window::RunModal();
+	RunModal();
 	return buttonflag;
 }

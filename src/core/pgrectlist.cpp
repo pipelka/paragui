@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/05 14:48:33 $
+    Update Date:      $Date: 2003/11/21 12:27:55 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.1 $
     Status:           $State: Exp $
 */
 
@@ -175,7 +175,7 @@ void PG_RectList::Blit(const PG_Rect& rect) {
 		// blit all children of the widget
 		childs = (*i)->GetChildList();
 		if(childs) {
-			childs->Intersect((PG_Rect*)&rect).Blit();
+			childs->Intersect((PG_Rect*)&rect).Blit(rect);
 		}
 	}
 

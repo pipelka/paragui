@@ -20,283 +20,100 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 23:43:39 $
+    Update Date:      $Date: 2003/11/21 12:27:53 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsignals.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.8.2.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_SIGNALS_H
 #define PG_SIGNALS_H
 
-#include "SDL.h"
-#include <sigc++/signal_system.h>
-#include <iostream>
-#include <map>
-
-class PG_Widget;
-class PG_Button;
-class PG_CheckButton;
-class PG_RadioButton;
-class PG_ScrollBar;
-class PG_Slider;
-class PG_ListBoxItem;
-class PG_LineEdit;
-class PG_SpinnerBox;
-class PG_MenuItem;
-class PG_Window;
-class PG_Application;
-class PG_MessageObject;
-class PG_TabBar;
+#include <sigc++/sigc++.h>
+#include "pgsigconvert.h"
 
 using namespace SigC;
+using namespace SigCX;
 
-typedef void PG_Pointer;
+typedef void* PG_Pointer;
 
-typedef Signal1<bool, PG_Widget*> PG_SignalGeneric;
-
-class PG_Signal0 : 
-public Signal1<bool, PG_Pointer*>,
-public Signal0<bool>
-{
+template<class datatype = PG_Pointer> class PG_Signal0 : public Signal0<bool> {
 public:
 
-	bool operator()(PG_Pointer* data) {
-		Signal1<bool, PG_Pointer*>::emit(data);
-		Signal0<bool>::emit();
-	};
-	
-	bool operator()() {
-		Signal1<bool, PG_Pointer*>::emit(data);
-		Signal0<bool>::emit();
+	Connection connect(const Slot1<bool, datatype>& s, datatype data) {
+		return Signal0<bool>::connect(bind(s, data));
 	};
 
-	Connection connect(const Slot1<bool, PG_Pointer*>& s, PG_Pointer* _data = NULL) {
-		data = _data;
-		return Signal1<bool, PG_Pointer*>::connect(s);
-	};
-
-	Connection connect(const Slot0<bool>& s) {
-		return Signal0<bool>::connect(s);
-	};
-
-private:
-	PG_Pointer* data;
 };
 
-template<class P1>
-class PG_Signal1 : 
-public Signal2<bool, P1, PG_Pointer*>,
-public Signal1<bool, PG_Pointer*>,
-public Signal1<bool, P1>,
-public Signal0<bool>
-{
-public:
+template<class P1, class datatype = PG_Pointer> class PG_Signal1 : public Signal1<bool, P1> {
 
-	virtual ~PG_Signal1() {};
-	
-	virtual bool operator()(P1 p1, PG_Pointer* data) {
-		return
-			Signal2<bool, P1, PG_Pointer*>::emit(p1, data) |
-			Signal1<bool, PG_Pointer*>::emit(data) |
-			Signal1<bool, P1>::emit(p1) |
-			Signal0<bool>::emit();
+	static bool sig_convert0(Slot0<bool>& s, P1 p1) {
+		return s();
 	}
+
+public:
 	
-	virtual bool operator()(P1 p1) {
-		return
-			Signal2<bool, P1, PG_Pointer*>::emit(p1, data) |
-			Signal1<bool, PG_Pointer*>::emit(data) |
-			Signal1<bool, P1>::emit(p1) |
-			Signal0<bool>::emit();
+	Connection connect(const Slot2<bool, P1, datatype>& s, datatype data) {
+		return Signal1<bool, P1>::connect(bind(s, data));
 	};
 
-	virtual bool operator()(PG_Pointer* data) {
-		return
-			Signal1<bool, PG_Pointer*>::emit(data) |
-			Signal0<bool>::emit();
-	};
+	Connection connect(const Slot1<bool, datatype>& s, datatype data) {
+		return connect(bind(s, data));
+	}
 
-	virtual bool operator()() {
-		return
-			Signal0<bool>::emit();
-	};
-	
-	virtual Connection connect(const Slot2<bool, P1, PG_Pointer*>& s, PG_Pointer* _data = NULL) {
-		data = _data;
-		return Signal2<bool, P1, PG_Pointer*>::connect(s);
-	};
-
-	virtual Connection connect(const Slot1<bool, PG_Pointer*>& s, PG_Pointer* _data = NULL) {
-		data = _data;
-		return Signal1<bool, PG_Pointer*>::connect(s);
-	};
-
-	virtual Connection connect(const Slot1<bool, P1>& s) {
+	Connection connect(const Slot1<bool, P1>& s) {
 		return Signal1<bool, P1>::connect(s);
 	}
 
-	virtual Connection connect(const Slot0<bool>& s, PG_Pointer* _data) {
-		data = _data;
-		return Signal0<bool>::connect(s);
-	};
+	Connection connect(const Slot0<bool>& s) {
+		return Signal1<bool, P1>::connect(convert(s, sig_convert0));
+	}
 
-	virtual Connection connect(const Slot0<bool>& s) {
-		return Signal0<bool>::connect(s);
-	};
-
-
-private:
-	PG_Pointer* data;
 };
 
 
-template<class P1, class P2>
-class PG_Signal2 : 
-public Signal3<bool, P1, P2, PG_Pointer*>,
-public Signal2<bool, P1, P2>,
-public Signal1<bool, P2>,
+template<class P1, class P2, class datatype = PG_Pointer> class PG_Signal2 : public Signal2<bool, P1, P2> {
 
-public Signal2<bool, P1, PG_Pointer*>,
-public Signal1<bool, PG_Pointer*>,
-public Signal1<bool, P1>,
-public Signal0<bool>
-{
+	static bool sig_convert_p2(Slot1<bool, P2>& s, P1 p1, P2 p2) {
+		return s(p2);
+	}
+
+	static bool sig_convert_p1(Slot1<bool, P1>& s, P1 p1, P2 p2) {
+		return s(p1);
+	}
+
+	static bool sig_convert0(Slot0<bool>& s, P1 p1, P2 p2) {
+		return s();
+	}
 public:
 
-	virtual ~PG_Signal2() {};
-	
-	virtual bool operator()(P1 p1, P2 p2, PG_Pointer* data) {
-		return
-			Signal3<bool, P1, P2, PG_Pointer*>::emit(p1, p2, data) |
-			Signal2<bool, P1, P2>::emit(p1, p2) |
-			Signal1<bool, P2>::emit(p2) |
-
-			Signal2<bool, P1, PG_Pointer*>::emit(p1, data) |
-			Signal1<bool, PG_Pointer*>::emit(data) |
-			Signal1<bool, P1>::emit(p1) |
-			Signal0<bool>::emit();
+	Connection connect(const Slot3<bool, P1, P2, datatype>& s, datatype data) {
+		return Signal2<bool, P1, P2>::connect(bind(s, data));
 	}
 
-	virtual bool operator()(P1 p1, P2 p2) {
-		return
-			Signal3<bool, P1, P2, PG_Pointer*>::emit(p1, p2, data) |
-			Signal2<bool, P1, P2>::emit(p1, p2) |
-			Signal1<bool, P2>::emit(p2) |
-
-			Signal2<bool, P1, PG_Pointer*>::emit(p1, data) |
-			Signal1<bool, PG_Pointer*>::emit(data) |
-			Signal1<bool, P1>::emit(p1) |
-			Signal0<bool>::emit();
-	}
-	
-	virtual bool operator()(P1 p1, PG_Pointer* data) {
-		return
-			Signal2<bool, P1, PG_Pointer*>::emit(p1, data) |
-			Signal1<bool, PG_Pointer*>::emit(data) |
-			Signal1<bool, P1>::emit(p1) |
-			Signal0<bool>::emit();
-	}
-
-	virtual bool operator()(P1 p1) {
-		return
-			Signal2<bool, P1, PG_Pointer*>::emit(p1, data) |
-			Signal1<bool, PG_Pointer*>::emit(data) |
-			Signal1<bool, P1>::emit(p1) |
-			Signal0<bool>::emit();
-	}
-	
-	virtual bool operator()(PG_Pointer* data ) {
-		return
-			Signal1<bool, PG_Pointer*>::emit(data) |
-			Signal0<bool>::emit();
-	}
-	
-	virtual bool operator()() {
-		return
-			Signal0<bool>::emit();
+	Connection connect(const Slot2<bool, P1, datatype>& s, datatype data) {
+		return Signal2<bool, P1, P2>::connect(bind(s, data));
 	};
 
-	
-	virtual Connection connect(const Slot3<bool, P1, P2, PG_Pointer*>& s, PG_Pointer* _data) {
-		data = _data;
-		return Signal3<bool, P1, P2, PG_Pointer*>::connect(s);
-	}
-
-	virtual Connection connect(const Slot2<bool, P1, P2>& s) {
+	Connection connect(const Slot2<bool, P1, P2>& s) {
 		return Signal2<bool, P1, P2>::connect(s);
 	}
 
-	/*virtual Connection connect(const Slot2<bool, P2, PG_Pointer*>& s, PG_Pointer* _data) {
-		data = _data;
-		return Signal2<bool, P2, PG_Pointer*>::connect(s);
-	}*/
-
-	virtual Connection connect(const Slot1<bool, P2>& s) {
-		return Signal1<bool, P2>::connect(s);
+	Connection connect(const Slot1<bool, P2>& s) {
+		return Signal2<bool, P1, P2>::connect(convert(s, sig_convert_p2));
 	}
 
-	virtual Connection connect(const Slot2<bool, P1, PG_Pointer*>& s, PG_Pointer* _data) {
-		data = _data;
-		return Signal2<bool, P1, PG_Pointer*>::connect(s);
-	};
-
-	virtual Connection connect(const Slot1<bool, PG_Pointer*>& s, PG_Pointer* _data) {
-		data = _data;
-		return Signal1<bool, PG_Pointer*>::connect(s);
-	};
-
-	virtual Connection connect(const Slot1<bool, P1>& s) {
-		return Signal1<bool, P1>::connect(s);
+	Connection connect(const Slot1<bool, P1>& s) {
+		return Signal2<bool, P1, P2>::connect(convert(s, sig_convert_p2));
 	}
 
-	virtual Connection connect(const Slot0<bool>& s, PG_Pointer* _data) {
-		data = _data;
-		return Signal0<bool>::connect(s);
-	};
-
-	virtual Connection connect(const Slot0<bool>& s) {
-		return Signal0<bool>::connect(s);
-	};
-
-
-private:
-	PG_Pointer* data;
+	Connection connect(const Slot0<bool>& s) {
+		return Signal2<bool, P1, P2>::connect(convert(s, sig_convert0));
+	}
 };
 
-
-typedef PG_Signal1<PG_Button*> PG_SignalButtonClick;
-
-typedef PG_Signal1<PG_RadioButton*> PG_SignalRadioButtonClick;
-
-typedef PG_Signal1<PG_ListBoxItem*> PG_SignalSelectItem;
-
-typedef PG_Signal2<PG_ScrollBar*, long> PG_SignalScrollPos;
-
-typedef PG_Signal2<PG_ScrollBar*, long> PG_SignalScrollTrack;
-
-typedef PG_Signal2<PG_Slider*, long> PG_SignalSlide;
-
-typedef PG_Signal2<PG_Slider*, long> PG_SignalSlideEnd;
-
-typedef PG_Signal2<PG_SpinnerBox*, long> PG_SignalSpinnerChange;
-
-typedef PG_Signal1<PG_LineEdit*> PG_SignalEditBegin;
-
-typedef PG_Signal1<PG_LineEdit*> PG_SignalEditEnd;
-
-typedef PG_Signal1<PG_LineEdit*> PG_SignalEditReturn;
-
-typedef Signal2<bool, PG_MenuItem*, PG_Pointer*> PG_SignalMenuItemSelected;
-
-typedef Slot2<bool, PG_MenuItem*, PG_Pointer*> PG_MenuItemSlot;
-
-typedef PG_Signal1<PG_Window*> PG_SignalWindowClose;
-
-typedef PG_Signal1<PG_Window*> PG_SignalWindowMinimize;
-
-typedef PG_Signal1<PG_Window*> PG_SignalWindowRestore;
-
+/*
 typedef PG_Signal1<PG_MessageObject*> PG_SignalAppIdle;
 
 typedef PG_Signal1<PG_Application*> PG_SignalAppQuit;
@@ -306,5 +123,10 @@ typedef PG_Signal1<const SDL_ResizeEvent*> PG_SignalVideoResize;
 typedef PG_Signal2<PG_TabBar*, PG_Button*> PG_SignalTabSelect;
 
 typedef Slot1<bool, PG_Button*> PG_TabSelectSlot;
+
+typedef PG_Signal2<PG_NoteBook*, PG_Widget*> PG_PageSelect;
+
+typedef Slot1<bool, PG_Widget*> PG_PageSelectSlot;
+*/
 
 #endif // PG_SIGNALS_H

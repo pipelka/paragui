@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/05/05 07:47:38 $
+    Update Date:      $Date: 2003/11/21 12:27:51 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
     Status:           $State: Exp $
 */
 
@@ -58,6 +58,11 @@
 
 class DECLSPEC PG_DropDown : public PG_Widget, public PG_EventObject {
 public:
+
+	/**
+	Signal type declaration
+	**/
+	template<class datatype = PG_Pointer> class SignalSelectItem : public PG_Signal1<PG_ListBoxBaseItem*, datatype> {};
 
 	/**
 	Construct a PG_DropDown object.
@@ -144,6 +149,8 @@ public:
 	*/
 	void SelectItem(const int n);
 
+	SignalSelectItem<> sigSelectItem;
+
 protected:
 
 	/** */
@@ -153,7 +160,7 @@ protected:
 	void eventHide();
 
 	/** */
-	bool eventButtonClick (int id, PG_Widget* widget);
+	bool handleButtonClick(PG_Button* button);
 
 	/** */
 	void eventSizeWidget(Uint16 w, Uint16 h);
@@ -168,7 +175,7 @@ protected:
 	PG_Button* my_DropButton;
 	PG_ListBox* my_DropList;
 
-	PARAGUI_CALLBACK(select_handler);
+	bool select_handler(PG_ListBoxBaseItem* item);
 };
 
 #endif	// PG_DROPDOWN_H

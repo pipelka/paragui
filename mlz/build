@@ -2,13 +2,14 @@
 #
 #  Install script for ParaGUI
 #  Builds and installs the shared library components and the config
-#   files of the library
+#  files of the library
 
-ml_check_for_package SDL
-ml_check_for_package SDLimage
-ml_check_for_package expat
-ml_check_for_package freetype
+ml_required_package SDL
+ml_required_package SDLimage
+ml_required_package expat
+ml_required_package freetype
 
+ml_fetchfile paragui-1.0.4.tar.gz http://savannah.nongnu.org/download/paragui/stable.pkg/1.0.4/paragui-1.0.4.tar.gz
 
 CONFIGOPTIONS="--prefix=$TOOLS --libdir=$TOOLS/lib --enable-internalphysfs --with-sdl-prefix=$TOOLS --with-themedir=/usr/share/paragui --disable-sdltest --disable-static --disable-rtti --target=$TARGETARCH"
 COMPILEOPTIONS=

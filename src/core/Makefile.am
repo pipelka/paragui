@@ -16,15 +16,18 @@ libpgcore_la_SOURCES = \
 	pgnavigator.cpp \
 	pgrectlist.cpp \
 	pgsurfacecache.cpp \
-	pgtimerobject.cpp
+	pgtimerobject.cpp \
+	pgsigconvert.cpp
 
-libpgcore_la_LIBADD = 
+libpgcore_la_LIBADD = \
+	$(SIGC_LIBS)
 
 EXTRA_DIST = \
 	physfsrwops.h \
 	pgmsgmap.h
 
 INCLUDES = \
+	$(SIGC_CFLAGS) \
 	$(SDL_CFLAGS) \
 	$(PHYSFS_INCLUDE) \
 	-I$(top_srcdir)/include

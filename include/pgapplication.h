@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/05/26 14:09:47 $
+    Update Date:      $Date: 2003/11/21 12:27:51 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.1 $
     Status:           $State: Exp $
 */
 
@@ -95,8 +95,17 @@
         </pre>
 */
 
+class PG_XMLTag;
+
 class DECLSPEC PG_Application : public PG_MessageObject, public PG_FileArchive, public PG_FontEngine  {
 public:
+
+	/**
+	Signal type declaration
+	**/
+	template<class datatype = PG_Pointer> class SignalQuit : public PG_Signal1<PG_Application*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalVideoResize : public PG_Signal2<PG_Application*, const SDL_ResizeEvent*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalXMLTag : public PG_Signal1<PG_XMLTag*, datatype> {};
 
 	/**  */
 	PG_Application();
@@ -527,7 +536,11 @@ public:
 	because this won't delete pending usermessages.
 	*/
 	static void FlushEventQueue();
-	
+
+	SignalQuit<> sigQuit;
+	SignalVideoResize<> sigVideoResize;
+	SignalXMLTag<> sigXMLTag;
+
 protected:
 
 	/**

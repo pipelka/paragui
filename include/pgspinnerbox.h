@@ -20,18 +20,27 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2003/11/21 12:27:53 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_SPINNERBOX_H
 #define PG_SPINNERBOX_H
 
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgspinnerbox
+%{
+#include "pgspinnerbox.h"
+%}
+#endif
+
 #include "pgmaskedit.h"
 #include "pgbutton.h"
 #include "pgthemewidget.h"
+#include "pgeventobject.h"
 
 /**
  * @author Atani - Mike Dunston
@@ -52,8 +61,13 @@
  * added soon.  Note: using SetValue above will fire this event.
  */
 
-class DECLSPEC PG_SpinnerBox : public PG_ThemeWidget {
+class DECLSPEC PG_SpinnerBox : public PG_ThemeWidget, public PG_EventObject {
 public:
+
+	/**
+	Signal type declaration
+	**/
+	template<class datatype> class SignalChange : public PG_Signal2<PG_SpinnerBox*, datatype> {};
 
 	/**
 	*/
@@ -92,12 +106,12 @@ public:
 		return( m_sMask );
 	}
 
-	PG_SignalSpinnerChange sigSpinnerChange;
-	
+	SignalChange<int> sigChange;
+
 protected:
 
-	virtual bool handleButtonClick(PG_Button* widget, PG_Pointer* data);
-	virtual bool handleEditEnd(PG_LineEdit* edit);
+	bool handleButtonClick(PG_Button* button);
+	bool handle_editend(PG_LineEdit* edit);
 
 private:
 

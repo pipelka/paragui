@@ -20,7 +20,7 @@
 
 #define ID_APP_EXIT		1
 
-PARAGUI_CALLBACK(exit_handler) {
+bool exit_handler(PG_Pointer clientdata) {
 
 	// we can pass in some pointer to any userdata
 	// (in this case we get a pointer to the application object)
@@ -33,9 +33,9 @@ PARAGUI_CALLBACK(exit_handler) {
 	return true;
 }
 
-PARAGUI_CALLBACK_SELECTMENUITEM(handle_menu_click) {
+bool handle_menu_click(PG_PopupMenu::MenuItem* item, PG_Pointer clientdata) {
 
-	switch (id) {
+	switch (item->getId()) {
 	  case ID_APP_EXIT:
 		static_cast<PG_Application*>(clientdata)->Quit();
 		break;
@@ -262,14 +262,14 @@ int main(int argc, char* argv[]) {
 	PG_MenuBar menubar(NULL, PG_Rect(100, 0, 400, 30));
 	PG_PopupMenu   popmenu(NULL, 425, 140, "File");
 
-	popmenu.addMenuItem("Nail", 99, handle_menu_click).
-        addMenuItem("Quit", ID_APP_EXIT, handle_menu_click, &app);
+	popmenu.addMenuItem("Nail", 99, slot(handle_menu_click)).
+        addMenuItem("Quit", ID_APP_EXIT, slot(handle_menu_click), &app);
  
 	menubar.Add("File", &popmenu);
 
 	menubar.Show();
 
-	myButton.SetEventCallback(MSG_BUTTONCLICK, exit_handler, &app);
+	myButton.sigClick.connect(slot(exit_handler), (PG_Pointer)&app);
 
 	// now we have to make the button visible
 

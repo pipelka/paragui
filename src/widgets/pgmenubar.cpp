@@ -45,18 +45,15 @@ void PG_MenuBar::Add(const char* text, PG_PopupMenu* menu, Uint16 indent, Uint16
 
 	last->button->SetFontSize(GetFontSize());
 
-	last->button->SetEventObject(
-							MSG_BUTTONCLICK,
-							this, (MSG_CALLBACK_OBJ)&PG_MenuBar::handle_button, last);
+	last->button->sigClick.connect(slot(*this, &PG_MenuBar::handle_button), (PG_Pointer)last);
 
 	last->popupmenu = menu;
 
 	ItemList.push_back(last);
 }
 
-PARAGUI_CALLBACK(PG_MenuBar::handle_button) {
-	PG_Button* button = static_cast<PG_Button*>(widget);
-	MenuBarItem* item = static_cast<MenuBarItem*>(clientdata);
+bool PG_MenuBar::handle_button(PG_Button* button, PG_Pointer last) {
+	MenuBarItem* item = static_cast<MenuBarItem*>(last);
 
 	// check if we are visible
 	if(item->popupmenu->IsVisible()) {

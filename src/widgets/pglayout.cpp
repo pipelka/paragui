@@ -1090,7 +1090,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 	if(XMLParser->Section & XML_SECTION_HEAD) {
 		// create tag description
 		PG_XMLTag* n = new PG_XMLTag(name, atts);
-		PG_Application::GetApp()->SendMessage(NULL, MSG_XMLTAG, 0, (MSG_DATA)n);
+		PG_Application::GetApp()->sigXMLTag(n);
 	}
 	
 	PG_LogWRN("Unknown tag `%s` in section %d !",name,XMLParser->Section);

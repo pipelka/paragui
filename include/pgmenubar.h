@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:37 $
+    Update Date:      $Date: 2003/11/21 12:27:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmenubar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
     Status:           $State: Exp $
 */
 
@@ -94,7 +94,7 @@ private:
 	/**
 		Callback handler for MSG_BUTTONCLICK messages
 	*/
-	PARAGUI_CALLBACK(handle_button);
+	bool handle_button(PG_Button* button, PG_Pointer last);
 
 	void Cleanup();
 

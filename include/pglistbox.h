@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/06/29 17:09:49 $
+    Update Date:      $Date: 2003/11/21 12:27:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
     Status:           $State: Exp $
 */
 
@@ -48,6 +48,11 @@
 
 class DECLSPEC PG_ListBox : public PG_WidgetList {
 public:
+
+	/**
+	Signal type declaration
+	**/
+	template<class datatype = PG_Pointer> class SignalSelectItem : public PG_Signal1<PG_ListBoxBaseItem*, datatype> {};
 
 	/** */
 	PG_ListBox(PG_Widget* parent, const PG_Rect& r, const char* style="ListBox");
@@ -101,6 +106,8 @@ public:
 	int GetSelectedIndex();
 
 	void GetSelectedItems(std::vector<PG_ListBoxBaseItem*>& items);
+
+	SignalSelectItem<> sigSelectItem;
 
 protected:
 

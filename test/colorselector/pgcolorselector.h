@@ -46,7 +46,7 @@ public:
 
 protected:
 	
-	PARAGUI_CALLBACK(handle_colorslide);
+	bool handle_colorslide(long data);
 
 	void SetBaseColor(const SDL_Color& c);
 	

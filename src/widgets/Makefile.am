@@ -29,9 +29,13 @@ libpgwidgets_la_SOURCES = \
 	pgwindow.cpp \
 	pgmenubar.cpp
 
+libpgwidgets_la_LIBADD = \
+	$(SIGC_LIBS)
+
 EXTRA_DIST =
 
 INCLUDES = \
+	$(SIGC_CFLAGS) \
 	$(EXPAT_INCLUDE) \
 	$(SDL_CFLAGS) \
 	-I$(top_srcdir)/include

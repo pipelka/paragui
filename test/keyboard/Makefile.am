@@ -4,7 +4,7 @@ keyboard_SOURCES = \
 	keyboard.cpp \
 	main.cpp
 
-keyboard_LDADD = -L../../src $(PARAGUI_LIBS)
+keyboard_LDADD = -L../../src ../../src/libparagui.la $(FREETYPE_LIBS)
 
 EXTRA_DIST = \
 	keyboard.h

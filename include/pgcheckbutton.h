@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2003/11/21 12:27:51 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcheckbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -32,6 +32,14 @@
 
 #ifndef PG_CHECKBUTTON_H
 #define PG_CHECKBUTTON_H
+
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgcheckbutton
+%{
+#include "pgcheckbutton.h"
+    %}
+#endif
 
 #include "pgradiobutton.h"
 
@@ -66,6 +74,7 @@ protected:
 
 	/** */
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetButton);
+
 };
 
 #endif // PG_CHECKBUTTON_H

@@ -20,42 +20,48 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
-    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcheckbutton.cpp,v $
+    Update Date:      $Date: 2003/11/21 12:27:51 $
+    Source File:      $Source: /sources/paragui/paragui/include/Attic/pgeventobject.h,v $
     CVS/RCS Revision: $Revision: 1.3.2.1 $
     Status:           $State: Exp $
 */
 
-#include "pgcheckbutton.h"
+/** \file pgeventobject.h
+	Header file of the PG_EventObject class.
+*/
 
-PG_CheckButton::PG_CheckButton(PG_Widget* parent, int id, const PG_Rect& r, const char* text, const char* style)
-        : PG_RadioButton(parent, id, r, text, NULL)
-{
-	LoadThemeStyle(style);
-	my_widgetButton->LoadThemeStyle(style, "CheckKnob");
+#ifndef PG_EVENTOBJECT_H
+#define PG_EVENTOBJECT_H
 
-	SetUnpressed();
-}
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgeventobject
+%{
+#include "pgeventobject.h"
+%}
+#endif
 
-PG_CheckButton::~PG_CheckButton() {}
+#include "paragui.h"
+#include "pgsignals.h"
 
-bool PG_CheckButton::eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetButton) {
+/**
+	@author Alexander Pipelka
+	
+	@short Base class for all objects that define callback members
+ 
+	If you want to define a callback function as a member of a class you
+	have to subclass your objects from PG_EventObject. This is necessary
+	because member callbacks are handled differently from plain "C" callbacks.
+*/
 
-	if(my_isPressed) {
-		SetUnpressed();
-	} else {
-		SetPressed();
-	}
+class DECLSPEC PG_EventObject {
+public:
 
-	return true;
-}
+	/** */
+	PG_EventObject();
 
-void PG_CheckButton::SetUnpressed() {
-	my_widgetButton->SetPressed(false);
-	my_isPressed = false;
+	/** */
+	virtual ~PG_EventObject();
+};
 
-	Update();
-
-	// Notify parent
-	sigClick(this, false);
-}
+#endif	// PG_EVENTOBJECT_H

@@ -20,14 +20,22 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2003/11/21 12:27:53 $
     Source File:      $Source: /sources/paragui/paragui/include/pgslider.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_SLIDER_H
 #define PG_SLIDER_H
+
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgslider
+%{
+#include "pgslider.h"
+    %}
+#endif
 
 #include "paragui.h"
 #include "pgscrollbar.h"
@@ -35,6 +43,12 @@
 class DECLSPEC PG_Slider : public PG_ScrollBar {
 
 public:
+
+	/**
+	Signal type declaration
+	**/
+	template<class datatype> class SignalSlide : public PG_Signal2<PG_ScrollBar*, datatype> {};
+	template<class datatype> class SignalSlideEnd : public PG_Signal2<PG_ScrollBar*, datatype> {};
 
 	/** */
 	PG_Slider(PG_Widget* parent, int id, const PG_Rect& r, int direction = PG_SB_VERTICAL, const char* style="Slider");
@@ -44,12 +58,11 @@ public:
 
 	void LoadThemeStyle(const char* widgettype);
 
-	PG_SignalSlide sigSlide;
-	
+	SignalSlide<long> sigSlide;
+	SignalSlideEnd<long> sigSlideEnd;
+
 protected:
 
-	virtual bool handleTrack(PG_ScrollBar* from, long pos);
-	
 	/** */
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
 

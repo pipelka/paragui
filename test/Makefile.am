@@ -22,50 +22,52 @@ noinst_PROGRAMS = \
 	layouttest \
 	windowresize
 
+LFLAGS=-L../src ../src/libparagui.la $(FREETYPE_LIBS)
+
 widgetlistbug_SOURCES = widgetlistbug.cpp
-widgetlistbug_LDADD = -L../src $(PARAGUI_LIBS)
+widgetlistbug_LDADD = $(LFLAGS) 
 
 eventbug_SOURCES = event_bug.cpp
-eventbug_LDADD = -L../src $(PARAGUI_LIBS)
+eventbug_LDADD = $(LFLAGS)
 
 array_SOURCES = array.cpp
-array_LDADD = -L../src $(PARAGUI_LIBS)
+array_LDADD = $(LFLAGS)
 
 writefile_SOURCES = writefile.cpp
-writefile_LDADD = -L../src $(PARAGUI_LIBS)
+writefile_LDADD = $(LFLAGS)
 
 stress1_SOURCES = stress1.cpp
-stress1_LDADD = -L../src $(PARAGUI_LIBS)
+stress1_LDADD = $(LFLAGS)
 
 stress2_SOURCES = stress2.cpp
-stress2_LDADD = -L../src $(PARAGUI_LIBS)
+stress2_LDADD = $(LFLAGS)
 
 listbox_SOURCES = listbox.cpp
-listbox_LDADD = -L../src $(PARAGUI_LIBS)
+listbox_LDADD = $(LFLAGS)
 
 windowresize_SOURCES = windowresize.cpp
-windowresize_LDADD = -L../src $(PARAGUI_LIBS)
+windowresize_LDADD = $(LFLAGS)
 
 dropdown_SOURCES = dropdown.cpp
-dropdown_LDADD = -L../src $(PARAGUI_LIBS)
+dropdown_LDADD = $(LFLAGS)
 
 animation_SOURCES = animation.cpp
-animation_LDADD = -L../src $(PARAGUI_LIBS)
+animation_LDADD = $(LFLAGS)
 
 dblbuffer_SOURCES = dblbuffer.cpp
-dblbuffer_LDADD = -L../src $(PARAGUI_LIBS)
+dblbuffer_LDADD = $(LFLAGS)
 
 paratest_SOURCES = paratest.cpp
-paratest_LDADD = -L../src $(PARAGUI_LIBS)
+paratest_LDADD = $(LFLAGS)
 
 navtest_SOURCES = navtest.cpp
-navtest_LDADD = -L../src $(PARAGUI_LIBS)
+navtest_LDADD = $(LFLAGS)
 
 windowtest_SOURCES = windowtest.cpp
-windowtest_LDADD = -L../src $(PARAGUI_LIBS)
+windowtest_LDADD = $(LFLAGS)
 
 layouttest_SOURCES = layouttest.cpp
-layouttest_LDADD = -L../src $(PARAGUI_LIBS)
+layouttest_LDADD = $(LFLAGS)
 
 INCLUDES = $(PARAGUI_CFLAGS) -I$(top_srcdir)/include
 

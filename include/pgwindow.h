@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/07 22:28:18 $
+    Update Date:      $Date: 2003/11/21 12:27:54 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -61,6 +61,13 @@ typedef enum {
 class DECLSPEC PG_Window : public PG_ThemeWidget  {
 public:
 
+	/**
+	Signal type declaration
+	**/
+	typedef PG_Signal1<PG_Window*> SignalWindowClose;
+	typedef PG_Signal1<PG_Window*> SignalWindowMinimize;
+	typedef PG_Signal1<PG_Window*> SignalWindowRestore;
+
 	/** */
 	PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext, Uint32 flags = WF_DEFAULT, const char* style="Window", int heightTitlebar = 25);
 
@@ -94,6 +101,10 @@ public:
 	
 	void SetIcon(SDL_Surface* icon);
 	
+	SignalWindowClose sigClose;
+	SignalWindowMinimize sigMinimize;
+	SignalWindowRestore sigRestore;
+
 protected:
 
 	/** */
@@ -106,7 +117,7 @@ protected:
 	void eventSizeWidget(Uint16 w, Uint16 h);
 
 	/** */
-	bool eventButtonClick(int id, PG_Widget* widget);
+	bool handleButtonClick(PG_Button* button);
 
 	/** */
 	bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);

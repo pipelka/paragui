@@ -3,11 +3,10 @@
 #include "pglistbox.h"
 #include "pglistboxitem.h"
 
-PARAGUI_CALLBACK(handleListBoxItem) {
+bool handleListBoxItem(PG_ListBoxBaseItem* item) {
 	static int counter = 1;
 	char text[20];
 	
-	PG_ListBoxItem* item = reinterpret_cast<PG_ListBoxItem*>(data);
 	PG_ListBox* list = item->GetParent();
 	
 	list->DeleteAll();
@@ -31,7 +30,7 @@ int main( int argc, char **argv )
 	app.SetEmergencyQuit(true);
 	
 	PG_ListBox listbox(NULL, PG_Rect(10,10,300,100));
-	listbox.SetEventCallback(MSG_SELECTITEM, handleListBoxItem);
+	listbox.sigSelectItem.connect(slot(handleListBoxItem));
 	listbox.Show();
 
 	PG_ListBoxItem* items[10];

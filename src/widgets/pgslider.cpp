@@ -20,15 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2003/11/21 12:27:56 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgslider.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.1 $
     Status:           $State: Exp $
 */
 
 #include "pgslider.h"
 #include "pgapplication.h"
-#include "pgtheme.h"
 
 PG_Slider::PG_Slider(PG_Widget* parent, int id, const PG_Rect& r, int direction, const char* style) : PG_ScrollBar(parent, id, r, direction) {
 
@@ -67,7 +66,10 @@ PG_Slider::PG_Slider(PG_Widget* parent, int id, const PG_Rect& r, int direction,
 
 		SetPosition(scroll_min);
 	}
-	sigScrollTrack.connect(slot(this, &PG_Slider::handleTrack));
+
+	// connect signals
+	sigScrollPos.connect(sigSlideEnd.slot());
+	sigScrollTrack.connect(sigSlide.slot());
 }
 
 PG_Slider::~PG_Slider() {}
@@ -126,7 +128,7 @@ bool PG_Slider::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 			break;
 	}
 
-	sigSlide(this, scroll_current);
+	sigSlideEnd(this, scroll_current);
 
 	return true;
 }
@@ -154,8 +156,4 @@ void PG_Slider::eventSizeWidget(Uint16 w, Uint16 h) {
 	}
 
 	dragbutton->SizeWidget(position[3].w, position[3].h);
-}
-
-bool PG_Slider::handleTrack(PG_ScrollBar* from, long pos) {
-	return sigSlide(this, pos);
 }

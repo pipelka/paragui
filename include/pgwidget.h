@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/07 22:28:18 $
+    Update Date:      $Date: 2003/11/21 12:27:53 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -845,15 +845,6 @@ protected:
 		This messagehandler can be overridden to perform custom operations.
 	*/	
 	bool eventMessage(MSG_MESSAGE* msg);
-
-	/**  */
-	virtual bool eventButtonClick(int id, PG_Widget* widget);
-
-	/**  */
-	virtual bool eventScrollPos(int id, PG_Widget* widget, unsigned long data);
-
-	/**  */
-	virtual bool eventScrollTrack(int id, PG_Widget* widget, unsigned long data);
 
 	/**
 	Callback for the MoveWidget event

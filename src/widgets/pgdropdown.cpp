@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/05/05 07:47:38 $
+    Update Date:      $Date: 2003/11/21 12:27:56 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -40,10 +40,11 @@ PG_DropDown::PG_DropDown(PG_Widget* parent, int id, const PG_Rect& r, const char
 
 	PG_Rect rbutton(abs(r.my_width - r.my_height), 0, r.my_height, r.my_height);
 	my_DropButton = new PG_Button(this, PG_IDDROPDOWN_BOX, rbutton, NULL, style);
+	my_DropButton->sigClick.connect(slot(*this, &PG_DropDown::handleButtonClick));
 
 	PG_Rect rlist(r.my_xpos, r.my_ypos + r.my_height +1, r.my_width, r.my_height * 5);
 	my_DropList = new PG_ListBox(NULL, rlist, style);
-	my_DropList->SetEventObject(MSG_SELECTITEM, this, (MSG_CALLBACK_OBJ)&PG_DropDown::select_handler);
+	my_DropList->sigSelectItem.connect(slot(*this, &PG_DropDown::select_handler));
 
 	//LoadThemeStyle(style);
 }
@@ -83,8 +84,8 @@ void PG_DropDown::eventHide() {
 	my_DropList->Hide();
 }
 
-bool PG_DropDown::eventButtonClick (int id, PG_Widget* widget) {
-	if(id != PG_IDDROPDOWN_BOX) {
+bool PG_DropDown::handleButtonClick(PG_Button* button) {
+	if(button->GetID() != PG_IDDROPDOWN_BOX) {
 		return false;
 	}
 
@@ -132,8 +133,8 @@ void PG_DropDown::eventMoveWidget(int x, int y) {
 	}
 }
 
-PARAGUI_CALLBACK(PG_DropDown::select_handler) {
-	PG_ListBoxItem* item = (PG_ListBoxItem*)data;
+bool PG_DropDown::select_handler(PG_ListBoxBaseItem* item) {
+	//PG_ListBoxItem* item = (PG_ListBoxItem*)data;
 
 	my_EditBox->SetText(item->GetText());
 	item->Select(false);
@@ -145,7 +146,7 @@ PARAGUI_CALLBACK(PG_DropDown::select_handler) {
 	}
 
 	eventSelectItem(item);
-	SendMessage(NULL, MSG_SELECTITEM, GetID(), (unsigned long)item);
+	sigSelectItem(item);
 
 	return true;
 }

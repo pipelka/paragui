@@ -9,19 +9,20 @@
 #ifndef _KEYBOARD
 #define _KEYBOARD
 
-#include <string>
 #include "pglabel.h"
 #include "pgbutton.h"
 #include "pglineedit.h"
+#include "pgeventobject.h"
+#include <string>
 
-class TKey_LineEdit : public PG_LineEdit
+class TKey_LineEdit : public PG_LineEdit, public PG_EventObject
 {
  private:
 	unsigned int nReturnValue;
 	bool bFirst;
 	string InitialText;
  protected:
- 	virtual bool SendKey(int,PG_Widget*,unsigned long,void*);
+ 	virtual bool SendKey(PG_Button* pWidget);
  	virtual void eventInputFocusLost(PG_MessageObject*);
 	PG_Label* pKeyboardSpace;
 	PG_LineEdit* pDisplay;

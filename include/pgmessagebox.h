@@ -20,14 +20,22 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2003/11/21 12:27:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessagebox.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_MESSAGEBOX_H
 #define PG_MESSAGEBOX_H
+
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgmessagebox
+%{
+#include "pgmessagebox.h"
+    %}
+#endif
 
 #include "paragui.h"
 #include "pgbutton.h"
@@ -56,6 +64,10 @@ public:
 	*/
 	PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, const PG_Rect& btn2, const char* btn2text, int textalign=PG_TA_CENTER, const char* style="MessageBox");
 
+#ifdef SWIG
+
+	%name(PG_MessageBox1) PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, int textalign=PG_TA_CENTER, const char* style="MessageBox");
+#else
 	/**
 	Creates a PopUp with 1 Button
 
@@ -68,6 +80,7 @@ public:
 	@param textalign						Alignment for windowtext
 	*/
 	PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, int textalign=PG_TA_CENTER, const char* style="MessageBox");
+#endif
 
 	/**
 	Destructor
@@ -84,12 +97,11 @@ public:
 protected:
 
 	/**
-	Checks Event, if button is clicked, sets buttonflag to ID of Button		
+	Checks if button is pressed
 
-	@param id											ButtonID
-	@param widget									widget for Evenet
+	@param button pointer to PG_BUtton
 	*/
-	bool handleButtonClick(PG_Button* widget, PG_Pointer* data);
+	bool handleButton(PG_Button* button);
 
 	/**
 	Buttonflag is set to ButtonID, if a button is clicked

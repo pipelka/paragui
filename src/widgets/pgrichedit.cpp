@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/06/29 17:09:49 $
+   Update Date:      $Date: 2003/11/21 12:27:56 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.1 $
    Status:           $State: Exp $
 */
 
@@ -39,7 +39,7 @@ const Uint32 PG_RichEdit::my_FontBeginMark = 010;
 PG_RichEdit::PG_RichEdit(PG_Widget* parent, const PG_Rect& r, bool autoVerticalResize, Uint32 linewidth, Uint32 tabSize, Uint32 childsborderwidth, const char* style) :
 PG_WidgetListEx(parent, r, style) {
 
-	EnableScrollBar(true, PG_SB_HORIZONTAL);
+	//EnableScrollBar(true, PG_SB_HORIZONTAL);
 
 	my_listwidth = (linewidth != 0) ? linewidth : r.my_width;
 	my_ChildsBorderWidth = childsborderwidth;

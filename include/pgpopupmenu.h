@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:38 $
+    Update Date:      $Date: 2003/11/21 12:27:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -39,6 +39,7 @@
 #endif
 
 #include "pgthemewidget.h"
+#include "pgsignals.h"
 
 #include <string>
 #include <list>
@@ -97,6 +98,15 @@ public:
 			MIF_SUBMENU = 0x04
 		};
 	
+		/**
+		Signal type declaration
+		**/
+		template<class datatype = PG_Pointer> class SignalSelectMenuItem : public PG_Signal1<MenuItem*, datatype> {};
+
+		SignalSelectMenuItem<> sigSelectMenuItem;
+
+		typedef Slot2<bool, MenuItem*, PG_Pointer> MenuItemSlot;
+
 	public: // methods
 		MenuItem(PG_PopupMenu *parent,
 				 char *caption,
@@ -182,6 +192,11 @@ public:
 
 public: // methods
 
+	/**
+	Signal type declaration
+	**/
+	template<class datatype = PG_Pointer> class SignalSelectMenuItem : public PG_Signal1<MenuItem*, datatype> {};
+
 	PG_PopupMenu(PG_Widget *parent,
 	             int x, int y,
 	             char *caption,
@@ -210,35 +225,19 @@ public: // methods
 	 *
 	 */
 	PG_PopupMenu& addMenuItem(char *caption,
-	                          int ID,
-							  MSG_CALLBACK handler = 0,
-	                          void *data = 0,
-	                          MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
-
-	/**
-	 * Adds a menu item whose handler (if any) is set to be a member
-	 * method of some object.
-	 *
-	 * @param caption   the item caption
-	 * @param ID        the item identifier
-	 * @param handler   function to handle the menu item click
-	 * @param obj       object the 'handler' function lives in.
-	 * @param data      application-specific data associated with the menu
-	 *                  item action.
-	 * @param flags     menu item flags
-	 *
-	 * @note @code obj @endcode cannot be 0 if @code handler @endcode is present
-	 */
-	PG_PopupMenu& addMenuItem(char *caption,
-	                          int ID,
-							  MSG_CALLBACK_OBJ handler,
-	                          PG_EventObject *obj,
-	                          void *data = 0,
-	                          MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
+				int ID,
+				MenuItem::MenuItemSlot,
+				PG_Pointer data = NULL,
+				MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
 
 	PG_PopupMenu& addMenuItem(char *caption,
-	                          PG_PopupMenu *sub,
-	                          MenuItem::MI_FLAGS flags = MenuItem::MIF_SUBMENU);
+				int ID,
+				MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
+
+	PG_PopupMenu& addMenuItem(char *caption,
+				PG_PopupMenu *sub,
+				MenuItem::MI_FLAGS flags = MenuItem::MIF_SUBMENU);
+
 #endif // SWIG
 
 	/**
@@ -248,9 +247,7 @@ public: // methods
 
 	PG_PopupMenu& addSeparator();
 
-	bool SetMenuItemHandler(int id,MSG_CALLBACK handler,void *data);
-
-	bool SetMenuItemEventObject(int id,PG_EventObject* calledobj, MSG_CALLBACK_OBJ cbfunc, void *clientdata);
+	bool SetMenuItemSlot(int id, MenuItem::MenuItemSlot slot, PG_Pointer clientdata = NULL);
 
 	inline int maxItemWidth() const;
 
@@ -269,6 +266,8 @@ public: // methods
 	 *
 	 */
 	void trackMenu(int x = -1, int y = -1);
+
+	SignalSelectMenuItem<> sigSelectMenuItem;
 
 protected: // methods
 

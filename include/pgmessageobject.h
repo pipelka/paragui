@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:37 $
+    Update Date:      $Date: 2003/11/21 12:27:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -38,6 +38,7 @@
 #endif
 
 #include "paragui.h"
+#include "pgsignals.h"
 #include <vector>
 
 class PG_Widget;
@@ -50,9 +51,15 @@ class PG_Widget;
 	Provides a message pump and global handlers for all other PG_MessageObject instances.
 */
 
-class DECLSPEC PG_MessageObject {
+class DECLSPEC PG_MessageObject : public SigC::Object {
 
 public:
+
+	/**
+	Signal type declaration
+	**/
+	template<class datatype = PG_Pointer> class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {};
+
 	/**
 	Creates a PG_MessageObject
 	*/
@@ -161,6 +168,9 @@ public:
 	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
 	*/
 	virtual bool ProcessEvent(const SDL_Event* event);
+
+
+	SignalAppIdle<> sigAppIdle;
 
 protected:
 

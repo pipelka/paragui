@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/22 10:49:01 $
+    Update Date:      $Date: 2003/11/21 12:27:51 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.1 $
     Status:           $State: Exp $
 */
 
@@ -147,6 +147,11 @@ using namespace std;
 	Macro defining the background mode for vertical 3 part tiling
 */
 #define BKMODE_3TILEV		4
+/**
+	Backgroundmode 9TILE.
+	Macro defining the background mode for 9 part tiling
+*/
+#define BKMODE_9TILE		5
 
 // Button states
 
