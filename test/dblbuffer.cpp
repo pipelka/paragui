@@ -7,7 +7,15 @@
 #include "pgbutton.h"
 #include "pglabel.h"
 #include "pgcheckbutton.h"
-#include "pgtheme.h"
+
+/*
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cctype>
+
+#include "SDL.h"
+*/
 
 #include <ctime>
 
@@ -23,22 +31,20 @@ int sprites_visible;
 int done = 0;
 int bForeground = 0;
 
-bool handle_quit(PG_Button* button, PG_Pointer* data) {
+PARAGUI_CALLBACK(handle_quit) {
 	done = 1;
 	return true;
 }
 
-bool handle_toggle(PG_RadioButton* button, PG_Pointer* data) {
+PARAGUI_CALLBACK(handle_toggle) {
 	bForeground = 1-bForeground;
 	return true;
 }
 
 int LoadSprite(SDL_Surface *screen, char *file)
 {
-	SDL_Surface *temp;
-
 	/* Load the sprite image */
-	sprite = SDL_LoadBMP(file);
+	sprite = PG_FileArchive::LoadSurface(file, true);
 	if ( sprite == NULL ) {
 		PG_LogMSG( "Couldn't load %s: %s", file, SDL_GetError());
 		return(-1);
@@ -50,16 +56,6 @@ int LoadSprite(SDL_Surface *screen, char *file)
 						*(Uint8 *)sprite->pixels);
 	}
 
-	/* Convert sprite to video format */
-	temp = SDL_DisplayFormat(sprite);
-	SDL_FreeSurface(sprite);
-	if ( temp == NULL ) {
-		PG_LogMSG( "Couldn't convert background: %s",
-							SDL_GetError());
-		return(-1);
-	}
-	sprite = temp;
-
 	/* We're ready to roll. :) */
 	return(0);
 }
@@ -70,6 +66,8 @@ void MoveSprites(SDL_Surface *screen, Uint32 background)
 	SDL_Rect area, *position, *velocity;
 
 	nupdates = 0;
+
+	SDL_SetAlpha(sprite, 0, 0);
 
 	/* Move the sprite, bounce at the wall, and draw */
 	for ( i=0; i<numsprites; ++i ) {
@@ -198,11 +196,11 @@ int main(int argc, char *argv[])
 	app.ShowCursor(PG_CURSOR_SOFTWARE);
 	// get a pointer to the "quit" button
 	PG_Button* btn = static_cast<PG_Button*>(app.GetWidgetByName("quit"));
-	btn->sigButtonClick.connect(slot(handle_quit));
+	btn->SetEventCallback(MSG_BUTTONCLICK, handle_quit);
 
 	// get the checkbutton
 	PG_CheckButton* toggle = static_cast<PG_CheckButton*>(app.GetWidgetByName("toggle"));
-	toggle->sigButtonClick.connect(slot(handle_toggle));
+	toggle->SetEventCallback(MSG_BUTTONCLICK, handle_toggle);
 
 	// get the label
 	PG_Label* fps = static_cast<PG_Label*>(app.GetWidgetByName("fps"));
@@ -336,7 +334,6 @@ int main(int argc, char *argv[])
 			//SDL_UpdateRects(screen, nupdates, sprite_rects);
 		}
 	}
-	SDL_FreeSurface(sprite);
 	free(mem);
 
 	/* Print out some timing information */

@@ -1,24 +1,24 @@
-# Microsoft Developer Studio Project File - Name="test" - Package Owner=<4>
+# Microsoft Developer Studio Project File - Name="dblbuffer" - Package Owner=<4>
 # Microsoft Developer Studio Generated Build File, Format Version 6.00
 # ** NICHT BEARBEITEN **
 
 # TARGTYPE "Win32 (x86) Application" 0x0101
 
-CFG=test - Win32 Debug
+CFG=dblbuffer - Win32 Debug
 !MESSAGE Dies ist kein gültiges Makefile. Zum Erstellen dieses Projekts mit NMAKE
 !MESSAGE verwenden Sie den Befehl "Makefile exportieren" und führen Sie den Befehl
 !MESSAGE 
-!MESSAGE NMAKE /f "test.mak".
+!MESSAGE NMAKE /f "dblbuffer.mak".
 !MESSAGE 
 !MESSAGE Sie können beim Ausführen von NMAKE eine Konfiguration angeben
 !MESSAGE durch Definieren des Makros CFG in der Befehlszeile. Zum Beispiel:
 !MESSAGE 
-!MESSAGE NMAKE /f "test.mak" CFG="test - Win32 Debug"
+!MESSAGE NMAKE /f "dblbuffer.mak" CFG="dblbuffer - Win32 Debug"
 !MESSAGE 
 !MESSAGE Für die Konfiguration stehen zur Auswahl:
 !MESSAGE 
-!MESSAGE "test - Win32 Release" (basierend auf  "Win32 (x86) Application")
-!MESSAGE "test - Win32 Debug" (basierend auf  "Win32 (x86) Application")
+!MESSAGE "dblbuffer - Win32 Release" (basierend auf  "Win32 (x86) Application")
+!MESSAGE "dblbuffer - Win32 Debug" (basierend auf  "Win32 (x86) Application")
 !MESSAGE 
 
 # Begin Project
@@ -29,7 +29,7 @@ CPP=cl.exe
 MTL=midl.exe
 RSC=rc.exe
 
-!IF  "$(CFG)" == "test - Win32 Release"
+!IF  "$(CFG)" == "dblbuffer - Win32 Release"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 0
@@ -53,10 +53,10 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 sdl.lib paragui.lib sdlmain.lib /nologo /subsystem:windows /machine:I386 /out:"../../bin/test.exe" /libpath:"../../lib"
+# ADD LINK32 sdl.lib paragui.lib sdlmain.lib /nologo /subsystem:windows /machine:I386 /out:"../../bin/dblbuffer.exe" /libpath:"../../lib"
 # SUBTRACT LINK32 /pdb:none /nodefaultlib
 
-!ELSEIF  "$(CFG)" == "test - Win32 Debug"
+!ELSEIF  "$(CFG)" == "dblbuffer - Win32 Debug"
 
 # PROP BASE Use_MFC 0
 # PROP BASE Use_Debug_Libraries 1
@@ -81,21 +81,21 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 sdl.lib paraguid.lib sdlmain.lib /nologo /subsystem:windows /debug /machine:I386 /out:"../../bin/testd.exe" /pdbtype:sept /libpath:"../../lib"
+# ADD LINK32 sdl.lib paraguid.lib sdlmain.lib /nologo /subsystem:windows /debug /machine:I386 /out:"../../bin/dblbufferd.exe" /pdbtype:sept /libpath:"../../lib"
 # SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ENDIF 
 
 # Begin Target
 
-# Name "test - Win32 Release"
-# Name "test - Win32 Debug"
+# Name "dblbuffer - Win32 Release"
+# Name "dblbuffer - Win32 Debug"
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=..\..\test\paratest.cpp
+SOURCE=..\..\test\dblbuffer.cpp
 # End Source File
 # End Group
 # End Target

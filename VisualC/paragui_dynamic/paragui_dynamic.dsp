@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MD /W3 /vmg /GX /O2 /I "../../src/physfs" /I "../../src/themes" /I "../../src/core" /I "../../include" /D "ZLIB_DLL" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /FD /c
+# ADD CPP /nologo /G5 /MD /W3 /vmg /GX /O2 /I "../../src/physfs" /I "../../src/themes" /I "../../src/core" /I "../../include" /D "ZLIB_DLL" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x405 /d "NDEBUG"
@@ -381,6 +381,10 @@ SOURCE=..\..\src\widgets\pgwindow.cpp
 
 SOURCE=..\..\src\paragui.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\Version.rc
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -576,6 +580,10 @@ SOURCE=..\..\include\pgwidgetlistex.h
 # Begin Source File
 
 SOURCE=..\..\include\pgwindow.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\resource.h
 # End Source File
 # End Group
 # End Target

@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /W3 /vmg /GX /O2 /I "../../src/physfs" /I "../../src/themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /YX /FD /c
+# ADD CPP /nologo /G5 /W3 /vmg /GX /O2 /I "../../src/physfs" /I "../../src/themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /YX /FD /c
 # ADD BASE RSC /l 0x405 /d "NDEBUG"
 # ADD RSC /l 0x405 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -196,6 +196,10 @@ SOURCE=..\..\src\core\pgrectlist.cpp
 # Begin Source File
 
 SOURCE=..\..\src\core\pgsurfacecache.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\core\pgtimerobject.cpp
 # End Source File
 # End Group
 # Begin Group "font"
@@ -581,6 +585,10 @@ SOURCE=..\..\include\pgtheme.h
 # Begin Source File
 
 SOURCE=..\..\include\pgthemewidget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\pgtimerobject.h
 # End Source File
 # Begin Source File
 

@@ -1,9 +1,9 @@
 Microsoft Developer Studio Workspace File, Format Version 6.00
-# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+# WARNUNG: DIESE ARBEITSBEREICHSDATEI DARF NICHT BEARBEITET ODER GELÖSCHT WERDEN!
 
 ###############################################################################
 
-Project: "paragui_dynamic"=.\paragui_dynamic\paragui_dynamic.dsp - Package Owner=<4>
+Project: "dblbuffer"=".\dblbuffer\dblbuffer.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -15,7 +15,7 @@ Package=<4>
 
 ###############################################################################
 
-Project: "paragui_static"=.\paragui_static\paragui_static.dsp - Package Owner=<4>
+Project: "paragui_dynamic"=".\paragui_dynamic\paragui_dynamic.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -27,7 +27,19 @@ Package=<4>
 
 ###############################################################################
 
-Project: "test"=.\test\test.dsp - Package Owner=<4>
+Project: "paragui_static"=".\paragui_static\paragui_static.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "test"=".\test\test.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
