@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /machine:I386 /out:"../../bin/paragui.dll" /implib:"../../lib/paragui.lib" /libpath:"../../lib"
+# ADD LINK32 advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /machine:I386 /out:"../../bin/paragui.dll" /implib:"../../lib/paragui.lib" /libpath:"../../lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "paragui_dynamic - Win32 Debug"
@@ -70,7 +70,8 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src/physfs" /I "../../src/core" /I "../../include" /I "../../src/themes" /D "ZLIB_DLL" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /YX /FD /GZ /c
+# ADD CPP /nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src/physfs" /I "../../src/core" /I "../../include" /I "../../src/themes" /D "ZLIB_DLL" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /FD /GZ /c
+# SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x405 /d "_DEBUG"
@@ -80,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sdl.lib freetyped.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /debug /machine:I386 /out:"../../bin/paraguid.dll" /implib:"../../lib/paraguid.lib" /pdbtype:sept /libpath:"../../lib"
+# ADD LINK32 advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /debug /machine:I386 /out:"../../bin/paraguid.dll" /implib:"../../lib/paraguid.lib" /pdbtype:sept /libpath:"../../lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -117,15 +118,15 @@ SOURCE=..\..\src\physfs\archivers\dir.c
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\physfs\archivers\grp.c
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\src\physfs\physfs.c
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\physfs\physfs.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\physfs\physfs_byteorder.c
 # End Source File
 # Begin Source File
 
@@ -189,6 +190,10 @@ SOURCE=..\..\src\draw\surface.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\src\core\missing.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\core\pgapplication.cpp
 # End Source File
 # Begin Source File
@@ -230,6 +235,10 @@ SOURCE=..\..\src\core\pgnavigator.cpp
 # Begin Source File
 
 SOURCE=..\..\src\core\pgsurfacecache.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\core\pgtimerobject.cpp
 # End Source File
 # End Group
 # Begin Group "font"
@@ -543,6 +552,10 @@ SOURCE=..\..\include\pgtheme.h
 # Begin Source File
 
 SOURCE=..\..\include\pgthemewidget.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\pgtimerobject.h
 # End Source File
 # Begin Source File
 

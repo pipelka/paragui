@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/28 10:25:07 $
+    Update Date:      $Date: 2002/05/29 15:34:09 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.2 $
+    CVS/RCS Revision: $Revision: 1.2.4.3 $
     Status:           $State: Exp $
 */
 
@@ -104,7 +104,7 @@ PG_Application::PG_Application() {
 
 	/* Initialize the SDL library */
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) < 0) {
-		PG_LogERR("Could not initialize SDL: %s", SDL_GetError());
+		std::cerr << "Could not initialize SDL: " << SDL_GetError() << std::endl;
 		exit(-1);
 	}
 	atexit(SDL_Quit);

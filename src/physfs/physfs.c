@@ -306,7 +306,7 @@ static int appendDirSep(char **dir)
     if (strcmp((*dir + strlen(*dir)) - strlen(dirsep), dirsep) == 0)
         return(1);
 
-    ptr = realloc(*dir, strlen(*dir) + strlen(dirsep) + 1);
+    ptr = (char*)realloc(*dir, strlen(*dir) + strlen(dirsep) + 1);
     if (!ptr)
     {
         free(*dir);
@@ -420,7 +420,7 @@ int PHYSFS_init(const char *argv0)
     if (userDir != NULL)
     {
         ptr = __PHYSFS_platformRealPath(userDir);
-        free(userDir);
+        //free(userDir);
         userDir = ptr;
     } /* if */
 
@@ -716,7 +716,7 @@ int PHYSFS_setSaneConfig(const char *organization, const char *appName,
     BAIL_IF_MACRO(!initialized, ERR_NOT_INITIALIZED, 0);
 
         /* set write dir... */
-    str = malloc(strlen(userdir) + (strlen(organization) * 2) +
+    str = (char*)malloc(strlen(userdir) + (strlen(organization) * 2) +
                  (strlen(appName) * 2) + (strlen(dirsep) * 3) + 2);
     BAIL_IF_MACRO(str == NULL, ERR_OUT_OF_MEMORY, 0);
     sprintf(str, "%s.%s%s%s", userdir, organization, dirsep, appName);
@@ -780,7 +780,7 @@ int PHYSFS_setSaneConfig(const char *organization, const char *appName,
                 if (__PHYSFS_platformStricmp(ext, archiveExt) == 0)
                 {
                     const char *d = PHYSFS_getRealDir(*i);
-                    str = malloc(strlen(d) + strlen(dirsep) + l + 1);
+                    str = (char*)malloc(strlen(d) + strlen(dirsep) + l + 1);
                     if (str != NULL)
                     {
                         sprintf(str, "%s%s%s", d, dirsep, *i);
@@ -882,7 +882,7 @@ int __PHYSFS_verifySecurity(DirHandle *h, const char *fname)
     char *end;
     char *str;
 
-    start = str = malloc(strlen(fname) + 1);
+    start = str = (char*)malloc(strlen(fname) + 1);
     BAIL_IF_MACRO(str == NULL, ERR_OUT_OF_MEMORY, 0);
     strcpy(str, fname);
 
@@ -938,7 +938,7 @@ int PHYSFS_mkdir(const char *dname)
     h = writeDir->dirHandle;
     BAIL_IF_MACRO_MUTEX(!h->funcs->mkdir, ERR_NOT_SUPPORTED, stateLock, 0);
     BAIL_IF_MACRO_MUTEX(!__PHYSFS_verifySecurity(h, dname), NULL, stateLock, 0);
-    start = str = malloc(strlen(dname) + 1);
+    start = str = (char*)malloc(strlen(dname) + 1);
     BAIL_IF_MACRO_MUTEX(str == NULL, ERR_OUT_OF_MEMORY, stateLock, 0);
     strcpy(str, dname);
 

@@ -66,7 +66,8 @@ LIB32=link.exe -lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /W3 /Gm /vmg /GX /ZI /Od /I "../../src/physfs" /I "../../src/themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /YX /FD /GZ /c
+# ADD CPP /nologo /W3 /Gm /vmg /GX /ZI /Od /I "../../src/physfs" /I "../../src/themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /FD /GZ /c
+# SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x405 /d "_DEBUG"
 # ADD RSC /l 0x405 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -136,6 +137,10 @@ LIB32=link.exe -lib
 # Begin Group "core"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\src\core\missing.cpp
+# End Source File
 # Begin Source File
 
 SOURCE=..\..\src\core\pgapplication.cpp
@@ -251,10 +256,6 @@ SOURCE=..\..\src\draw\surface.cpp
 # Begin Source File
 
 SOURCE=..\..\src\physfs\archivers\dir.c
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\physfs\archivers\grp.c
 # End Source File
 # Begin Source File
 

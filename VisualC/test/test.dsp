@@ -53,8 +53,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sdl.lib paragui.lib freetype.lib sdlmain.lib /nologo /subsystem:windows /machine:I386 /out:"../../bin/test.exe" /libpath:"../../lib"
-# SUBTRACT LINK32 /pdb:none
+# ADD LINK32 sdl.lib paragui.lib sdlmain.lib /nologo /subsystem:windows /machine:I386 /out:"../../bin/test.exe" /libpath:"../../lib"
+# SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "test - Win32 Debug"
 
@@ -70,7 +70,8 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src" /I "../../include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /GZ /c
+# ADD CPP /nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src" /I "../../include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FD /GZ /c
+# SUBTRACT CPP /YX
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x405 /d "_DEBUG"
@@ -80,8 +81,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sdld.lib freetyped.lib paraguid.lib sdlmain.lib /nologo /subsystem:windows /debug /machine:I386 /out:"../../bin/testd.exe" /pdbtype:sept /libpath:"../../lib"
-# SUBTRACT LINK32 /pdb:none
+# ADD LINK32 sdld.lib paraguid.lib sdlmain.lib /nologo /subsystem:windows /debug /machine:I386 /out:"../../bin/testd.exe" /pdbtype:sept /libpath:"../../lib"
+# SUBTRACT LINK32 /pdb:none /nodefaultlib
 
 !ENDIF 
 

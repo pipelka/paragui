@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/05/29 15:34:09 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -416,7 +416,7 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 	// and add it to the searchpath
 	if(info.archive.Exists(filename.c_str())) {
 		const char* path = info.archive.GetRealDir(filename.c_str());
-		std::string fullpath = (std::string)path + (std::string)"/" + filename;
+		std::string fullpath = (std::string)path + filename;
 
 		bool rc = info.archive.AddArchive(fullpath.c_str());
 		if(rc) {

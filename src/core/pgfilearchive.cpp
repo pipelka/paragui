@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/28 09:41:44 $
+    Update Date:      $Date: 2002/05/29 15:34:09 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.1 $
+    CVS/RCS Revision: $Revision: 1.2.4.2 $
     Status:           $State: Exp $
 */
 
@@ -47,7 +47,7 @@ PG_FileArchive::PG_FileArchive() {
 	// First instance ? -> initialize PhysFS
 	if(my_instance_count == 1) {
 		if(PHYSFS_init("paragui") == 0) {
-			PG_LogERR("Unable to initialize PhysicsFS !");
+			std::cerr << "Unable to initialize PhysicsFS !" << std::endl;
 			return;
 		}
 	}

@@ -93,7 +93,7 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\test.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sdl.lib paragui.lib freetype.lib sdlmain.lib /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)\test.pdb" /machine:I386 /out:"../../bin/test.exe" /libpath:"../../lib" 
+LINK32_FLAGS=sdl.lib paragui.lib sdlmain.lib /nologo /subsystem:windows /incremental:no /pdb:"$(OUTDIR)\test.pdb" /machine:I386 /out:"../../bin/test.exe" /libpath:"../../lib" 
 LINK32_OBJS= \
 	"$(INTDIR)\paratest.obj" \
 	"..\..\lib\paragui.lib"
@@ -134,7 +134,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src" /I "../../include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"$(INTDIR)\test.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
+CPP_PROJ=/nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src" /I "../../include" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -174,7 +174,7 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\test.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sdld.lib freetyped.lib paraguid.lib sdlmain.lib /nologo /subsystem:windows /incremental:yes /pdb:"$(OUTDIR)\testd.pdb" /debug /machine:I386 /out:"../../bin/testd.exe" /pdbtype:sept /libpath:"../../lib" 
+LINK32_FLAGS=sdld.lib paraguid.lib sdlmain.lib /nologo /subsystem:windows /incremental:yes /pdb:"$(OUTDIR)\testd.pdb" /debug /machine:I386 /out:"../../bin/testd.exe" /pdbtype:sept /libpath:"../../lib" 
 LINK32_OBJS= \
 	"$(INTDIR)\paratest.obj" \
 	"..\..\lib\paraguid.lib"
@@ -206,25 +206,25 @@ SOURCE=..\..\test\paratest.cpp
 !IF  "$(CFG)" == "test - Win32 Release"
 
 "paragui_dynamic - Win32 Release" : 
-   cd "\projects\paragui\VisualC\paragui_dynamic"
-   $(MAKE) /$(MAKEFLAGS) /F .\paragui_dynamic.mak CFG="paragui_dynamic - Win32 Release" 
+   cd "\projects\paragui-1-0\VisualC\paragui_dynamic"
+   $(MAKE) /$(MAKEFLAGS) /F ".\paragui_dynamic.mak" CFG="paragui_dynamic - Win32 Release" 
    cd "..\test"
 
 "paragui_dynamic - Win32 ReleaseCLEAN" : 
-   cd "\projects\paragui\VisualC\paragui_dynamic"
-   $(MAKE) /$(MAKEFLAGS) /F .\paragui_dynamic.mak CFG="paragui_dynamic - Win32 Release" RECURSE=1 CLEAN 
+   cd "\projects\paragui-1-0\VisualC\paragui_dynamic"
+   $(MAKE) /$(MAKEFLAGS) /F ".\paragui_dynamic.mak" CFG="paragui_dynamic - Win32 Release" RECURSE=1 CLEAN 
    cd "..\test"
 
 !ELSEIF  "$(CFG)" == "test - Win32 Debug"
 
 "paragui_dynamic - Win32 Debug" : 
-   cd "\projects\paragui\VisualC\paragui_dynamic"
-   $(MAKE) /$(MAKEFLAGS) /F .\paragui_dynamic.mak CFG="paragui_dynamic - Win32 Debug" 
+   cd "\projects\paragui-1-0\VisualC\paragui_dynamic"
+   $(MAKE) /$(MAKEFLAGS) /F ".\paragui_dynamic.mak" CFG="paragui_dynamic - Win32 Debug" 
    cd "..\test"
 
 "paragui_dynamic - Win32 DebugCLEAN" : 
-   cd "\projects\paragui\VisualC\paragui_dynamic"
-   $(MAKE) /$(MAKEFLAGS) /F .\paragui_dynamic.mak CFG="paragui_dynamic - Win32 Debug" RECURSE=1 CLEAN 
+   cd "\projects\paragui-1-0\VisualC\paragui_dynamic"
+   $(MAKE) /$(MAKEFLAGS) /F ".\paragui_dynamic.mak" CFG="paragui_dynamic - Win32 Debug" RECURSE=1 CLEAN 
    cd "..\test"
 
 !ENDIF 

@@ -20,15 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/05/29 15:34:09 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.6 $
+    CVS/RCS Revision: $Revision: 1.5.4.1 $
     Status:           $State: Exp $
 */
 
 #include "pglistboxitem.h"
 #include "pglistbox.h"
-#include "pgtheme.h"
 
 PG_ListBoxItem::PG_ListBoxItem(int height, const char* text, SDL_Surface* icon, void* userdata, const char* style) : PG_ListBoxBaseItem(height, userdata) {
 	
@@ -36,6 +35,7 @@ PG_ListBoxItem::PG_ListBoxItem(int height, const char* text, SDL_Surface* icon, 
 		my_background[i] = NULL;
 		my_bkmode[i] = BKMODE_TILE;
 		my_blend[i] = 0;
+		my_gradient[i] = NULL;
 	}
 
 	SetText(text);
