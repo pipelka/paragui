@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: eross $
-    Update Date:      $Date: 2002/08/17 21:53:11 $
+    Update Date:      $Date: 2002/08/18 01:16:04 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.9 $
+    CVS/RCS Revision: $Revision: 1.2.4.10 $
     Status:           $State: Exp $
 */
 
@@ -37,8 +37,6 @@
 #endif
 
 #include "physfsrwops.h"
-
-extern "C" { int fnmatch(const char *pattern, const char *string, int flags);}
 
 Uint32 PG_FileArchive::my_instance_count = 0;
 PG_SurfaceCache PG_FileArchive::my_cache;
