@@ -76,7 +76,7 @@ int fnmatch (const char *pattern, const char *string, int flags) {
 	  {
 	    /* Nonzero if the sense of the character class is
 	       inverted.  */
-	    register int not;
+	    register int nott;
 
 	    if (*n == '\0')
 	      return (FNM_NOMATCH);
@@ -100,8 +100,8 @@ int fnmatch (const char *pattern, const char *string, int flags) {
 		}
 	    }
 
-	    not = (*p == '!' || *p == '^');
-	    if (not)
+	    nott = (*p == '!' || *p == '^');
+	    if (nott)
 	      ++p;
 
 	    c = *p++;
@@ -138,7 +138,7 @@ int fnmatch (const char *pattern, const char *string, int flags) {
 		if (c == ']')
 		  break;
 	      }
-	    if (!not)
+	    if (!nott)
 	      return (FNM_NOMATCH);
 
 	  next_char:
@@ -157,7 +157,7 @@ int fnmatch (const char *pattern, const char *string, int flags) {
 		  /* 1003.2d11 is unclear if this is right.  %%% */
 		  ++p;
 	      }
-	    if (not)
+	    if (nott)
 	      return (FNM_NOMATCH);
 	  }
 	  break;
