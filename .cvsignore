@@ -34,3 +34,4 @@ paragui-1.*
 *.gz
 *.doxygen
 .cdtproject
+.externalToolBuilders
