@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/10 09:18:27 $
+    Update Date:      $Date: 2002/06/17 11:32:59 $
     Source File:      $Source: /sources/paragui/paragui/include/pglayout.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -39,6 +39,12 @@
 	This namespace contains various functions responsible for
 	loading XML widget layouts.
 */
+
+struct PG_XMLTag {
+	std::string name;
+	std::vector<std::string> atts;
+};
+
 namespace PG_Layout {
 
 /**

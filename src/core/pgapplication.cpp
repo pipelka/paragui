@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/31 14:58:26 $
+    Update Date:      $Date: 2002/06/17 11:32:59 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.6 $
+    CVS/RCS Revision: $Revision: 1.2.4.7 $
     Status:           $State: Exp $
 */
 
@@ -949,6 +949,9 @@ void PG_Application::DisableDirtyUpdates(bool disable) {
 
 bool PG_Application::GetDirtyUpdatesDisabled() {
 	return disableDirtyUpdates;
+}
+PG_Application* PG_Application::GetApp() {
+	return pGlobalApp;
 }
 
 /*
