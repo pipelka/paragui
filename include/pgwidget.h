@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:37 $
+    Update Date:      $Date: 2004/04/20 21:32:28 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.13 $
     Status:           $State: Exp $
 */
 
@@ -171,6 +171,7 @@ public:
 	Move and resize widget
 
 	@param r	new widget rectangle (client coordinates)
+	@param update	is the update true
 	@return		function succeeded
 
 	This function moves and resizes the widget to fit the given rectangle.
@@ -644,6 +645,7 @@ public:
 	/**
 	Set the transparency of the drawing object
 	@param	t						transparency (0 - opaque / 255 - fully transparent)
+	@param	bRecursive	are transparency changes recursive
 	*/
 	virtual void SetTransparency(Uint8 t, bool bRecursive = false);
 
