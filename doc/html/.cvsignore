@@ -6,3 +6,5 @@
 *.png
 *.dot
 index.hh*
+Makefile
+Makefile.in
