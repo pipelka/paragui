@@ -66,7 +66,7 @@ dnl Debug mode?
 dnl ---------------------------------------------------------------------
 
 AC_ARG_ENABLE(debug,
-[  --enable-debug             enable debug mode [default=yes]],
+[  --enable-debug             enable debug mode [default=no]],
                 , enable_debug=no)
 if test x$enable_debug = xyes; then
   if test x$ac_cv_prog_cc_g = xyes; then
@@ -294,6 +294,10 @@ if test x$physfslang = xfrench; then
   AC_DEFINE([PHYSFS_LANG], PHYSFS_LANG_FRENCH, [define desired natural language])
 fi
 
+if test x$physfslang = xgerman; then
+  physfs_valid_lang=yes
+  AC_DEFINE([PHYSFS_LANG], PHYSFS_LANG_GERMAN, [define desired natural language])
+fi
 
 dnl Add other language checks here...
 
@@ -436,7 +440,7 @@ fi
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS([stdlib.h string.h])
+AC_CHECK_HEADERS([stdlib.h string.h assert.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 dnl AC_C_CONST
