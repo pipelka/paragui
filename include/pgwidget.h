@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/30 06:56:02 $
+    Update Date:      $Date: 2005/02/07 13:17:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.23 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.24 $
     Status:           $State: Exp $
 */
 
@@ -323,13 +323,13 @@ public:
 	Make a widget visible (if you want a widget to show up the first time, use this method)
 	@param fade	do a smooth fade in if true (non-threaded)
 	*/
-	void Show(bool fade = false);
+	virtual void Show(bool fade = false);
 
 	/**
 	Hide a widget
 	@param fade	do a smooth fade out if true (non-threaded)
 	*/
-	void Hide(bool fade = false);
+	virtual void Hide(bool fade = false);
 
 	/**
 	Check if the widget is in front of another one
