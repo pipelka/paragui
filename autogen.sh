@@ -26,7 +26,7 @@ echo "Running autoconf ..."
 autoconf || ( echo "***ERROR*** autoconf failed." ; exit 1 )
 
 echo "Bootstrapping physfs ..."
-cd src/physfs && ./bootstrap
+src/physfs/bootstrap
 
 echo "Running autogen.sh in the \"test\" directory ..."
 cp -f paragui.m4 test/acinclude.m4

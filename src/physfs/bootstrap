@@ -1,9 +1,11 @@
 #!/bin/sh
 
+cd `dirname $0`
+
 set -e
 echo "Initial preparation...this can take awhile, so sit tight..."
-aclocal
 libtoolize --automake --copy --force
+aclocal
 autoheader
 automake --foreign --add-missing --copy
 autoconf
