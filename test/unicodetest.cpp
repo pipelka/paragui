@@ -7,6 +7,7 @@
 #include "paragui.h"
 #include "pgapplication.h"
 #include "pglabel.h"
+#include "pgfont.h"
 
 // If unicode is disabled, PG_String becomes the standard std::string class
 #include "pgstring.h"
@@ -21,7 +22,7 @@ int main( int argc, char **argv )
 	//  the unicode ranges).
 	// "default" has the Vera font that only covers the Latin ranges.
 	app.LoadTheme("default");
-	
+
 	app.InitScreen( 640, 480, 0 );
 	app.SetCaption("ParaGUI with Unicode Support", NULL);
 	

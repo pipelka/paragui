@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 14:41:05 $
+    Update Date:      $Date: 2004/06/27 17:01:31 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.17 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.18 $
     Status:           $State: Exp $
 */
 
@@ -82,6 +82,14 @@ void PARAGUI_ShutDownCode() {
 
 
 PG_Application::PG_Application() {
+
+	// set UTF8 encoding if UNICODE support is enabled
+	// we use the "C" locale because it's hard to get the current locale setting
+	// in a portableway (Win32 doesn't support nl_langinfo).
+	// The "C" locale is only set for character encoding.
+#ifdef ENABLE_UNICODE
+	setlocale(LC_CTYPE, "C.UTF-8");
+#endif
 
 	my_quitEventLoop = false;
 	emergencyQuit = false;
