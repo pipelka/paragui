@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/07 13:53:41 $
+    Update Date:      $Date: 2002/07/10 19:12:49 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.2 $
     Status:           $State: Exp $
 */
 
@@ -89,14 +89,21 @@ char PG_File::getc() {
 	
 std::string PG_File::getline() {
 	std::string result;
+	char c = 0;
 	
-	char c = getc();
-	while(!eof() && (c != 0x0A)) {
+	while(!eof() && ((c = getc()) != 0x0A)) {
 		if(c != 0x0D) {
 			result += c;
 		}
-		c = getc();
 	}
 	
 	return result;
+}
+
+void PG_File::putline(const std::string& line) {
+	// write characters
+	write((void*)line.c_str(), line.size());
+	
+	// write CR (LF?)
+	write((void*)"\n", strlen("\n"));
 }

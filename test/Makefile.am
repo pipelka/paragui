@@ -1,3 +1,5 @@
+SUBDIRS = fireworks
+
 AUTOMAKE_OPTIONS = foreign
 
 bin_PROGRAMS = stress1 stress2 listbox animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize

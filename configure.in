@@ -22,7 +22,7 @@ dnl Set various version strings - taken gratefully from the GTk sources
 PARAGUI_MAJOR_VERSION=1
 PARAGUI_MINOR_VERSION=0
 PARAGUI_MICRO_VERSION=3
-PARAGUI_INTERFACE_AGE=1
+PARAGUI_INTERFACE_AGE=0
 PARAGUI_BINARY_AGE=3
 PARAGUI_VERSION=$PARAGUI_MAJOR_VERSION.$PARAGUI_MINOR_VERSION.$PARAGUI_MICRO_VERSION
 
@@ -97,13 +97,6 @@ if test x$mpatrol = xyes; then
     have_mpatrol_lib=no
     have_mpatrol_include=no
 
-dnl    have_iberty=no
-dnl    AC_CHECK_LIB(iberty, buildargv, have_iberty=yes)
-
-dnl    if test x$have_iberty = xno; then
-dnl	AC_MSG_ERROR([*** Unable to find iberty library! (needed for mpatrol)])
-dnl    fi
-
     AC_CHECK_LIB(mpatrol, malloc, have_mpatrol_lib=yes, , -lbfd -liberty)
 
     if test x$have_mpatrol_lib = xno; then
@@ -116,7 +109,7 @@ dnl    fi
 	AC_MSG_ERROR([*** Unable to find mpatrol header! (http://www.cbmamiga.demon.co.uk/mpatrol)])
     fi
 
-    AC_DEFINE(MPATROL_ENABLED)
+    AC_DEFINE([MPATROL_ENABLED], 1, [Define if we enabled mpatrol])
     EXTRA_LIBS="$EXTRA_LIBS -lmpatrol -lbfd -liberty"
 fi
 
@@ -388,7 +381,7 @@ if test "x$rtti" = xno; then
 	AC_MSG_RESULT([compile with -fno-rtti])
 else
 	RTTI_FLAGS=""
-	AC_DEFINE(RTTI_ENABLED)
+	AC_DEFINE([RTTI_ENABLED], 1, [Define if we enabled runtime type infos])
 	AC_MSG_RESULT([compile with default rtti (no flags)])
 fi
 
@@ -402,15 +395,16 @@ AC_ARG_ENABLE(exceptions,
 AC_MSG_CHECKING([for exceptions])
 if test "$STL_CFLAGS" != ""; then
   AC_MSG_RESULT([using stlport, exceptions required])
-  AC_DEFINE(EXCEPTIONS_ENABLED)
+  AC_DEFINE([EXCEPTIONS_ENABLED], 1, [Define if exceptions are enabled])
 elif test "x$mpatrol" = xyes; then
   AC_MSG_RESULT([using mpatrol, exceptions required])
-  AC_DEFINE(EXCEPTIONS_ENABLED)
+  AC_DEFINE([EXCEPTIONS_ENABLED], 1, [Define if exceptions are enabled])
 else
   if test "x$exceptions" = xyes; then
   	EXCEPTIONS_FLAGS=""
   	AC_MSG_RESULT([compile with default exceptions (no flags)])
 	AC_DEFINE(EXCEPTIONS_ENABLED)
+	AC_DEFINE([EXCEPTIONS_ENABLED], 1, [Define if exceptions are enabled])
   else
   	EXCEPTIONS_FLAGS="-fno-exceptions"
   	AC_MSG_RESULT([compile with -fno-exceptions])
@@ -440,7 +434,7 @@ AC_ARG_WITH(themedir,[  --with-themedir=DIR     ParaGUI theme files are in DIR],
 if test "$PARAGUI_THEMEDIR" = "NONE/share/paragui"; then
 	PARAGUI_THEMEDIR=$SDL_PREFIX/share/paragui
 fi
-AC_DEFINE_UNQUOTED(PARAGUI_THEMEDIR, "$PARAGUI_THEMEDIR")
+AC_DEFINE_UNQUOTED([PARAGUI_THEMEDIR], "$PARAGUI_THEMEDIR", [default directory for themes])
 
 
 dnl Check for SDL_image
@@ -463,7 +457,7 @@ else
     	AC_MSG_RESULT([disable SDL_image support])
     else
 	have_SDL_image=yes
-	AC_DEFINE(HAVE_SDLIMAGE)
+	AC_DEFINE([HAVE_SDLIMAGE], 1, [Define if we have SDL_image])
     	AC_MSG_RESULT([compile with SDL_image support])
     fi
 
@@ -472,6 +466,7 @@ fi
 if test "x$have_SDL_image" = xyes; then
     IMAGE_LIBS="-lSDL_image"
     IMAGE_INCLUDE="$IMAGE_INCLUDE"
+    AC_DEFINE([HAVE_SDLIMAGE], 1, [Define if we have SDL_image])
 else
     IMAGE_LIBS=""
 fi
@@ -595,6 +590,7 @@ data/Makefile
 bindings/Makefile
 bindings/python/Makefile
 test/Makefile
+test/fireworks/Makefile
 sdk/Makefile
 paragui.spec
 paragui-config

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/12 16:02:49 $
+    Update Date:      $Date: 2002/07/10 19:12:49 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfile.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -149,9 +149,26 @@ public:
 	*/
 	int fileLength();
 
+	/**
+	get a single character from the file
+	*/
 	char getc();
 	
+	/**
+	read a line from the file.
+	
+	This function reads a CR/LF terminated line of text from the file.
+	Any trailing carriage return and linefeed characters will be skipped.
+	*/
 	std::string getline();
+
+	/**
+	write a line to the file
+	@param line text to write
+	This functions writes a line of text to a file. Carriage return (and linefeed)
+	characters will be added.
+	*/
+	void putline(const std::string& line);
 	
 private:
 	void* file;
