@@ -307,8 +307,10 @@ LinkedStringList *__PHYSFS_platformEnumerateFiles(const char *dirname,
     LinkedStringList *prev = NULL;
     HANDLE dir;
     WIN32_FIND_DATA ent;
+	char path[255];
+	sprintf(path, "%s\\*.*", dirname);
 
-    dir = FindFirstFile(dirname, &ent);
+    dir = FindFirstFile(path, &ent);
     BAIL_IF_MACRO(dir == INVALID_HANDLE_VALUE, win32strerror(), NULL);
 
     do
