@@ -20,15 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/28 16:35:30 $
+    Update Date:      $Date: 2002/12/13 21:06:52 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
 #include "pgwindow.h"
 #include "pgapplication.h"
-#include "pgtheme.h"
 #include <cstring>
 
 PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext, Uint32 flags, const char* style, int heightTitlebar) : PG_ThemeWidget(parent, r) {
@@ -47,15 +46,17 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext
 	my_labelTitle->SetAlignment(PG_TA_CENTER);
 
 	my_buttonClose = new PG_Button(this, PG_WINDOW_CLOSE, rb, NULL);
-	my_buttonClose->sigButtonClick.connect(slot(this, &PG_Window::handleButtonClick));
-	
 	my_buttonMinimize = new PG_Button(this, PG_WINDOW_MINIMIZE, rb, NULL);
-	my_buttonMinimize->sigButtonClick.connect(slot(this, &PG_Window::handleButtonClick));
 
 	LoadThemeStyle(style);
 }
 
 PG_Window::~PG_Window() {
+}
+
+void PG_Window::SetTitle(const char* title, int alignment) {
+	my_labelTitle->SetText(title);
+	my_labelTitle->SetAlignment(alignment);
 }
 
 void PG_Window::LoadThemeStyle(const char* widgettype) {
@@ -207,19 +208,19 @@ bool PG_Window::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 	return true;
 }
 
-bool PG_Window::handleButtonClick(PG_Button* widget, PG_Pointer* data) {
-	// close window
-	if(widget == my_buttonClose) {
-		Hide();
-		sigWindowClose(this);
-		return true;
-	}
-	
-	// minimize window
-	if(widget == my_buttonMinimize) {
-		Hide();
-		sigWindowMinimize(this);
-		return true;
+bool PG_Window::eventButtonClick(int id, PG_Widget* widget) {
+	switch(id) {
+		// close window
+		case PG_WINDOW_CLOSE:
+			Hide();
+			SendMessage(NULL, MSG_WINDOWCLOSE, GetID(), 0);
+			return true;
+
+		// minimize window
+		case PG_WINDOW_MINIMIZE:
+			Hide();
+			SendMessage(NULL, MSG_WINDOWMINIMIZE, GetID(), 0);
+			return true;
 	}
 
 	return false;
@@ -241,12 +242,4 @@ void PG_Window::SetColorTitlebar(Uint32 color) {
 void PG_Window::eventShow() {
 	my_buttonClose->SetVisible(my_showCloseButton);
 	my_buttonMinimize->SetVisible(my_showMinimizeButton);
-}
-
-int PG_Window::RunModal() {
-	Connection c = sigWindowClose.connect(slot(this, &PG_Widget::QuitModal));
-	int rc = PG_Widget::RunModal();
-	c.disconnect();
-	
-	return rc;
 }
