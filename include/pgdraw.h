@@ -20,14 +20,15 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/04/18 18:27:26 $
+    Update Date:      $Date: 2004/05/08 17:35:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdraw.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
 /** \file pgdraw.h
 	Header file for the PG_Draw namespace.
+	@author Alexander Pipelka
 */
 
 #ifndef PG_DRAW_H
@@ -205,7 +206,7 @@ DECLSPEC void DrawGradient(SDL_Surface* surface, const PG_Rect& r, PG_Gradient& 
     Draw a gradient on a surface
 
     @param surface  the surface to draw the gradient to
-    @param r        the rectangle where the gradient should be drawn
+    @param rect        the rectangle where the gradient should be drawn
 	@param ul		upper/left gradient color
 	@param ur		upper/right gradient color
 	@param dl		lower/left gradient color

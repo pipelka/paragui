@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/06 11:28:19 $
+    Update Date:      $Date: 2004/05/08 17:35:40 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.13 $
     Status:           $State: Exp $
 */
 
@@ -54,17 +54,16 @@ class PG_ButtonDataInternal;
 	Several predefined button IDs exist. All of them are associated with
 	default icons used automatically when the given ID is assigned to a
 	button:
+
+	@image html button_ok_icon.png "PG_Button::OK"
+
+	@image html button_yes_icon.png "PG_Button::YES"
+	@image html button_no_icon.png "PG_Button::NO"
+	@image html button_apply_icon.png "PG_Button::APPY"
+	@image html button_cancel_icon.png "PG_Button::CANCEL"
+	@image html button_close_icon.png "PG_Button::CLOSE"
+	@image html button_help_icon.png "PG_Button::HELP"
  
-	<blockquote>
-	\p PG_Button::OK <img src="images/button_ok_icon.png" alt="OK Icon"><br>
-	\p PG_Button::YES <img src="images/button_yes_icon.png" alt="Yes Icon"><br>
-	\p PG_Button::NO <img src="images/button_no_icon.png" alt="No Icon"><br>
-	\p PG_Button::APPLY <img src="images/button_apply_icon.png" alt="Apply Icon"><br>
-	\p PG_Button::CANCEL <img src="images/button_cancel_icon.png" alt="Cancel Icon"><br>
-	\p PG_Button::CLOSE <img src="images/button_close_icon.png" alt="Close Icon"><br>
-	\p PG_Button::HELP <img src="images/button_help_icon.png" alt="Help Icon">
-	</blockquote>
-    
 	\anchor theme_PG_Button
  
 	<h2>Theme support</h2><p>
