@@ -28,7 +28,8 @@ libpgwidgets_la_SOURCES = \
 	pgwindow.cpp \
 	pgrichedit.cpp \
 	pgscrollarea.cpp \
-	pgmenubar.cpp
+	pgmenubar.cpp \
+	pgmultilineedit.cpp
 
 libpgwidgets_la_LIBADD = \
 	$(SIGC_LIBS)

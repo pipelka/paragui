@@ -1,0 +1,51 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "paragui_dynamic", "paragui_dynamic\paragui_dynamic.vcproj", "{EEB27D32-9E14-46C4-BFE4-720869A65BAC}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test", "test\test.vcproj", "{0FD5758F-9E7B-417F-AC9D-0FA55AF7992B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EEB27D32-9E14-46C4-BFE4-720869A65BAC} = {EEB27D32-9E14-46C4-BFE4-720869A65BAC}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "physfs", "..\src\physfs\physfs.vcproj", "{5D67886A-8D97-400E-BF1A-D9873B77ACEA}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Debug Multithreaded DLL = Debug Multithreaded DLL
+		Release = Release
+		Release Multithreaded DLL = Release Multithreaded DLL
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{EEB27D32-9E14-46C4-BFE4-720869A65BAC}.Debug.ActiveCfg = Debug|Win32
+		{EEB27D32-9E14-46C4-BFE4-720869A65BAC}.Debug.Build.0 = Debug|Win32
+		{EEB27D32-9E14-46C4-BFE4-720869A65BAC}.Debug Multithreaded DLL.ActiveCfg = Debug|Win32
+		{EEB27D32-9E14-46C4-BFE4-720869A65BAC}.Debug Multithreaded DLL.Build.0 = Debug|Win32
+		{EEB27D32-9E14-46C4-BFE4-720869A65BAC}.Release.ActiveCfg = Release|Win32
+		{EEB27D32-9E14-46C4-BFE4-720869A65BAC}.Release.Build.0 = Release|Win32
+		{EEB27D32-9E14-46C4-BFE4-720869A65BAC}.Release Multithreaded DLL.ActiveCfg = Release|Win32
+		{EEB27D32-9E14-46C4-BFE4-720869A65BAC}.Release Multithreaded DLL.Build.0 = Release|Win32
+		{0FD5758F-9E7B-417F-AC9D-0FA55AF7992B}.Debug.ActiveCfg = Debug|Win32
+		{0FD5758F-9E7B-417F-AC9D-0FA55AF7992B}.Debug.Build.0 = Debug|Win32
+		{0FD5758F-9E7B-417F-AC9D-0FA55AF7992B}.Debug Multithreaded DLL.ActiveCfg = Debug|Win32
+		{0FD5758F-9E7B-417F-AC9D-0FA55AF7992B}.Debug Multithreaded DLL.Build.0 = Debug|Win32
+		{0FD5758F-9E7B-417F-AC9D-0FA55AF7992B}.Release.ActiveCfg = Release|Win32
+		{0FD5758F-9E7B-417F-AC9D-0FA55AF7992B}.Release.Build.0 = Release|Win32
+		{0FD5758F-9E7B-417F-AC9D-0FA55AF7992B}.Release Multithreaded DLL.ActiveCfg = Release|Win32
+		{0FD5758F-9E7B-417F-AC9D-0FA55AF7992B}.Release Multithreaded DLL.Build.0 = Release|Win32
+		{5D67886A-8D97-400E-BF1A-D9873B77ACEA}.Debug.ActiveCfg = Debug Multithreaded DLL|Win32
+		{5D67886A-8D97-400E-BF1A-D9873B77ACEA}.Debug Multithreaded DLL.ActiveCfg = Debug Multithreaded DLL|Win32
+		{5D67886A-8D97-400E-BF1A-D9873B77ACEA}.Debug Multithreaded DLL.Build.0 = Debug Multithreaded DLL|Win32
+		{5D67886A-8D97-400E-BF1A-D9873B77ACEA}.Release.ActiveCfg = Release Multithreaded DLL|Win32
+		{5D67886A-8D97-400E-BF1A-D9873B77ACEA}.Release.Build.0 = Release Multithreaded DLL|Win32
+		{5D67886A-8D97-400E-BF1A-D9873B77ACEA}.Release Multithreaded DLL.ActiveCfg = Release Multithreaded DLL|Win32
+		{5D67886A-8D97-400E-BF1A-D9873B77ACEA}.Release Multithreaded DLL.Build.0 = Release Multithreaded DLL|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/26 08:03:47 $
+    Update Date:      $Date: 2004/07/07 22:19:25 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
     Status:           $State: Exp $
 */
 
@@ -80,7 +80,7 @@ void PG_LineEdit::DrawText(const PG_Rect& dst) {
 	}
 
 	// draw text
-	PG_Widget::DrawText(x, y, GetDrawText());
+	PG_Widget::DrawText(x, y, GetDrawText().c_str());
 }
 
 void PG_LineEdit::DrawTextCursor() {
@@ -105,7 +105,7 @@ void PG_LineEdit::DrawTextCursor() {
 
 Uint16 PG_LineEdit::GetCursorXPos() {
 	Uint16 w;
-	const char* drawtext = GetDrawText();
+	PG_String drawtext(GetDrawText());
 
 	int newpos = my_cursorPosition - my_offsetX;
 
@@ -115,7 +115,7 @@ Uint16 PG_LineEdit::GetCursorXPos() {
 	if(drawtext[0] == 0)
 		return 0;
 
-	PG_FontEngine::GetTextSize(PG_String(PG_String(drawtext), 0, newpos).c_str(), GetFont(), &w);
+	PG_FontEngine::GetTextSize(PG_String(drawtext, 0, newpos).c_str(), GetFont(), &w);
 
 	return w;
 }
@@ -147,9 +147,7 @@ int PG_LineEdit::GetCursorPosFromScreen(int x, int y) {
 	return min_pos;
 }
 
-const char* PG_LineEdit::GetDrawText() {
-	static std::string passtext("");
-
+PG_String PG_LineEdit::GetDrawText() {
 	if (my_passchar == '\0')
 		return my_text.substr(my_offsetX).c_str();
 
@@ -408,7 +406,10 @@ void PG_LineEdit::InsertChar(const PG_Char* c) {
 #ifdef ENABLE_UNICODE
 		my_text.insert(my_cursorPosition, *c);
 #else
-		my_text.insert(my_cursorPosition, c);
+		char buffer[2];
+		buffer[0] = *c;
+		buffer[1] = '\0';
+		my_text.insert(my_cursorPosition, buffer);
 #endif
 		SetCursorPos(++my_cursorPosition);
 	}
@@ -571,6 +572,6 @@ void PG_LineEdit::SetPassHidden(char passchar) {
 	my_passchar = passchar;
 }
 
-char PG_LineEdit::GetPassHidden(void) {
+char PG_LineEdit::GetPassHidden() {
 	return my_passchar;
 }

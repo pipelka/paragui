@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/26 08:03:47 $
+    Update Date:      $Date: 2004/07/07 22:19:25 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -132,7 +132,7 @@ public:
 	Return setted passchar
 	@return			Returns character, witch is displayed in place on letters
 	*/
-	char GetPassHidden(void);
+	char GetPassHidden();
 
 	bool Action(KeyAction action);
 
@@ -186,6 +186,8 @@ protected:
 
 	int my_cursorPosition;
 
+	SDL_Surface* my_srfTextCursor;
+
 private:
 
 	PG_LineEdit(const PG_LineEdit&);
@@ -194,7 +196,7 @@ private:
 	void DrawText(const PG_Rect& dst);
 	void DrawTextCursor();
 	Uint16 GetCursorXPos();
-	const char* GetDrawText();
+	PG_String GetDrawText();
 	int GetCursorPosFromScreen(int x, int y);
 
 	bool IsValidKey(PG_Char c);
@@ -210,8 +212,6 @@ private:
 	int my_maximumLength;
 
 	PG_Char my_passchar;
-
-	SDL_Surface* my_srfTextCursor;
 };
 
 #endif // PG_LINEEDIT

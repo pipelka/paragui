@@ -54,6 +54,7 @@ libparaguiinclude_HEADERS = \
 	pgfactory.h \
 	pgsingleton.h \
 	pgstring.h \
+	pgmultilineedit.h \
 	ystring.h \
 	ychar.h
 

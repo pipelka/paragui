@@ -20,6 +20,7 @@
 #include "pglog.h"
 #include "pgmenubar.h"
 #include "pgtheme.h"
+#include "pgmultilineedit.h"
 
 #include <iostream>
 
@@ -511,6 +512,10 @@ int main(int argc, char* argv[]) {
     
 	show_wnd.Show();
 
+	PG_MultiLineEdit text(NULL, PG_Rect(resx - 300, 35, 300, 150));
+	text.SetText("Once upon a time, in a galaxy far far away...\n...\n...\n...\n...\n...\n...\nand they lived happily till once upon a time, in a galaxy far far away...\n[INSERT STORY HERE]");
+	text.Show();
+	
 	// show the testwindow
 	wnd.Show();
 	wnd1.Show();
