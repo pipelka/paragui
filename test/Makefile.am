@@ -1,6 +1,12 @@
 AUTOMAKE_OPTIONS = foreign
 
-bin_PROGRAMS = listbox animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
+bin_PROGRAMS = stress1 stress2 listbox animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
+
+stress1_SOURCES = stress1.cpp
+stress1_LDADD = $(PARAGUI_LIBS)
+
+stress2_SOURCES = stress2.cpp
+stress2_LDADD = $(PARAGUI_LIBS)
 
 listbox_SOURCES = listbox.cpp
 listbox_LDADD = $(PARAGUI_LIBS)
