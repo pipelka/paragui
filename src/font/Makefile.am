@@ -8,6 +8,7 @@ EXTRA_DIST = \
 	facecache.h
 
 INCLUDES = \
+	$(SIGC_CFLAGS) \
 	$(SDL_CFLAGS) \
 	-I$(top_srcdir)/include
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 10:43:24 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,7 @@
 #include "pgthemewidget.h"
 #include "pglog.h"
 #include "pgdraw.h"
+#include "pgtheme.h"
 
 struct PG_ButtonDataInternal {
 	bool free_icons;
@@ -358,8 +359,8 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 }
 
 /**  */
-bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const char* filenameover, const PG_Color& colorkey) {
-	if(!SetIcon2(filenameup, filenamedown, filenameover)) {
+bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, const char* filenameover, const PG_Color& colorkey) {
+	if(!SetIcon(filenameup, filenamedown, filenameover)) {
 		return false;
 	}
 
@@ -378,7 +379,7 @@ bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const
 	return true;
 }
 
-bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const char* filenameover) {
+bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, const char* filenameover) {
 	SDL_Surface* icon0 = PG_Application::LoadSurface(filenameup);
 	SDL_Surface* icon1 = PG_Application::LoadSurface(filenameover);
 	SDL_Surface* icon2 = PG_Application::LoadSurface(filenamedown);
@@ -400,15 +401,6 @@ bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const
 
 
 /**  */
-bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown) {
-	return SetIcon2(filenameup, filenamedown, NULL);
-}
-
-bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, const PG_Color& colorkey) {
-	return SetIcon2(filenameup, filenamedown, NULL, colorkey);
-}
-
-/**  */
 bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down,SDL_Surface* icon_over) {
 
 	if(!icon_up && !icon_down && !icon_over) {
@@ -424,10 +416,6 @@ bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down,SDL_Surface
 	_mid->free_icons = false;
 
 	return true;
-}
-
-bool PG_Button::SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down) {
-	return SetIcon(icon_up, icon_down, NULL);
 }
 
 SDL_Surface* PG_Button::GetIcon(STATE num) {

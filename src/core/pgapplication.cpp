@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:21 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.2 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.3 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,7 @@
 #include "pglayout.h"
 #include "pglog.h"
 #include "pgdraw.h"
+#include "pgtheme.h"
 
 #include <iostream>
 #include <cstring>
@@ -63,7 +64,7 @@ bool PG_Application::enableBackground = true;
 bool PG_Application::enableAppIdleCalls = false;
 SDL_Surface *PG_Application::my_mouse_pointer = NULL;
 PG_Rect PG_Application::my_mouse_position = PG_Rect(0,0,0,0);
-PG_CURSOR_MODE PG_Application::my_mouse_mode = PG_CURSOR_HARDWARE;
+PG_Application::CursorMode PG_Application::my_mouse_mode = PG_Application::HARDWARE;
 PG_Font* PG_Application::DefaultFont = NULL;
 SDL_Surface* PG_Application::my_background = NULL;
 SDL_Surface* PG_Application::my_scaled_background = NULL;
@@ -239,7 +240,7 @@ void PG_Application::ClearOldMousePosition() {
 void PG_Application::DrawCursor() {
 	int x, y;
 	PG_Rect saved;
-	if(!my_mouse_pointer || my_mouse_mode != PG_CURSOR_SOFTWARE) {
+	if(!my_mouse_pointer || my_mouse_mode != SOFTWARE) {
 		return;
 	}
 	if(SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE) {
@@ -330,23 +331,23 @@ void PG_Application::SetCursor(SDL_Surface *image) {
 	DrawCursor();
 }
 
-PG_CURSOR_MODE PG_Application::ShowCursor(PG_CURSOR_MODE mode) {
+PG_Application::CursorMode PG_Application::ShowCursor(CursorMode mode) {
 	switch(mode) {
-		case PG_CURSOR_NONE:
+		case NONE:
 			SDL_ShowCursor(SDL_DISABLE);
 			break;
-		case PG_CURSOR_HARDWARE:
+		case HARDWARE:
 			SDL_ShowCursor(SDL_ENABLE);
 			break;
-		case PG_CURSOR_SOFTWARE:
+		case SOFTWARE:
 			DrawCursor();
 			break;
-		case PG_CURSOR_QUERY:
+		case QUERY:
 			return my_mouse_mode;
 
 	}
-	PG_CURSOR_MODE orig = my_mouse_mode;
-	if(mode != PG_CURSOR_SOFTWARE && my_mouse_mode == PG_CURSOR_SOFTWARE) {
+	CursorMode orig = my_mouse_mode;
+	if(mode != SOFTWARE && my_mouse_mode == SOFTWARE) {
 		ClearOldMousePosition();
 		SDL_UpdateRects(screen, 1, &my_mouse_position);
 	}
@@ -970,9 +971,9 @@ void PG_Application::FlushEventQueue() {
 	SDL_Event event;
 
 	while(SDL_PollEvent(&event)) {
-		if(event.type == SDL_USEREVENT) {
+		/*if(event.type == SDL_USEREVENT) {
 			delete (MSG_MESSAGE*)(event.user.data1);
-		}
+		}*/
 	}
 }
 

@@ -7,6 +7,7 @@
 #include "pgbutton.h"
 #include "pglabel.h"
 #include "pgcheckbutton.h"
+#include "pgtheme.h"
 
 #include <ctime>
 
@@ -186,7 +187,7 @@ int main(int argc, char *argv[])
 
 	app.LoadLayout("dblbuffer.xml");
 	app.SetCursor(app.GetTheme()->FindSurface("Pointer", "Pointer", "normal"));
-	app.ShowCursor(PG_CURSOR_SOFTWARE);
+	app.ShowCursor(PG_Application::SOFTWARE);
 	// get a pointer to the "quit" button
 	PG_Button* btn = static_cast<PG_Button*>(app.GetWidgetByName("quit"));
 	btn->sigClick.connect(slot(handle_quit));

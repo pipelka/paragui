@@ -64,7 +64,7 @@ install-hook:
 
 rpm: $(PACKAGE)-$(VERSION).tar.gz
 	cp $(PACKAGE)-$(VERSION).tar.gz $(RPM_ROOT)
-	rpm -ba $(PACKAGE).spec
+	rpmbuild -ba $(PACKAGE).spec
 
 dist-beos: 
 	export CFLAGS="-O2 -march=pentium"

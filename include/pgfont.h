@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
@@ -33,16 +33,10 @@
 #ifndef PG_FONT_H
 #define PG_FONT_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgfile
-%{
-#include "pgfont.h"
-%}
-#endif
-
 #include "paragui.h"
 #include "pgdatacontainer.h"
+#include "pgcolor.h"
+#include "pgrect.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -190,9 +184,8 @@ public:
 	@return true on success
 	*/
 	static bool RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const char *Text, PG_Font* ParamIn);
-#ifndef SWIG
+	
 	static bool RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const char *Text, PG_Font* ParamIn);
-#endif
 
 	/**
 	*/
@@ -222,8 +215,6 @@ private:
 	*/
 	static PG_GlyphCacheItem* GetGlyph(PG_Font *Param, int glyph_index);
 
-#ifndef SWIG
-
 	typedef map<FT_F26Dot6, PG_FontFaceCacheItem*> MAP_SUBITEMS;
 
 	class FONT_ITEM {
@@ -244,7 +235,6 @@ private:
 	static FT_Library my_library;
 
 	friend class PG_Font;
-#endif
 };
 
 #endif

@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:54 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_WIDGETLIST_H
 #define PG_WIDGETLIST_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgwidgetlist
-%{
-#include "pgwidgetlist.h"
-%}
-#endif
 
 #include "pgthemewidget.h"
 #include "pgscrollbar.h"
@@ -142,23 +134,19 @@ public:
 	/**
 	Enable / disable the Scrollbar (override automatic display)
 	*/
-	void EnableScrollBar(bool enable, int direction = PG_SB_VERTICAL);
+	void EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
 
 	/**
 	Scroll the list to a widget
 	@param	widget
 	*/
-	void ScrollTo(PG_Widget* widget, int direction = PG_SB_VERTICAL);
+	void ScrollTo(PG_Widget* widget, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
 
 	/**
 	Scroll the list to a given index
 	@param	index
 	*/
-#ifdef SWIG
-	%name(ScrollToIndex) void ScrollTo(int index, int direction = PG_SB_VERTICAL);
-#else
-	void ScrollTo(int index, int direction = PG_SB_VERTICAL);
-#endif
+	void ScrollTo(int index, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
 
 	/**
 	Scroll one page up
@@ -214,11 +202,7 @@ protected:
 	int my_widthScrollbar;
 	int my_heightHorizontalScrollbar;
 
-	/** swig doesn't understand vectors... */
-#ifndef SWIG
-
 	vector < PG_Widget* > my_widgetList; // Hmmm, I know about this: vector :))
-#endif
 
 	int my_widgetCount;
 	int my_firstWidget;
@@ -231,10 +215,9 @@ protected:
 	void CheckScrollBars();
 
 private:
-#ifndef SWIG
+
 	PG_WidgetList(const PG_WidgetList&);
 	PG_WidgetList& operator=(const PG_WidgetList&);
-#endif
 
 	PG_WidgetListDataInternal* my_internaldata;
 };

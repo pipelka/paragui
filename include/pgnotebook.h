@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgnotebook.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
@@ -34,13 +34,6 @@
 #define _GNU_SOURCE
 #endif
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgnotebook
-%{
-#include "pgnotebook.h"
-%}
-#endif
 #include "pgwidget.h"
 #include "pgbutton.h"
 #include "pgwidgetlist.h"

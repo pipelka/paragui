@@ -20,23 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
     Status:           $State: Exp $
 */
 
 
 #ifndef PG_POPUPMENU_H
 #define PG_POPUPMENU_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgpopupmenu
-%{
-#include "pgpopupmenu.h"
-%}
-#endif
 
 #include "pgthemewidget.h"
 #include "pgsignals.h"
@@ -88,7 +80,6 @@ public:
 	 * @todo better separator code
 	 * @todo icon drawing
 	 */
-#ifndef SWIG
 	class MenuItem : public PG_Rect, public PG_MessageObject {
 	public: // types
 		enum MI_FLAGS {
@@ -188,7 +179,6 @@ public:
 	}
 };
 #endif // DOXYGEN_SKIP
-#endif // SWIG
 
 public: // methods
 
@@ -211,7 +201,6 @@ public: // methods
 	 *@{
 	 */
 
-#ifndef SWIG
 	/**
 	 * Adds a menu item whose handler (if any) is set to be a stand-alone
 	 * function.
@@ -237,8 +226,6 @@ public: // methods
 	PG_PopupMenu& addMenuItem(char *caption,
 				PG_PopupMenu *sub,
 				MenuItem::MI_FLAGS flags = MenuItem::MIF_SUBMENU);
-
-#endif // SWIG
 
 	/**
 	 * @return a reference to this menu
@@ -271,9 +258,7 @@ public: // methods
 
 protected: // methods
 
-#ifndef SWIG
 	typedef list<MenuItem*>::iterator MII;
-#endif // SWIG
 
 	// reimplemented
 	void eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst);
@@ -301,17 +286,15 @@ protected: // methods
 	virtual void liberate();
 
 private: // methods
-#ifndef SWIG
+
 	bool selectItem(MenuItem *item, MII iter);
 	bool handleMotion(PG_Point const&);
 	void appendItem(MenuItem *item);
-#endif //SWIG
 
 protected: // data
-#ifndef SWIG
+
 	list<MenuItem*>  items; /** the menu items collection */
 	string           myCaption; /** menu caption */
-#endif //SWIG
 
 	PG_Color             captionActiveColor;
 	PG_Color             captionInactiveColor;
@@ -351,7 +334,6 @@ private: // data
 	MenuItem             *subParent;
 };
 
-#ifndef SWIG
 inline int PG_PopupMenu::maxItemWidth() const {
 	return w - xPadding;
 }
@@ -437,7 +419,5 @@ inline const string& PG_PopupMenu::MenuItem::getCaption() const {
 inline PG_PopupMenu::MenuItem::operator PG_Point const&() const {
 	return myPoint;
 }
-
-#endif // SWIG
 
 #endif // PG_POPUPMENU_H

@@ -5,6 +5,7 @@ libparaguiinclude_HEADERS = \
 	paraconfig_gnu.h \
 	paragui.h \
 	paragui_types.h \
+	pgpoint.h \
 	pgrect.h \
 	pgrectlist.h \
 	pgwidgetlist.h \

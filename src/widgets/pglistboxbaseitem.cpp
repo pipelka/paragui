@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/30 16:30:57 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.1 $
     Status:           $State: Exp $
 */
 
@@ -36,7 +36,7 @@ PG_ListBoxBaseItem::PG_ListBoxBaseItem(int height, void* userdata) : PG_Label(NU
 	my_hover = false;
 	my_itemheight = height;
 
-	SetAlignment(PG_TA_LEFT);
+	SetAlignment(PG_Label::LEFT);
 }
 
 PG_ListBoxBaseItem::~PG_ListBoxBaseItem() {

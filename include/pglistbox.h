@@ -20,25 +20,18 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:52 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_LISTBOX_H
 #define PG_LISTBOX_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pglistbox
-%{
-#include "pglistbox.h"
-    %}
-#endif
-
 #include "pgwidgetlist.h"
-#include "pglistboxitem.h"
+
+class PG_ListBoxBaseItem;
 
 /**
 	@author Alexander Pipelka

@@ -20,13 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgspinnerbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.2.2 $
     Status:           $State: Exp $
 */
 
 #include "pgspinnerbox.h"
+#include "pgmaskedit.h"
+#include "pglineedit.h"
+#include "pgbutton.h"
 
 /**
   *@author Atani - Mike Dunston
@@ -48,7 +51,7 @@ PG_SpinnerBox::PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r, const char* st
 	down_rect.SetRect( box_rect.my_width, my_height - (my_height/2), (my_height/2), (my_height/2));
 
 	m_pEditBox = new PG_MaskEdit( this, box_rect, style );
-	m_pEditBox->sigEditEnd.connect(slot(*this, &PG_SpinnerBox::handle_editend));
+	m_pEditBox->sigEditEnd.connect(slot(*this, &PG_SpinnerBox::handleEditEnd));
 
 	m_pButtonUp = new PG_Button( this, PG_IDSPINNERBOX_UP, up_rect, "" );
 	m_pButtonUp->sigClick.connect(slot(*this, &PG_SpinnerBox::handleButtonClick));
@@ -118,7 +121,7 @@ void PG_SpinnerBox::AdjustSize() {
 	Show();
 }
 
-bool PG_SpinnerBox::handle_editend(PG_LineEdit* edit) {
+bool PG_SpinnerBox::handleEditEnd(PG_LineEdit* edit) {
 	const char* text = m_pEditBox->GetText();
 	m_iValue = (text != NULL) ? atoi(text) : 0;
 
@@ -133,4 +136,10 @@ bool PG_SpinnerBox::handle_editend(PG_LineEdit* edit) {
 
 	SetTextValue();
 	return true;
+}
+
+void PG_SpinnerBox::SetMask( const char *value ) {
+	strcpy( m_sMask, value );
+	m_pEditBox->SetMask( m_sMask );
+	AdjustSize();
 }

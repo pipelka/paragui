@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:52 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_LINEEDIT
 #define PG_LINEEDIT
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pglineedit
-%{
-#include "pglineedit.h"
-%}
-#endif
 
 #include "pgthemewidget.h"
 #include "pgsignals.h"
@@ -70,10 +62,8 @@ public:
 
 	void LoadThemeStyle(const char* widgettype);
 
-#ifndef SWIG
 	/** */
 	void LoadThemeStyle(const char* widgettype, const char* objectname);
-#endif
 
 	/** start edit */
 	void EditBegin();
@@ -144,7 +134,7 @@ public:
 	*/
 	char GetPassHidden(void);
 
-	bool Action(PG_ACTION action);
+	bool Action(KeyAction action);
 
 	SignalEditBegin<> sigEditBegin;
 	SignalEditEnd<> sigEditEnd;
@@ -197,11 +187,9 @@ protected:
 	int my_cursorPosition;
 
 private:
-#ifndef SWIG
 
 	PG_LineEdit(const PG_LineEdit&);
 	PG_LineEdit& operator=(PG_LineEdit&);
-#endif
 
 	void DrawText(const PG_Rect& dst);
 	void DrawTextCursor();

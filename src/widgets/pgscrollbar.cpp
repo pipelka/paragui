@@ -20,16 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgscrollbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
     Status:           $State: Exp $
 */
 
 #include "pgscrollbar.h"
 #include "pgapplication.h"
 
-PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, int direction, const char* style) : PG_ThemeWidget(parent, r, style) {
+PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, ScrollDirection direction, const char* style) : PG_ThemeWidget(parent, r, style) {
 	sb_direction = direction;
 
 	SetID(id);
@@ -42,7 +42,7 @@ PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, int dire
 	my_pagesize = 5;
 	//scroll_windowsize = 1;
 
-	if(direction == PG_SB_VERTICAL) {
+	if(direction == VERTICAL) {
 		position[0].x = 0;
 		position[0].y = 0;
 		position[0].w = r.my_width;
@@ -90,13 +90,13 @@ PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, int dire
 
 	scrollbutton[0] = new PG_Button(
 	                      this,
-	                      (direction == PG_SB_VERTICAL) ? PG_IDSCROLLBAR_UP : PG_IDSCROLLBAR_LEFT,
+	                      (direction == VERTICAL) ? PG_IDSCROLLBAR_UP : PG_IDSCROLLBAR_LEFT,
 	                      position[0]);
 	scrollbutton[0]->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 	
 	scrollbutton[1] = new PG_Button(
 	                      this,
-	                      (direction == PG_SB_VERTICAL) ? PG_IDSCROLLBAR_DOWN : PG_IDSCROLLBAR_RIGHT,
+	                      (direction == VERTICAL) ? PG_IDSCROLLBAR_DOWN : PG_IDSCROLLBAR_RIGHT,
 	                      position[1]);
 	scrollbutton[1]->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 
@@ -113,7 +113,7 @@ void PG_ScrollBar::LoadThemeStyle(const char* widgettype) {
 
 	PG_ThemeWidget::LoadThemeStyle(widgettype, "Scrollbar");
 
-	if(sb_direction == PG_SB_VERTICAL) {
+	if(sb_direction == VERTICAL) {
 		scrollbutton[0]->LoadThemeStyle(widgettype, "ScrollbarUp");
 		scrollbutton[1]->LoadThemeStyle(widgettype, "ScrollbarDown");
 	} else {
@@ -123,7 +123,7 @@ void PG_ScrollBar::LoadThemeStyle(const char* widgettype) {
 
 	dragbutton->LoadThemeStyle(widgettype, "ScrollbarDrag");
 
-	if(sb_direction == PG_SB_VERTICAL) {
+	if(sb_direction == VERTICAL) {
 		dragbutton->LoadThemeStyle(widgettype, "ScrollbarDragV");
 		PG_ThemeWidget::LoadThemeStyle(widgettype, "ScrollbarV");
 	} else {
@@ -137,7 +137,7 @@ void PG_ScrollBar::eventSizeWidget(Uint16 w, Uint16 h) {
 
 	PG_ThemeWidget::eventSizeWidget(w, h);
 
-	if(sb_direction == PG_SB_VERTICAL) {
+	if(sb_direction == VERTICAL) {
 		position[0].x = 0;
 		position[0].y = 0;
 		position[0].w = w;
@@ -219,7 +219,7 @@ bool PG_ScrollBar::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 
 	switch (button->button) {
 		case 1:
-			if(sb_direction == PG_SB_VERTICAL) {
+			if(sb_direction == VERTICAL) {
 				if(y < my) {
 					SetPosition(scroll_current - my_pagesize);
 				} else {
@@ -270,7 +270,7 @@ bool PG_ScrollBar::ScrollButton::eventMouseMotion(const SDL_MouseMotionEvent* mo
 		//SDL_GetMouseState(&x, &y);
 		p = GetParent()->ScreenToClient(motion->x, motion->y);
 
-		if(GetParent()->sb_direction == PG_SB_VERTICAL) {
+		if(GetParent()->sb_direction == VERTICAL) {
 			p.y -= offset.y;
 
 			if(p.y < GetParent()->position[2].y) {
@@ -359,7 +359,7 @@ void PG_ScrollBar::SetPosition(int pos) {
 		return;
 	}
 
-	if(sb_direction == PG_SB_VERTICAL) {
+	if(sb_direction == VERTICAL) {
 		position[3].x = 0;
 		position[3].h = (Uint16)((double)position[2].h / ((double)position[2].h / (double)position[3].h));
 		position[3].y = (Uint16)(position[0].h + (((double)position[2].h - (double)position[3].h) / (double)(scroll_max - scroll_min)) * (double)pos);
@@ -471,13 +471,13 @@ int PG_ScrollBar::ScrollButton::GetPosFromPoint(PG_Point p) {
 		p.y = 0;
 
 	if(!my_tickMode) {
-		if(GetParent()->sb_direction == PG_SB_VERTICAL) {
+		if(GetParent()->sb_direction == VERTICAL) {
 			pos = (int)( (((double)(p.y - GetParent()->position[3].w)) * (double)(range)) / ( (double)GetParent()->position[2].h - (double)GetParent()->position[3].h) + .5 );
 		} else {
 			pos = (int)( (((double)(p.x - GetParent()->position[3].h)) * (double)(range)) / ( (double)GetParent()->position[2].w - (double)GetParent()->position[3].w) + .5 );
 		}
 	} else {
-		if(GetParent()->sb_direction == PG_SB_VERTICAL) {
+		if(GetParent()->sb_direction == VERTICAL) {
 			pos = (int)( (((double)(p.y)) * (double)(range)) / ( (double)GetParent()->position[2].h - (double)GetParent()->position[3].h) + .5 );
 		} else {
 			pos = (int)( (((double)(p.x)) * (double)(range)) / ( (double)GetParent()->position[2].w - (double)GetParent()->position[3].w) + .5 );

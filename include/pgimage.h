@@ -20,9 +20,9 @@
     pipelka@teleweb.at 
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2003/01/25 16:53:57 $ 
+    Update Date:      $Date: 2003/12/02 15:27:57 $ 
     Source File:      $Source: /sources/paragui/paragui/include/pgimage.h,v $ 
-    CVS/RCS Revision: $Revision: 1.3.6.1 $ 
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $ 
     Status:           $State: Exp $ 
 */
 
@@ -32,14 +32,6 @@
 
 #ifndef PG_IMAGE_H
 #define PG_IMAGE_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgimage
-%{
-#include "pgimage.h"
-%}
-#endif
 
 #include "pgthemewidget.h"
 
@@ -69,11 +61,7 @@ public:
 	@param freeimage	if true the imagedata is handled by the widget
 	@param style		widgetstyle to use
 	*/
-#ifdef SWIG
-	%name(PG_ImageSurface) PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, const char* style = "ThemeWidget");
-#else
 	PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, const char* style = "ThemeWidget");
-#endif
 
 	/**
 	Contructor of the PG_Image class (loading from file)
@@ -84,11 +72,7 @@ public:
 	@param style		widgetstyle to use
 	This constructor creates the widget and loads the image from a file using a colorkey.
 	*/
-#ifdef SWIG
-	%name(PG_ImageColorKey) PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, Uint32 colorkey, const char* style);
-#else
 	PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, Uint32 colorkey, const char* style);
-#endif
 
 	/**
 	Set the colorkey of the image

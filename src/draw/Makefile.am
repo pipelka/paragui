@@ -6,8 +6,8 @@ libpgdraw_la_SOURCES = \
 	drawline.cpp \
 	setpixel.cpp \
 	stretch.cpp \
-	pgrect.cpp \
 	pgpoint.cpp \
+	pgrect.cpp \
 	drawtile.cpp \
 	gradient.cpp
 

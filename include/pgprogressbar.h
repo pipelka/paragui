@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgprogressbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.2.2 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_PROGRESSBAR_H
 #define PG_PROGRESSBAR_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgprogressbar
-%{
-#include "pgprogressbar.h"
-%}
-#endif
 
 #include "pgthemewidget.h"
 
@@ -83,11 +75,9 @@ protected:
 	void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
 	*/
 private:
-#ifndef SWIG
 
 	PG_ProgressBar(const PG_ProgressBar&);
 	PG_ProgressBar& operator=(const PG_ProgressBar&);
-#endif
 
 	PG_Gradient my_pbGradient;
 	SDL_Surface* my_pbBackground;

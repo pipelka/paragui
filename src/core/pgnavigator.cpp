@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:40 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgnavigator.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.6.3 $
+    CVS/RCS Revision: $Revision: 1.2.6.3.2.1 $
     Status:           $State: Exp $
 */
 
@@ -55,7 +55,7 @@ void PG_Navigator::Remove(PG_Widget* widget) {
 	erase(i);
 }
 
-bool PG_Navigator::Action(PG_ACTION action) {
+bool PG_Navigator::Action(PG_Widget::KeyAction action) {
 	if(my_currentWidget == NULL) {
 		return false;
 	}
@@ -70,9 +70,9 @@ PG_Widget* PG_Navigator::Goto(PG_Widget* widget) {
 		return NULL;
 	}
 
-	Action(PG_ACT_DEACTIVATE);
+	Action(PG_Widget::ACT_DEACTIVATE);
 	my_currentWidget = widget;
-	Action(PG_ACT_ACTIVATE);
+	Action(PG_Widget::ACT_ACTIVATE);
 
 	return my_currentWidget;
 }

@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_MESSAGEOBJECT_H
 #define PG_MESSAGEOBJECT_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgmessageobject
-%{
-#include "pgmessageobject.h"
-%}
-#endif
 
 #include "paragui.h"
 #include "pgsignals.h"
@@ -113,32 +105,6 @@ public:
 	returns true when the object can receive messages or false if not.
 	*/
 	bool IsEnabled();
-
-	/**
-	Send a message to an object
-	@param	target		object which will receive the message
-	@param	type			type of the message (MSG_TYPE)
-	@param	id
-	@param	data			message specific data value
-	*/
-	//bool SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, MSG_ID id, MSG_DATA data);
-
-	/**
-	Set a callback function for an event
-	@param	type				message type to trigger
-	@param	cbfunc			the function to call when the defined event is triggerd
-	@param	clientdata	client specific message data
-	*/
-	//void SetEventCallback(PG_MSG_TYPE type, MSG_CALLBACK cbfunc, void *clientdata = NULL);
-
-	/**
-	Set an object member function for an event
-	@param	type				message type to trigger
-	@param	calledobj		pointer to called object
-	@param	cbfunc			member function to call
-	@param	clientdata	client specific message data
-	*/
-	//void SetEventObject(PG_MSG_TYPE type, PG_EventObject* calledobj, MSG_CALLBACK_OBJ cbfunc, void *clientdata = NULL);
 
 	/**
 	Sends an event to the global message queue.
@@ -291,7 +257,7 @@ protected:
 
 	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
 	*/
-	virtual bool eventMessage(MSG_MESSAGE* msg);
+	//virtual bool eventMessage(MSG_MESSAGE* msg);
 
 	/** */
 	virtual void eventInputFocusLost(PG_MessageObject* newfocus);
@@ -311,9 +277,7 @@ protected:
 
 	static bool my_quitEventLoop;
 
-#ifndef SWIG
 	static vector<PG_MessageObject*> objectList;
-#endif
 
 	static PG_MessageObject* captureObject;
 
@@ -323,10 +287,8 @@ protected:
 
 private:
 
-#ifndef SWIG
 	PG_MessageObject(const PG_MessageObject&);
 	PG_MessageObject& operator=(const PG_MessageObject&);
-#endif
 
 	bool RemoveObject(PG_MessageObject* obj);
 
@@ -338,9 +300,7 @@ private:
 
 	bool my_canReceiveMessages;
 
-#ifndef SWIG
 	friend class PG_Application;
-#endif
 };
 
 #endif // PG_MESSAGEOBJECT_H

@@ -20,28 +20,21 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:52 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessagebox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.2.2 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_MESSAGEBOX_H
 #define PG_MESSAGEBOX_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgmessagebox
-%{
-#include "pgmessagebox.h"
-    %}
-#endif
-
 #include "paragui.h"
-#include "pgbutton.h"
+#include "pglabel.h"
 #include "pgwindow.h"
-#include "pgwidget.h"
-#include "pgrichedit.h"
+
+class PG_Button;
+class PG_RichEdit;
 
 /**
 	@author Thomas Bamesberger
@@ -62,12 +55,8 @@ public:
 	@param btn2text						Text to appear in Button 2
 	@param textalign						Alignment for windowtext
 	*/
-	PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, const PG_Rect& btn2, const char* btn2text, int textalign=PG_TA_CENTER, const char* style="MessageBox");
+	PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, const PG_Rect& btn2, const char* btn2text, PG_Label::TextAlign textalign = PG_Label::CENTER, const char* style="MessageBox");
 
-#ifdef SWIG
-
-	%name(PG_MessageBox1) PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, int textalign=PG_TA_CENTER, const char* style="MessageBox");
-#else
 	/**
 	Creates a PopUp with 1 Button
 
@@ -79,8 +68,7 @@ public:
 	@param btn1text						Text to appear in Button 1
 	@param textalign						Alignment for windowtext
 	*/
-	PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, int textalign=PG_TA_CENTER, const char* style="MessageBox");
-#endif
+	PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, PG_Label::TextAlign textalign = PG_Label::CENTER, const char* style="MessageBox");
 
 	/**
 	Destructor

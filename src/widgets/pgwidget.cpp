@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/11/24 09:17:22 $
+   Update Date:      $Date: 2003/12/02 15:27:59 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.2 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.3 $
    Status:           $State: Exp $
  */
 
@@ -34,6 +34,7 @@
 #include "pglog.h"
 #include "pgdraw.h"
 #include "pglayout.h"
+#include "pgtheme.h"
 
 bool PG_Widget::bBulkUpdate = false;
 PG_RectList PG_Widget::widgetList;
@@ -306,21 +307,11 @@ void PG_Widget::eventHide() {}
 
 /**  */
 PG_Point PG_Widget::ClientToScreen(int sx, int sy) {
-	PG_Point p;
-
-	p.x = sx + my_xpos;
-	p.y = sy + my_ypos;
-
-	return p;
+	return PG_Point(sx + my_xpos, sy + my_ypos);
 }
 
 PG_Point PG_Widget::ScreenToClient(int x, int y) {
-	PG_Point p;
-
-	p.x = x - my_xpos;
-	p.y = y - my_ypos;
-
-	return p;
+	return PG_Point(x - my_xpos, y - my_ypos);
 }
 
 void PG_Widget::AddChild(PG_Widget * child) {
@@ -1040,21 +1031,21 @@ void PG_Widget::SetFadeSteps(int steps) {
 	my_internaldata->fadeSteps = steps;
 }
 
-bool PG_Widget::Action(PG_ACTION action) {
+bool PG_Widget::Action(KeyAction action) {
 	int x = my_xpos + my_width / 2;
 	int y = my_ypos + my_height / 2;
 
 	switch(action) {
-		case PG_ACT_ACTIVATE:
+		case ACT_ACTIVATE:
 			SDL_WarpMouse(x,y);
 			eventMouseEnter();
 			break;
 
-		case PG_ACT_DEACTIVATE:
+		case ACT_DEACTIVATE:
 			eventMouseLeave();
 			break;
 
-		case PG_ACT_OK:
+		case ACT_OK:
 			SDL_MouseButtonEvent button;
 			button.button = 1;
 			button.x = x;
@@ -1062,7 +1053,7 @@ bool PG_Widget::Action(PG_ACTION action) {
 			eventMouseButtonDown(&button);
 			SDL_Delay(200);
 			eventMouseButtonUp(&button);
-			Action(PG_ACT_ACTIVATE);
+			Action(ACT_ACTIVATE);
 			break;
 
 		default:
@@ -1843,7 +1834,7 @@ void PG_Widget::GetClipRects(PG_Rect& src, PG_Rect& dst) {
 	GetClipRects(src, dst, *this);
 }
 
-bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
+/*bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
 	bool rc = false;
 
     if (!msg)
@@ -1864,7 +1855,7 @@ bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
 	}
 
 	return rc;
-}
+}*/
 
 void PG_Widget::SetID(int id) {
 	my_internaldata->id = id;

@@ -20,16 +20,17 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
     Status:           $State: Exp $
 */
 
-#include <cmath>
-
 #include "pgdropdown.h"
 #include "pglog.h"
+#include "pglistbox.h"
+#include "pglistboxitem.h"
+#include "pglineedit.h"
 
 PG_DropDown::PG_DropDown(PG_Widget* parent, int id, const PG_Rect& r, const char* style) : PG_Widget(parent, r) {
 	PG_Rect rect(0, 0, r.my_width - r.my_height, r.my_height);

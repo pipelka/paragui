@@ -1,4 +1,6 @@
 #include "pgmenubar.h"
+#include "pgbutton.h"
+#include "pgpopupmenu.h"
 
 PG_MenuBar::PG_MenuBar(PG_Widget* parent, const PG_Rect& rect, const char* style) : PG_ThemeWidget(parent, rect, style) {
 	my_btnOffsetY = 2;

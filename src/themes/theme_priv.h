@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
@@ -184,6 +184,7 @@ public:
 	void GetProperty(const char* widgettype, const char* object, const char* name, Uint8& prop);
 	void GetProperty(const char* widgettype, const char* object, const char* name, bool& prop);
 	void GetProperty(const char* widgettype, const char* object, const char* name, int& prop);
+	void GetAlignment(const char* widgettype, const char* object, const char* name, PG_Label::TextAlign& align);
 	void GetColor(const char* widgettype, const char* object, const char* name, PG_Color& color);
 	const char* FindString(const char* widgettype, const char* object, const char* name);
 

@@ -20,22 +20,23 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.3 $
     Status:           $State: Exp $
 */
 
 #include "pgwindow.h"
 #include "pgapplication.h"
-#include <cstring>
+#include "pgtheme.h"
+#include "pgbutton.h" 
 
-PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext, Uint32 flags, const char* style, int heightTitlebar) : PG_ThemeWidget(parent, r) {
+PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext, WindowFlags flags, const char* style, int heightTitlebar) : PG_ThemeWidget(parent, r) {
 
 	my_moveMode = false;
 	my_heightTitlebar = heightTitlebar;
-	my_showCloseButton = flags & WF_SHOW_CLOSE;
-	my_showMinimizeButton = flags & WF_SHOW_MINIMIZE;
+	my_showCloseButton = flags & PG_Window::SHOW_CLOSE;
+	my_showMinimizeButton = flags & PG_Window::SHOW_MINIMIZE;
 
 	PG_Rect rb;
 
@@ -43,7 +44,7 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext
 	my_titlebar->EnableReceiver(false);
 
 	my_labelTitle = new PG_Label(my_titlebar, PG_Rect(0, 0, my_width, my_heightTitlebar), windowtext, style);
-	my_labelTitle->SetAlignment(PG_TA_CENTER);
+	my_labelTitle->SetAlignment(PG_Label::CENTER);
 
 	my_buttonClose = new PG_Button(my_titlebar, PG_WINDOW_CLOSE, rb, NULL);
 	my_buttonClose->sigClick.connect(slot(*this, &PG_Window::handleButtonClick));
@@ -64,7 +65,7 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext
 PG_Window::~PG_Window() {
 }
 
-void PG_Window::SetTitle(const char* title, int alignment) {
+void PG_Window::SetTitle(const char* title, PG_Label::TextAlign alignment) {
 	my_labelTitle->SetAlignment(alignment);
 	my_labelTitle->SetText(title);
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdraw.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -34,6 +34,7 @@
 #define PG_DRAW_H
 
 #include "pgrect.h"
+#include "pgcolor.h"
 
 #ifndef M_PI
 /**
@@ -42,6 +43,35 @@
 */
 #define M_PI 3.14159265359
 #endif // M_PI
+
+
+// Background modes
+
+/**
+	Backgroundmode TILE.
+	Macro defining the background mode for tiling
+*/
+#define BKMODE_TILE			1
+/**
+	Backgroundmode STRETCH.
+	Macro defining the background mode for stretching
+*/
+#define BKMODE_STRETCH		2
+/**
+	Backgroundmode 3TILEH.
+	Macro defining the background mode for horizontal 3 part tiling
+*/
+#define BKMODE_3TILEH		3
+/**
+	Backgroundmode 3TILEV.
+	Macro defining the background mode for vertical 3 part tiling
+*/
+#define BKMODE_3TILEV		4
+/**
+	Backgroundmode 9TILE.
+	Macro defining the background mode for 9 part tiling
+*/
+#define BKMODE_9TILE		5
 
 /**
 	@short ParaGUI drawing functions
@@ -84,7 +114,6 @@ DECLSPEC SDL_Surface* RotoScaleSurface(SDL_Surface *src, double angle,
 DECLSPEC SDL_Surface* ScaleSurface(SDL_Surface *src, double zoomx, double zoomy,
                                       bool smooth = true);
 
-#ifndef SWIG
 //! Scale an SDL_Surface
 /*!
   Scales a 32bit or 8bit SDL_Surface to newly created destination
@@ -120,7 +149,6 @@ static inline SDL_Surface *ScaleSurface(SDL_Surface *src, Uint16 newx, Uint16 ne
 	return ScaleSurface(src, static_cast<double>(newx) / src->w,
 	                       static_cast<double>(newy) / src->h, smooth);
 }
-#endif
 
 //! Scale and blit surface
 /*!

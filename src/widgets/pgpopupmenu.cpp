@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/11/24 09:17:22 $
+   Update Date:      $Date: 2003/12/02 15:27:59 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.2 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.3 $
    Status:           $State: Exp $
  */
 
@@ -30,6 +30,7 @@
 #include "pgapplication.h"
 #include "pgpopupmenu.h"
 #include "pglog.h"
+#include "pgtheme.h"
 
 #include <functional>
 #include <algorithm>

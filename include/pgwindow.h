@@ -20,34 +20,20 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:21 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_WINDOW_H
 #define PG_WINDOW_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgwindow
-%{
-#include "pgwindow.h"
-    %}
-#endif
-
 #include "pgthemewidget.h"
-#include "pgbutton.h"
 #include "pglabel.h"
 #include <string>
 
-typedef enum {
-    WF_MODAL = 0x01,
-    WF_SHOW_CLOSE = 0x02,
-    WF_SHOW_MINIMIZE = 0x04,
-    WF_DEFAULT = WF_SHOW_CLOSE
-} PG_WINDOWFLAGS;
+class PG_Button;
 
 /**
 	@author Alexander Pipelka
@@ -61,6 +47,14 @@ typedef enum {
 class DECLSPEC PG_Window : public PG_ThemeWidget  {
 public:
 
+
+	typedef enum {
+		MODAL = 0x01,
+		SHOW_CLOSE = 0x02,
+		SHOW_MINIMIZE = 0x04,
+		DEFAULT = SHOW_CLOSE
+	} WindowFlags;
+
 	/**
 	Signal type declaration
 	**/
@@ -69,7 +63,7 @@ public:
 	typedef PG_Signal1<PG_Window*> SignalWindowRestore;
 
 	/** */
-	PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext, Uint32 flags = WF_DEFAULT, const char* style="Window", int heightTitlebar = 25);
+	PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext, WindowFlags flags = DEFAULT, const char* style="Window", int heightTitlebar = 25);
 
 	/** */
 	~PG_Window();
@@ -83,7 +77,7 @@ public:
 	@param	title					new window title
 	@param alignment	alignment of the text (PG_TA_LEFT | PG_TA_CENTER | PG_TA_RIGHT)
 	*/
-	void SetTitle(const char* title, int alignment = PG_TA_CENTER);
+	void SetTitle(const char* title, PG_Label::TextAlign alignment = PG_Label::CENTER);
 
 	/**
 	get window title
@@ -141,10 +135,9 @@ private:
 	bool my_showMinimizeButton;
 
 private: // disable the copy operators
-#ifndef SWIG
+	
 	PG_Window(const PG_Window&);
 	PG_Window& operator=(const PG_Window&);
-#endif
 
 };
 

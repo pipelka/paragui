@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.3 $
     Status:           $State: Exp $
 */
 
@@ -34,18 +34,13 @@
 #ifndef PG_APPLICATION_H
 #define PG_APPLICATION_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgapplication
-%{
-#include "pgapplication.h"
-%}
-#endif
-
 #include "pgmessageobject.h"
 #include "pgfilearchive.h"
 #include "pgfont.h"
-#include "pgtheme.h"
+#include "pgdraw.h"
+
+class PG_Theme;
+class PG_Widget;
 
 /**
 	@author Alexander Pipelka
@@ -100,6 +95,13 @@ class PG_XMLTag;
 class DECLSPEC PG_Application : public PG_MessageObject, public PG_FileArchive, public PG_FontEngine  {
 public:
 
+	//! Cursor mode
+	typedef enum {
+		QUERY, //!< Used to query the current mode
+		NONE,  //!< Show no cursor at all
+		HARDWARE, //!< Use hardware (standard SDL) cursor
+		SOFTWARE //!< Use ParaGUI software cursor (when possible)
+	} CursorMode;
 	/**
 	Signal type declaration
 	**/
@@ -121,13 +123,7 @@ public:
 	@param	depth	screendepth in bits per pixel
 	@param	flags	PG_ screen initialization flags
 	*/
-#ifdef SWIG
-	// swig messes up the default arguments
-	bool InitScreen(int w, int h, int depth, unsigned int flags);
-#else
-
 	bool InitScreen(int w, int h, int depth=DISPLAY_DEPTH, Uint32 flags = SDL_SWSURFACE /* | SDL_FULLSCREEN*/ | SDL_HWPALETTE);
-#endif
 
 	/**
 	Load a widget theme
@@ -217,12 +213,7 @@ public:
 	@param	mode	background mode (BKMODE_TILE | BKMODE_STRETCH)
 	@return		true - background image was altered successfully
 	*/
-#ifdef SWIG
-	%name(SetBackground2) bool SetBackground(SDL_Surface* surface, int mode=BKMODE_TILE);
-#else
-
 	bool SetBackground(SDL_Surface* surface, int mode=BKMODE_TILE);
-#endif
 
 	/**
 	Redraw the application background
@@ -279,9 +270,7 @@ public:
 	static void FlipPage();
 
 	/**  */
-#ifndef SWIG
 	void PrintVideoTest();
-#endif
 
 	/**
 	Get the current default widgettheme
@@ -358,9 +347,7 @@ public:
 	@param WorkCallback address of the progress callback function
 	@return   returns non-zero on success or 0 if not succes
 	*/
-#ifndef SWIG
 	static bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max));
-#endif
 
 	/**
 	Load layout from the XML file
@@ -369,9 +356,7 @@ public:
 	@param UserSpace address of user data with are returned by Processing instruction etc.
 	@return   returns non-zero on success or 0 if not succes
 	*/
-#ifndef SWIG
 	static bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max), void *UserSpace);
-#endif
 
 	/**
 	Get widget by name
@@ -478,7 +463,7 @@ public:
 	\param mode the new mode for the request
 	\return the previous cursor mode 
 	*/
-	static PG_CURSOR_MODE ShowCursor(PG_CURSOR_MODE mode);
+	static CursorMode ShowCursor(CursorMode mode);
 
 	//! Disable dirty widget updates
 	/*!
@@ -543,11 +528,9 @@ protected:
 
 private:
 
-#ifndef SWIG
 	// disable the copy operators
 	PG_Application(const PG_Application&);
 	PG_Application& operator=(const PG_Application&);
-#endif
 
 	bool my_freeBackground;
 	static SDL_Surface* my_background;
@@ -557,9 +540,7 @@ private:
 	
 	static PG_Theme* my_Theme;
 
-#ifndef SWIG
 	static string app_path;
-#endif
 
 	static PG_Application* pGlobalApp;
 	static SDL_Surface* screen;
@@ -572,7 +553,7 @@ private:
 
 	static SDL_Surface *my_mouse_pointer;
 	static PG_Rect my_mouse_position;
-	static PG_CURSOR_MODE my_mouse_mode;
+	static CursorMode my_mouse_mode;
 	static SDL_mutex* mutexScreen;
 	static bool disableDirtyUpdates;
 };

@@ -130,7 +130,7 @@ PG_ColorSelector::PG_ColorSelector(PG_Widget* parent, const PG_Rect&r, const cha
 	
 	my_colorbox->SetGradient(g);
 
-	my_colorslider = new PG_Slider(this, -1, PG_Rect(r.h, 5, 20, r.h-10), PG_SB_VERTICAL);
+	my_colorslider = new PG_Slider(this, -1, PG_Rect(r.h, 5, 20, r.h-10), PG_ScrollBar::VERTICAL);
 	my_colorslider->SetRange(0, 255);
 
 	my_colorslider->SetBackground((SDL_Surface*)NULL);

@@ -31,7 +31,7 @@ bool MyApplication::eventKeyDown(const SDL_KeyboardEvent* key) {
 			}
 			return true;
 		case SDLK_SPACE:
-			Action(PG_ACT_OK);
+			Action(PG_Widget::ACT_OK);
 			return true;
 		default:
 			dest = NULL;

@@ -20,22 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:21 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_WIDGET_H
 #define PG_WIDGET_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgwidget
-%{
-#include "pgwidget.h"
-%}
-#endif
 
 #include "pgmessageobject.h"
 #include "pgrectlist.h"
@@ -81,6 +73,20 @@ class PG_WidgetDataInternal;
 
 class DECLSPEC PG_Widget : public PG_MessageObject, public PG_Rect  {
 public:
+
+
+	//! Keyevent actions
+	typedef enum {
+		ACT_ACTIVATE,	//!< Widget got the input focus
+		ACT_DEACTIVATE,	//!< Widget has lost the input focus
+		ACT_OK,	//!< Widget action event (e.g. button press on a PG_Button object)
+		ACT_CANCEL,	//!< Widget cancel-action
+		ACT_LEFT,	//!< Cursor left was pressed
+		ACT_RIGHT,	//!< Cursor right was pressed
+		ACT_UP,	//!< Cursor up was pressed
+		ACT_DOWN	//!< Cursor down was pressed
+	} KeyAction;
+
 	/**
 	Creates a PG_Widget without an object-surface
 
@@ -98,12 +104,7 @@ public:
 	@param rect		initial position for the widget
 	@param bObjectSurface	flag if a surface for the object should be created
 	*/
-#ifdef SWIG
-	%name(PG_WidgetEx) PG_Widget(PG_Widget* parent, const PG_Rect& rect, bool bObjectSurface);
-#else
-
 	PG_Widget(PG_Widget* parent, const PG_Rect& rect, bool bObjectSurface);
-#endif
 
 	/**
 	Destroys a PG_Widget
@@ -121,7 +122,6 @@ public:
 	*/
 	void LoadThemeStyle(const char* widgettype);
 
-#ifndef SWIG
 	/**
 	Load a style from the theme definition
 
@@ -131,7 +131,6 @@ public:
 	Loads the defined style of a given widgettype and objectname.
 	*/
 	virtual void LoadThemeStyle(const char* widgettype, const char* objectnmae);
-#endif
 
 	/**
 	Start to drag a widget
@@ -187,11 +186,7 @@ public:
 
 	This function moves and resizes the widget to fit the given rectangle.
 	*/
-	#ifdef SWIG
-	%name(MoveWidgetRect) bool MoveWindow(const PG_Rect& r);
-	#else
 	bool MoveWidget(const PG_Rect& r);
-	#endif
 
 	/**
 	Move and resize widget -- OBSOLETE
@@ -202,11 +197,7 @@ public:
 	This function moves and resizes the widget to fit the given rectangle.
 	CAUTION: This function will be removed in the final version. Please use MoveWidget(const PG_Rect& r)
 	*/
-	#ifdef SWIG
-	%name(MoveWindowRect) bool MoveWindow(const PG_Rect& r);
-	#else
 	bool MoveWindow(const PG_Rect& r);
-	#endif
 
 	/**
 	Resize a widget -- OBSOLETE
@@ -315,11 +306,7 @@ public:
 	@param id   the id of the child to return
 	@return A pointer to the child with the given ID or 0 if no such child exists.
 	*/
-	#ifdef SWIG
-	%name (FindChildID) PG_Widget* FindChild(int id);
-	#else
 	PG_Widget* FindChild(int id);
-	#endif
 
 	/**
 	Find a child that is identified by the given name.
@@ -458,7 +445,7 @@ public:
 	// Navigation
 
 	/** */
-	virtual bool Action(PG_ACTION action);
+	virtual bool Action(KeyAction action);
 
 	/**
 	   Get a list of all toplevel widgets
@@ -491,9 +478,7 @@ public:
 	@param WorkCallback	address of function to show progress of loading layout
 	@return returns non-zero on success or 0 if not succes
 	*/
-#ifndef SWIG
 	bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max));
-#endif
 
 	/**
 	Load layout from the XML file to the current widget
@@ -502,9 +487,7 @@ public:
 	@param UserSpace address of user data witch are passed to Processing Instruction handler etc.
 	@return returns non-zero on success or 0 if not succes
 	*/
-#ifndef SWIG
 	bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max), void *UserSpace);
-#endif
 
 	/**
 	Removes all childs
@@ -551,13 +534,11 @@ public:
 	*/
 	void AddText(const char* text, bool update = false);
 
-#ifndef SWIG
 	/**
 	Sets formated text
 	@param text	Set the widget text (like printf) and update widget
 	*/
 	virtual void SetTextFormat(const char* text, ...);
-#endif
 
 	/** Returns text
 	@return	Pointer to the text of the widget (read-only)
@@ -566,11 +547,7 @@ public:
 
 	void GetTextSize(Uint16& w, Uint16& h, const char* text = NULL);
 
-#ifdef SWIG
-	%name(GetTextSize2) static void GetTextSize(Uint16& w, Uint16& h, const char* text, PG_Font* font);
-#else
 	static void GetTextSize(Uint16& w, Uint16& h, const char* text, PG_Font* font);
-#endif
 
 	int GetTextWidth();
 
@@ -665,11 +642,7 @@ public:
 	@param x y-position where the text should appear
 	@param text pointer to text string
 	*/
-#ifdef SWIG
-	%name(DrawTextXY) void DrawText(int x, int y, const char* text);
-#else
 	void DrawText(int x, int y, const char* text);
-#endif
 
 	/**
 	Render text inside the widget and clip to a given clipping rectangle
@@ -678,11 +651,7 @@ public:
 	@param text pointer to text string
 	@param cliprect text bounding rectangle
 	*/
-#ifdef SWIG
-	%name(DrawTextXYClip) void DrawText(int x, int y, const char* text, const PG_Rect& cliprect);
-#else
 	void DrawText(int x, int y, const char* text, const PG_Rect& cliprect);
-#endif
 
 	/**
 	Render text inside the widget and set the font color
@@ -690,11 +659,7 @@ public:
 	@param text pointer to text string
 	@param color color of the rendered text
 	*/
-#ifdef SWIG
-	%name(DrawTextColor) void DrawText(const PG_Rect& rect, const char* text, const PG_Color& c);
-#else
 	void DrawText(const PG_Rect& rect, const char* text, const PG_Color& c);
-#endif
 
 	/**
 	Render text inside the widget and set the font color
@@ -703,11 +668,7 @@ public:
 	@param text pointer to text string
 	@param color color of the rendered text
 	*/
-#ifdef SWIG
-	%name(DrawTextXYColor) void DrawText(int x, int y, const char* text, const PG_Color& c);
-#else
 	void DrawText(int x, int y, const char* text, const PG_Color& c);
-#endif
 
 	/**  */
 	void DrawBorder(const PG_Rect& r, int size, bool up = true);
@@ -748,10 +709,8 @@ public:
 	/**  */
 	void GetClipRects(PG_Rect& src, PG_Rect& dst);
 
-#ifndef SWIG
 	/**  */
 	void GetClipRects(PG_Rect& src, PG_Rect& dst, const PG_Rect& displayrect);
-#endif
 
 	/**  */
 	void SetPixel(int x, int y, const PG_Color& c);
@@ -822,7 +781,7 @@ protected:
 		@return this eventhandler should return "true" if the message was proccessed.
 		This messagehandler can be overridden to perform custom operations.
 	*/	
-	bool eventMessage(MSG_MESSAGE* msg);
+	//bool eventMessage(MSG_MESSAGE* msg);
 
 	/**
 	Callback for the MoveWidget event
@@ -940,10 +899,8 @@ private:
 	//void AddChildToCache(PG_Widget *child, const char *name);
 	//void AddChildToCache(PG_Widget *child, int id);
     
-#ifndef SWIG
 	PG_Widget(const PG_Widget&);
 	PG_Widget& operator=(const PG_Widget&);
-#endif
 
 	static bool bBulkUpdate;
 	static int my_ObjectCounter;

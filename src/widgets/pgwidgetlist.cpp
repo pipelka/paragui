@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.2 $
     Status:           $State: Exp $
 */
 
@@ -69,7 +69,7 @@ PG_WidgetList::PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const char* st
 	    r.my_width - my_widthScrollbar,
 	    my_heightHorizontalScrollbar);
 
-	my_objVerticalScrollbar = new PG_ScrollBar(this, PG_IDWIDGETLIST_SCROLL, my_rectVerticalScrollbar, PG_SB_VERTICAL, style);
+	my_objVerticalScrollbar = new PG_ScrollBar(this, PG_IDWIDGETLIST_SCROLL, my_rectVerticalScrollbar, PG_ScrollBar::VERTICAL, style);
 	my_objVerticalScrollbar->SetRange(0,0);
 	my_widthScrollbar = my_objVerticalScrollbar->Width();
 	my_objVerticalScrollbar->MoveWidget(r.my_width - my_widthScrollbar, 0);
@@ -78,7 +78,7 @@ PG_WidgetList::PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const char* st
 	my_objVerticalScrollbar->sigScrollPos.connect(slot(*this, &PG_WidgetList::handleScrollPos));
 	my_objVerticalScrollbar->sigScrollTrack.connect(slot(*this, &PG_WidgetList::handleScrollTrack));
 	
-	my_objHorizontalScrollbar = new PG_ScrollBar(this, PG_IDWIDGETLIST_SCROLL, my_rectHorizontalScrollbar, PG_SB_HORIZONTAL, style);
+	my_objHorizontalScrollbar = new PG_ScrollBar(this, PG_IDWIDGETLIST_SCROLL, my_rectHorizontalScrollbar, PG_ScrollBar::HORIZONTAL, style);
 	my_objHorizontalScrollbar->SetRange(0,0);
 	my_heightHorizontalScrollbar = my_objHorizontalScrollbar->Height();
 	my_objHorizontalScrollbar->MoveWidget(0, r.my_height - my_heightHorizontalScrollbar);
@@ -552,34 +552,34 @@ void PG_WidgetList::CheckScrollBars() {
 	}
 }
 
-void PG_WidgetList::EnableScrollBar(bool enable, int direction) {
-	if (direction == PG_SB_VERTICAL) {
+void PG_WidgetList::EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection direction) {
+	if (direction == PG_ScrollBar::VERTICAL) {
 		my_enableVerticalScrollbar = enable;
-	} else if (direction == PG_SB_HORIZONTAL) {
+	} else if (direction == PG_ScrollBar::HORIZONTAL) {
 		my_enableHorizontalScrollbar = enable;
 	}
 	CheckScrollBars();
 
-	if ((!my_enableVerticalScrollbar) && (direction == PG_SB_VERTICAL)) {
+	if ((!my_enableVerticalScrollbar) && (direction == PG_ScrollBar::VERTICAL)) {
 		my_widthScrollbar = 0;
 		SizeWidget(Width(), Height());
-	} else if ((!my_enableHorizontalScrollbar) && (direction == PG_SB_HORIZONTAL)) {
+	} else if ((!my_enableHorizontalScrollbar) && (direction == PG_ScrollBar::HORIZONTAL)) {
 		my_heightHorizontalScrollbar = 0;
 		SizeWidget(Width(), Height());
 	}
 }
 
-void PG_WidgetList::ScrollTo(PG_Widget* widget, int direction) {
+void PG_WidgetList::ScrollTo(PG_Widget* widget, PG_ScrollBar::ScrollDirection direction) {
 	if(my_widgetCount == 0) {
 		return;
 	}
 
-	if (direction == PG_SB_VERTICAL) {
+	if (direction == PG_ScrollBar::VERTICAL) {
 		int ypos = widget->y - FindWidget(0)->y;
 
 		ypos = ScrollToY(ypos);
 		my_objVerticalScrollbar->SetPosition(ypos);
-	} else if (direction == PG_SB_HORIZONTAL) {
+	} else if (direction == PG_ScrollBar::HORIZONTAL) {
 		int xpos = widget->x - FindWidget(0)->x;
 
 		xpos = ScrollToX(xpos);
@@ -587,7 +587,7 @@ void PG_WidgetList::ScrollTo(PG_Widget* widget, int direction) {
 	}
 }
 
-void PG_WidgetList::ScrollTo(int index, int direction) {
+void PG_WidgetList::ScrollTo(int index, PG_ScrollBar::ScrollDirection direction) {
 	PG_Widget* w = FindWidget(index);
 
 	if(w == NULL) {

@@ -20,20 +20,21 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgslider.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.2.3 $
     Status:           $State: Exp $
 */
 
 #include "pgslider.h"
 #include "pgapplication.h"
+#include "pgtheme.h"
 
-PG_Slider::PG_Slider(PG_Widget* parent, int id, const PG_Rect& r, int direction, const char* style) : PG_ScrollBar(parent, id, r, direction) {
+PG_Slider::PG_Slider(PG_Widget* parent, int id, const PG_Rect& r, ScrollDirection direction, const char* style) : PG_ScrollBar(parent, id, r, direction) {
 
 	my_showButtons = false;
 
-	if(sb_direction == PG_SB_VERTICAL) {
+	if(sb_direction == VERTICAL) {
 		my_sliderSize = r.my_width;
 		position[3].h = r.my_width;
 	} else {
@@ -79,7 +80,7 @@ void PG_Slider::LoadThemeStyle(const char* widgettype) {
 
 	//PG_ScrollBar::LoadThemeStyle(widgettype);
 
-	if(sb_direction == PG_SB_VERTICAL) {
+	if(sb_direction == VERTICAL) {
 		t->GetProperty(widgettype, "SliderDragV", "height", position[3].h);
 		my_sliderSize = position[3].h;
 
@@ -95,7 +96,7 @@ void PG_Slider::LoadThemeStyle(const char* widgettype) {
 
 	dragbutton->LoadThemeStyle(widgettype, "SliderDrag");
 
-	if(sb_direction == PG_SB_VERTICAL) {
+	if(sb_direction == VERTICAL) {
 		dragbutton->LoadThemeStyle(widgettype, "SliderDragV");
 		PG_ThemeWidget::LoadThemeStyle(widgettype, "SliderV");
 	} else {
@@ -142,7 +143,7 @@ void PG_Slider::eventSizeWidget(Uint16 w, Uint16 h) {
 		position[2].h = h;
 	}
 
-	if(sb_direction == PG_SB_VERTICAL) {
+	if(sb_direction == VERTICAL) {
 		position[3].h = my_sliderSize;
 	} else {
 		position[3].w = my_sliderSize;

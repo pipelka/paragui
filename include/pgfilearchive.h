@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/18 11:15:28 $
+    Update Date:      $Date: 2003/12/02 15:27:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.1 $
     Status:           $State: Exp $
 */
 
@@ -33,14 +33,6 @@
 
 #ifndef PG_FILEARCHIVE_H
 #define PG_FILEARCHIVE_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgfilearchive
-%{
-#include "pgfilearchive.h"
-%}
-#endif
 
 #include "paragui.h"
 #include "pgfile.h"

@@ -43,4 +43,9 @@ public:
 	}
 };
 
+//! Structure for widget gradients
+typedef struct {
+	PG_Color colors[4];	//!< array of gradient colors
+} PG_Gradient;
+
 #endif // PG_COLOR_H

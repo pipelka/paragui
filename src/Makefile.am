@@ -23,6 +23,7 @@ libparagui_la_LIBADD = \
 	$(LIBSTDCPP)
 
 INCLUDES = \
+	$(SIGC_CFLAGS) \
 	$(SDL_CFLAGS) \
 	-I$(top_srcdir)/include
 

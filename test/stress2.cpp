@@ -19,11 +19,12 @@
 #include "pgspinnerbox.h"
 #include "pglog.h"
 #include "pgmenubar.h"
+#include "pgtheme.h"
 
 #define RESX 800
 #define RESY 600
 
-PARAGUI_CALLBACK(handle_exit) {
+bool handle_exit(PG_Pointer clientdata) {
 	PG_Application* app = (PG_Application*)clientdata;
 	app->Quit();
 	return true;
@@ -100,7 +101,7 @@ int main(int argc, char* argv[]) {
 	container.Show();
 		
 	PG_LogMSG("app ready after %i ms", SDL_GetTicks() - start_ticks);
-	app.ShowCursor(PG_CURSOR_SOFTWARE);
+	app.ShowCursor(PG_Application::SOFTWARE);
 
 	// Enter main loop 
 	app.Run();

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:21 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.3 $
     Status:           $State: Exp $
 */
 
@@ -38,6 +38,13 @@ PG_RectList::PG_RectList() {}
 PG_RectList::~PG_RectList() {}
 
 PG_RectList PG_RectList::Intersect(PG_Rect* rect, int first, int last) {
+	// <DEBUG>
+	static long total_calls = 0;
+	static long total_iterations = 0;
+	
+	total_calls++;
+	// </DEBUG>
+	
 	PG_RectList result;
 	int s = (last == -1) ? size() : last;
 
@@ -50,6 +57,10 @@ PG_RectList PG_RectList::Intersect(PG_Rect* rect, int first, int last) {
 	// loop through all rects
 	for(int i=first; i<s; i++) {
 
+		// <DEBUG>
+		total_iterations++;
+		// </DEBUG>
+		
 		// get the next rectangle to test
 		testwidget = (*this)[i];
 
@@ -63,6 +74,12 @@ PG_RectList PG_RectList::Intersect(PG_Rect* rect, int first, int last) {
 			result.Add(testwidget);
 		}
 	}
+
+	// <DEBUG>
+	//PG_LogDBG("Total calls: %d", total_calls);
+	//PG_LogDBG("Total iterations: %d", total_iterations);
+	//PG_LogDBG("Avg. iterations per call: %lf", (double)total_iterations/(double)total_calls);
+	// </DEBUG>
 
 	return result;
 }

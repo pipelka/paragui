@@ -20,26 +20,19 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgradiobutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_RADIOBUTTON_H
 #define PG_RADIOBUTTON_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgradiobutton
-%{
-#include "pgradiobutton.h"
-%}
-#endif
-
 #include "pgthemewidget.h"
-#include "pgbutton.h"
 #include "pglabel.h"
+
+class PG_Button;
 
 /**
 	@author Alexander Pipelka
@@ -79,7 +72,7 @@ public:
 	void SetPressed();
 
 	/** Sets text alignment */
-	void SetAlignment(int a);
+	void SetAlignment(PG_Label::TextAlign a);
 
 	/** */
 	void SetText(const char* text);
@@ -121,11 +114,9 @@ protected:
 	bool my_isPressed;
 
 private:
-#ifndef SWIG
 
 	PG_RadioButton(const PG_RadioButton&);
 	PG_RadioButton& operator=(const PG_RadioButton&);
-#endif
 
 	bool my_storeMarker;
 	Uint8 my_hoverTransparency;

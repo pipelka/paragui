@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -33,18 +33,13 @@
 #ifndef PG_DROPDOWN_H
 #define PG_DROPDOWN_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgdropdown
-%{
-#include "pgdropdown.h"
-%}
-#endif
+#include "pgwidget.h"
+#include "pgsignals.h"
 
-#include "pgbutton.h"
-#include "pglineedit.h"
-#include "pglistbox.h"
-#include "pglistboxitem.h"
+class PG_Button;
+class PG_LineEdit;
+class PG_ListBox;
+class PG_ListBoxBaseItem;
 
 /**
 	@author Alexander Pipelka

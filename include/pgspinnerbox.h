@@ -20,26 +20,20 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:21 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.2.3 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_SPINNERBOX_H
 #define PG_SPINNERBOX_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgspinnerbox
-%{
-#include "pgspinnerbox.h"
-%}
-#endif
-
-#include "pgmaskedit.h"
-#include "pgbutton.h"
 #include "pgthemewidget.h"
+
+class PG_Button;
+class PG_MaskEdit;
+class PG_LineEdit;
 
 /**
  * @author Atani - Mike Dunston
@@ -86,11 +80,8 @@ public:
 	void SetMaxValue( int value ) {
 		m_iMaxValue = value;
 	}
-	void SetMask( const char *value ) {
-		strcpy( m_sMask, value );
-		m_pEditBox->SetMask( m_sMask );
-		AdjustSize();
-	}
+
+	void SetMask( const char *value );
 
 	int GetValue() {
 		return( m_iValue );
@@ -110,7 +101,7 @@ public:
 protected:
 
 	bool handleButtonClick(PG_Button* button);
-	bool handle_editend(PG_LineEdit* edit);
+	bool handleEditEnd(PG_LineEdit* edit);
 
 private:
 

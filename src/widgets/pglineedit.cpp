@@ -20,16 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
 #include "pglineedit.h"
 #include "pgapplication.h"
-#include <cstring>
-#include <stdarg.h>
+#include "pgtheme.h"
 
 PG_LineEdit::PG_LineEdit(PG_Widget* parent, const PG_Rect& r, const char* style, int _my_maximumLength) : PG_ThemeWidget(parent, r, style) {
 
@@ -553,13 +552,13 @@ bool PG_LineEdit::GetEditable() {
 	return my_isEditable;
 }
 
-bool PG_LineEdit::Action(PG_ACTION action) {
+bool PG_LineEdit::Action(KeyAction action) {
 
 	switch(action) {
-		case PG_ACT_OK:
+		case ACT_OK:
 			EditBegin();
 			return true;
-		case PG_ACT_CANCEL:
+		case ACT_CANCEL:
 			EditEnd();
 			return true;
 		default:

@@ -20,14 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.3 $
     Status:           $State: Exp $
 */
 
-#include <stdarg.h>
 #include "pgradiobutton.h"
+#include "pgapplication.h"
+#include "pgtheme.h"
+#include "pgbutton.h"
 
 PG_RadioButton::PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, const char* text, PG_RadioButton* firstOfGroup, const char* style) : PG_ThemeWidget(parent, r) {
 	PG_Rect rectButton;
@@ -55,7 +57,7 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, cons
 
 	rectLabel.SetRect(rectButton.my_width, 0, r.my_width - rectButton.my_width, r.my_height);
 	my_widgetLabel = new PG_Label(this, rectLabel, text, style);
-	my_widgetLabel->SetAlignment(PG_TA_LEFT);
+	my_widgetLabel->SetAlignment(PG_Label::LEFT);
 
 	// load default first
 	LoadThemeStyle("RadioButton");
@@ -163,7 +165,7 @@ const char* PG_RadioButton::GetText() {
 	return my_widgetLabel->GetText();
 }
 
-void PG_RadioButton::SetAlignment(int a) {
+void PG_RadioButton::SetAlignment(PG_Label::TextAlign a) {
 	my_widgetLabel->SetAlignment(a);
 }
 

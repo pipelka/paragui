@@ -2,6 +2,7 @@
 #include <pgbutton.h>
 #include <pgwidgetlist.h>
 #include <pglabel.h>
+#include <iostream>
 
 bool exit_handler(PG_Pointer clientdata) {
     PG_Application* app = (PG_Application*) clientdata;
@@ -47,7 +48,7 @@ int main(int argc, char* argv[]) {
     myButton.Show();
 
     PG_WidgetList list(NULL,PG_Rect(10,10,150,150));
-    list.EnableScrollBar(true, PG_SB_VERTICAL);
+    list.EnableScrollBar(true, PG_ScrollBar::VERTICAL);
     list.SetTransparency(0);
     list.Show();
 

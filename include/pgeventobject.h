@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:57 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgeventobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -34,14 +34,6 @@
 
 #ifndef PG_EVENTOBJECT_H
 #define PG_EVENTOBJECT_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgeventobject
-%{
-#include "pgeventobject.h"
-%}
-#endif
 
 #include "paragui.h"
 #include "pgsignals.h"

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.3 $
     Status:           $State: Exp $
 */
 
@@ -32,9 +32,11 @@
 #include "theme_priv.h"
 #include "pglog.h"
 #include "pgfilearchive.h"
+#include "pgdraw.h"
 
 #include <string>
 #include <expat.h>
+#include <iostream>
 
 // Expat UNICODE workaround - copied from xmltchar.h (Expat dist) - Inserted by Ales Teska
 #ifdef XML_UNICODE

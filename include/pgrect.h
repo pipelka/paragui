@@ -20,22 +20,17 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:21 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrect.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_RECT_H
 #define PG_RECT_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgrect
-%include "pgrect.h"
-#endif
-
-#include "paragui.h"
+#include "SDL.h"
+#include "pgpoint.h"
 
 /**
 	@author Alexander Pipelka
@@ -125,7 +120,6 @@ public:
 		return ( (x <= p.x) && (p.x <= x + w) && (y <= p.y) && (p.y <= y + h) );
 	}
 
-#ifndef SWIG
 	/**
 	Intersect two rectangles
 	@param	p					reference rectangle
@@ -133,7 +127,6 @@ public:
 	@return						resulting intersection rectangle
 	*/
 	static PG_Rect IntersectRect(const PG_Rect& p, const PG_Rect& c);
-#endif
 
 	/**
 	Intersect two rectangles
@@ -175,11 +168,9 @@ public:
 	\param p, c rectangles to check for overlap
 	\return true if the rectangles overlap, false otherwise
 	*/
-#ifndef SWIG
 	inline bool OverlapRect(const PG_Rect& p, const PG_Rect& c) {
 		return !( (p.x + p.w < c.x) || (p.x > c.x + c.w) || (p.y + p.h < c.y) || (p.y > c.y + c.h)  || (p.IntersectRect(c).IsNull()) );
 	}
-#endif
 
 	//! Check if this rectangle overlap another one
 	/*!
@@ -199,12 +190,10 @@ public:
 		return OverlapRect(*p, *this);
 	}
 	
-#ifndef SWIG
 	Sint16& my_xpos;
 	Sint16& my_ypos;
 	Uint16& my_width;
 	Uint16& my_height;
-#endif
 };
 
 #endif	// PG_RECT_H

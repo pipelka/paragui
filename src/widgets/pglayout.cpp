@@ -166,23 +166,37 @@ int PG_Layout::GetParamInt(const char **Source, char *What) {
 	return atoi(p);
 }
 
-int PG_Layout::GetParamAlign(const char **Source, char *What) {
-	int	ret = -1;
+PG_ScrollBar::ScrollDirection PG_Layout::GetParamScrollDirection(const char **Source, char *What) {
+	char* p = PG_Layout::GetParamStr(Source, What);
+	PG_ScrollBar::ScrollDirection r = PG_ScrollBar::VERTICAL;
+
+	switch(atoi(p)) {
+		case 0:
+			r = PG_ScrollBar::VERTICAL;
+			break;
+			
+		case 1:
+			r = PG_ScrollBar::HORIZONTAL;
+			break;
+	}
+
+	return r;
+}
+PG_Label::TextAlign PG_Layout::GetParamAlign(const char **Source, char *What) {
+	PG_Label::TextAlign ret = PG_Label::LEFT;
 	char *c = PG_Layout::GetParamStr(Source,What);
 
 	if (c[0]==0)
-		return(-1);
+		return PG_Label::LEFT;
 
 	if (tcscmp(T(c),T("left")) == 0)
-		ret = PG_TA_LEFT;
+		ret = PG_Label::LEFT;
 	if (tcscmp(T(c),T("right")) == 0)
-		ret = PG_TA_RIGHT;
+		ret = PG_Label::RIGHT;
 	if (tcscmp(T(c),T("center")) == 0)
-		ret = PG_TA_CENTER;
+		ret = PG_Label::CENTER;
 
-	if (ret == -1)
-		PG_LogWRN("Unknown align type %s !",c);
-	return(ret);
+	return ret;
 }
 
 int PG_Layout::GetParamIMode(const char **Source, char *What) {
@@ -373,13 +387,12 @@ static int SetThemeWidgetAtts(PG_ThemeWidget *Widget, const char **atts, ParseUs
 }
 
 static int SetLabelAtts(PG_Label *Widget, const char **atts, ParseUserData_t *XMLParser) {
-	int		i;
-	char	*c;
+	PG_Label::TextAlign a;
+	int i;
+	char* c;
 
-	i = PG_Layout::GetParamAlign(atts, "align");
-	if (i != -1) {
-		Widget->SetAlignment(i);
-	}
+	a = PG_Layout::GetParamAlign(atts, "align");
+	Widget->SetAlignment(a);
 
 	i = PG_Layout::GetParamInt(atts, "indent");
 	if (i != -1) {
@@ -413,9 +426,9 @@ static int SetUserButtonAtts(PG_Button *Widget, const char **atts, ParseUserData
 	if (c[0] != 0) {
 		b = PG_Layout::GetParamInt(atts, "colorkey");
 		if(b != -1) {
-			Widget->SetIcon2(c, c1, c2, b);
+			Widget->SetIcon(c, c1, c2, b);
 		} else {
-			Widget->SetIcon2(c, c1, c2);
+			Widget->SetIcon(c, c1, c2);
 		}
 	}
 
@@ -782,7 +795,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 			flags = 0;
 		}
 
-		PG_Window *Widget = new PG_Window(parent, Rect, PG_Layout::GetParamStr(atts, "title"),flags, "Window", i);
+		PG_Window *Widget = new PG_Window(parent, Rect, PG_Layout::GetParamStr(atts, "title"), (PG_Window::WindowFlags)flags, "Window", i);
 		XMLParser->ParentObject = Widget;
 
 		XMLParser->InhTagFlags |=SetWindowAtts(Widget, atts, XMLParser);
@@ -946,8 +959,8 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		XMLParser->Section = XML_SECTION_SCROLLBAR | XML_SECTION_BODY | XML_SECTION_COMWIDPARAMS;
 		PG_Layout::GetParamRect(atts, "pos", Rect, parent);
 
-		int d = PG_Layout::GetParamInt(atts, "dir");
-		(d <= 0) ? d = PG_SB_HORIZONTAL : d = PG_SB_VERTICAL;
+		PG_ScrollBar::ScrollDirection d = PG_Layout::GetParamScrollDirection(atts, "dir");
+		(d <= 0) ? d = PG_ScrollBar::HORIZONTAL : d = PG_ScrollBar::VERTICAL;
 
 		PG_ScrollBar *Widget = new PG_ScrollBar(parent, 0, Rect, d);
 		XMLParser->ParentObject = Widget;
@@ -961,7 +974,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		XMLParser->Section = XML_SECTION_SCROLLBAR | XML_SECTION_BODY | XML_SECTION_COMWIDPARAMS;
 		PG_Layout::GetParamRect(atts, "pos", Rect, parent);
 
-		PG_Slider *Widget = new PG_Slider(parent, 0, Rect, PG_Layout::GetParamInt(atts, "dir")+1);
+		PG_Slider *Widget = new PG_Slider(parent, 0, Rect, PG_Layout::GetParamScrollDirection(atts, "dir"));
 		XMLParser->ParentObject = Widget;
 
 		XMLParser->InhTagFlags |=SetScrollBarAtts(Widget, atts, XMLParser);

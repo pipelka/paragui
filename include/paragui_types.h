@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:57 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui_types.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
@@ -31,16 +31,10 @@
 	This header file declares many often used data types and macros.
 */
 
+#error paragui_types.h is obsolete
+
 #ifndef PARAGUI_TYPES_H
 #define PARAGUI_TYPES_H
-
-#ifdef SWIG
-%include "swigcommon.h"
-%module paragui_types
-%{
-#include "paragui_types.h"
-%}
-#endif
 
 #include "pgcolor.h"
 
@@ -49,31 +43,15 @@
 class PG_MessageObject;
 class PG_Widget;
 class PG_EventObject;
-#ifndef SWIG
 class PG_Rect;
-#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
-//! Structure for a screen point
-typedef struct {
-	Sint16 x;	//!< screen X-Coordinate
-	Sint16 y;	//!< screen Y-Coordinate
-} PG_Point;
-
-//! Structure for widget gradients
-typedef struct {
-	PG_Color colors[4];	//!< array of gradient colors
-} PG_Gradient;
-
-#ifndef DOXYGEN_SKIP
+/*#ifndef DOXYGEN_SKIP
 typedef unsigned long MSG_ID;
 typedef unsigned long MSG_DATA;
-#endif
+#endif*/
 
-//! ParaGUI message types
+/*//! ParaGUI message types
 typedef enum {
 	MSG_BUTTONCLICK,	//!< a button was pressed
 	MSG_SCROLLPOS,	//!< scrollbar changed it's position
@@ -107,109 +85,7 @@ typedef enum {
 	MSG_USER_8 = 10008,	//!< userevent 8
 	MSG_USER_9 = 10009,	//!< userevent 9
 	MSG_USER_10 = 10010	//!< userevent 10
-} PG_MSG_TYPE;
-
-//! Keyevent actions
-typedef enum {
-	PG_ACT_ACTIVATE,	//!< Widget got the input focus
-	PG_ACT_DEACTIVATE,	//!< Widget has lost the input focus
-	PG_ACT_OK,	//!< Widget action event (e.g. button press on a PG_Button object)
-	PG_ACT_CANCEL,	//!< Widget cancel-action
-	PG_ACT_LEFT,	//!< Cursor left was pressed
-	PG_ACT_RIGHT,	//!< Cursor right was pressed
-	PG_ACT_UP,	//!< Cursor up was pressed
-	PG_ACT_DOWN	//!< Cursor down was pressed
-} PG_ACTION;
-
-//! Cursor mode
-typedef enum {
-	PG_CURSOR_QUERY, //!< Used to query the current mode
-	PG_CURSOR_NONE,  //!< Show no cursor at all
-	PG_CURSOR_HARDWARE, //!< Use hardware (standard SDL) cursor
-	PG_CURSOR_SOFTWARE //!< Use ParaGUI software cursor (when possible)
-} PG_CURSOR_MODE;
-
-/**
-	General callback handler definition
-	@param id id of the calling widget
-	@param widget pointer to the caller
-	@param message specific data
-	@param clientdata pointer to userdefined callback data
-	@return true on success
-*/
-#define PARAGUI_CALLBACK(funcname) \
-bool funcname (int id, PG_Widget* widget, unsigned long data, void *clientdata)
-
-/**
-	callbackhandler for MSG_BUTTONCLICK messages
-	@param id id of the activated button
-	@param button pointer to the calling button
-	@param clientdata pointer to userdefined callback data
-	@return true on success
-*/
-#define PARAGUI_CALLBACK_BUTTONCLICK(funcname) \
-bool funcname##_internal (int id, PG_Button* button, unsigned long data, void *clientdata); \
-bool funcname (int id, PG_Widget* widget, unsigned long data, void *clientdata) { \
-	return funcname##_internal (id, (PG_Button*)widget, data, clientdata); \
-} \
-inline bool funcname##_internal (int id, PG_Button* button, unsigned long data, void *clientdata)
-
-/**
-	callbackhandler for MSG_SELECTMENUITEM messages
-	@param id id of the activated menuitem
-	@param item pointer to the calling MenuItem
-	@param clientdata pointer to userdefined callback data
-	@return true on success
-*/
-#define PARAGUI_CALLBACK_SELECTMENUITEM(funcname) \
-bool funcname##_internal (int id, PG_PopupMenu::MenuItem* item, void *clientdata); \
-bool funcname (int id, PG_Widget* widget, unsigned long data, void *clientdata) { \
-	return funcname##_internal (id, (PG_PopupMenu::MenuItem*)data, clientdata); \
-} \
-inline bool funcname##_internal (int id, PG_PopupMenu::MenuItem* item, void *clientdata)
-
-/**
-	Callback function for ParaGUI events.
-	@param id ID of the Widget/MessageObject that fired this event.
-	@param widget pointer to the caller widget.
-	@param data message specific data
-	@param clientdata user defined callback data
-	@return true - if the message was processed.
-
-	This is the typedef of C-style callback functions.
-*/
-typedef bool (*MSG_CALLBACK)(int id, PG_Widget* widget, unsigned long data, void *clientdata);
-
-#ifndef SWIG
-/**
-	Member callback function for ParaGUI events.
-	@param id ID of the Widget/MessageObject that fired this event.
-	@param widget pointer to the caller widget.
-	@param data message specific data
-	@param clientdata user defined callback data
-	@return true - if the message was processed.
-
-	This is the typedef of C++-style member callback functions.
-	Any class implementing C++-style callbacks must be derived from PG_EventObject.
-*/
-typedef bool (PG_EventObject::*MSG_CALLBACK_OBJ)(int id, PG_Widget* widget, unsigned long data, void* clientdata);
-#endif
-
-// MSG_MESSAGE
-#ifndef DOXYGEN_SKIP
-typedef struct {
-	PG_MSG_TYPE	type;
-	PG_MessageObject* _from;
-	PG_MessageObject* _to;
-	unsigned long widget_id;
-	unsigned long data;
-	PG_Point pt;
-} MSG_MESSAGE;
-#endif
-
-#ifdef __cplusplus
-}
-#endif
+} PG_MSG_TYPE;*/
 
 #endif // PARAGUI_TYPES_H
 

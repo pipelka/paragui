@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/30 16:30:57 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.1 $
     Status:           $State  
 */
 
@@ -179,7 +179,7 @@ void PG_LogConsole::Update() {
 	//If LogWindow is not initialized and it is possible, do it ...
 	if (PG_LogWindow == NULL) {
 		PG_Rect r(25,100,PG_Application::GetScreenWidth()-50,300);
-		PG_LogWindow = new PG_Window(NULL, r, my_title.c_str(), WF_SHOW_CLOSE, "Window", 25);
+		PG_LogWindow = new PG_Window(NULL, r, my_title.c_str(), PG_Window::SHOW_CLOSE, "Window", 25);
 		PG_LogWindowData = new PG_RichEdit(PG_LogWindow, PG_Rect(1,26,r.w-2,r.h-27));
 	}
 
@@ -218,13 +218,13 @@ void PG_LogConsole::Update() {
 	PG_LogWindowData->SetText(buffer);
 }
 
-void PG_LogConsole::SetTitle(const char* title, int alignment) {
+/*void PG_LogConsole::SetTitle(const char* title, PG_Label::TextAlign alignment) {
 	my_title = title;
 
 	if (PG_LogWindow) {
 		PG_LogWindow->SetTitle(title, alignment);
 	}
-}
+}*/
 
 void PG_LogConsole::Show() {
 	if(PG_LogWindow) {

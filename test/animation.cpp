@@ -128,6 +128,7 @@ void PlayField::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rec
 Uint32 PlayField::eventTimer(PG_TimerID id, Uint32 interval) {
 	Update();
 	PG_TimerObject::eventTimer(id, interval);
+	return id;
 }
 
 class PlayField2 : public PG_ThemeWidget, public PG_TimerObject
@@ -222,6 +223,7 @@ Uint32 PlayField2::eventTimer(PG_TimerID id, Uint32 interval) {
 	
 	Update();
 	PG_TimerObject::eventTimer(id, interval);
+	return id;
 }
 
 int main(int argc, char* argv[]) {
@@ -281,11 +283,11 @@ int main(int argc, char* argv[]) {
 	// usually this is done with PG_Application::Run()
 
 	PG_Rect sc_rect(50, 50, 100, 300);
-	PG_ScrollBar myscroll(NULL, 100, sc_rect, PG_SB_VERTICAL);
+	PG_ScrollBar myscroll(NULL, 100, sc_rect, PG_ScrollBar::VERTICAL);
 	myscroll.Show();
 
 	PG_Rect sc_rect2(200, 200, 300, 100);
-	PG_ScrollBar myscroll2(NULL, 101, sc_rect2, PG_SB_HORIZONTAL);
+	PG_ScrollBar myscroll2(NULL, 101, sc_rect2, PG_ScrollBar::HORIZONTAL);
 
 	myscroll2.SetWindowSize(10);
 	myscroll2.SetRange(0, 100);

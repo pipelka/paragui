@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 10:43:23 $
+    Update Date:      $Date: 2003/12/02 15:27:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.4 $
     Status:           $State: Exp $
 */
 
@@ -34,16 +34,9 @@
 #ifndef PG_BUTTON_H
 #define PG_BUTTON_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module pgbutton
-%{
-#include "pgbutton.h"
-    %}
-#endif
-
 #include "pgwidget.h"
 #include "pgsignals.h"
+#include "pgdraw.h"
 #include <string>
 
 /**
@@ -171,10 +164,8 @@ public:
 	/**  */
 	void LoadThemeStyle(const char* widgettype);
 
-#ifndef SWIG
 	/**  */
 	void LoadThemeStyle(const char* widgettype, const char* objectname);
-#endif
 
 	/**
 		Set the gradient.
@@ -206,33 +197,24 @@ public:
 	Set icons for the button
 	@param filenameup icon for unpressed state
 	@param filenamedown icon for pressed state
+	@param filenameover icon for highlited state
 	@return true on success
 	*/
+	bool SetIcon(const char* filenameup=NULL, const char* filenamedown=NULL, const char* filenameover = NULL);
 
-	// new in 1.0.2 (file)
-	
-	bool SetIcon2(const char* filenameup, const char* filenamedown,  const char* filenameover, const PG_Color& colorkey);
+	/**
+	Set icons for the button
+	@param filenameup icon for unpressed state
+	@param filenamedown icon for pressed state
+	@param filenameover icon for highlited state
+	@param colorkey
+	@return true on success
+	*/
+	bool SetIcon(const char* filenameup, const char* filenamedown, const char* filenameover, const PG_Color& colorkey);
 
-	bool SetIcon2(const char* filenameup, const char* filenamedown, const char* filenameover);
-
-
-	// 1.0.1 versions (file)
-		
-	bool SetIcon(const char* filenameup, const char* filenamedown = NULL);
-
-	bool SetIcon(const char* filenameup, const char* filenamedown, const PG_Color& colorkey);
-
-
-	// new in 1.0.2 (surface)
-	
 	bool SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down = NULL, SDL_Surface* icon_over = NULL);
 
-	// 1.0.1 versions (surface)
-#ifndef SWIG
-	bool SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down = NULL);
-#endif
-
-	SDL_Surface* GetIcon(STATE num);	
+	SDL_Surface* GetIcon(STATE num);
 	
 	/**
 	Set the bordersize of the button
@@ -305,11 +287,8 @@ protected:
 
 private:
 
-#ifndef SWIG
-
 	PG_Button(const PG_Button&);
 	PG_Button& operator=(const PG_Button&);
-#endif
 
 	/**  */
 	void FreeSurfaces();

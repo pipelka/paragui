@@ -20,19 +20,21 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
     Status:           $State: Exp $
 */
 
 #include "paragui.h"
 #include "pglabel.h"
+#include "pgapplication.h"
+#include "pgtheme.h"
 
 PG_Label::PG_Label(PG_Widget* parent, const PG_Rect& r, const char* text, const char* style) :
 PG_Widget(parent, r) {
 
-	my_alignment = PG_TA_CENTER;
+	my_alignment = CENTER;
 	my_srfIcon = NULL;
 	my_indent = 0;
 	my_freeicon = false;
@@ -61,7 +63,7 @@ void PG_Label::LoadThemeStyle(const char* widgettype, const char* object) {
 		SetText(s);
 	}
 
-	t->GetProperty(widgettype, object, "alignment", my_alignment);
+	t->GetAlignment(widgettype, object, "alignment", my_alignment);
 
 	PG_Widget::LoadThemeStyle(widgettype, object);
 }
@@ -93,17 +95,17 @@ void PG_Label::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& ds
 	GetTextSize(wl, hl);
 
 	switch (my_alignment) {
-		case PG_TA_LEFT:
+		case LEFT:
 			my_rectLabel.my_xpos = xshift;
 			my_rectLabel.my_ypos = (my_height - hl) >> 1;
 			break;
 
-		case PG_TA_RIGHT:
+		case RIGHT:
 			my_rectLabel.my_xpos = (my_width - wl);
 			my_rectLabel.my_ypos = (my_height - hl) >> 1;
 			break;
 
-		case PG_TA_CENTER:
+		case CENTER:
 			my_rectLabel.my_xpos = (my_width - wl) >> 1;
 			my_rectLabel.my_ypos = (my_height - hl) >> 1;
 			break;
@@ -115,7 +117,7 @@ void PG_Label::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& ds
 /**  */
 void PG_Label::eventDraw(SDL_Surface* surface, const PG_Rect& rect) {}
 
-void PG_Label::SetAlignment(int a) {
+void PG_Label::SetAlignment(TextAlign a) {
 	my_alignment = a;
 	Update();
 }

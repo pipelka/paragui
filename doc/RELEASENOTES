@@ -23,6 +23,15 @@ Whats new in ParaGUI 1.1.6 ?
 
 - new PG_Color class unifying SDL_Color/Uint32/R,G,B
 - added signal "sigTimer" to PG_TimerObject
+- added new PG_Point class
+- cleanup of PG_Button SetIcon, SetIcon2
+- moved PG_CURSORMODE stuff to PG_Application
+- moved KeyEvent Actions to PG_Widget
+- obsoleted paragui_types.h
+- move PG_TA_xxx to PG_Label::TextAlign
+- removed all the SWIG crap (need to find a better way)
+- moved WF_WINDOWFLAGS into PG_Window class
+- moved PG_SB_xxx flags to PG_ScrollBar::ScrollDirection
 - more coming up
 
 

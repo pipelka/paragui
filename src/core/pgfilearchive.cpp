@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:55 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14.2.1 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.2 $
     Status:           $State: Exp $
 */
 
@@ -34,6 +34,7 @@
 
 #include "SDL_loadso.h"
 #include "physfsrwops.h"
+#include <iostream>
 
 Uint32 PG_FileArchive::my_instance_count = 0;
 PG_SurfaceCache PG_FileArchive::my_cache;

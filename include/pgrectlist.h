@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:21 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrectlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -38,6 +38,8 @@
 #else
 #include <map>
 #endif
+
+class PG_Widget;
 
 using namespace std;
 

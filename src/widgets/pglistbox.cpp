@@ -20,13 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.2 $
     Status:           $State: Exp $
 */
 
 #include "pglistbox.h"
+#include "pglistboxbaseitem.h"
 
 PG_ListBox::PG_ListBox(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_WidgetList (parent, r, style) {
 	my_multiselect = false;

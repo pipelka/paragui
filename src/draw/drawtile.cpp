@@ -22,13 +22,14 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 10:43:36 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/drawtile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
     Status:           $State: Exp $
 */
 
 #include "pgdraw.h"
+#include <cmath>
 
 using namespace std;
 
@@ -43,8 +44,8 @@ void PG_Draw::DrawTile(SDL_Surface* surface, const PG_Rect& ref, const PG_Rect& 
     if (!tilemap->w || !tilemap->h || !surface->w || !surface->h)
             return;
 
-    int dx = abs(drawrect.x - ref.x);
-    int dy = abs(drawrect.y - ref.y);
+    int dx = abs((double)(drawrect.x - ref.x));
+    int dy = abs((double)(drawrect.y - ref.y));
 
 	index1.x = dx / tilemap->w;
 	index1.y = dy / tilemap->h;

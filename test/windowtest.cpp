@@ -9,10 +9,10 @@ class CMyWindow : public PG_Window
 
 {
 public:
-	CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text,Uint32 flags,const char* style = "Window");
+	CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text,WindowFlags flags,const char* style = "Window");
 };
 
-CMyWindow::CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text,Uint32 flags,const char* style) : PG_Window(parent,r,text,flags,style)
+CMyWindow::CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text, WindowFlags flags,const char* style) : PG_Window(parent,r,text,flags,style)
 
 {
 }
@@ -27,7 +27,7 @@ class CMyWidget : public PG_ThemeWidget
 CMyWidget::CMyWidget(PG_Widget *parent,PG_Rect rect) : PG_ThemeWidget(parent,rect, true)
 
 {
-	CMyWindow *mywindow = new CMyWindow(this,PG_Rect(50,50,150,100),"Fenster",WF_DEFAULT);
+	CMyWindow *mywindow = new CMyWindow(this, PG_Rect(50,50,150,100), "Fenster", PG_Window::DEFAULT);
 	AddChild(mywindow);
 }
 
@@ -55,7 +55,7 @@ int main(int argc,char *argv[])
 		"Modal Messagebox", "Click \"Ok\" to close me",
 		PG_Rect(90, 120, 50, 50),
 		"Ok",
-		PG_TA_CENTER);
+		PG_Label::CENTER);
 		
 	PG_DropDown* drop = new PG_DropDown(msgbox, 15, PG_Rect(5, 60, 200,25));
 	drop->SetIndent(5);
@@ -93,7 +93,7 @@ int main(int argc,char *argv[])
 		"Modal Messagebox", "Click \"Ok\" to close me",
 		PG_Rect(90, 120, 50, 50),
 		"Ok",
-		PG_TA_CENTER);
+		PG_Label::CENTER);
 		
 	msgbox->Show();
 	msgbox->WaitForClick();

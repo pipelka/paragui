@@ -20,23 +20,17 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:21 $
+    Update Date:      $Date: 2003/12/02 15:27:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtheme.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.2.2 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_THEME_H
 #define PG_THEME_H
 
-#ifdef SWIG
-%module theme
-%{
-#include "pgtheme.h"
-%}
-#endif
-
 #include "paragui.h"
+#include "pglabel.h"
 
 /**
 	@short Theme/style definition class
@@ -67,6 +61,7 @@ public:
 		}
 		prop = (Uint16)b;
 	}
+	virtual void GetAlignment(const char* widgettype, const char* object, const char* name, PG_Label::TextAlign& align) = 0;
 	virtual void GetColor(const char* widgettype, const char* object, const char* name, PG_Color& color) = 0;
 	virtual const char* FindString(const char* widgettype, const char* object, const char* name) = 0;
 

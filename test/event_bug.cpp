@@ -2,6 +2,7 @@
 #include <pgwindow.h>
 #include <pglineedit.h>
 #include <pgbutton.h>
+#include <iostream>
 
 class MyDialog : public PG_Window
 {
@@ -15,7 +16,7 @@ class MyDialog : public PG_Window
 };
 
 MyDialog::MyDialog()
-    : PG_Window(0, PG_Rect(0, 0, 200, 200), "test", true)
+    : PG_Window(0, PG_Rect(0, 0, 200, 200), "test", MODAL)
 {
             e = new PG_LineEdit(this, PG_Rect(0, 0, 200, 20));
             ok = new PG_Button(this, 0, PG_Rect(10, 100, 180, 20));

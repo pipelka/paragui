@@ -20,19 +20,20 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:56 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.2.2 $
     Status:           $State: Exp $
 */
 
 #include "pgmessagebox.h"
-#include "pgwidget.h"
 #include "pglog.h"
+#include "pgwindow.h"
+#include "pgrichedit.h"
 
 //create PopUp and 2 Buttons
-PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, const PG_Rect& btn2, const char* btn2text, int textalign, const char* style) :
-PG_Window(parent, r, windowtitle, WF_MODAL) {
+PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, const PG_Rect& btn2, const char* btn2text, PG_Label::TextAlign textalign, const char* style) :
+PG_Window(parent, r, windowtitle, MODAL) {
 
 	my_btnok = new PG_Button(this, 1, btn1, btn1text);
 	my_btnok->sigClick.connect(slot(*this, &PG_MessageBox::handleButton));
@@ -43,8 +44,8 @@ PG_Window(parent, r, windowtitle, WF_MODAL) {
 	Init(windowtext, textalign, style);
 }
 
-PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, int textalign, const char* style) :
-PG_Window(parent, r, windowtitle, WF_MODAL) {
+PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, PG_Label::TextAlign textalign, const char* style) :
+PG_Window(parent, r, windowtitle, MODAL) {
 
 	my_btnok = new PG_Button(this, 1, btn1, btn1text);
 	my_btnok->sigClick.connect(slot(*this, &PG_MessageBox::handleButton));

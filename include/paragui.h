@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/12/02 15:27:57 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.3 $
     Status:           $State: Exp $
 */
 
@@ -37,70 +37,14 @@
 #ifndef PARAGUI_H
 #define PARAGUI_H
 
-#ifdef SWIG
-%include "swigcommon.h"
-%module paragui
-%{
-#include "paragui.h"
-%}
-%include "paragui_types.h"
-%include "pgrect.h"
-%include "pgmessageobject.h"
-%include "pgwidget.h"
-%include "pgthemewidget.h"
-%include "pglayout.h"
-%include "pgwidgetdnd.h"
-%include "pgwidgetlist.h"
-%include "pgfilearchive.h"
-%include "pgfile.h"
-%include "pgfont.h"
-%include "pgapplication.h"
-%include "pgbutton.h"
-%include "pgradiobutton.h"
-%include "pgcheckbutton.h"
-%include "pglabel.h"
-%include "pglineedit.h"
-%include "pgscrollbar.h"
-%include "pgprogressbar.h"
-%include "pgwindow.h"
-%include "pgslider.h"
-%include "pglistboxbaseitem.h"
-%include "pglistboxitem.h"
-%include "pgcolumnitem.h"
-%include "pglistbox.h"
-%include "pgmaskedit.h"
-%include "pgmessagebox.h"
-%include "pgspinnerbox.h"
-%include "pgimage.h"
-%include "pgpopupmenu.h"
-%include "pgdropdown.h"
-%include "pgmenubar.h"
-#endif
-
 // SDL
 #include "SDL.h"
 #include "SDL_thread.h"
 
 #include "paraconfig.h"
 
-#ifndef SWIG
-#include <cstdlib>
-#include <iostream>
-#include <cstring>
-#include <string>
-#endif
-
 //our default namespace is std
 using namespace std;
-
-// mpatrol
-#ifdef MPATROL_ENABLED
-#include "mpatrol.h"
-#endif
-
-#include "paragui_types.h"
-
-#include "pgrect.h"
 
 /**
 	calculate the minimum of 2 values
@@ -123,82 +67,6 @@ using namespace std;
 	The themeloader tries to open themefiles with the extension THEME_SUFFIX
 */
 #define THEME_SUFFIX ".theme"
-
-// Background modes
-
-/**
-	Backgroundmode TILE.
-	Macro defining the background mode for tiling
-*/
-#define BKMODE_TILE			1
-/**
-	Backgroundmode STRETCH.
-	Macro defining the background mode for stretching
-*/
-#define BKMODE_STRETCH		2
-/**
-	Backgroundmode 3TILEH.
-	Macro defining the background mode for horizontal 3 part tiling
-*/
-#define BKMODE_3TILEH		3
-/**
-	Backgroundmode 3TILEV.
-	Macro defining the background mode for vertical 3 part tiling
-*/
-#define BKMODE_3TILEV		4
-/**
-	Backgroundmode 9TILE.
-	Macro defining the background mode for 9 part tiling
-*/
-#define BKMODE_9TILE		5
-
-// Button states
-
-/**
-	Buttonstate: Normal (up).
-*/
-//#define BTN_STATE_NORMAL		PG_Button::UNPRESSED
-/**
-	Buttonstate: Pressed (down).
-*/
-//#define BTN_STATE_PRESSED		PG_Button::PRESSED
-/**
-	Buttonstate: Highlited.
-*/
-//#define BTN_STATE_HIGH			PG_Button::HIGHLITED
-
-
-// Text alignment
-
-/**
-	Textalignment: left.
-	justify text to the left
-*/
-#define PG_TA_LEFT		0
-/**
-	Textalignment: center.
-	center text
-*/
-#define PG_TA_CENTER		1
-/**
-	Textalignment: right.
-	justify text to the right
-*/
-#define PG_TA_RIGHT		2
-
-
-// Scrollbars
-
-/**
-	Scrollbartype: Vertical.
-	Flag for creating a vertical scrollbar
-*/
-#define PG_SB_VERTICAL		1
-/**
-	Scrollbartype: Horizontal.
-	Flag for creating a horizontal scrollbar
-*/
-#define PG_SB_HORIZONTAL	2
 
 // internal widget ids
 

@@ -19,6 +19,9 @@
 #include "pgspinnerbox.h"
 #include "pglog.h"
 #include "pgmenubar.h"
+#include "pgtheme.h"
+
+#include <iostream>
 
 #define RESX 800
 #define RESY 600
@@ -28,7 +31,7 @@ void Splash() {
     PG_ThemeWidget splash1(&splash, PG_Rect(10,10,580,380));
     PG_ThemeWidget splash2(&splash1, PG_Rect(10,10,560,340));
     PG_Label l(&splash2, PG_Rect(10,10,540,320), "I'm a splash screen");
-    l.SetAlignment(PG_TA_CENTER);
+    l.SetAlignment(PG_Label::CENTER);
         
     splash.Show();
     SDL_Delay(5000);
@@ -104,7 +107,7 @@ private:
 	
 
 TestWindow::TestWindow(PG_Widget* parent, const PG_Rect& r, char* windowtext) :
-PG_Window(parent, r, windowtext, WF_SHOW_CLOSE | WF_SHOW_MINIMIZE)
+PG_Window(parent, r, windowtext, DEFAULT)
 {
 	WidgetList = new PG_WidgetList(this, PG_Rect(30, 40, 220, 250));
 	WidgetList->SetDirtyUpdate(false);
@@ -112,8 +115,8 @@ PG_Window(parent, r, windowtext, WF_SHOW_CLOSE | WF_SHOW_MINIMIZE)
 	WidgetList->SetBackground("default/wnd_close.bmp", BKMODE_TILE, 0xFF);
 	WidgetList->SetBackgroundBlend(0);
 			
-	WidgetList->EnableScrollBar(true, PG_SB_VERTICAL);
-	WidgetList->EnableScrollBar(true, PG_SB_HORIZONTAL);
+	WidgetList->EnableScrollBar(true, PG_ScrollBar::VERTICAL);
+	WidgetList->EnableScrollBar(true, PG_ScrollBar::HORIZONTAL);
 		
 	(new PG_Button(this, 100, PG_Rect(260,130,110,30), "<< ADD"))->sigClick.connect(slot(*this, &TestWindow::handleButtonClick));
 	
@@ -124,7 +127,7 @@ PG_Window(parent, r, windowtext, WF_SHOW_CLOSE | WF_SHOW_MINIMIZE)
 	b->SetFontName("qnx/font.ttf");
 	WidgetList->AddWidget(b);
 
-	PG_Slider* s = new PG_Slider(NULL, 20, PG_Rect(0, 0, 200,20), PG_SB_HORIZONTAL);
+	PG_Slider* s = new PG_Slider(NULL, 20, PG_Rect(0, 0, 200,20), PG_ScrollBar::HORIZONTAL);
 	s->SetRange(0,255);
 	s->SetTransparency(200);
 	s->SetPosition(50);
@@ -206,7 +209,7 @@ bool TestWindow::handleButtonClick(PG_Button* button) {
 
 	if(id == 100) {
 		PG_Label* l = new PG_Label(NULL, PG_Rect(0,0,220,25), "");
-		l->SetAlignment(PG_TA_CENTER);
+		l->SetAlignment(PG_Label::CENTER);
 		l->SetTextFormat("Label %i", ++label);
 		WidgetList->AddWidget(l);
 	
@@ -360,7 +363,7 @@ int main(int argc, char* argv[]) {
 	PG_RadioButton radio1(NULL, 1, PG_Rect(50,0,200,25), "RadioButton 1");
 	PG_RadioButton radio2(NULL, 2, PG_Rect(50,25,200,25), "RadioButton 2", &radio1);
 	PG_RadioButton radio3(NULL, 3, PG_Rect(50,50,200,25), "RadioButton 3", &radio1);
-	radio1.SetAlignment(PG_TA_RIGHT);
+	radio1.SetAlignment(PG_Label::RIGHT);
 	
 	PG_RadioButton radio4(NULL, 4, PG_Rect(50,90,200,25), "RadioButton 4");
 	PG_RadioButton radio5(NULL, 5, PG_Rect(50,115,200,25), "RadioButton 5", &radio4);
@@ -415,7 +418,7 @@ int main(int argc, char* argv[]) {
 
 	check1.Show();
 
-	PG_ScrollBar scroll(NULL, 10, PG_Rect(50, 200, 300, 20), PG_SB_HORIZONTAL );
+	PG_ScrollBar scroll(NULL, 10, PG_Rect(50, 200, 300, 20), PG_ScrollBar::HORIZONTAL );
 	scroll.Show();
 
 	PG_MaskEdit edit(NULL, PG_Rect(260,0,200,25));
@@ -428,7 +431,7 @@ int main(int argc, char* argv[]) {
 	slider_label.Show();
 
 	// create the slider
-	PG_Slider slider(NULL, 11, PG_Rect(50, 250, 300,20), PG_SB_HORIZONTAL);
+	PG_Slider slider(NULL, 11, PG_Rect(50, 250, 300,20), PG_ScrollBar::HORIZONTAL);
 	slider.SetRange(5,20);
 	//slider.SetTransparency(128);
 
@@ -476,7 +479,7 @@ int main(int argc, char* argv[]) {
 	wnd1.Show();
 	
 	PG_LogMSG("app ready after %i ms", SDL_GetTicks() - start_ticks);
-	app.ShowCursor(PG_CURSOR_SOFTWARE);
+	app.ShowCursor(PG_Application::SOFTWARE);
 
 	PG_LogMSG("testing the widget finding methods");
 	PG_Widget *tmp;

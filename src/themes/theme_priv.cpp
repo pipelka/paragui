@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2003/12/02 15:27:59 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
@@ -307,6 +307,29 @@ PG_Gradient* THEME_OBJECT::FindGradient(const char* name) {
 	}
 
 	return static_cast<PG_Gradient*>(result);
+}
+
+void THEME_THEME::GetAlignment(const char* widgettype, const char* object, const char* name, PG_Label::TextAlign& align) {
+	long b = -1;
+	GetProperty(widgettype, object, name, b);
+
+	if(b == -1) {
+		return;
+	}
+
+	switch(b) {
+		case 0:
+			align = PG_Label::LEFT;
+			break;
+		case 1:
+			align = PG_Label::CENTER;
+			break;
+		case 2:
+			align = PG_Label::RIGHT;
+			break;
+	}
+
+	return;
 }
 
 void THEME_THEME::GetColor(const char* widgettype, const char* object, const char* name, PG_Color& color) {
