@@ -34,6 +34,7 @@ $(PACKAGE)-$(VERSION).tar.gz: dist
 release:
 	rm -f $(top_builddir)/VisualC.zip
 	rm -f $(top_builddir)/data/*.zip
+	rm -f $(top_builddir)/sdk/*.tar.gz
 	make dist
 
 touch:
