@@ -30,3 +30,6 @@ mkinstalldirs
 *.mlz
 *.rtf
 *.diff
+paragui-1.*
+*.gz
+*.doxygen

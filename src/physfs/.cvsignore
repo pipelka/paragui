@@ -1,6 +1,7 @@
 VisualC.zip
 Makefile
 Makefile.in
+Makefile.am
 libtool
 paragui-config
 aclocal.m4
@@ -30,3 +31,7 @@ mkinstalldirs
 .libs
 *.la
 *.lo
+*.ori
+*.spec
+stamp-h1
+
