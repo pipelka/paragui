@@ -499,7 +499,7 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 
 			case SDLK_RETURN: 
 				c = '\n'; 
-				InsertChar(&c); 
+				InsertChar(c); 
 				SetCursorPos(my_cursorPosition); 
 				return true;
 				
@@ -600,7 +600,7 @@ void PG_MultiLineEdit::SetCursorPos(int p) {
 	//Update();
 } 
 
-void PG_MultiLineEdit::InsertChar(const PG_Char* c) { 
+void PG_MultiLineEdit::InsertChar(const PG_Char& c) { 
 	my_allowHiddenCursor = false; 
 	if (my_mark != -1 && my_mark != my_cursorPosition) {
 		DeleteSelection(); 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/05 19:25:10 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
     Status:           $State: Exp $
 */
 
@@ -127,7 +127,7 @@ public:
 	Set password character (witch will be displayed in place of letter)
 	@param	passchar		character (if = 0 do not any replacement)
 	*/
-	void SetPassHidden(char passchar);
+	void SetPassHidden(const PG_Char& passchar);
 
 	/**
 	Return setted passchar
@@ -144,7 +144,7 @@ public:
 protected:
 
 	/** */
-	virtual void InsertChar(const PG_Char* c);
+	virtual void InsertChar(const PG_Char& c);
 		
 	/** */
 	virtual void DeleteChar(Uint16 pos);
@@ -172,7 +172,6 @@ protected:
 
 	/** */
 	void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);
-	//void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
 
 	/** */
 	bool eventKeyDown(const SDL_KeyboardEvent* key);

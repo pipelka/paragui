@@ -19,7 +19,7 @@ protected:
 	bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);
 	bool eventMouseMotion(const SDL_MouseMotionEvent* motion);
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
-	virtual void InsertChar(const PG_Char* c);
+	virtual void InsertChar(const PG_Char& c);
 	virtual void DeleteChar(Uint16 pos);
 	bool handleScroll(PG_ScrollBar* widget, long data);
 

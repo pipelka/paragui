@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2004/12/05 19:25:10 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.15 $
     Status:           $State: Exp $
 */
 
@@ -336,7 +336,7 @@ handleModKeys:
 					return false;
 				}
 
-				InsertChar(&c);
+				InsertChar(c);
 				return true;
 			} else {
 				c = (PG_Char)key_copy.keysym.unicode;
@@ -345,7 +345,7 @@ handleModKeys:
 					return false;
 				}
 
-				InsertChar(&c);
+				InsertChar(c);
 				return true;
 			}
 
@@ -400,16 +400,17 @@ bool PG_LineEdit::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 	return true;
 }
 
-void PG_LineEdit::InsertChar(const PG_Char* c) {
+void PG_LineEdit::InsertChar(const PG_Char& c) {
 	if (my_cursorPosition < my_maximumLength) {
-#ifdef ENABLE_UNICODE
+/*#ifdef ENABLE_UNICODE
 		my_text.insert(my_cursorPosition, *c);
 #else
 		char buffer[2];
 		buffer[0] = *c;
 		buffer[1] = '\0';
 		my_text.insert(my_cursorPosition, buffer);
-#endif
+#endif*/
+		my_text.insert(my_cursorPosition, c);
 		SetCursorPos(++my_cursorPosition);
 	}
 }
@@ -514,7 +515,7 @@ void PG_LineEdit::SendChar(PG_Char c) {
 		return;
 	}
 
-	InsertChar(&c);
+	InsertChar(c);
 }
 
 void PG_LineEdit::SendDel() {
@@ -573,7 +574,7 @@ bool PG_LineEdit::Action(KeyAction action) {
 	return PG_Widget::Action(action);
 }
 
-void PG_LineEdit::SetPassHidden(char passchar) {
+void PG_LineEdit::SetPassHidden(const PG_Char& passchar) {
 	my_passchar = passchar;
 }
 

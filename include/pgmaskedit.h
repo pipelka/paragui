@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2004/12/05 19:25:10 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmaskedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -61,13 +61,13 @@ public:
 	Set the "spacer" character. This char is displayed instead of "#"
 	@param	c					"spacer" character
 	*/
-	void SetSpacer(PG_Char c);
+	void SetSpacer(const PG_Char& c);
 
 	/**
 	Get the current "spacer" character.
 	@return						"spacer" character
 	*/
-	char GetSpacer();
+	PG_Char GetSpacer();
 
 protected:
 

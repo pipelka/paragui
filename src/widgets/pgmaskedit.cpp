@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2004/12/05 19:25:10 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmaskedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.3 $
+    CVS/RCS Revision: $Revision: 1.3.8.4 $
     Status:           $State: Exp $
 */
 
@@ -67,11 +67,11 @@ const PG_String& PG_MaskEdit::GetMask() {
 	return my_mask;
 }
 
-void PG_MaskEdit::SetSpacer(PG_Char c) {
+void PG_MaskEdit::SetSpacer(const PG_Char& c) {
 	my_spacer = c;
 }
 
-char PG_MaskEdit::GetSpacer() {
+PG_Char PG_MaskEdit::GetSpacer() {
 	return my_spacer;
 }
 
