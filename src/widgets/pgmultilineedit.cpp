@@ -252,7 +252,7 @@ void PG_MultiLineEdit::GetCursorTextPos(unsigned int *horzOffset, unsigned int *
 	unsigned int line = 0; 
 
 	// cycle through the lines, finding where our cursor lands 
-	for (vector<string>::iterator i = my_textdata.begin(); i != my_textdata.end(); ++i) { 
+	for (vector<PG_String>::iterator i = my_textdata.begin(); i != my_textdata.end(); ++i) { 
 		if(currentPos < i->size() || (currentPos <= i->size() && my_isCursorAtEOL)) {
 			break;
 		}
@@ -323,20 +323,21 @@ void PG_MultiLineEdit::CreateTextVector() {
 	
 	do { 
 		Uint16 lineWidth = 0; 
-		char* temp = new char[end-start+1];
-		strncpy(temp, my_text.c_str()+start, end-start); 
-		temp[end-start] = '\0'; 
-		PG_FontEngine::GetTextSize(temp, GetFont(), &lineWidth); 
-		delete[] temp;
+		//char* temp = new char[end-start+1];
+		//strncpy(temp, my_text.c_str()+start, end-start); 
+		PG_String temp = my_text.substr(start, end-start);
+		//temp[end-start] = '\0'; 
+		PG_FontEngine::GetTextSize(temp.c_str(), GetFont(), &lineWidth); 
+		//delete[] temp;
 		
 		if (lineWidth > w) { 
 			if (last == start) { 
-				string s = my_text.substr(start, end-start-1); 
+				PG_String s = my_text.substr(start, end-start-1); 
 				my_textdata.push_back(s); 
 				start = --end; 
 			} 
 			else { 
-				string s = my_text.substr(start, last-start); 
+				PG_String s = my_text.substr(start, last-start); 
 				my_textdata.push_back(s); 
 				start = last; 
 				end = last-1; 
@@ -349,12 +350,13 @@ void PG_MultiLineEdit::CreateTextVector() {
 		} 
 		
 		else if (my_text[end] == '\n' || my_text[end] == '\0') { 
-			string s = my_text.substr(start, end-start+1); 
+			PG_String s = my_text.substr(start, end-start+1); 
 			my_textdata.push_back(s); 
 			start = end+1; 
 			last = start; 
 		} 
-	} while (my_text[end++] != '\0'); 
+	//} while (my_text[end++] != '\0'); 
+	} while (end++ < my_text.size()); 
 
 	// setup the scrollbar 
 	SetupVScroll(); 
@@ -437,7 +439,7 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				return true;
 
 			default:
-				return false;
+				break;
 		} 
 	} 
 	else if(key_copy.keysym.mod & (KMOD_ALT | KMOD_META)) { 
@@ -515,7 +517,7 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				return true;
 				
 			default:
-				return false;
+				break;
 		} 
 	} 
 
