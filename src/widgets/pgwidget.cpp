@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/06/10 12:00:13 $
+   Update Date:      $Date: 2002/06/10 12:15:42 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.4 $
+   CVS/RCS Revision: $Revision: 1.4.4.5 $
    Status:           $State: Exp $
  */
 
@@ -961,13 +961,13 @@ void PG_Widget::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	int fontstyle = t->FindFontStyle(widgettype, objectname);
 
 	if(font != NULL)
-		SetFontName(font);
+		SetFontName(font, true);
 
 	if (fontsize > 0)
-		SetFontSize(fontsize);
+		SetFontSize(fontsize, true);
 
 	if (fontstyle >= 0)
-		SetFontStyle(fontstyle);
+		SetFontStyle(fontstyle, true);
 
 	c = t->FindColor(widgettype, objectname, "textcolor");
 	if(c != NULL)
