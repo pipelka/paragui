@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 10:43:36 $
+    Update Date:      $Date: 2002/11/22 17:58:43 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.5 $
+    CVS/RCS Revision: $Revision: 1.1.6.6 $
     Status:           $State  
 */
 
@@ -45,7 +45,8 @@ int PG_LogMethod = PG_LOGMTH_STDOUT;
 static PG_LOG_LEVEL PG_LogLevel = PG_LOG_DBG;
 static SDLKey PG_LogConsoleKey = SDLK_F12;
 
-struct PG_LogMessage_t {
+class PG_LogMessage_t {
+public:
 	PG_LOG_LEVEL	Id;
 	time_t	TimeStamp;
 	std::string	Text;

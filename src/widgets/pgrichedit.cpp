@@ -19,10 +19,10 @@
    Alexander Pipelka
    pipelka@teleweb.at
  
-   Last Update:      $Author: eross $
-   Update Date:      $Date: 2002/09/12 06:34:28 $
+   Last Update:      $Author: braindead $
+   Update Date:      $Date: 2002/11/22 17:58:43 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.3 $
+   CVS/RCS Revision: $Revision: 1.3.6.4 $
    Status:           $State: Exp $
 */
 
@@ -100,13 +100,33 @@ bool PG_RichEdit::RemoveWidget(PG_Widget* w, bool shiftx, bool shifty) {
 }
 
 void PG_RichEdit::SetText(const std::string &text) {
-	my_text = text;
-	ParseWords();
-	CompleteLines();
+	SetText(text.c_str());
 }
 
 void PG_RichEdit::SetText(const char *text) {
-	PG_Widget::SetText(text);
+	if(text == NULL) {
+		my_text = "";
+		return;
+	}
+
+	my_text = text;
+		
+	// trim the string
+    bool bStop = false;
+
+    while(!my_text.empty() && !bStop) {
+		char c = my_text[my_text.size()-1];
+		bStop = true;
+		switch(c) {
+			case '\n':
+			case '\r':
+			case '\t':
+			case ' ':
+				my_text = my_text.substr(0, my_text.size()-1);
+				bStop = false;
+		}
+	}
+
 	ParseWords();
 	CompleteLines();
 }

@@ -1,3 +1,3 @@
-SUBDIRS= @BINDINGS@ .
+SUBDIRS= $(BINDINGS)
 
 DIST_SUBDIRS = python ruby

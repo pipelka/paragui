@@ -4,12 +4,12 @@ Whats new in ParaGUI 1.0.3 ?
 
 - made PhysFS optional (like expat)
 - autoconf / automake fixes
-  "make distcheck" passes now
 - fixed a problem in the destructor of PG_TimerObject
 - added Ruby bindings
 - added support for DevC++
 - fixed wrong linebreaks in PG_RichEdit
-
+- added overloaded functions for PG_Application::GetWidget<WidgetType>
+- fixed autoconf macro to build nicely on Midori
 
 ----------------------------
 Whats new in ParaGUI 1.0.2 ?

@@ -1,5 +1,16 @@
-echo "Generating build information ..."
+#!/bin/sh
+
 cd `dirname $0`
+TOPDIR=`pwd`
+
+echo
+echo "Bootstrapping physfs ..."
+
+cd ./src/physfs
+./bootstrap
+cd $TOPDIR
+
+echo "Generating build information ..."
 aclocalinclude="$ACLOCAL_FLAGS"
 
 echo "Running libtoolize ..."
@@ -43,11 +54,5 @@ echo "Checking for \"unix2dos\" ..."
     echo "(Please don't distribute unconverted VisualC projects!)"
 }
 
-echo
-echo "Bootstrapping physfs ..."
-
-./src/physfs/bootstrap
-
-    
 echo
 echo "Please run ./configure now."

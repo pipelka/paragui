@@ -489,7 +489,7 @@ int main(int argc, char* argv[]) {
 	if (tmp)
 	    PG_LogMSG("'100' found by ID (name '%s')", tmp->GetName());
 	    
-	PG_Window* tempw = PG_Application::GetWidgetByName<PG_Window>("WindowTwo");
+	PG_Window* tempw = PG_Application::GetWidget<PG_Window>("WindowTwo");
 	if (tempw)
 	    PG_LogMSG("'WindowTwo' found by name (id %d)", tempw->GetID());
 	    

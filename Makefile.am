@@ -2,7 +2,7 @@ DISTCHECK_CONFIGURE_FLAGS=--enable-internalexpat --enable-internalphysfs
 
 SUBDIRS = include src data bindings
 
-DIST_SUBDIRS = $(SUBDIRS) doc test sdk
+DIST_SUBDIRS = $(SUBDIRS) sdk doc test
 
 bin_SCRIPTS = paragui-config
 
@@ -10,6 +10,7 @@ EXTRA_DIST = \
 	paragui.m4 \
 	paragui.spec.in \
 	paragui.pc.in \
+	paragui.dev \
 	README \
 	README-ParaGUI.txt \
 	COPYING \

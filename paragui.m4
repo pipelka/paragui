@@ -33,7 +33,7 @@ AC_ARG_ENABLE(paraguitest, [  --disable-paraguitest       Do not try to compile 
      fi
   fi
 
-  AC_PATH_PROG(PARAGUI_CONFIG, paragui-config, no)
+  AC_PATH_PROG(PARAGUI_CONFIG, paragui-config, no, [$prefix/usr/bin:$prefix/bin:$PATH])
   min_paragui_version=ifelse([$1], ,0.11.0,$1)
   AC_MSG_CHECKING(for PARAGUI - version >= $min_paragui_version)
   no_paragui=""

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 10:43:36 $
+    Update Date:      $Date: 2002/11/22 17:58:43 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.13 $
+    CVS/RCS Revision: $Revision: 1.2.4.14 $
     Status:           $State: Exp $
 */
 
@@ -75,8 +75,6 @@ bool PG_Application::disableDirtyUpdates = false;
 	new shutdown procedure (called at application termination
 */
 void PARAGUI_ShutDownCode() {
-	// shutdown log
-	PG_LogConsole::Done();
 
 	// shutdown SDL
 	SDL_Quit();
@@ -107,7 +105,7 @@ PG_Application::PG_Application() {
 		std::cerr << "Could not initialize SDL: " << SDL_GetError() << std::endl;
 		exit(-1);
 	}
-	atexit(SDL_Quit);
+
 	pGlobalApp = this;
 	screen = NULL;
 
@@ -123,6 +121,9 @@ PG_Application::PG_Application() {
 PG_Application::~PG_Application() {
 	pGlobalApp = NULL;
 	Shutdown();
+	
+	// shutdown log
+	PG_LogConsole::Done();
 	
 	// remove all archives from PG_FileArchive
 	PG_FileArchive::RemoveAllArchives();
@@ -273,7 +274,6 @@ bool PG_Application::eventKeyDown(const SDL_KeyboardEvent* key) {
 bool PG_Application::eventKeyUp(const SDL_KeyboardEvent* key) {
 
 	if((key->keysym.sym == SDLK_ESCAPE) && emergencyQuit) {
-
 		Quit();
 		return true;
 	}
@@ -677,9 +677,7 @@ void PG_Application::Shutdown() {
 			continue;
 		}
 
-		PG_MessageObject* temp = *list;
-		//RemoveObject(*list);
-		delete temp;
+		delete *list;
 
 		list = objectList.begin();
 	}
