@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/05 14:48:33 $
+    Update Date:      $Date: 2003/05/05 07:47:38 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -161,3 +161,24 @@ bool PG_DropDown::ProcessEvent(const SDL_Event * event, bool bModal) {
 
 	return PG_Widget::ProcessEvent(event, bModal);
 }
+
+void PG_DropDown::SelectFirstItem() {
+	my_DropList->SelectFirstItem();
+}
+
+void PG_DropDown::SelectNextItem() {
+	my_DropList->SelectNextItem();
+}
+
+void PG_DropDown::SelectPrevItem() {
+	my_DropList->SelectPrevItem();
+}
+
+void PG_DropDown::SelectItem(const int n) {
+	int i;
+	
+	my_DropList->SelectFirstItem();
+	
+	for (i=0; i < n; i++)
+	  my_DropList->SelectNextItem();
+}	

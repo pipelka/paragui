@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2003/05/05 07:47:38 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -33,10 +33,19 @@
 #ifndef PG_DROPDOWN_H
 #define PG_DROPDOWN_H
 
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgdropdown
+%{
+#include "pgdropdown.h"
+%}
+#endif
+
 #include "pgbutton.h"
 #include "pglineedit.h"
 #include "pglistbox.h"
 #include "pglistboxitem.h"
+#include "pgeventobject.h"
 
 /**
 	@author Alexander Pipelka
@@ -47,7 +56,7 @@
 	predefined entries.
 */
 
-class DECLSPEC PG_DropDown : public PG_Widget {
+class DECLSPEC PG_DropDown : public PG_Widget, public PG_EventObject {
 public:
 
 	/**
@@ -114,15 +123,28 @@ public:
 	/** */
 	bool ProcessEvent(const SDL_Event * event, bool bModal);
 
-	PG_SignalSelectItem sigSelectItem;
-	
+	/**
+	Select the first item
+	*/
+	void SelectFirstItem();
+
+	/**
+	Select the next item
+	*/
+	void SelectNextItem();
+
+	/**
+	Select the previous item
+	*/
+	void SelectPrevItem();
+
+	/**
+	Select the n-th item
+	@parm n		number of item to select
+	*/
+	void SelectItem(const int n);
+
 protected:
-
-	/** */
-	virtual bool handleButtonClick(PG_Button* widget, PG_Pointer* data);
-
-	/** */
-	virtual bool handleSelectItem(PG_ListBoxItem* item, PG_Pointer* data);
 
 	/** */
 	void eventShow();
@@ -131,14 +153,22 @@ protected:
 	void eventHide();
 
 	/** */
+	bool eventButtonClick (int id, PG_Widget* widget);
+
+	/** */
 	void eventSizeWidget(Uint16 w, Uint16 h);
 
 	/** */
 	void eventMoveWidget(int x, int y);
 
+	/** */
+	virtual bool eventSelectItem(PG_ListBoxBaseItem* item);
+
 	PG_LineEdit* my_EditBox;
 	PG_Button* my_DropButton;
 	PG_ListBox* my_DropList;
+
+	PARAGUI_CALLBACK(select_handler);
 };
 
 #endif	// PG_DROPDOWN_H
