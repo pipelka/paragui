@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2005/02/15 14:12:51 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessagebox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -34,7 +34,7 @@
 #include "pgwindow.h"
 
 class PG_Button;
-class PG_RichEdit;
+class PG_MultiLineEdit;
 
 /**
 	@author Thomas Bamesberger
@@ -101,7 +101,7 @@ protected:
 
 private:
 
-	PG_RichEdit* my_textbox;
+	PG_MultiLineEdit* my_textbox;
 	int my_msgalign;
 
 	void Init(const std::string& windowtext, int textalign, const std::string& style) ;

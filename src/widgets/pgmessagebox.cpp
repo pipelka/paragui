@@ -20,16 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2005/02/15 14:12:51 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.2.8 $
     Status:           $State: Exp $
 */
 
 #include "pgmessagebox.h"
 #include "pglog.h"
 #include "pgwindow.h"
-#include "pgrichedit.h"
+#include "pgmultilineedit.h"
 
 //create PopUp and 2 Buttons
 PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const std::string& windowtitle, const std::string& windowtext, const PG_Rect& btn1, const std::string& btn1text, const PG_Rect& btn2, const std::string& btn2text, PG_Label::TextAlign textalign, const std::string& style) :
@@ -65,9 +65,10 @@ PG_MessageBox::~PG_MessageBox() {
 
 void PG_MessageBox::Init(const std::string& windowtext, int textalign, const std::string& style) {
 
-	my_textbox = new PG_RichEdit(this, PG_Rect(10, 40, my_width-20, my_height-50));
+	my_textbox = new PG_MultiLineEdit(this, PG_Rect(10, 40, my_width-20, my_height-50));
 	my_textbox->SendToBack();
 	my_textbox->SetTransparency(255);
+	my_textbox->SetEditable(false);
 	my_textbox->SetText(windowtext);
 
 	my_msgalign = textalign;

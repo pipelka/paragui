@@ -20,15 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/27 21:23:49 $
+    Update Date:      $Date: 2005/02/15 14:12:51 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.5 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.6 $
     Status:           $State  
 */
 
 #include "pgapplication.h"
 #include "pgwindow.h"
-#include "pgrichedit.h"
+#include "pgmultilineedit.h"
 #include "pglog.h"
 
 #include <iostream>
@@ -62,7 +62,7 @@ inline std::ostream& operator<<(std::ostream& os, PG_LogMessage_t *msg) {
 
 static std::list<PG_LogMessage_t*> PG_LogMessages;
 static PG_Window* PG_LogWindow = NULL;
-static PG_RichEdit* PG_LogWindowData = NULL;
+static PG_MultiLineEdit* PG_LogWindowData = NULL;
 static std::string my_title = "ParaGUI Log Console";
 
 void PG_LogConsole::SetLogLevel(PG_LOG_LEVEL newlevel) {
@@ -179,7 +179,8 @@ void PG_LogConsole::Update() {
 	if (PG_LogWindow == NULL) {
 		PG_Rect r(25,100,PG_Application::GetScreenWidth()-50,300);
 		PG_LogWindow = new PG_Window(NULL, r, my_title.c_str(), PG_Window::SHOW_CLOSE, "Window", 25);
-		PG_LogWindowData = new PG_RichEdit(PG_LogWindow, PG_Rect(1,26,r.w-2,r.h-27));
+		PG_LogWindowData = new PG_MultiLineEdit(PG_LogWindow, PG_Rect(1,26,r.w-2,r.h-27));
+		PG_LogWindowData->SetEditable(false);
 	}
 
 	std::string buffer;

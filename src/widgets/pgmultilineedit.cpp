@@ -7,6 +7,7 @@ using namespace std;
 PG_MultiLineEdit::PG_MultiLineEdit(PG_Widget* parent, const PG_Rect& r, const std::string& style, int maximumLength) 
 : PG_LineEdit(parent, r, style, maximumLength) { 
 	my_vscroll = new PG_ScrollBar(this, PG_Rect(r.w-16,0,16,r.h));
+	my_vscroll->MoveWidget(PG_Rect(r.w-my_vscroll->w, 0, my_vscroll->w, r.h));
 	my_isCursorAtEOL = false; 
 	my_allowHiddenCursor = false;
 	my_firstLine = 0; 	
@@ -326,7 +327,7 @@ void PG_MultiLineEdit::CreateTextVector(bool bSetupVScroll) {
 			last = end+1; 
 		} 
 		
-		else if (my_text[end] == '\n' || my_text[end] == '\0') { 
+		else if (my_text[end] == '\n' || my_text[end] == '\0' || end == my_text.size()-1) { 
 			temp = my_text.substr(start, end-start+1); 
 			my_textdata.push_back(temp); 
 			start = end+1; 
