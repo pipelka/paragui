@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2002/05/28 10:25:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -34,11 +34,18 @@
 #ifndef PG_APPLICATION_H
 #define PG_APPLICATION_H
 
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgapplication
+%{
+#include "pgapplication.h"
+%}
+#endif
+
 #include "pgmessageobject.h"
 #include "pgfilearchive.h"
 #include "pgfont.h"
-
-class PG_Theme;
+#include "pgtheme.h"
 
 /**
 	@author Alexander Pipelka
@@ -105,7 +112,13 @@ public:
 	@param	depth	screendepth in bits per pixel
 	@param	flags	PG_ screen initialization flags
 	*/
+#ifdef SWIG
+	// swig messes up the default arguments
+	bool InitScreen(int w, int h, int depth, unsigned int flags);
+#else
+
 	bool InitScreen(int w, int h, int depth=DISPLAY_DEPTH, Uint32 flags = SDL_SWSURFACE /* | SDL_FULLSCREEN*/ | SDL_HWPALETTE);
+#endif
 
 	/**
 	Load a widget theme
@@ -195,7 +208,12 @@ public:
 	@param	mode	background mode (BKMODE_TILE | BKMODE_STRETCH)
 	@return		true - background image was altered successfully
 	*/
+#ifdef SWIG
+	%name(SetBackground2) bool SetBackground(SDL_Surface* surface, int mode=BKMODE_TILE);
+#else
+
 	bool SetBackground(SDL_Surface* surface, int mode=BKMODE_TILE);
+#endif
 
 	/**
 	Redraw the application background
@@ -252,7 +270,9 @@ public:
 	static void FlipPage();
 
 	/**  */
+#ifndef SWIG
 	void PrintVideoTest();
+#endif
 
 	/**
 	Get the current default widgettheme
@@ -327,7 +347,9 @@ public:
 	@param WorkCallback address of the progress callback function
 	@return   returns non-zero on success or 0 if not succes
 	*/
+#ifndef SWIG
 	static bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max));
+#endif
 
 	/**
 	Load layout from the XML file
@@ -336,7 +358,9 @@ public:
 	@param UserSpace address of user data with are returned by Processing instruction etc.
 	@return   returns non-zero on success or 0 if not succes
 	*/
+#ifndef SWIG
 	static bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max), void *UserSpace);
+#endif
 
 	/**
 	Get widget by name
@@ -368,14 +392,22 @@ public:
 	@param	Blue	Blue color value 0 - 255
 	@return   0 when OK
 	*/
+#ifdef SWIG
+	%name(SetFontColorRGB) static void SetFontColor(int Red, int Green, int Blue);
+#else
 	static void SetFontColor(int Red, int Green, int Blue);
+#endif
 
 	/**
 	Set default font color
 	@param	Color Value of the color 0x00RRGGBB (RGB)
 	@return   0 when OK
 	*/
+#ifdef SWIG
+	%name(SetFontColor32) static void SetFontColor(int Color);
+#else
 	static void SetFontColor(int Color);
+#endif
 
 	/**
 	Set default font transparency (!!!)
@@ -434,12 +466,14 @@ public:
 	  \sa PG_ShowCursor, PG_DrawCursor
 	*/
 	static void SetCursor(SDL_Surface *image);
+	
 	//! Update the graphical mouse cursor
 	/*!
 	  This will redraw the graphical curser pointer, if enabled. You
 	  might need to call this if you stop the normal event loop from running.
 	*/
 	static void DrawCursor();
+	
 	//! Set or query the type of mouse cursor to use.
 	/*!
 	  This function is used to set or query the type of mouse cursor used.
@@ -449,9 +483,25 @@ public:
 	*/
 	static PG_CURSOR_MODE ShowCursor(PG_CURSOR_MODE mode);
 
+	//! Disable dirty widget updates
+	/*!
+	 This function is used to disable dirty widget updates globally.
+	 Dirty updates are usually used to speed up blitting. However, it can cause
+	 problems with 'semitransparent' widgets.
+	\param disable disable ditry updates
+	
+	\note All widgets created after this call wont use the dirty update anymore.
+	Widgets created before will still use this mode if enabled.
+	*/
+	static void DisableDirtyUpdates(bool disable);
+	
+	//! Check if the 'dirty update' mode is disabled globally
+	/*!
+	\return true - if the 'dirty update' mode is disabled globally
+	*/
+	static bool GetDirtyUpdatesDisabled();
+	
 	static PG_Font* DefaultFont;
-
-	PG_SignalAppQuit sigAppQuit;
 
 protected:
 
@@ -479,9 +529,11 @@ protected:
 
 private:
 
+#ifndef SWIG
 	// disable the copy operators
 	PG_Application(const PG_Application&);
 	PG_Application& operator=(const PG_Application&);
+#endif
 
 	bool my_freeBackground;
 	static SDL_Surface* my_background;
@@ -490,7 +542,11 @@ private:
 	static int my_backmode;
 	
 	static PG_Theme* my_Theme;
+
+#ifndef SWIG
 	static std::string app_path;
+#endif
+
 	static PG_Application* pGlobalApp;
 	static SDL_Surface* screen;
 
@@ -504,6 +560,7 @@ private:
 	static PG_Rect my_mouse_position;
 	static PG_CURSOR_MODE my_mouse_mode;
 	static SDL_mutex* mutexScreen;
+	static bool disableDirtyUpdates;
 };
 
 /**

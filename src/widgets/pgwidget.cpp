@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/05/02 08:45:36 $
+   Update Date:      $Date: 2002/05/28 10:25:07 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.1 $
+   CVS/RCS Revision: $Revision: 1.4.4.2 $
    Status:           $State: Exp $
  */
 
@@ -1917,6 +1917,11 @@ void PG_Widget::SetID(int id) {
 }
 
 void PG_Widget::SetDirtyUpdate(bool bDirtyUpdate) {
+	if(PG_Application::GetDirtyUpdatesDisabled()) {
+		my_internaldata->dirtyUpdate = false;
+		return;
+	}
+	
 	my_internaldata->dirtyUpdate = bDirtyUpdate;
 }
 

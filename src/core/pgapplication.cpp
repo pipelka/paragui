@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/27 17:03:57 $
+    Update Date:      $Date: 2002/05/28 10:25:07 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.1 $
+    CVS/RCS Revision: $Revision: 1.2.4.2 $
     Status:           $State: Exp $
 */
 
@@ -55,14 +55,15 @@ bool PG_Application::glMode = false;
 bool PG_Application::emergencyQuit = false;
 bool PG_Application::enableBackground = true;
 bool PG_Application::enableAppIdleCalls = false;
-SDL_Surface *PG_Application::my_mouse_pointer;
+SDL_Surface *PG_Application::my_mouse_pointer = NULL;
 PG_Rect PG_Application::my_mouse_position = PG_Rect(0,0,0,0);
 PG_CURSOR_MODE PG_Application::my_mouse_mode = PG_CURSOR_HARDWARE;
 PG_Font* PG_Application::DefaultFont = NULL;
-SDL_Surface* PG_Application::my_background;
-SDL_Surface* PG_Application::my_scaled_background;
+SDL_Surface* PG_Application::my_background = NULL;
+SDL_Surface* PG_Application::my_scaled_background = NULL;
 SDL_Color PG_Application::my_backcolor;
-int PG_Application::my_backmode;
+int PG_Application::my_backmode = BKMODE_TILE;
+bool PG_Application::disableDirtyUpdates = false;
 
 /**
 	new shutdown procedure (called at application termination
@@ -922,6 +923,14 @@ bool PG_Application::UnlockScreen() {
 	return (SDL_mutexV(mutexScreen) == 0);
 }
 #endif
+
+void PG_Application::DisableDirtyUpdates(bool disable) {
+	disableDirtyUpdates = disable;
+}
+
+bool PG_Application::GetDirtyUpdatesDisabled() {
+	return disableDirtyUpdates;
+}
 
 /*
  * Local Variables:
