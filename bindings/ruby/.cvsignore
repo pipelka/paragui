@@ -1,0 +1,7 @@
+Makefile
+Makefile.in
+interface.i
+paraguic_wrap.cpp
+*.o
+*.so
+	

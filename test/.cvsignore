@@ -18,3 +18,5 @@ windowresize
 listbox
 stress1
 stress2
+pgtestfile
+writefile
