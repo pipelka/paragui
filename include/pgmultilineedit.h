@@ -38,7 +38,7 @@ private:
     void CreateTextVector();
     void SetupVScroll();
     void SetVPosition(int line);
-	std::vector<std::string> my_textdata;
+	std::vector<PG_String> my_textdata;
     PG_ScrollBar* my_vscroll;
     int my_firstLine;
     int my_mark;
