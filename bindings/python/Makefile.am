@@ -26,13 +26,13 @@ OBJECTS = \
 paraguicmodule.so: $(OBJECTS)
 	$(LINK) $(OBJECTS) -o paraguicmodule.so
 
-paragui.py:
+#paragui.py:
 
-paragui.pyc:
-	python -c "import paragui" 2>/dev/null || echo -n
+#paragui.pyc:
+#	python -c "import paragui" 2>/dev/null || echo -n
 
-paragui.pyo:
-	python -OO -c "import paragui" 2>/dev/null || echo -n
+#paragui.pyo:
+#	python -OO -c "import paragui" 2>/dev/null || echo -n
 
 paraguic_wrap.cpp: $(PGHEADERS) python.h
 	$(SWIGCOMPILE) -I$(top_srcdir)/include -o paraguic_wrap.cpp python.h
@@ -41,6 +41,7 @@ paraguic_wrap.o: paraguic_wrap.cpp
 	$(COMPILE) $(INCLUDES) -c $<
 
 distclean: clean
+	rm -f Makefile
 
 clean:
 	rm -f *.so *.c *.o *~ *. *.cpp *.py?

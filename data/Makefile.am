@@ -38,3 +38,4 @@ EXTRA_DIST = \
 clean:
 
 distclean: clean
+	rm -f Makefile

@@ -7,13 +7,23 @@
    in the mail archive.
  */
 
+%module ParaGUI
+%{
+/* Includes the header in the wrapper code */
+#include "pgmessageobject.h"
+#include "pgapplication.h"
+%}
+     
+/* Parse the header file to generate wrappers */
+%include "pgmessageobject.h"
+%include "pgapplication.h"
+
 class PG_Widget;
 
 // downcast anything that returns a (PG_Widget *) to appropriate subclass
 %typemap(out) PG_Widget * = SWIGTYPE *DYNAMIC;
 
 // include everything here so the above typemap affects everything
-%include "paragui.h"
 
 // this function is associated with the downcasting typemap defined above
 %{

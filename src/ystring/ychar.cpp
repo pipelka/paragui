@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ychar.cpp,v 1.1.2.1 2004/06/26 08:05:22 braindead Exp $
+ * $Id: ychar.cpp,v 1.1.2.2 2004/09/08 15:47:37 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2004/06/26 08:05:22 $
+ *  $Date: 2004/09/08 15:47:37 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.1 $
+ *  $Revision: 1.1.2.2 $
  *  $Source: /sources/paragui/paragui/src/ystring/Attic/ychar.cpp,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -26,6 +26,9 @@
 #include <string>
 
 #include "paragui.h"
+
+#ifdef ENABLE_UNICODE
+
 #include "ychar.h"
 
 YChar::YChar()
@@ -403,3 +406,5 @@ std::istream & operator>>( std::istream & in, YChar & c)
   c = new_char;
   return in;
 }
+
+#endif // ENABLE_UNICODE

@@ -10,3 +10,5 @@ EXTRA_DIST = \
 	shot1.png \
 	shot1-small.png
 
+distclean:
+	rm -f Makefile

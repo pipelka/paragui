@@ -1,3 +1,4 @@
+SWIG = swig
 SWIGCOMPILE = $(SWIG) -ruby -c++ -I$(top_srcdir)/include -I$(srcdir)
 
 SWIGINTERFACE=interface.i
@@ -31,6 +32,7 @@ paraguic_wrap.o: paraguic_wrap.cpp
 	$(COMPILE) $(INCLUDES) -c $<
 
 distclean: clean
+	rm -f Makefile
 
 clean:
 	rm -f *.so *.c *.o *~ *. *.cpp

@@ -1,4 +1,4 @@
-SUBDIRS = $(YSTRING_SUBDIR) $(PHYSFS_SUBDIR) $(EXPAT_SUBDIR) draw font themes core widgets
+SUBDIRS = $(PHYSFS_SUBDIR) $(EXPAT_SUBDIR) draw font themes core widgets ystring
 
 DIST_SUBDIRS = draw font themes core widgets expat physfs ystring
 
@@ -14,13 +14,13 @@ libparagui_la_LIBADD = \
 	$(SIGC_LIBS) \
 	$(SDL_LIBS) \
 	$(EXPAT_LIB) \
-	$(YSTRING_LIB) \
 	$(PHYSFS_LIB) \
 	./draw/libpgdraw.la \
 	./font/libpgfont.la \
 	./core/libpgcore.la \
 	./widgets/libpgwidgets.la \
 	./themes/libtheme.la \
+	./ystring/libystring.la \
 	$(LIBSTDCPP)
 
 INCLUDES = \
