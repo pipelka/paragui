@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 16:24:05 $
+    Update Date:      $Date: 2004/03/01 15:09:52 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.10 $
     Status:           $State: Exp $
 */
 
@@ -85,8 +85,6 @@ PG_WidgetList::~PG_WidgetList() {
 }
 
 void PG_WidgetList::RecalcPositions(bool bV, bool bH) {
-	/*bool bV = my_objVerticalScrollbar->IsVisible() && !my_objVerticalScrollbar->IsHidden();
-	bool bH = my_objHorizontalScrollbar->IsVisible() && !my_objHorizontalScrollbar->IsHidden();*/
 
 	// only vertical
 	if(bV && !bH) {
@@ -163,9 +161,6 @@ void PG_WidgetList::eventSizeWidget(Uint16 w, Uint16 h) {
 	if(w != my_width) {
 		handleAreaChangedWidth(my_scrollarea, GetListWidth());
 	}
-
-	//RecalcPositions(my_objVerticalScrollbar->IsVisible(), my_objHorizontalScrollbar->IsVisible());
-	//CheckScrollBars();
 }
 
 bool PG_WidgetList::handleScrollPos(PG_ScrollBar* widget, long data) {
@@ -196,9 +191,6 @@ bool PG_WidgetList::handleScrollTrack(PG_ScrollBar* widget, long data) {
 	return true;
 }
 
-/*void PG_WidgetList::eventShow() {
-}*/
-
 void PG_WidgetList::AddChild(PG_Widget* w) {
 	if(w == NULL) {
 		return;
@@ -212,11 +204,6 @@ void PG_WidgetList::AddChild(PG_Widget* w) {
 	w->MoveRect(0, w->my_ypos + my_scrollarea->GetAreaHeight());
 	my_scrollarea->AddChild(w);
 }
-
-// obsolete -> roadmap
-/*void PG_WidgetList::AddWidget(PG_Widget* w) {
-	AddChild(w);
-}*/
 
 PG_Widget* PG_WidgetList::GetWidgetFromPos(Sint32 y) {
 	Uint32 dy = 0;

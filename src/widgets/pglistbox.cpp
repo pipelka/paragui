@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 19:39:01 $
+    Update Date:      $Date: 2004/03/01 15:09:51 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.8 $
     Status:           $State: Exp $
 */
 
@@ -40,27 +40,16 @@ my_selectedItem(NULL) {
 PG_ListBox::~PG_ListBox() {
 }
 
-/*void PG_ListBox::AddWidget(PG_Widget* w) {
-	PG_ListBox::AddChild(w);
-}*/
-
 void PG_ListBox::AddChild(PG_Widget* item) {
 	if(item == NULL) {
         return;
 	}
-
-	PG_LogDBG("PG_ListBox::AddChild() : my_indent=%i", my_indent);
 
 	item->SizeWidget(Width(), item->Height());
 	static_cast<PG_ListBoxBaseItem*>(item)->SetIndent(my_indent);
 	
 	PG_WidgetList::AddChild(item);
 }
-
-// obsolete -> roadmap
-/*void PG_ListBox::AddItem(PG_ListBoxBaseItem* item) {
-	AddChild(item);    
-}*/
 
 void PG_ListBox::SetMultiSelect(bool multi) {
 	my_multiselect = multi;

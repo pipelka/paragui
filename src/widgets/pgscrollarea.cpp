@@ -111,8 +111,6 @@ void PG_ScrollArea::DeleteAll() {
 	PG_Widget* list = GetChildList()->first();
 
 	GetChildList()->clear();
-	my_area.w = 0;
-	my_area.h = 0;
 	Update();
 
 	for(; list != NULL; ) {
@@ -121,6 +119,8 @@ void PG_ScrollArea::DeleteAll() {
 		w->SetVisible(false);
 		delete w;
 	}
+	my_area.w = 0;
+	my_area.h = 0;
 }
 
 Uint16 PG_ScrollArea::GetWidgetCount() {
