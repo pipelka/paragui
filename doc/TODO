@@ -1,5 +1,16 @@
 Things anyone could adopt:
 
+REDESIGN OF EVENT/MOUSE HANDLING
+--------------------------------
+
+There are some major problems in the event/mouse handling code.
+Events for eventLeaveMouse and eventEnterMouse aren't handled the
+right way. I think it's the oldest part in ParaGUI and it seems it
+needs some redesign. A code sample can be found in the "test" 
+directory (CVS or source-tarball >= 1.1.7). Take a look at 
+"eventleavebug.cpp".
+
+
 CLEANUP/REWRITE OF PG_COLORS
 ----------------------------
 
