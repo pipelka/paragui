@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/13 12:20:49 $
+    Update Date:      $Date: 2004/02/13 22:07:54 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5.4.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.5.4.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -58,19 +58,8 @@ void PG_ListBoxItem::eventSizeWidget(Uint16 w, Uint16 h) {
 	PG_ThemeWidget::DeleteThemedSurface(my_srfHover);
 	PG_ThemeWidget::DeleteThemedSurface(my_srfSelected);
 
-	my_srfHover = PG_ThemeWidget::CreateThemedSurface(
-	                  PG_Rect(0, 0, w, my_itemheight),
-	                  my_gradient[2],
-	                  my_background[2],
-	                  my_bkmode[2],
-	                  my_blend[2]);
-
-	my_srfSelected = PG_ThemeWidget::CreateThemedSurface(
-	                     PG_Rect(0, 0, w, my_itemheight),
-	                     my_gradient[1],
-	                     my_background[1],
-	                     my_bkmode[1],
-	                     my_blend[1]);
+	my_srfHover = NULL;
+	my_srfSelected = NULL;
 }
 
 void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/07 10:01:32 $
+    Update Date:      $Date: 2004/02/13 22:07:54 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.7 $
     Status:           $State: Exp $
 */
 
@@ -331,7 +331,8 @@ void PG_ThemeWidget::eventSizeWidget(Uint16 w, Uint16 h) {
 		return;
 	}
 
-	CreateSurface(w, h);
+	DeleteThemedSurface(_mid->cachesurface);
+	_mid->cachesurface = NULL;
 }
 
 void PG_ThemeWidget::CreateSurface(Uint16 w, Uint16 h) {
