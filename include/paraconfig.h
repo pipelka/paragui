@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/31 12:57:16 $
+    Update Date:      $Date: 2002/05/31 13:25:45 $
     Source File:      $Source: /sources/paragui/paragui/include/paraconfig.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.5 $
     Status:           $State: Exp $
 */
 
@@ -61,7 +61,7 @@ using std::strcat;
 using std::strncpy;
 #endif
 
-#if (defined(WIN32) || defined(__WIN32__)) && (defined(_MSC_VER) || defined(__BCPLUSPLUS__)) || defined(__MWERKS__))
+#if (defined(WIN32) || defined(__WIN32__)) && (defined(_MSC_VER) || defined(__BCPLUSPLUS__) || defined(__MWERKS__))
 #include "paraconfig_win32.h"
 #elif defined(__MACOS__) 
 #include "paraconfig_macos.h"

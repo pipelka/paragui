@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/31 12:17:29 $
+    Update Date:      $Date: 2002/05/31 13:25:45 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.4 $
+    CVS/RCS Revision: $Revision: 1.2.4.5 $
     Status:           $State: Exp $
 */
 
@@ -41,9 +41,12 @@
 // or passed to the compiler. This is just a kind of last resort.
 
 #ifndef PARAGUI_THEMEDIR
-#define PARAGUI_THEMEDIR	"./"
-#endif	// PARAGUI_THEMEDIR
-
+#ifdef __MACOS__
+#define PARAGUI_THEMEDIR        ""
+#else
+#define PARAGUI_THEMEDIR        "./"
+#endif  // macintosh
+#endif  // PARAGUI_THEMEDIR
 
 SDL_mutex* PG_Application::mutexScreen = NULL;
 PG_Application* PG_Application::pGlobalApp = NULL;
