@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/27 09:42:34 $
+    Update Date:      $Date: 2004/09/30 15:12:50 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.15 $
     Status:           $State: Exp $
 */
 
@@ -187,6 +187,8 @@ void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	t->GetProperty(widgettype, objectname, "transparency0", (*_mid)[UNPRESSED].transparency);
 	t->GetProperty(widgettype, objectname, "transparency1", (*_mid)[PRESSED].transparency);
 	t->GetProperty(widgettype, objectname, "transparency2", (*_mid)[HIGHLITED].transparency);
+	
+	t->GetProperty(widgettype, objectname, "iconindent", _mid->iconindent);
 
 	s = t->FindString(widgettype, objectname, "label");
 	if(s != NULL) {
@@ -564,7 +566,7 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 		// blit the icon
 		PG_Draw::BlitSurface(iconsrf, my_src, PG_Application::GetScreen(), my_dst);
 
-		tw -= (iconsrf->w + 3);
+		tw -= (iconsrf->w + _mid->iconindent);
 	}
 
 	// draw the text
@@ -572,11 +574,12 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 		Uint16 w, h;
 		GetTextSize(w, h);
 
-		int tx = ((tw - w)/2) + shift;
+		int tx = (tw - w)/2 + shift;
 		int ty = ((my_height - h)/2) + shift;
 
-		if (iconsrf /*&& tx < (iconsrf->w + 3)*/)
-			tx += iconsrf->w + _mid->iconindent;
+		if (iconsrf) {
+			tx += (iconsrf->w + _mid->iconindent);
+		}
 
 		DrawText(tx, ty, my_text.c_str());
 	}

@@ -42,6 +42,7 @@ Whats new in ParaGUI 1.1.8 ?
 - fixed infinite loops in PG_MultiLineEdit
 - added PG_Button::SetIconIndent(Uint16)
 - fixed non-unicode rendering of german "umlaut"
+- fixed alignment of text (PG_Button)
 
 - applied patches from Sebastian:
 - made PG_Application::RunEventLoop() virtual to make subclassing easier

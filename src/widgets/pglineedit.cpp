@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 10:51:41 $
+    Update Date:      $Date: 2004/09/30 15:12:50 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.12 $
     Status:           $State: Exp $
 */
 
@@ -43,7 +43,7 @@ PG_LineEdit::PG_LineEdit(PG_Widget* parent, const PG_Rect& r, const char* style,
 	my_endMark   = -1;
 	my_passchar = 0;
 
-	LoadThemeStyle("LineEdit");
+	LoadThemeStyle(style);
 }
 
 PG_LineEdit::~PG_LineEdit() {
@@ -487,6 +487,12 @@ bool PG_LineEdit::eventFilterKey(const SDL_KeyboardEvent* key) {
 }
 
 void PG_LineEdit::LoadThemeStyle(const char* widgettype) {
+	// load defaults first
+	if(strcmp(widgettype, "LineEdit") != 0) {
+		LoadThemeStyle("LineEdit");
+	}
+	
+	// load custom values
 	PG_ThemeWidget::LoadThemeStyle(widgettype, "LineEdit");
 	LoadThemeStyle(widgettype, "LineEdit");
 }
