@@ -27,15 +27,12 @@ libpgwidgets_la_SOURCES = \
 	pgwidgetlist.cpp \
 	pgwidgetlistex.cpp \
 	pgwindow.cpp \
-	pgmenubar.cpp \
-	pgtabbar.cpp \
-	pgnotebook.cpp
+	pgmenubar.cpp
 
 EXTRA_DIST =
 
 INCLUDES = \
 	$(EXPAT_INCLUDE) \
-	$(SIGC_CFLAGS) \
 	$(SDL_CFLAGS) \
 	-I$(top_srcdir)/include
 
