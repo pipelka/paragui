@@ -1,0 +1,33 @@
+Code Warrior 7 Projects for Windows and Mac (05/31/2002)
+
+	I am not sure if these will work with earlier versions of CW,
+but you can try, the only reason that they may not is if some of the 
+OS libs don't exist.
+
+	Now to use the project files........
+
+	Unzip into the man branch of paragui you are using. You will 
+find the project file to load with CW in the CWProject directory.
+In order to completly compile the paragui lib, you DON'T have to compile
+in the external libs like with VC++. You only need to link in the libs 
+when you compile your actual program. 
+
+	Currently the project files only compile static versions of paragui,
+but hopefully soon there will be dynamically linkable versions.
+
+	Any external includes (SDL, freetype, SDL_image, expat, physFS) must
+be loacted in the CWProjects\external dir. You're free to change the access
+paths to were you have these files if you know how.....just remember to remove
+the {project}\external access path from the access paths or you will get
+multiple defines.
+
+	Also, please note that when compiling the paragui lib on either MAC
+or windows, the PG_color.cpp will appear to freeze.....it doesn't, it takes 
+about 5 minutes to compile on my AMD 950.
+
+	Have fun, I hope I covered everything here....O one more thing, any
+external libs MUST also be compiled from CW in order to link them with any
+other CW project, including this one.  :)  
+
+any questions,
+ksswyer@hotmail.com

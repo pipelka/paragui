@@ -22,6 +22,8 @@ Whats new in ParaGUI 1.0.2 ?
   Thanks John Rainey <John.Rainey@symmetron.com>
 - added missing DECLSPEC to pgwidgetlistex.h
   Thanks Andrew Ford <andrewhford@yahoo.com>
+- added CodeWarrior and MacOS support
+  Thanks Keith Swyer <ksswyer@adventus.com>
 
 
 ----------------------------
