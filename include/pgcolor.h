@@ -15,6 +15,17 @@
 
 #include "SDL.h"
 
+/** @class PG_Color
+ 
+	@short Allows for an abstraction of a particular color.
+ 
+	The purpose of this is to allow one to create new colors. If one is interested
+	in using predefined color constants, see pgcolors.h (note the letter "s" at the end.)
+	A PG_Color can be created from an SDL_Color, a Uint32, or RGB based system.
+
+	@author Alexander Pipelka
+*/
+
 class DECLSPEC PG_Color : public SDL_Color {
 public:
 	PG_Color();

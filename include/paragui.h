@@ -20,18 +20,21 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/04/17 20:39:07 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.9 $
     Status:           $State: Exp $
 */
 
-/** \file paragui.h
+/**
+	@file paragui.h
 	The main include file.
 	This include file sets up the basic configuration for
 	a ParaGUI enabled application. It includes all dependend
 	headers (SDL,...) and defines some macros used by many
 	other files.
+
+	@author Alexander Pipelka
 */
 
 #ifndef PARAGUI_H

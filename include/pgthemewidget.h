@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/04/17 20:39:07 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.9 $
     Status:           $State: Exp $
 */
 
@@ -55,7 +55,7 @@ class PG_ThemeWidgetDataInternal;
 
 	<h3>Theme sample:</h3>
 
-	\code
+	\verbatim
 	<widget>
 		<type value="ThemeWidget"/>
 			<object>
@@ -72,7 +72,7 @@ class PG_ThemeWidgetDataInternal;
 			<property name="bordersize" value="1"/>
 		</object>
 	</widget>
-	\endcode
+	\endverbatim
 	<p>
 	<h2>Code:</h2><p>
 */

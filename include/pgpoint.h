@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/02 20:19:04 $
+   Update Date:      $Date: 2004/04/17 20:39:07 $
    Source File:      $Source: /sources/paragui/paragui/include/pgpoint.h,v $
-   CVS/RCS Revision: $Revision: 1.1.4.4 $
+   CVS/RCS Revision: $Revision: 1.1.4.5 $
    Status:           $State: Exp $
 */
 
@@ -30,6 +30,16 @@
 #define PG_POINT_H
 
 #include "SDL.h"
+
+/**
+	@author Alexander Pipelka
+ 
+	@short A wrapper for a point on the screen.
+ 
+	Useful when its necessary to specify a 2D using Cartesian coordinates (x, y).
+
+*/
+
 
 class DECLSPEC PG_Point {
 public:
