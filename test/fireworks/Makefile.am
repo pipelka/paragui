@@ -4,7 +4,7 @@ fireworks_SOURCES = \
 	blob.cpp \
 	main.cpp
 
-fireworks_LDADD = -L../../src ../../src/libparagui.la $(FREETYPE_LIBS)
+fireworks_LDADD = $(SDL_LIBS) -L../../src ../../src/libparagui.la $(FREETYPE_LIBS)
 
 EXTRA_DIST = \
 	blob.h

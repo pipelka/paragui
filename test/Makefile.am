@@ -26,7 +26,7 @@ noinst_PROGRAMS = \
 	windowresize \
 	unicodetest
 
-LFLAGS=-L../src ../src/libparagui.la $(FREETYPE_LIBS)
+LFLAGS=$(SDL_LIBS) -L../src ../src/libparagui.la $(FREETYPE_LIBS)
 
 unicodetest_SOURCES = unicodetest.cpp
 unicodetest_LDADD = $(LFLAGS)

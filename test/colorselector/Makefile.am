@@ -4,7 +4,7 @@ colorselector_SOURCES = \
 	pgcolorselector.cpp \
 	main.cpp
 
-colorselector_LDADD = -L../../src ../../src/libparagui.la $(FREETYPE_LIBS)
+colorselector_LDADD = $(SDL_LIBS) -L../../src ../../src/libparagui.la $(FREETYPE_LIBS)
 
 EXTRA_DIST = \
 	pgcolorselector.h
