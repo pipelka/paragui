@@ -1,3 +1,36 @@
+---------------------------------
+ParaGUI unstable development tree
+BEWARE! MAY CONTAIN NUTS
+---------------------------------
+
+-------
+ROADMAP
+-------
+
+1.1.5 - signals handled by libsigc++
+1.1.6 - API cleanup (all binary incompatible changes allowed)
+1.1.7 - unify constructors (e.g.: PG_Widget(PG_Widget* parent, const PG_Rect& rect)) - needed for factory
+1.1.8 - merge object factory from paragui2
+1.1.9 - merge and rework XML layoutloader
+1.1.? - i'll consult my magic orb
+
+If you want to take part in the development process - drop me a few lines.
+
+
+----------------------------
+Whats new in ParaGUI 1.1.5 ?
+----------------------------
+
+- the version. ok it's the 1.0.4 tree with some binary incompatible
+  changes. -> 1.1.5
+- new background mode 9TILE
+- no more SendMessage (ok. there are still 1 or 2)
+  using libsigc++ instead.
+- new sigXXX signal handlers
+- dynamic loading of SDL_image
+- silent mode development
+
+
 ----------------------------
 Whats new in ParaGUI 1.0.4 ?
 ----------------------------

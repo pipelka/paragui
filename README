@@ -2,7 +2,7 @@
                                   ParaGUI
 
                        Crossplatform widgetset for SDL
-		               Version 1.0.4
+		          Version 1.1.5 - UNSTABLE
 
 
 http://www.paragui.org
@@ -46,6 +46,8 @@ Highlights of the library:
   * Python support
 
   * you can help us to make the library even better
+
+  * signal / slot mechanism
 
 
 This library is distributed under GNU LGPL version 2, which can be
