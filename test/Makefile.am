@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = foreign
 noinst_PROGRAMS = eventbug array writefile stress1 stress2 listbox animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
 
 eventbug_SOURCES = event_bug.cpp
-eventbug_LDADD = ../src/libparagui.la
+eventbug_LDADD = -L../src $(PARAGUI_LIBS)
 
 array_SOURCES = array.cpp
 array_LDADD = -L../src $(PARAGUI_LIBS)
