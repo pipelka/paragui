@@ -1,0 +1,37 @@
+Initial API interface and implementation,
+GRP driver,
+DIR driver,
+Unix support,
+Win32 support,
+BeOS support,
+POSIX support,
+ZIP driver,
+MacOS Classic support:
+    Ryan C. Gordon
+
+Tons of win32 help:
+    Adam Gates
+
+More win32 hacking:
+    Gregory S. Read
+
+Fixes for missing current working directories,
+PHYSFS_setSaneConfig() improvements,
+other bugfixes,
+    David Hedbor
+
+Darwin support,
+    Patrick Stein
+
+configure fixes,
+    Edward Rudd
+
+GetLastModTime API,
+other stuff,
+    John R. Hall
+
+Other stuff:
+    Your name here! Patches go to icculus@clutteredmind.org ...
+
+/* end of CREDITS ... */
+
