@@ -19,10 +19,10 @@
    Alexander Pipelka
    pipelka@teleweb.at
  
-   Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/07/30 20:50:27 $
+   Last Update:      $Author: eross $
+   Update Date:      $Date: 2002/09/12 06:34:59 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.9 $
+   CVS/RCS Revision: $Revision: 1.4.4.10 $
    Status:           $State: Exp $
  */
 
@@ -1293,7 +1293,7 @@ void PG_Widget::SetText(const char* text) {
 		return;
 	}
 
-	my_text = text;
+	my_text = std::string(text);
 	Update();
 }
 
