@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:40 $
+    Update Date:      $Date: 2003/03/21 20:04:58 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.15 $
+    CVS/RCS Revision: $Revision: 1.2.4.16 $
     Status:           $State: Exp $
 */
 
@@ -95,7 +95,9 @@ PG_Application::PG_Application() {
 /* Pete Shinners, Feb 1, 2001                               */
 
 #ifdef WIN32
+#ifndef __GNUC__
 	SDL_RegisterApp("ParaGUI", 0, GetModuleHandle(NULL));
+#endif
 #endif
 
 	// -- see above

@@ -1,7 +1,7 @@
 #include "paragui.h"
 
 #ifndef HAVE_STRDUP
-char *strdup(char *s) {
+char *strdup(const char *s) {
 	if(s == NULL) {
 		return NULL;
 	}
@@ -176,3 +176,4 @@ int fnmatch (const char *pattern, const char *string, int flags) {
   return (FNM_NOMATCH);
 }
 #endif
+

@@ -5,36 +5,56 @@ UnitCount=1
 Type=0
 Ver=1
 ObjFiles=
-Includes=
-Libs=
+Includes=..\include
+Libs=..\
 PrivateResource=
 ResourceIncludes=
 MakeIncludes=
-Resources=
-Compiler=-O2
-Linker=-lSDLmain -lSDL -lparagui -Wl,-u,_WinMain@16
+Compiler=-Os_@@_
+Linker=-lSDLmain -lSDL -Wl,-u,_WinMain@16_@@_../libparagui.a_@@_
 IsCpp=1
 Icon=
-ExeOutput=
+ExeOutput=..\bin
 ObjectOutput=
 OverrideOutput=0
 OverrideOutputName=paratest.exe
 HostApplication=
 Folders=
 CommandLine=
-Order=0
-Focused=0
+CppCompiler=-Os_@@_
+IncludeVersionInfo=0
+SupportXPThemes=0
+CompilerSet=0
+CompilerSettings=000000000000000000
 
 [Unit1]
 FileName=paratest.cpp
-Open=1
 Folder=paratest
-Top=1
-CursorCol=1
-CursorRow=1
-TopLine=1
-LeftChar=1
+CompileCpp=1
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
 
 [Views]
 ProjectView=1
+
+[VersionInfo]
+Major=0
+Minor=1
+Release=1
+Build=1
+LanguageID=1033
+CharsetID=1252
+CompanyName=
+FileVersion=0.1
+FileDescription=Developed using the Dev-C++ IDE
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=paratest.exe
+ProductName=paratest
+ProductVersion=0.1
+AutoIncBuildNr=0
 

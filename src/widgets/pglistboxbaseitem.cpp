@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/20 14:35:33 $
+    Update Date:      $Date: 2003/03/21 20:04:58 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -91,7 +91,7 @@ void PG_ListBoxBaseItem::eventHide() {
 	my_hover = false;
 }
 
-bool PG_ListBoxBaseItem::eventMouseButtonUp (const SDL_MouseButtonEvent* button) {
+bool PG_ListBoxBaseItem::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 
 	if(button->button != 1) {
 		return false;

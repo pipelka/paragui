@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:37 $
+    Update Date:      $Date: 2003/03/21 20:04:58 $
     Source File:      $Source: /sources/paragui/paragui/include/paraconfig.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.13 $
     Status:           $State: Exp $
 */
 
@@ -88,7 +88,7 @@
 //
 #ifndef HAVE_STRDUP
 extern "C" {
-char* strdup(char* s);
+char* strdup(const char* s);
 }
 #endif
 
@@ -111,3 +111,4 @@ int fnmatch(const char *, const char *, int);
 #endif
 
 #endif // CONFIG_INCLUDED
+

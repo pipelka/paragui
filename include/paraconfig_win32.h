@@ -23,7 +23,7 @@
 /* #undef HAVE_FNMATCH */
 
 /* Define if you have the strdup function.  */
-#define HAVE_STRDUP 1
+/* #undef HAVE_STRDUP */
 
 /* Define if you have the strtok function.  */
 #define HAVE_STRTOK 1
