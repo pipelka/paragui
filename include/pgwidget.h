@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/01 20:51:40 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
     Status:           $State: Exp $
 */
 
@@ -862,10 +862,6 @@ protected:
 
 private:
 
-	//void InitWidget(PG_Widget* parent, bool bObjectSurface);
-	//void AddChildToCache(PG_Widget *child, const char *name);
-	//void AddChildToCache(PG_Widget *child, int id);
-    
 	PG_Widget(const PG_Widget&);
 	PG_Widget& operator=(const PG_Widget&);
 
