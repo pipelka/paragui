@@ -29,8 +29,13 @@ SetEventObject(MSG_TYPE, objDest, (MSG_CALLBACK_OBJ)&objFunc)
 
 void Splash() {
     PG_ThemeWidget splash(NULL, PG_Rect(100,100,600,400), true);
+    PG_ThemeWidget splash1(&splash, PG_Rect(10,10,580,380));
+    PG_ThemeWidget splash2(&splash1, PG_Rect(10,10,560,340));
+    PG_Label l(&splash2, PG_Rect(10,10,540,320), "I'm a splash screen");
+    l.SetAlignment(PG_TA_CENTER);
+        
     splash.Show();
-    SDL_Delay(1000);
+    SDL_Delay(5000);
     splash.Hide();
 }
 
@@ -326,6 +331,8 @@ int main(int argc, char* argv[]) {
 
 	app.SetCursor(app.GetTheme()->FindSurface("Pointer", "Pointer", "normal"));
 
+	Splash();
+	
 	SDL_Color color;
 	color.r = 255;
 	color.g = 255;
