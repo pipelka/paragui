@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 19:39:01 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pglabel.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
     Status:           $State: Exp $
 */
 
@@ -86,6 +86,8 @@ public:
 
 	/** Returns the text indentation */
 	Uint16 GetIndent();
+
+	void SetSizeByText(int Width = 0, int Height = 0, const char *Text = NULL);	
 
 protected:
 

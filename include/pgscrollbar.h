@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/08 16:52:39 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -146,7 +146,7 @@ protected:
 	bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);
 
 	/**  */
-	bool handleButtonClick(PG_Button* button);
+	virtual bool handleButtonClick(PG_Button* button);
 
 	/**  */
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/13 13:45:45 $
+   Update Date:      $Date: 2004/03/23 19:06:58 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.14 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.15 $
    Status:           $State: Exp $
  */
 
@@ -35,16 +35,6 @@
 #include "pgdraw.h"
 #include "pglayout.h"
 #include "pgtheme.h"
-
-/**
-	calculate the minimum of 2 values
-*/
-#define PG_MAX(a, b)	((a<b) ? b : a)
-
-/**
-	calculate the maximum of 2 values
-*/
-#define PG_MIN(a, b)	((a<b) ? a : b)
 
 #define TXT_HEIGHT_UNDEF 0xFFFF
 
@@ -1307,11 +1297,11 @@ void PG_Widget::SetSizeByText(int Width, int Height, const char *Text) {
 
 	if (my_width == 0 && my_height > 0 && Width == 0) {
  		my_width = w;
- 		my_ypos += (my_height - h - baselineY) / 2;
+ 		my_ypos += (my_height - h - baselineY) >> 1;
  		my_height = h + baselineY;
  	}
  	else if (my_height == 0 && my_width > 0 && Height == 0) {
- 		my_xpos += (my_width - w) / 2;
+ 		my_xpos += (my_width - w) >> 1;
  		my_width = w;
  		my_height = h + baselineY;
  	}

@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/gradient.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.3 $
     Status:           $State: Exp $
 */
 
@@ -43,10 +43,6 @@ SDL_Surface* PG_Draw::CreateGradient(const PG_Rect& r, PG_Gradient& gradient) {
 }
 
 SDL_Surface* PG_Draw::CreateGradient(const PG_Rect& r, const PG_Color& ul, const PG_Color& ur, const PG_Color& dl, const PG_Color& dr) {
-	SDL_Surface* screen = SDL_GetVideoSurface();
-
-	assert(screen);
-
 	SDL_Surface *grd = PG_Draw::CreateRGBSurface(r.w, r.h);
 
 	r.my_xpos = 0;

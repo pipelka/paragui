@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 19:39:01 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -161,4 +161,30 @@ void PG_Label::SetIndent(Uint16 indent) {
 
 Uint16 PG_Label::GetIndent() {
 	return my_indent;
+}
+
+void PG_Label::SetSizeByText(int Width, int Height, const char *Text) {
+	if (GetIcon() == NULL) {
+		PG_Widget::SetSizeByText(Width, Height, Text);
+		return;
+	}
+
+	Uint16 w,h;
+	int baselineY;
+	
+	if (Text == NULL) {
+		Text = my_text.c_str();
+	}
+
+	if (!PG_FontEngine::GetTextSize(Text, GetFont(), &w, &h, &baselineY)) {
+		return;
+	}
+
+	if (GetIcon()->w > w) {
+		my_width = GetIcon()->w + my_indent + Width;
+	}
+	else {
+		my_width = w + GetIcon()->w + my_indent + Width;
+	}
+	my_height = PG_MAX(GetIcon()->h, h + baselineY) + Height + baselineY;
 }

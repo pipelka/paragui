@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -105,8 +105,8 @@ public:
 
 protected:
 
-	bool handleButtonClick(PG_Button* button);
-	bool handleEditEnd(PG_LineEdit* edit);
+	virtual bool handleButtonClick(PG_Button* button);
+	virtual bool handleEditEnd(PG_LineEdit* edit);
 
 private:
 

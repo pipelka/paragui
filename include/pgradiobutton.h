@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:05 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgradiobutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -104,7 +104,7 @@ protected:
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
 
 	/** */
-	bool handleButtonClick(PG_Button* button);
+	virtual bool handleButtonClick(PG_Button* button);
 
 	PG_RadioButton* my_groupFirst;
 	PG_RadioButton* my_groupNext;

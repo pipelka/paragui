@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:03 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
     Status:           $State: Exp $
 */
 
@@ -78,6 +78,8 @@ public:
 
 	void SetTitlebarColor(const PG_Color& c);
 
+	PG_Color GetTitlebarColor();
+
 	void SetTitlebarHeight(Uint8 height);
 	
 	Uint8 GetTitlebarHeight();
@@ -124,7 +126,7 @@ protected:
 	void eventSizeWidget(Uint16 w, Uint16 h);
 
 	/** */
-	bool handleButtonClick(PG_Button* button);
+	virtual bool handleButtonClick(PG_Button* button);
 
 	/** */
 	bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);

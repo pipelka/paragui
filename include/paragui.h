@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:46:05 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.8 $
     Status:           $State: Exp $
 */
 
@@ -138,5 +138,15 @@ int fnmatch(const char *, const char *, int);
 	All internal widget ID's start at this value.
 */
 #define	PG_WIDGETID_INTERNAL	10000
+
+/**
+	calculate the minimum of 2 values
+*/
+#define PG_MAX(a, b)	((a<b) ? b : a)
+
+/**
+	calculate the maximum of 2 values
+*/
+#define PG_MIN(a, b)	((a<b) ? a : b)
 
 #endif // PARAGUI_H

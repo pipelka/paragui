@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:04 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.11 $
     Status:           $State: Exp $
 */
 
@@ -269,15 +269,15 @@ void PG_Window::SetTitlebarColor(const PG_Color& c) {
 	my_labelTitle->SetFontColor(c);
 }
 
+PG_Color PG_Window::GetTitlebarColor() {
+	return my_labelTitle->GetFontColor();
+}
+
 void PG_Window::SetIcon(const char* filename) {
-	if (my_buttonMinimize)
-		my_labelTitle->SetIndent(my_buttonMinimize->my_width);
 	my_labelTitle->SetIcon(filename);
 }
 	
 void PG_Window::SetIcon(SDL_Surface* icon) {
-	if (my_buttonMinimize)
-		my_labelTitle->SetIndent(my_buttonMinimize->my_width);
 	my_labelTitle->SetIcon(icon);
 }
 

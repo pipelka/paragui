@@ -212,6 +212,8 @@ bool TestWindow::handleButtonClick(PG_Button* button) {
 	static int label=0;
 	int id = button->GetID();
 
+	PG_Window::handleButtonClick(button);
+	
 	if(id == 100) {
 		PG_Label* l = new PG_Label(WidgetList, PG_Rect(0,0,220,25), "");
 		l->SetAlignment(PG_Label::CENTER);
@@ -370,6 +372,7 @@ int main(int argc, char* argv[]) {
 	PG_RadioButton radio1(NULL, PG_Rect(50,0,200,25), "RadioButton 1");
 	PG_RadioButton radio2(NULL, PG_Rect(50,25,200,25), "RadioButton 2", &radio1);
 	PG_RadioButton radio3(NULL, PG_Rect(50,50,200,25), "RadioButton 3", &radio1);
+	radio3.SetSizeByText();
 	radio1.SetAlignment(PG_Label::RIGHT);
 	
 	PG_RadioButton radio4(NULL, PG_Rect(50,90,200,25), "RadioButton 4");

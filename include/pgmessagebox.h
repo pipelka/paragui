@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:03 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessagebox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -94,7 +94,7 @@ protected:
 
 	@param button pointer to PG_BUtton
 	*/
-	bool handleButton(PG_Button* button);
+	virtual bool handleButton(PG_Button* button);
 
 	PG_Button* my_btnok;
 	PG_Button* my_btncancel;

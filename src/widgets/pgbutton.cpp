@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
     Status:           $State: Exp $
 */
 
@@ -603,4 +603,34 @@ void PG_Button::SetBlendLevel(STATE mode, Uint8 blend) {
 
 Uint8 PG_Button::GetBlendLevel(STATE mode) {
 	return (*_mid)[mode].backBlend;
+}
+
+void PG_Button::SetSizeByText(int Width, int Height, const char *Text) {
+	Width += 2 * (*_mid)[UNPRESSED].bordersize + _mid->pressShift;
+	
+	SDL_Surface* srf = (*_mid)[UNPRESSED].srf_icon;
+
+	if (srf == NULL) {
+		PG_Widget::SetSizeByText(Width, Height, Text);
+		eventSizeWidget(my_width, my_height);
+		return;
+	}
+
+	Uint16 w,h;
+	int baselineY;
+
+	if (Text == NULL) {
+		Text = my_text.c_str();
+	}
+
+	if (!PG_FontEngine::GetTextSize(Text, GetFont(), &w, &h, &baselineY)) {
+		return;
+	}
+	
+	Uint16 dx = srf->w + Width;
+	
+	my_width = (srf->w > w) ? dx : w + dx;
+	my_height = PG_MAX(srf->h, h + baselineY) + Height;
+		
+	eventSizeWidget(my_width, my_height);
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:19 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.5 $
     Status:           $State: Exp $
 */
 
@@ -131,9 +131,9 @@ public:
 	typedef STL_MAP<std::string, THEME_GRADIENT*, pg_hashstr> MAP_GRADIENT;
 	typedef STL_MAP<std::string, THEME_PROPERTY*, pg_hashstr> MAP_PROPERTY;
 #else
-	typedef map<std::string, THEME_FILENAME*> MAP_FILENAME;
-	typedef map<std::string, THEME_GRADIENT*> MAP_GRADIENT;
-	typedef map<std::string, THEME_PROPERTY*> MAP_PROPERTY;
+	typedef std::map<std::string, THEME_FILENAME*> MAP_FILENAME;
+	typedef std::map<std::string, THEME_GRADIENT*> MAP_GRADIENT;
+	typedef std::map<std::string, THEME_PROPERTY*> MAP_PROPERTY;
 #endif
 
 	MAP_FILENAME filename;
@@ -155,7 +155,7 @@ public:
 #ifdef HASH_MAP_INC
 	typedef STL_MAP<std::string, THEME_OBJECT*, pg_hashstr> MAP_OBJECT;
 #else
-	typedef map<std::string, THEME_OBJECT*> MAP_OBJECT;
+	typedef std::map<std::string, THEME_OBJECT*> MAP_OBJECT;
 #endif
 
 	MAP_OBJECT object;
@@ -198,7 +198,7 @@ public:
 #ifdef HASH_MAP_INC
 	typedef STL_MAP<std::string, THEME_WIDGET*, pg_hashstr> MAP_WIDGET;
 #else
-	typedef map<std::string, THEME_WIDGET*> MAP_WIDGET;
+	typedef std::map<std::string, THEME_WIDGET*> MAP_WIDGET;
 #endif
 
 	MAP_WIDGET widget;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 09:18:25 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
     Status:           $State: Exp $
 */
 
@@ -36,6 +36,7 @@
 #include "pgwidget.h"
 #include "pgsignals.h"
 #include "pglabel.h"
+#include "pglineedit.h"
 
 class PG_Button;
 class PG_LineEdit;
@@ -167,6 +168,10 @@ public:
 	void AddChild(PG_Widget* child);
 
 	SignalSelectItem<> sigSelectItem;
+	
+	PG_LineEdit::SignalEditBegin<> sigEditBegin;
+	PG_LineEdit::SignalEditEnd<> sigEditEnd;
+	PG_LineEdit::SignalEditReturn<> sigEditReturn;
 
 protected:
 
@@ -177,7 +182,7 @@ protected:
 	void eventHide();
 
 	/** */
-	bool handleButtonClick(PG_Button* button);
+	virtual bool handleButtonClick(PG_Button* button);
 
 	/** */
 	void eventSizeWidget(Uint16 w, Uint16 h);

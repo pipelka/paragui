@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:04 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollarea.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.8 $
+    CVS/RCS Revision: $Revision: 1.1.2.9 $
     Status:           $State: Exp $
 */
 
@@ -172,8 +172,7 @@ void PG_ScrollArea::DeleteAll() {
 
 	for(; list != NULL; ) {
 		PG_Widget* w = list;
-		list = list->next();
-		w->SetVisible(false);
+		list = list->next();		
 		delete w;
 	}
 	my_area.w = 0;

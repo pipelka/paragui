@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:05 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrect.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -50,14 +50,8 @@ public:
 
 	Initializes the created PG_Rect object with x/y postions and width/height
 	*/
-	PG_Rect(Sint16 x, Sint16 y, Uint16 w, Uint16 h);
-
-	/**
-	Create an empty PG_Rect object
-	Initializes the created PG_Rect object with x=y=w=h=0
-	*/
-	PG_Rect();
-
+	PG_Rect(Sint16 x = 0, Sint16 y = 0, Uint16 w = 0, Uint16 h = 0);
+	
 	/**
 	Create a new PG_Rect from a reference
 	@param	src	reference rectangle

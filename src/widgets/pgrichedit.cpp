@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/13 13:46:02 $
+   Update Date:      $Date: 2004/03/23 19:06:58 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.8 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.9 $
    Status:           $State: Exp $
 */
 
@@ -125,6 +125,8 @@ void PG_RichEdit::SetText(const char *text) {
 		return;
 	}
 
+	my_scrollarea->SetAreaHeight(0);
+	
 	my_text = text;
 		
 	// trim the string
@@ -273,8 +275,9 @@ Sint32 PG_RichEdit::CompleteLines() {
 	if (my_AutoVerticalResize) {
 		SizeWidget(my_width, my_scrollarea->GetAreaHeight());
 	}
-
-	CheckScrollBars();
+	else {
+		CheckScrollBars();
+	}
 	//UpdateScrollBarsPos();
 	Update();
 

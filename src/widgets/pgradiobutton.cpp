@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.5 $
     Status:           $State: Exp $
 */
 
@@ -57,7 +57,6 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, const PG_Rect& r, const char* 
 
 	rectLabel.SetRect(rectButton.my_width, 0, r.my_width - rectButton.my_width, r.my_height);
 	my_widgetLabel = new PG_Label(this, rectLabel, text, style);
-	my_widgetLabel->SetAlignment(PG_Label::LEFT);
 
 	// load default first
 	if(strcmp(style, "RadioButton") != 0) {
@@ -105,8 +104,34 @@ void PG_RadioButton::eventMouseLeave() {
 }
 
 bool PG_RadioButton::eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetButton) {
+	PG_RadioButton* list = my_groupFirst;
 
-	SetPressed();
+	if(my_groupFirst != NULL) {
+
+		if(my_widgetButton->button == 4) {		
+			while(list->my_groupNext != NULL) {
+				if(list->my_groupNext == this) {
+					SDL_WarpMouse(list->my_xpos + ((my_widgetButton->x * 1.0 - list->my_xpos) / list->my_groupNext->my_width) * list->my_width, list->my_ypos);
+					break;
+				}
+				list = list->my_groupNext;
+			}									
+			return true;
+		}
+
+		if(my_widgetButton->button == 5) {		
+			do {				
+				if(list == this && list->my_groupNext != NULL) {
+					SDL_WarpMouse(list->my_groupNext->my_xpos + ((my_widgetButton->x * 1.0 - list->my_groupNext->my_xpos) / list->my_width) * list->my_groupNext->my_width, list->my_groupNext->my_ypos);
+					break;
+				}
+				list = list->my_groupNext;
+			} while(list != NULL);
+			return true;
+		}		
+	}
+
+	SetPressed();	
 	return true;
 }
 
@@ -125,7 +150,9 @@ void PG_RadioButton::SetPressed() {
 	PG_RadioButton* list = my_groupFirst;
 
 	while(list != NULL) {
-		list->ReleaseButton();
+		if (list->my_isPressed) {
+			list->ReleaseButton();
+		}
 		list = list->my_groupNext;
 	}
 
@@ -176,19 +203,14 @@ void PG_RadioButton::SetFontColor(const PG_Color& Color) {
 }
 
 void PG_RadioButton::SetSizeByText(int Width, int Height, const char *Text) {
-	Uint16 w,h;
-	int baselineY;
-	
 	if (Text == NULL) {
 		Text = my_widgetLabel->GetText();
 	}
 
-	if (my_width == 0 && Width == 0 && Height == 0)
-	{
-		if (!PG_FontEngine::GetTextSize(Text, GetFont(), &w, &h, &baselineY)) {
-			return;
-		}
+	my_widgetButton->SetSizeByText();
+	my_widgetLabel->SetSizeByText(0, 0, Text);
 
-		my_width = my_widgetButton->my_width + w;	
-	}
+	my_widgetLabel->MoveWidget(my_widgetButton->my_width, 0);
+	SizeWidget(my_widgetButton->my_width + my_widgetLabel->my_width + Width, PG_MAX(my_widgetButton->my_height + Height, my_widgetLabel->my_height));
+	my_widgetButton->MoveWidget(0, (my_height - my_widgetButton->my_height) >> 1);	
 }

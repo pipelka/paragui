@@ -35,6 +35,33 @@ Whats new in ParaGUI 1.1.8 ?
 - removed "using namespace std;" from header files
 - removed "using namespace std;" from all sources
 - removed Get / SetApplicationPath from PG_Application
+- applied patches from Sebastian:
+- made PG_Application::RunEventLoop() virtual to make subclassing easier
+- made PG_Application::my_quitEventLoop protected to make subclassing easier
+- made PG_LineEdit signals available to PG_DropDown
+- made PG_DropDown::handleButtonClick() virtual to make subclassing easier
+- made PG_MessageBox::handleButton() virtual to make subclassing easier
+- made PG_RadioButton::handleButtonClick() virtual to make subclassing easier
+- removed PG_Rect::PG_Rect() and added default params to PG_Rect::PG_Rect(x,y,w,h) instead
+- made PG_Scrollbar::handleButtonClick virtual to make subclassing easier
+- divided PG_ScrollWidget::IDWIDGETLIST_SCROLL into IDWIDGETLIST_VSCROLL and IDWIDGETLIST_HSCROLL
+- made PG_SpinnerBox::handleButtonClick() virtual to make subclassing easier
+- made PG_SpinnerBox::handleEditEnd() virtual to make subclassing easier
+- added PG_Window::GetTitlebarColor()
+- made PG_Window::handleButtonClick() virtual to make subclassing easier
+- fixed some compilation errors with VC.NET occurred due to missing namespace access
+- reworked PG_Button::SetSizeByText()
+- reworked PG_Label::SetSizeByText()
+- reworked PG_Button::SetSizeByText()
+- reworked PG_RadioButton::SetSizeByText()
+- made PG_RichEdit::CompleteLines() call CheckForScrollBars() only if my_AutoVerticalResize is false
+- added mouse wheel support for PG_RadioButton
+- reset PG_RichEdit's scrollarea height to 0 when adding new text
+- added SetSizeByText() example to paratest.cpp
+- a bit of cleanup
+- applied patches from Ulf Lorenz:
+- commented PG_Draw::DrawTile
+- commented PG_Draw::DrawGradient
 
 
 ----------------------------

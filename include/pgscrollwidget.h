@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 15:56:21 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -47,7 +47,7 @@ class DECLSPEC PG_ScrollWidget : public PG_ThemeWidget  {
 public:
 
 	enum {
-		IDWIDGETLIST_SCROLL = PG_WIDGETID_INTERNAL + 10
+		IDWIDGETLIST_VSCROLL = PG_WIDGETID_INTERNAL + 10, IDWIDGETLIST_HSCROLL
 	};
 
 	/**

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:05 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
     Status:           $State: Exp $
 */
 
@@ -261,6 +261,8 @@ public:
 	@return the current blend level
 	*/
 	Uint8 GetBlendLevel(STATE mode);
+
+	void SetSizeByText(int Width = 0, int Height = 0, const char *Text = NULL);
 
 	SignalButtonClick<> sigClick;
 

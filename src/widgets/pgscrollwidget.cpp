@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 15:56:22 $
+    Update Date:      $Date: 2004/03/23 19:06:58 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -50,14 +50,14 @@ my_scrollarea(NULL)
 	if (my_heightHorizontalScrollbar > r.my_height)
 		my_heightHorizontalScrollbar = r.my_height;
 
-	my_objVerticalScrollbar = new PG_ScrollBar(this, PG_Rect(0,0,my_widthScrollbar,r.h), PG_ScrollBar::VERTICAL, IDWIDGETLIST_SCROLL, style);
+	my_objVerticalScrollbar = new PG_ScrollBar(this, PG_Rect(0,0,my_widthScrollbar,r.h), PG_ScrollBar::VERTICAL, IDWIDGETLIST_VSCROLL, style);
 	my_objVerticalScrollbar->SetRange(0,0);
 	my_widthScrollbar = my_objVerticalScrollbar->Width();
 	my_objVerticalScrollbar->Hide();
 	my_objVerticalScrollbar->sigScrollPos.connect(slot(*this, &PG_ScrollWidget::handleScrollPos));
 	my_objVerticalScrollbar->sigScrollTrack.connect(slot(*this, &PG_ScrollWidget::handleScrollTrack));
 	
-	my_objHorizontalScrollbar = new PG_ScrollBar(this, PG_Rect(0,0,r.w, my_heightHorizontalScrollbar), PG_ScrollBar::HORIZONTAL, IDWIDGETLIST_SCROLL, style);
+	my_objHorizontalScrollbar = new PG_ScrollBar(this, PG_Rect(0,0,r.w, my_heightHorizontalScrollbar), PG_ScrollBar::HORIZONTAL, IDWIDGETLIST_HSCROLL, style);
 	my_objHorizontalScrollbar->SetRange(0,0);
 	my_heightHorizontalScrollbar = my_objHorizontalScrollbar->Height();
 	my_objHorizontalScrollbar->Hide();
