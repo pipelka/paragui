@@ -28,7 +28,7 @@ public:
 
 	operator SDL_Color();
 	
-	operator Uint32();
+	operator Uint32() const;
 	
 	inline Uint32 MapRGB(SDL_PixelFormat* format) const {
 		return SDL_MapRGB(format, r, g, b);

@@ -54,6 +54,6 @@ PG_Color::operator SDL_Color() {
 	return *this;
 }
 
-PG_Color::operator Uint32() {
+PG_Color::operator Uint32() const {
 	return (r << 16) | (g << 8) | b; 
 }

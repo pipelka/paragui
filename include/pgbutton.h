@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:20 $
+    Update Date:      $Date: 2003/11/24 10:43:23 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
     Status:           $State: Exp $
 */
 
@@ -183,7 +183,7 @@ public:
 
 		This member function set's the buttons gradient for a specific state.
 	*/
-	void SetGradient(STATE state, PG_Gradient& gradient);
+	void SetGradient(STATE state, const PG_Gradient& gradient);
 
 	/**
 		Set the background.
@@ -200,7 +200,7 @@ public:
 	@param b	borderindex 0 = upper-left / 1 = lower-right
 	@param color	border color (e.g. 0xRRGGBB)
 	*/
-	void SetBorderColor(int b, Uint32 color);
+	void SetBorderColor(int b, const PG_Color& color);
 
 	/**
 	Set icons for the button
@@ -211,7 +211,7 @@ public:
 
 	// new in 1.0.2 (file)
 	
-	bool SetIcon2(const char* filenameup, const char* filenamedown,  const char* filenameover, Uint32 colorkey);
+	bool SetIcon2(const char* filenameup, const char* filenamedown,  const char* filenameover, const PG_Color& colorkey);
 
 	bool SetIcon2(const char* filenameup, const char* filenamedown, const char* filenameover);
 
@@ -220,7 +220,7 @@ public:
 		
 	bool SetIcon(const char* filenameup, const char* filenamedown = NULL);
 
-	bool SetIcon(const char* filenameup, const char* filenamedown, Uint32 colorkey);
+	bool SetIcon(const char* filenameup, const char* filenamedown, const PG_Color& colorkey);
 
 
 	// new in 1.0.2 (surface)

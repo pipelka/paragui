@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2003/11/24 10:43:24 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -113,7 +113,7 @@ void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	const char* s = NULL;
 	PG_Theme* t = PG_Application::GetTheme();
 
-	PG_Color fontcolor;
+	PG_Color fontcolor = GetFontColor();
 	t->GetColor(widgettype, objectname, "textcolor", fontcolor);
 	SetFontColor(fontcolor);
 
@@ -176,19 +176,23 @@ void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	if(g) {
 		_mid->gradState[PRESSED] = *g;
 	}
-	
-	_mid->background[UNPRESSED] = t->FindSurface(widgettype, objectname, "background0");
+
+	SDL_Surface* background;
+	background = t->FindSurface(widgettype, objectname, "background0");
 	t->GetProperty(widgettype, objectname, "backmode0", _mid->backMode[UNPRESSED]);
+	SetBackground(UNPRESSED, background, _mid->backMode[UNPRESSED]);
 
-	_mid->background[HIGHLITED] = t->FindSurface(widgettype, objectname, "background1");
-	t->GetProperty(widgettype, objectname, "backmode1", _mid->backMode[HIGHLITED]);
+	background = t->FindSurface(widgettype, objectname, "background1");
+	t->GetProperty(widgettype, objectname, "backmode1", _mid->backMode[PRESSED]);
+	SetBackground(PRESSED, background, _mid->backMode[PRESSED]);
 
-	_mid->background[PRESSED] = t->FindSurface(widgettype, objectname, "background2");
-	t->GetProperty(widgettype, objectname, "backmode2", _mid->backMode[PRESSED]);
+	background = t->FindSurface(widgettype, objectname, "background2");
+	t->GetProperty(widgettype, objectname, "backmode2", _mid->backMode[HIGHLITED]);
+	SetBackground(HIGHLITED, background, _mid->backMode[HIGHLITED]);
 
 	t->GetProperty(widgettype, objectname, "blend0", _mid->backBlend[UNPRESSED]);
-	t->GetProperty(widgettype, objectname, "blend1", _mid->backBlend[HIGHLITED]);
-	t->GetProperty(widgettype, objectname, "blend2", _mid->backBlend[PRESSED]);
+	t->GetProperty(widgettype, objectname, "blend1", _mid->backBlend[PRESSED]);
+	t->GetProperty(widgettype, objectname, "blend2", _mid->backBlend[HIGHLITED]);
 
 	t->GetProperty(widgettype, objectname, "shift", _mid->my_pressShift);
 
@@ -213,10 +217,8 @@ void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	SizeWidget(Width(), Height());
 }
 
-void PG_Button::SetBorderColor(int b, Uint32 color) {
-	my_colorBorder[b][0].r = (color >> 16) & 0xFF;
-	my_colorBorder[b][0].g = (color >> 8) & 0xFF;
-	my_colorBorder[b][0].b = color & 0xFF;
+void PG_Button::SetBorderColor(int b, const PG_Color& color) {
+	my_colorBorder[b][0] = color;
 }
 
 /**  */
@@ -356,7 +358,7 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 }
 
 /**  */
-bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const char* filenameover, Uint32 colorkey) {
+bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const char* filenameover, const PG_Color& colorkey) {
 	if(!SetIcon2(filenameup, filenamedown, filenameover)) {
 		return false;
 	}
@@ -387,9 +389,9 @@ bool PG_Button::SetIcon2(const char* filenameup, const char* filenamedown, const
 
 	FreeIcons();
 
-	_mid->srf[UNPRESSED] = icon0;
-	_mid->srf[HIGHLITED] = icon1;
-	_mid->srf[PRESSED] = icon2;
+	_mid->srf_icon[UNPRESSED] = icon0;
+	_mid->srf_icon[HIGHLITED] = icon1;
+	_mid->srf_icon[PRESSED] = icon2;
 	_mid->free_icons = true;
 
 	Redraw();
@@ -402,7 +404,7 @@ bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown) {
 	return SetIcon2(filenameup, filenamedown, NULL);
 }
 
-bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, Uint32 colorkey) {
+bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, const PG_Color& colorkey) {
 	return SetIcon2(filenameup, filenamedown, NULL, colorkey);
 }
 
@@ -499,7 +501,7 @@ void PG_Button::eventButtonSurface(SDL_Surface** surface, STATE newstate, Uint16
 }
 
 /**  */
-void PG_Button::SetGradient(STATE state, PG_Gradient& gradient) {
+void PG_Button::SetGradient(STATE state, const PG_Gradient& gradient) {
 	_mid->gradState[state] = gradient;
 }
 
