@@ -188,16 +188,17 @@ int main(int argc, char *argv[])
 	app.LoadLayout("dblbuffer.xml");
 	app.SetCursor(app.GetTheme()->FindSurface("Pointer", "Pointer", "normal"));
 	app.ShowCursor(PG_Application::SOFTWARE);
+
 	// get a pointer to the "quit" button
-	PG_Button* btn = static_cast<PG_Button*>(app.GetWidgetByName("quit"));
+	PG_Button* btn = app.GetWidget<PG_Button>("quit");
 	btn->sigClick.connect(slot(handle_quit));
 
 	// get the checkbutton
-	PG_CheckButton* toggle = static_cast<PG_CheckButton*>(app.GetWidgetByName("toggle"));
+	PG_CheckButton* toggle = app.GetWidget<PG_CheckButton>("toggle");
 	toggle->sigClick.connect(slot(handle_toggle));
 
 	// get the label
-	PG_Label* fps = static_cast<PG_Label*>(app.GetWidgetByName("fps"));
+	PG_Label* fps = app.GetWidget<PG_Label>("fps");
 
 	screen = app.GetScreen();
 
