@@ -20,14 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/02 08:45:36 $
+    Update Date:      $Date: 2002/06/20 14:35:33 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
 #include "pglistboxbaseitem.h"
 #include "pglistbox.h"
+#include "pglog.h"
 
 PG_ListBoxBaseItem::PG_ListBoxBaseItem(int height, void* userdata) : PG_Label(NULL, PG_Rect(0,0,100,20), NULL) {
 	my_userdata = userdata;
