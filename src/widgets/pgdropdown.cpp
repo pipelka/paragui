@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/09/05 10:51:41 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.13 $
     Status:           $State: Exp $
 */
 
@@ -51,6 +51,7 @@ my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 
 	PG_Rect rlist(r.my_xpos, r.my_ypos + r.my_height +1, r.my_width, r.my_height /* * 5 */);
 	my_DropList = new PG_ListBox(NULL, rlist, style);
+	my_DropList->SetAutoResize(true, false);
 	//my_DropList->EnableScrollBar(false);
 	my_DropList->sigSelectItem.connect(slot(*this, &PG_DropDown::select_handler));
 

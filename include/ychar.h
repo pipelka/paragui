@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ychar.h,v 1.1.2.1 2004/06/26 08:05:22 braindead Exp $
+ * $Id: ychar.h,v 1.1.2.2 2004/09/05 10:51:41 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2004/06/26 08:05:22 $
+ *  $Date: 2004/09/05 10:51:41 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.1 $
+ *  $Revision: 1.1.2.2 $
  *  $Source: /sources/paragui/paragui/include/Attic/ychar.h,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -25,13 +25,17 @@
 #ifndef YCHAR_H
 #define YCHAR_H
 
+#ifdef WIN32
+#pragma warning(disable : 4290)
+#endif
+
 #include <stdexcept>
 #include <string>
 
 typedef unsigned int uint32;
 typedef unsigned char byte;
 
-class YChar {
+class DECLSPEC YChar {
 public:
   YChar();
   YChar(const uint32);

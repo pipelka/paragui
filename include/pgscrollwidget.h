@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/27 21:23:38 $
+    Update Date:      $Date: 2004/09/05 10:51:41 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -116,6 +116,13 @@ public:
 	Get y offset of current scroll position.
 	*/
 	Uint16 GetScrollPosY();
+
+	/**
+	Automatically adjusts the widget's size to the actual scroll area size;
+	@param bRemove adjusts size when removing a child
+	@param bAdd adjusts size when adding a child
+	*/
+	void SetAutoResize(bool bRemove, bool bAdd);
 
 protected:
 

@@ -20,22 +20,34 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/27 21:23:51 $
+    Update Date:      $Date: 2004/09/05 10:51:41 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollarea.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.10 $
+    CVS/RCS Revision: $Revision: 1.1.2.11 $
     Status:           $State: Exp $
 */
 
 #include "pgscrollarea.h"
+#include "pglog.h"
 
 PG_ScrollArea::PG_ScrollArea(PG_Widget* parent, const PG_Rect& r) : PG_Widget(parent, r),
-my_shiftx(false), my_shifty(false) {
+my_shiftx(false), my_shifty(false), my_AddResizeParent(false), my_RemoveResizeParent(false) {
 }
 
 PG_ScrollArea::~PG_ScrollArea() {
 }
 
 void PG_ScrollArea::ScrollTo(Uint16 x, Uint16 y) {
+	if (my_area.x == x && my_area.y == y)
+		return;
+
+	if(y > my_area.h - my_height) {
+		y = my_area.h - my_height;
+	}
+
+	if(x > my_area.w - my_width) {
+		x = my_area.w - my_width;
+	}
+
 	Sint32 dx = my_area.x - x;
 	Sint32 dy = my_area.y - y;
 
@@ -61,10 +73,18 @@ void PG_ScrollArea::AddChild(PG_Widget* child) {
 	if(child->x+child->w+my_area.x-my_xpos > my_area.w) {
 		my_area.w = child->x+child->w+my_area.x-my_xpos;
 		sigAreaChangedWidth(this, my_area.w);
+
+		if(my_AddResizeParent) {
+			GetParent()->SizeWidget(my_area.w, GetParent()->my_height);
+		}
 	}
 	if(child->y+child->h+my_area.y-my_ypos > my_area.h) {
 		my_area.h = child->y+child->h+my_area.y-my_ypos;
 		sigAreaChangedHeight(this, my_area.h);
+
+		if(my_AddResizeParent) {
+			GetParent()->SizeWidget(GetParent()->my_width, my_area.h);
+		}
 	}
 
 	if(IsVisible()) {
@@ -87,14 +107,6 @@ void PG_ScrollArea::ScrollToWidget(PG_Widget* widget, bool bVertical) {
 	else {
 		xpos = widget->x - my_xpos + my_area.x;
 		ypos = my_area.y;
-	}
-
-	if(ypos > my_area.h - my_height) {
-		ypos = my_area.h - my_height;
-	}
-
-	if(xpos > my_area.w - my_width) {
-		xpos = my_area.w - my_width;
 	}
 
 	ScrollTo(xpos, ypos);
@@ -141,11 +153,19 @@ bool PG_ScrollArea::RemoveChild(PG_Widget* child) {
 	if(w != my_area.w) {
 		my_area.w = w;
 		sigAreaChangedWidth(this, my_area.w);
+		
+		if(my_RemoveResizeParent) {
+			GetParent()->SizeWidget(my_area.w, GetParent()->my_height);
+		}
 	}
 
 	if(h != my_area.h) {
 		my_area.h = h;
 		sigAreaChangedHeight(this, my_area.h);
+
+		if(my_RemoveResizeParent) {
+			GetParent()->SizeWidget(GetParent()->my_width, my_area.h);
+		}
 	}
 
 	Update();
@@ -224,4 +244,13 @@ PG_Widget* PG_ScrollArea::GetFirstInList() {
 		return NULL;
 	}
 	return list->first();
+}
+
+void PG_ScrollArea::SetResizeParent(bool bRemove, bool bAdd) {
+	if(GetParent() == NULL) {
+		return;
+	}
+
+	my_RemoveResizeParent = bRemove;
+	my_AddResizeParent = bAdd;
 }

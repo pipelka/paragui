@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/26 08:03:47 $
+    Update Date:      $Date: 2004/09/05 10:51:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.16 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.17 $
     Status:           $State: Exp $
 */
 
@@ -531,7 +531,7 @@ public:
 	Set font color
 	@param	Color PG_Color class contains color information (RGB)
 	*/
-	void SetFontColor(const PG_Color& Color);
+	void SetFontColor(const PG_Color& Color, bool bRecursive = false);
 
 	/**
 	Set font transparency (!!!)
@@ -742,6 +742,8 @@ public:
 	*/
 	void SetModalStatus(int status);
 	
+	void EnableReceiver(bool enable, bool bRecursive = false);
+
 protected:
 
 	/**

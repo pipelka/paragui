@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/29 09:29:00 $
+    Update Date:      $Date: 2004/09/05 10:51:41 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.7 $
+    CVS/RCS Revision: $Revision: 1.1.2.8 $
     Status:           $State: Exp $
 */
 
@@ -238,6 +238,8 @@ void PG_ScrollWidget::EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection
 
 void PG_ScrollWidget::ScrollToWidget(PG_Widget* widget, bool bVertical) {
 	my_scrollarea->ScrollToWidget(widget, bVertical);
+	RecalcPositions(my_objVerticalScrollbar->IsVisible(), my_objHorizontalScrollbar->IsVisible());
+	CheckScrollBars();
 }
 
 Uint16 PG_ScrollWidget::GetListHeight() {
@@ -324,4 +326,8 @@ Uint16 PG_ScrollWidget::GetScrollPosX() {
 
 Uint16 PG_ScrollWidget::GetScrollPosY() {
 	return my_scrollarea->GetScrollPosY();
+}
+
+void PG_ScrollWidget::SetAutoResize(bool bRemove, bool bAdd) {
+	my_scrollarea->SetResizeParent(bRemove, bAdd);
 }

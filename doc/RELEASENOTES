@@ -35,6 +35,7 @@ Whats new in ParaGUI 1.1.8 ?
 - removed "using namespace std;" from header files
 - removed "using namespace std;" from all sources
 - removed Get / SetApplicationPath from PG_Application
+- only fade-in invisible widgets 
 
 - applied patches from Sebastian:
 - made PG_Application::RunEventLoop() virtual to make subclassing easier
@@ -75,6 +76,26 @@ Whats new in ParaGUI 1.1.8 ?
 - theme_priv.h: added some namespace std references to make VC happy
 - removed some unnecessary code
 - made PG_ScrollArea::DeleteAll call area change signals
+- added some doc updates
+- PG_Image: may choose drawing mode now
+- PG_LineEdit: made SetCursorPos() virtual for easier subclassing (-> e. g.
+  PG_MultiLineEdit)
+- PG_RadioButton: added GetFirstOfGroup() and GetNextOfGroup()
+- PG_RichEdit: fixed resizing
+- PG_ScrollArea:
+    * added method to have parent widget resized automatically 
+      (SetResizeParent(bool bRemove, bool bAdd))
+    * moved bounds checking from ScrollToWidget() to ScrollTo()
+      - PG_ScrollWidget:
+    * added SetAutoResize(bool bRemove, bool bAdd)
+    * made it update its scrollbars properly when calling ScrollToWidget()
+- PG_DropDown: resize automatically by default
+- PG_Widget:
+    * added param 'bRecursive' to SetFontColor()
+    * added EnableReceiver(bool enable, bool bRecursive)
+- paraconfig_win32.h: renamed macro UNICODE_ENABLED to ENABLE_UNICODE
+- disabled warning flood for VC++ 7.1 concerning YChar's exception implementation
+- added DECLSPEC to YChar's and YString's class declarations
 
 - applied patches from Ulf Lorenz:
 - commented PG_Draw::DrawTile

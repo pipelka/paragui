@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/08 17:35:41 $
+    Update Date:      $Date: 2004/09/05 10:51:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdraw.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -234,7 +234,7 @@ DECLSPEC SDL_Surface* CreateRGBSurface(Uint16 w, Uint16 h, int flags = SDL_SWSUR
 	@param r					the rectangle of the surface to draw in
 	@param gradient		pointer to a gradient structure (may be NULL)
 	@param background	pointer to a background surface (may be NULL)
-	@param bkmode		the mode how to fill in the background surface (BKMODE_TILE | BKMODE_STRETCH)
+	@param bkmode		the mode how to fill in the background surface (BKMODE_TILE | BKMODE_STRETCH | BKMODE_3TILEH | BKMODE_3TILEV | BKMODE_9TILE)
 	@param blend                the blend-level between gradient an background; the
                                 higher the blend level the more transparent the background is.
 

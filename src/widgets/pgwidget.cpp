@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/05/27 21:23:54 $
+   Update Date:      $Date: 2004/09/05 10:51:41 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.17 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.18 $
    Status:           $State: Exp $
  */
 
@@ -369,12 +369,34 @@ bool PG_Widget::MoveWidget(int x, int y, bool update) {
 	}
 
 	if(!PG_Application::GetBulkMode()) {
-		UpdateRect(vertical);
+		
+		// I'm experimenting with cairo - this change was needed to
+		// make rendering work as expected -- Alex
+
+		/*UpdateRect(vertical);
 		UpdateRect(horizontal);
 		UpdateRect(_mid->rectClip);
 		PG_Application::LockScreen();
 		SDL_Rect rects[3] = {_mid->rectClip, vertical, horizontal};
 		SDL_UpdateRects(screen, 3, rects);
+		PG_Application::UnlockScreen();*/
+		
+		int minx, maxx;
+		int miny, maxy;
+		minx = PG_MIN(vertical.x, horizontal.x);
+		minx = PG_MIN(minx, _mid->rectClip.x);
+		maxx = PG_MAX(vertical.x+vertical.w, horizontal.x+horizontal.w);
+		maxx = PG_MAX(maxx, _mid->rectClip.x+_mid->rectClip.w);
+
+		miny = PG_MIN(vertical.y, horizontal.y);
+		miny = PG_MIN(miny, _mid->rectClip.y);
+		maxy = PG_MAX(vertical.y+vertical.h, horizontal.y+horizontal.h);
+		maxy = PG_MAX(maxy, _mid->rectClip.y+_mid->rectClip.h);
+		
+		PG_Application::LockScreen();
+		PG_Rect rect(minx,miny,maxx-minx,maxy-miny);
+		UpdateRect(rect);
+		SDL_UpdateRects(screen, 1, &rect);
 		PG_Application::UnlockScreen();
 	}
 
@@ -572,6 +594,10 @@ void PG_Widget::SetVisible(bool visible) {
 
 /**  */
 void PG_Widget::Show(bool fade) {
+
+	if(fade && IsVisible() && !IsHidden()) {
+		fade = false;
+	}
 
 	if(GetParent() == NULL) {
 		widgetList.BringToFront(this);
@@ -1222,8 +1248,16 @@ void PG_Widget::SetTextFormat(const char* text, ...) {
 	va_end(ap);
 }
 
-void PG_Widget::SetFontColor(const PG_Color& Color) {
+void PG_Widget::SetFontColor(const PG_Color& Color, bool bRecursive) {
 	_mid->font->SetColor(Color);
+
+	if(!bRecursive || (GetChildList() == NULL)) {
+		return;
+	}
+
+	for(PG_Widget* i = GetChildList()->first(); i != NULL; i = i->next()) {
+		i->SetFontColor(Color, true);
+	}
 }
 
 void PG_Widget::SetFontAlpha(int Alpha, bool bRecursive) {
@@ -1774,4 +1808,16 @@ void PG_Widget::SetParent(PG_Widget* parent) {
 
 void PG_Widget::SetModalStatus(int status) {
 	_mid->modalstatus = status;
+}
+
+void PG_Widget::EnableReceiver(bool enable, bool bRecursive) {
+	PG_MessageObject::EnableReceiver(enable);
+
+	if(!bRecursive || (GetChildList() == NULL)) {
+		return;
+	}
+
+	for(PG_Widget* i = GetChildList()->first(); i != NULL; i = i->next()) {
+		i->EnableReceiver(enable, true);
+	}
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/09/05 10:51:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pgradiobutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -86,6 +86,17 @@ public:
 
 	/** */
 	void AddToGroup(PG_RadioButton* w);
+
+	/** Returns first radio button of the group*/
+	PG_RadioButton* GetFirstOfGroup() {
+		return my_groupFirst;
+	}
+
+
+	/** Returns next radio button in the group*/
+	PG_RadioButton* GetNextOfGroup() {
+		return my_groupNext;
+	}
 
 	SignalButtonClick<bool> sigClick;
 

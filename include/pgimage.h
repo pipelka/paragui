@@ -20,9 +20,9 @@
     pipelka@teleweb.at 
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2004/04/25 20:30:25 $ 
+    Update Date:      $Date: 2004/09/05 10:51:41 $ 
     Source File:      $Source: /sources/paragui/paragui/include/pgimage.h,v $ 
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $ 
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $ 
     Status:           $State: Exp $ 
 */
 
@@ -54,7 +54,7 @@ public:
 	@param style		widgetstyle to use
 
 	*/
-	PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, const char* style = "ThemeWidget");
+	PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, Uint8 drawmode = BKMODE_TILE, const char* style = "ThemeWidget");
 
 	/**
 	@short Contructor of the PG_Image class (image from surface)
@@ -67,7 +67,7 @@ public:
 	@param freeimage	if true the imagedata is handled by the widget
 	@param style		widgetstyle to use
 	*/
-	PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, const char* style = "ThemeWidget");
+	PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, Uint8 drawmode = BKMODE_TILE, const char* style = "ThemeWidget");
 
 	/**
 	@short Contructor of the PG_Image class (loading from file)
@@ -81,7 +81,7 @@ public:
 	@param style		widgetstyle to use
 
 	*/
-	PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, Uint32 colorkey, const char* style);
+	PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, Uint32 colorkey, Uint8 drawmode = BKMODE_TILE, const char* style = "ThemeWidget");
 
 	/**
 	@short Set the colorkey of the image
@@ -90,8 +90,26 @@ public:
 	*/
 	void SetColorKey(Uint32 key);
 	
+	/**
+	@ Set mode of drawing (BKMODE_TILE | BKMODE_STRETCH | BKMODE_3TILEH | BKMODE_3TILEV | BKMODE_9TILE)
+	*/
+	void SetDrawMode(Uint8 mode);
+
+	Uint8 GetDrawMode() {
+		return my_DrawMode;
+	};
+
+	bool LoadImage(const char* filename);
+	bool LoadImage(const char* filename, Uint32 key);
+	bool SetImage(SDL_Surface* image, bool bFreeImage = true);
+
+	~PG_Image();
+	
 protected:
 
+	Uint8 my_DrawMode;
+	SDL_Surface* my_cachedSrf;
+	
 	/** */
 	void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
 

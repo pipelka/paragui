@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/05/27 21:23:37 $
+   Update Date:      $Date: 2004/09/05 10:51:41 $
    Source File:      $Source: /sources/paragui/paragui/include/pgrichedit.h,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.7 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.8 $
    Status:           $State: Exp $
 */
 
@@ -105,6 +105,7 @@ public:
 protected:
 
 	void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);
+	void eventSizeWidget(Uint16 w, Uint16 h);
 
 	//void UpdateScrollBarsPos();
 

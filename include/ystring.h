@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ystring.h,v 1.1.2.1 2004/06/26 08:05:22 braindead Exp $
+ * $Id: ystring.h,v 1.1.2.2 2004/09/05 10:51:41 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2004/06/26 08:05:22 $
+ *  $Date: 2004/09/05 10:51:41 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.1 $
+ *  $Revision: 1.1.2.2 $
  *  $Source: /sources/paragui/paragui/include/Attic/ystring.h,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -31,7 +31,7 @@
 
 #include "ychar.h"
 
-class YString {
+class DECLSPEC YString {
 public:
   
   typedef YChar value_type;

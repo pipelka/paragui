@@ -28,6 +28,9 @@ noinst_PROGRAMS = \
 
 LFLAGS=$(SDL_LIBS) -L../src ../src/libparagui.la $(FREETYPE_LIBS)
 
+cairotest_SOURCES = cairotest.cpp
+cairotest_LDADD = $(LFLAGS) -lcairo -lpixman
+
 unicodetest_SOURCES = unicodetest.cpp
 unicodetest_LDADD = $(LFLAGS)
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/04/28 13:27:02 $
+    Update Date:      $Date: 2004/09/05 10:51:41 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.9 $
     Status:           $State: Exp $
 */
 
@@ -112,8 +112,8 @@ bool PG_RadioButton::eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetBut
 		if(my_widgetButton->button == 4) {		
 			while(list->my_groupNext != NULL) {
 				if(list->my_groupNext == this) {
-					mx = (Uint16)(list->my_xpos + ((my_widgetButton->x * 1.0 - list->my_xpos) / list->my_groupNext->my_width) * list->my_width);
-					my = (Uint16)list->my_ypos;
+					mx = (Uint16)(list->my_xpos + 0.5 + ((my_widgetButton->x * 1.0 - list->my_xpos) / list->my_groupNext->my_width) * list->my_width);
+					my = list->my_ypos + list->my_height / 2;
 					SDL_WarpMouse(mx, my);
 					break;
 				}
@@ -125,8 +125,8 @@ bool PG_RadioButton::eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetBut
 		if(my_widgetButton->button == 5) {		
 			do {				
 				if(list == this && list->my_groupNext != NULL) {
-					mx = (Uint16)(list->my_groupNext->my_xpos + ((my_widgetButton->x * 1.0 - list->my_groupNext->my_xpos) / list->my_width) * list->my_groupNext->my_width);
-					my = (Uint16)list->my_groupNext->my_ypos;
+					mx = (Uint16)(list->my_groupNext->my_xpos + 0.5 + ((my_widgetButton->x * 1.0 - list->my_groupNext->my_xpos) / list->my_width) * list->my_groupNext->my_width);
+					my = list->my_groupNext->my_ypos + list->my_groupNext->my_height / 2;
 					SDL_WarpMouse(mx, my);
 					break;
 				}

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/04/22 06:27:07 $
+    Update Date:      $Date: 2004/09/05 10:51:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.11 $
     Status:           $State: Exp $
 */
 
@@ -215,7 +215,7 @@ public:
 	@param r					the dimensions of the surface to create
 	@param gradient		pointer to a gradient structure (may be NULL)
 	@param background	pointer to a background surface (may be NULL)
-	@param bkmode		the mode how to fill in the background surface (BKMODE_TILE | BKMODE_STRETCH)
+	@param bkmode		the mode how to fill in the background surface (BKMODE_TILE | BKMODE_STRETCH | BKMODE_3TILEH | BKMODE_3TILEV | BKMODE_9TILE)
 	@param blend				the blend-level between gradient an background
 	@return 						the newly created surface
 

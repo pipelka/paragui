@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/06/29 09:29:00 $
+   Update Date:      $Date: 2004/09/05 10:51:41 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.11 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.12 $
    Status:           $State: Exp $
 */
 
@@ -684,4 +684,9 @@ bool PG_RichEdit::handleScrollTrack() {
 void PG_RichEdit::SetLineWidth(Uint16 lineWidth) {
 	my_LineWidth = lineWidth;
 	SetText(GetText());
+}
+
+void PG_RichEdit::eventSizeWidget(Uint16 w, Uint16 h) {
+	PG_ScrollWidget::eventSizeWidget(w, h);
+	SetLineWidth(w);
 }

@@ -33,3 +33,4 @@ layouttest
 navtest
 windowtest
 unicodetest
+cairotest

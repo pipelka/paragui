@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/04/21 06:53:58 $
+   Update Date:      $Date: 2004/09/05 10:51:41 $
    Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollarea.h,v $
-   CVS/RCS Revision: $Revision: 1.1.2.8 $
+   CVS/RCS Revision: $Revision: 1.1.2.9 $
    Status:           $State: Exp $
 */
 
@@ -139,11 +139,21 @@ public:
 
 	PG_Widget* GetFirstInList();
 	
+	/**
+	Automatically adjusts the parent's size to the actual scroll area size;
+	@param bRemove adjusts size when removing a child
+	@param bAdd adjusts size when adding a child
+	*/
+	void SetResizeParent(bool bRemove, bool bAdd);
+	
 protected:
 
 	PG_Rect my_area;
 	bool my_shiftx;
 	bool my_shifty;
+
+	bool my_AddResizeParent;
+	bool my_RemoveResizeParent;
 };
 
 #endif // PG_SCROLLAREA_H

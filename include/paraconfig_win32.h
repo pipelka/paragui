@@ -15,10 +15,10 @@
 #define PATH_MAX MAX_PATH
 #endif
 
-/* Define to 1 if UNICODE support is enabled */
-#define UNICODE_ENABLED
+/* Define if UNICODE support is enabled */
+//#define ENABLE_UNICODE
 
-/* Define if you the the SDL_image library */
+/* Define if you have the SDL_image library */
 #define HAVE_SDLIMAGE 1
 
 /* Define the default path to the theme files */
