@@ -828,7 +828,7 @@ int main(int argc, char **argv)
 
     printf("\n");
 
-    if (!PHYSFS_init("dummy"))
+    if (!PHYSFS_init(argv[0]))
     {
         printf("PHYSFS_init() failed!\n  reason: %s.\n", PHYSFS_getLastError());
         return(1);

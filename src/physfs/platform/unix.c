@@ -12,6 +12,10 @@
 
 #if (!defined __BEOS__) /* BeOS uses beos.cpp and posix.c ... */
 
+#if (defined WIN32) /* cygwin/mingw32? */
+#include "win32.c"  /* !!! FIXME: holy friggin' hack. */
+#else
+
 #if ((defined __APPLE__) && (defined __MACH__))
 #  if (!defined __DARWIN__)
 #    define __DARWIN__
@@ -87,15 +91,15 @@ char **__PHYSFS_platformDetectAvailableCDs(void)
 
         if (add_it)
         {
-            char **tmp = realloc(retval, sizeof (char *) * cd_count + 1);
+            char **tmp = realloc(retval, sizeof (char *) * (cd_count + 1));
             if (tmp)
             {
                 retval = tmp;
-                retval[cd_count-1] = (char *)
-                                malloc(strlen(mntbufp[ ii ].f_mntonname) + 1);
-                if (retval[cd_count-1])
+                retval[cd_count - 1] = (char *)
+                                malloc(strlen(mntbufp[ii].f_mntonname) + 1);
+                if (retval[cd_count - 1])
                 {
-                    strcpy(retval[cd_count-1], mntbufp[ ii ].f_mntonname);
+                    strcpy(retval[cd_count - 1], mntbufp[ii].f_mntonname);
                     cd_count++;
                 } /* if */
             } /* if */
@@ -133,14 +137,14 @@ char **__PHYSFS_platformDetectAvailableCDs(void)
 
         if (add_it)
         {
-            char **tmp = realloc(retval, sizeof (char *) * cd_count + 1);
+            char **tmp = realloc(retval, sizeof (char *) * (cd_count + 1));
             if (tmp)
             {
                 retval = tmp;
                 retval[cd_count-1] = (char *) malloc(strlen(ent->mnt_dir) + 1);
-                if (retval[cd_count-1])
+                if (retval[cd_count - 1])
                 {
-                    strcpy(retval[cd_count-1], ent->mnt_dir);
+                    strcpy(retval[cd_count - 1], ent->mnt_dir);
                     cd_count++;
                 } /* if */
             } /* if */
@@ -301,6 +305,8 @@ void __PHYSFS_platformReleaseMutex(void *mutex)
 {
     pthread_mutex_unlock((pthread_mutex_t *) mutex);
 } /* __PHYSFS_platformReleaseMutex */
+
+#endif /* win32 check. */
 
 #endif /* !defined __BEOS__ */
 
