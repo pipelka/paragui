@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 09:18:26 $
+    Update Date:      $Date: 2004/03/10 10:23:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.9 $
     Status:           $State: Exp $
 */
 
@@ -41,7 +41,11 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext
 	my_titlebar = new PG_ThemeWidget(this, PG_Rect(0, 0, my_width, my_heightTitlebar), style);
 	my_titlebar->EnableReceiver(false);
 
-	my_labelTitle = new PG_Label(my_titlebar, PG_Rect(my_heightTitlebar, 0, my_width - my_heightTitlebar*2, my_heightTitlebar), windowtext, style);
+	int w = my_width - my_heightTitlebar*2;
+	if(w < 0 ) {
+		w = 0;
+	}
+	my_labelTitle = new PG_Label(my_titlebar, PG_Rect(my_heightTitlebar, 0, w, my_heightTitlebar), windowtext, style);
 	my_labelTitle->SetAlignment(PG_Label::CENTER);
 
 	my_buttonClose = new PG_Button(my_titlebar);
@@ -65,13 +69,36 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext
 PG_Window::~PG_Window() {
 }
 
+void PG_Window::SetText(const char* text) {
+	my_labelTitle->SetText(text);
+}
+
 void PG_Window::SetTitle(const char* title, PG_Label::TextAlign alignment) {
 	my_labelTitle->SetAlignment(alignment);
-	my_labelTitle->SetText(title);
+	SetText(title);
+}
+
+const char* PG_Window::GetText() {
+	return my_labelTitle->GetText();
 }
 
 const char* PG_Window::GetTitle() {
-	return my_labelTitle->GetText();
+	return GetText();
+}
+
+void PG_Window::RecalcPositions() {
+	my_titlebar->SizeWidget(my_width, my_heightTitlebar);
+	int w = my_width - my_heightTitlebar*2;
+	if(w < 0) {
+		w = 0;
+	}
+	my_labelTitle->MoveWidget(PG_Rect(my_heightTitlebar, 0, w, my_heightTitlebar));
+	w = my_width - my_heightTitlebar;
+	if(w < 0) {
+		w = 0;
+	}
+	my_buttonClose->MoveWidget(PG_Rect(w, 0, my_heightTitlebar, my_heightTitlebar));
+	my_buttonMinimize->MoveWidget(PG_Rect(0, 0, my_heightTitlebar, my_heightTitlebar));
 }
 
 void PG_Window::LoadThemeStyle(const char* widgettype) {
@@ -82,8 +109,6 @@ void PG_Window::LoadThemeStyle(const char* widgettype) {
 	my_titlebar->LoadThemeStyle(widgettype, "Titlebar");
 
 	t->GetProperty(widgettype, "Titlebar", "height", my_heightTitlebar);
-	my_titlebar->SizeWidget(my_width, my_heightTitlebar);
-	my_labelTitle->MoveWidget(PG_Rect(my_heightTitlebar, 0, my_width - my_heightTitlebar*2, my_heightTitlebar));
 
 	PG_Color c = my_labelTitle->GetFontColor();
 	t->GetColor(widgettype, "Titlebar", "textcolor", c);
@@ -91,28 +116,28 @@ void PG_Window::LoadThemeStyle(const char* widgettype) {
 	
 	t->GetProperty(widgettype, "Titlebar", "showclosebutton", my_showCloseButton);
 	my_buttonClose->LoadThemeStyle(widgettype, "CloseButton");
-	my_buttonClose->MoveWidget(PG_Rect(my_width - my_heightTitlebar, 0, my_heightTitlebar, my_heightTitlebar));
-	if(my_showCloseButton) {
-		my_buttonClose->Show();
-	}
 
 	t->GetProperty(widgettype, "Titlebar", "showminimizebutton", my_showMinimizeButton);
 	my_buttonMinimize->LoadThemeStyle(widgettype, "MinimizeButton");
-	my_buttonMinimize->MoveWidget(PG_Rect(0, 0, my_heightTitlebar, my_heightTitlebar));
+
+	if(my_showCloseButton) {
+		my_buttonClose->Show();
+	}
 	if(my_showMinimizeButton) {
 		my_buttonMinimize->Show();
 	}
+	
+	RecalcPositions();
 }
 
 void PG_Window::eventSizeWidget(Uint16 w, Uint16 h) {
 
 	PG_ThemeWidget::eventSizeWidget(w, h);
 
-	my_titlebar->SizeWidget(w, my_heightTitlebar);
-	my_labelTitle->MoveWidget(PG_Rect(my_heightTitlebar, 0, w - my_heightTitlebar*2, my_heightTitlebar));
+	my_width = w;
+	my_height = h;
 
-	my_buttonClose->MoveWidget(PG_Rect(w - my_heightTitlebar, 0, my_heightTitlebar, my_heightTitlebar));
-	my_buttonMinimize->MoveWidget(PG_Rect(0, 0, my_heightTitlebar, my_heightTitlebar));
+	RecalcPositions();
 }
 
 void PG_Window::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {

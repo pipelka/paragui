@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 09:18:25 $
+    Update Date:      $Date: 2004/03/10 10:23:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -85,13 +85,17 @@ public:
 	*/
 	void SetTitle(const char* title, PG_Label::TextAlign alignment = PG_Label::CENTER);
 
+	void SetText(const char* text);
+	
 	/**
 	get window title
 	@return	pointer to the window title string
 	*/
 	const char* GetTitle();
 
-	/**
+	const char* GetText();
+
+/**
 	get window icon
 	@return pointer to the window's icon
 	*/
@@ -106,6 +110,8 @@ public:
 	SignalWindowRestore sigRestore;
 
 protected:
+
+	void RecalcPositions();
 
 	/** */
 	void eventShow();

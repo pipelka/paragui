@@ -50,7 +50,9 @@ libparaguiinclude_HEADERS = \
 	pgtimerobject.h \
 	pgsignals.h \
 	pgsigconvert.h \
-	pgscrollarea.h
+	pgscrollarea.h \
+	pgfactory.h \
+	pgsingleton.h
 
 EXTRA_DIST = \
 	paraconfig_win32.h \
