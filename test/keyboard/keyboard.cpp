@@ -96,8 +96,8 @@ void TKeyAlpha_LineEdit::Init(void)
 	int nSizeX = PG_Application::GetScreenWidth()/14;
 	int nSizeY = nSizeX;
 	int nOffsetX = nSizeX/2;
-try
-{
+
+PG_TRY {
 	pKeyboardSpace = new PG_Label(NULL,PG_Rect(30,30,nSizeX*12,nSizeY*6),"");
 	/*
 		Keyboard layout:
@@ -165,9 +165,10 @@ try
 	Buttons[41] = new PG_Button(pKeyboardSpace,BTN_ID_CONFIRM,PG_Rect(nSizeX*8,nSizeY*5,nSizeX,nSizeY),"ok");
 	Buttons[42] = new PG_Button(pKeyboardSpace,BTN_ID_ESCAPE,PG_Rect(nSizeX*9,nSizeY*5,nSizeX,nSizeY),"exit");
 }
-catch(int)
-{
+
+PG_CATCH_ALL {
 }
+
 	// registers callback
 	for (int i = 0; i <= 42; i++)
 		Buttons[i]->SetEventObject(MSG_BUTTONCLICK,(PG_EventObject*)this,(MSG_CALLBACK_OBJ)&TKeyAlpha_LineEdit::SendKey,this);
@@ -185,8 +186,8 @@ void TKeyNum_LineEdit::Init(void)
 {
 	int nSizeY = PG_Application::GetScreenHeight()/9;
 	int nSizeX = nSizeY;
-try
-{	
+
+PG_TRY {	
 	pKeyboardSpace = new PG_Label(NULL,PG_Rect(30,30,nSizeX*5,nSizeY*5),"");
 	/*
 		Keyboard layout:
@@ -218,8 +219,8 @@ try
 	Buttons[11] = new PG_Button(pKeyboardSpace,11,PG_Rect(nSizeX*2,nSizeY*4,nSizeX,nSizeY),"-");
 	Buttons[15] = new PG_Button(pKeyboardSpace,BTN_ID_CONFIRM,PG_Rect(nSizeX*3,nSizeY*4,nSizeX,nSizeY),"ok");
 }
-catch(int)
-{
+
+PG_CATCH_ALL {
 }	
 	// registers callback
 	for (int i = 0; i <= 15; i++)
