@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 14:53:56 $
+    Update Date:      $Date: 2002/04/16 07:43:30 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgnavigator.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -164,7 +164,7 @@ PG_Widget* PG_Navigator::FindWidget(PG_Widget* from, PG_Point ref, bool absx, bo
 			continue;
 		}
 
-		double l = sqrt(dx*dx + dy*dy);
+		double l = sqrt((double)(dx*dx + dy*dy));
 		if( ((xmode != 0) && (dx != 0)) || ((ymode != 0) && (dy != 0)) ) {
 			if(l < min_l) {
 				min_l = l;
