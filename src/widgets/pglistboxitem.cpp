@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2005/02/15 09:23:09 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5.4.1.2.10 $
+    CVS/RCS Revision: $Revision: 1.5.4.1.2.11 $
     Status:           $State: Exp $
 */
 
@@ -34,6 +34,10 @@
 #include "propstrings_priv.h"
 
 PG_ListBoxItem::PG_ListBoxItem(PG_Widget* parent, int height, const std::string& text, SDL_Surface* icon, void* userdata, const std::string& style) : PG_ListBoxBaseItem(parent, height, userdata) {
+	my_srfHover = NULL;
+	my_srfSelected = NULL;
+	
+	my_srfIcon = icon;
 	
 	for(int i=0; i<3; i++) {
 		my_background[i] = NULL;
@@ -45,10 +49,6 @@ PG_ListBoxItem::PG_ListBoxItem(PG_Widget* parent, int height, const std::string&
 	SetText(text);
 	LoadThemeStyle(style, PG_PropStr::ListBoxItem);
 
-	my_srfHover = NULL;
-	my_srfSelected = NULL;
-	
-	my_srfIcon = icon;
 }
 
 PG_ListBoxItem::~PG_ListBoxItem() {

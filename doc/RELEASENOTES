@@ -34,6 +34,7 @@ Whats new in ParaGUI 1.1.9 ?
 - bumped version to 1.1.9
 - fixed a problem in PG_TimerObject (Thanks Ulf)
 - made PG_Widget::Show/Hide methods virtual
+- fixed uninitialized values in PG_ListBoxItem
 
 - applied patches from Sebastian:
 - PG_ListBox: fixed GetSelectedIndex()
