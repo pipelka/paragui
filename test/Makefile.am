@@ -34,6 +34,7 @@ INCLUDES = $(PARAGUI_CFLAGS)
 $(PACKAGE)-$(VERSION).tar.gz: dist
 
 EXTRA_DIST = \
+	dblbuffer.xml \
 	pokus.xml \
 	icon.bmp
 
