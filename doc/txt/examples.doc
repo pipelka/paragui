@@ -11,5 +11,5 @@ without the built-in eventloop (using a custom one).
 
 /**
 \example sigc.cpp
-Demonstrates multiple inhaeritance of SigC::Object classes
+Demonstrates multiple inheritance of SigC::Object classes
 */
