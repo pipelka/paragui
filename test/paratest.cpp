@@ -341,12 +341,11 @@ int main(int argc, char* argv[]) {
 	wnd1.SetName("WindowTwo");
 	wnd1.SetID(101);
 	
-	//PG_Draw::DrawLine(0,0, app.GetScreenWidth()-1, app.GetScreenHeight()-1, color,1, app.GetScreen());
-	
 	// create 2 radiobutton groups
 	PG_RadioButton radio1(NULL, 1, PG_Rect(50,0,200,25), "RadioButton 1");
 	PG_RadioButton radio2(NULL, 2, PG_Rect(50,25,200,25), "RadioButton 2", &radio1);
 	PG_RadioButton radio3(NULL, 3, PG_Rect(50,50,200,25), "RadioButton 3", &radio1);
+	radio1.SetAlignment(PG_TA_RIGHT);
 	
 	PG_RadioButton radio4(NULL, 4, PG_Rect(50,90,200,25), "RadioButton 4");
 	PG_RadioButton radio5(NULL, 5, PG_Rect(50,115,200,25), "RadioButton 5", &radio4);

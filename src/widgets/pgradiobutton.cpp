@@ -20,15 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/06/10 16:44:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
-#include "pgradiobutton.h"
-#include "pgtheme.h"
 #include <stdarg.h>
+#include "pgradiobutton.h"
 
 PG_RadioButton::PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, const char* text, PG_RadioButton* firstOfGroup, const char* style) : PG_ThemeWidget(parent, r) {
 	PG_Rect rectButton;
@@ -52,8 +51,7 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, cons
 	my_widgetButton = new PG_Button(this, 1, rectButton);
 	my_widgetButton->SetToggle(true);
 	my_widgetButton->EnableReceiver(false);
-	my_widgetButton->sigButtonClick.connect(slot(this, &PG_RadioButton::handleButtonClick));
-	
+
 	rectLabel.SetRect(rectButton.my_width, 0, r.my_width - rectButton.my_width, r.my_height);
 	my_widgetLabel = new PG_Label(this, rectLabel, text, style);
 	my_widgetLabel->SetAlignment(PG_TA_LEFT);
@@ -112,7 +110,7 @@ bool PG_RadioButton::eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetBut
 	return true;
 }
 
-bool PG_RadioButton::handleButtonClick(PG_Button* widget, PG_Pointer* data) {
+bool PG_RadioButton::eventButtonClick(int id, PG_Widget* widget) {
 
 	if(widget == my_widgetButton) {
 		SetPressed();
@@ -140,8 +138,9 @@ void PG_RadioButton::SetPressed() {
 	my_isPressed = true;
 
 	Update();
-	
-	sigButtonClick(this);
+
+	// Notify parent
+	SendMessage(GetParent(), MSG_BUTTONCLICK, (MSG_ID)GetID(), (MSG_DATA)1);
 }
 
 bool PG_RadioButton::GetPressed() {
@@ -170,13 +169,10 @@ void PG_RadioButton::SetText(const char* text) {
 	my_widgetLabel->Redraw();
 }
 
-/*void PG_RadioButton::SetTextFormat(const char* text, ...) {
-	va_list ap;
-	va_start(ap, text);
-
-	my_widgetLabel->SetTextFormat(text, ap);
-}*/
-
 const char* PG_RadioButton::GetText() {
 	return my_widgetLabel->GetText();
+}
+
+void PG_RadioButton::SetAlignment(int a) {
+	my_widgetLabel->SetAlignment(a);
 }

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/06/10 12:15:42 $
+   Update Date:      $Date: 2002/06/10 16:44:06 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.5 $
+   CVS/RCS Revision: $Revision: 1.4.4.6 $
    Status:           $State: Exp $
  */
 
@@ -55,8 +55,6 @@ struct PG_WidgetDataInternal{
 	
 	PG_Widget* widgetParent;
 	PG_RectList* childList;
-
-	SDL_mutex* mutexProcess;
 
 	char* userdata;
 	int userdatasize;
@@ -146,7 +144,6 @@ void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
 	my_colorBorder[1][1].g = 134;
 	my_colorBorder[1][1].b = 134;
 
-	my_internaldata->mutexProcess = SDL_CreateMutex();
 	my_internaldata->id = -1;
 	my_internaldata->transparency = 0;
 	my_internaldata->quitModalLoop = false;
@@ -218,9 +215,6 @@ PG_Widget::~PG_Widget() {
 	}
     
 	RemoveFromWidgetList();
-
-	// unlock process mutex
-	SDL_DestroyMutex(my_internaldata->mutexProcess);
 
 	// remove childlist
 	delete my_internaldata->childList;
@@ -517,8 +511,6 @@ bool PG_Widget::SizeWidget(Uint16 w, Uint16 h) {
 /**  */
 bool PG_Widget::ProcessEvent(const SDL_Event * event, bool bModal) {
 
-	SDL_mutexP(my_internaldata->mutexProcess);
-
 	bool processed = false;
 	// do i have a capturehook set ? (modal)
 	if(bModal) {
@@ -534,7 +526,6 @@ bool PG_Widget::ProcessEvent(const SDL_Event * event, bool bModal) {
 		}
 
 		if(processed) {
-			SDL_mutexV(my_internaldata->mutexProcess);
 			return processed;
 		}
     }
@@ -542,12 +533,10 @@ bool PG_Widget::ProcessEvent(const SDL_Event * event, bool bModal) {
 	// let me see if i can process it myself
 
 	if(PG_MessageObject::ProcessEvent(event)) {
-		SDL_mutexV(my_internaldata->mutexProcess);
 		return true;
 	}
 
 	if(bModal) {
-		SDL_mutexV(my_internaldata->mutexProcess);
 		return processed;
 	}
 
@@ -555,12 +544,9 @@ bool PG_Widget::ProcessEvent(const SDL_Event * event, bool bModal) {
 
 	if(GetParent()) {
 		if(GetParent()->ProcessEvent(event)) {
-			SDL_mutexV(my_internaldata->mutexProcess);
 			return true;
 		}
 	}
-
-	SDL_mutexV(my_internaldata->mutexProcess);
 
 	return false;
 }

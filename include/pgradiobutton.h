@@ -20,14 +20,22 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/06/10 16:44:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgradiobutton.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_RADIOBUTTON_H
 #define PG_RADIOBUTTON_H
+
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgradiobutton
+%{
+#include "pgradiobutton.h"
+%}
+#endif
 
 #include "pgthemewidget.h"
 #include "pgbutton.h"
@@ -65,14 +73,15 @@ public:
 	/** */
 	void SetPressed();
 
+	/** Sets text alignment */
+	void SetAlignment(int a);
+
 	/** */
 	void SetText(const char* text);
 
 	/** */
 	const char* GetText();
 
-	PG_SignalRadioButtonClick sigButtonClick;
-	
 protected:
 
 	/** */
@@ -91,7 +100,7 @@ protected:
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
 
 	/** */
-	virtual bool handleButtonClick(PG_Button* widget, PG_Pointer* data);
+	bool eventButtonClick(int id, PG_Widget* widget);
 
 	PG_RadioButton* my_groupFirst;
 	PG_RadioButton* my_groupNext;
@@ -101,9 +110,11 @@ protected:
 	bool my_isPressed;
 
 private:
+#ifndef SWIG
 
 	PG_RadioButton(const PG_RadioButton&);
 	PG_RadioButton& operator=(const PG_RadioButton&);
+#endif
 
 	bool my_storeMarker;
 	Uint8 my_hoverTransparency;

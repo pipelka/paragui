@@ -4,8 +4,20 @@
 #include "pglistboxitem.h"
 
 PARAGUI_CALLBACK(handleListBoxItem) {
+	static int counter = 1;
+	char text[20];
+	
 	PG_ListBoxItem* item = reinterpret_cast<PG_ListBoxItem*>(data);
-	delete item;
+	PG_ListBox* list = item->GetParent();
+	
+	list->DeleteAll();
+	
+	for(int i=0; i<10; i++) {
+		sprintf(text,"NewItem %i", counter++);
+		list->AddItem(new PG_ListBoxItem(25, text));
+	}
+
+	list->Update();	
 	return true;
 }
 
