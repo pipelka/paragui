@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/04/18 18:27:26 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/surface.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
     Status:           $State: Exp $
 */
 
@@ -316,7 +316,7 @@ static void Draw9Tile(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint
 
 }
 
-void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradient* gradient,SDL_Surface* background, int bkmode, Uint8 blend) {
+void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradient* gradient,SDL_Surface* background, BkMode bkmode, Uint8 blend) {
 	static PG_Rect srcrect;
 	static PG_Rect dstrect;
 	//int x,y;
@@ -371,7 +371,7 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 		// BKMODE_TILE
 		//
 
-		case BKMODE_TILE:
+		case TILE:
 			DrawTileSurface(background, r, surface, blend);
 			break;
 
@@ -379,7 +379,7 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 		// BKMODE_STRETCH
 		//
 
-		case BKMODE_STRETCH:
+		case STRETCH:
 			// stretch the background to fit the surface
 
 			// Scale the background to fit this widget, using
@@ -404,7 +404,7 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 		// BKMODE_3TILEH
 		//
 
-		case BKMODE_3TILEH:
+		case TILE3H:
 			Draw3TileH(background, r, surface, blend);
 			break;
 
@@ -412,7 +412,7 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 		// BKMODE_3TILEV
 		//
 
-		case BKMODE_3TILEV:
+		case TILE3V:
 			Draw3TileV(background, r, surface, blend);
 			break;
 
@@ -420,7 +420,7 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 		// BKMODE_9TILE
 		//
 
-		case BKMODE_9TILE:
+		case TILE9:
 			Draw9Tile(background, r, surface, blend);
 			break;
 

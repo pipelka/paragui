@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -81,7 +81,7 @@ public:
 	 * @todo better separator code
 	 * @todo icon drawing
 	 */
-	class MenuItem : public PG_Rect, public PG_MessageObject {
+	class DECLSPEC MenuItem : public PG_Rect, public PG_MessageObject {
 	public: // types
 		enum MI_FLAGS {
 			MIF_NONE = 0,
@@ -315,7 +315,7 @@ private: // data
 
 	PG_Gradient          *miGradients[3];
 	SDL_Surface          *miBackgrounds[3];
-	int                   miBkModes[3];
+	PG_Draw::BkMode		  miBkModes[3];
 	Uint8                 miBlends[3];
 	int                   itemHeight;
 	int                   lastH;

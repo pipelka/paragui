@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:38 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsurfacecache.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -35,6 +35,7 @@
 
 #include "paragui.h"
 #include "pgcolor.h"
+#include "pgdraw.h"
 #include <string>
 
 typedef struct {
@@ -77,7 +78,7 @@ public:
       */
 	void CreateKey(std::string &key, Uint16 w, Uint16 h,
 	               PG_Gradient* gradient, SDL_Surface* background,
-	               Sint8 bkmode, Uint8 blend);
+	               PG_Draw::BkMode bkmode, Uint8 blend);
 
     /** Find the surface to a given key .
 

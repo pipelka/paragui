@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 10:59:33 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.15 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.16 $
     Status:           $State: Exp $
 */
 
@@ -32,11 +32,8 @@
 #include "pgbutton.h" 
 
 PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const std::string& windowtext, WindowFlags flags, const std::string& style, int heightTitlebar) 
-: PG_ThemeWidget(parent, r), my_moveable(true) {
-	my_moveMode = false;
-	my_heightTitlebar = heightTitlebar;
-	my_showCloseButton = flags & PG_Window::SHOW_CLOSE;
-	my_showMinimizeButton = flags & PG_Window::SHOW_MINIMIZE;
+: PG_ThemeWidget(parent, r), my_heightTitlebar(heightTitlebar), my_moveMode(false), 
+	my_showCloseButton(flags & PG_Window::SHOW_CLOSE), my_showMinimizeButton(flags & PG_Window::SHOW_MINIMIZE), my_moveable(true) {
 
 	my_titlebar = new PG_ThemeWidget(this, PG_Rect(0, 0, my_width, my_heightTitlebar), style);
 	my_titlebar->EnableReceiver(false);

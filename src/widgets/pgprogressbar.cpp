@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgprogressbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -58,7 +58,7 @@ PG_ProgressBar::PG_ProgressBar(PG_Widget* parent, const PG_Rect& r, const std::s
 	my_pbGradient.colors[3].b = 0xFF;
 
 	my_pbBackground = NULL;
-	my_pbBackmode = BKMODE_TILE;
+	my_pbBackmode = PG_Draw::TILE;
 	my_pbBlend = 255;
 	my_bordersize = 1;
 

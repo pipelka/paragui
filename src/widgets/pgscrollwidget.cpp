@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 16:05:50 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.11 $
+    CVS/RCS Revision: $Revision: 1.1.2.12 $
     Status:           $State: Exp $
 */
 
@@ -227,13 +227,13 @@ void PG_ScrollWidget::EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection
 	} else if (direction == PG_ScrollBar::HORIZONTAL) {
 		my_enableHorizontalScrollbar = enable;
 	}
-	RecalcPositions(my_objVerticalScrollbar->IsVisible(), my_objHorizontalScrollbar->IsVisible());
+	RecalcPositions(my_objVerticalScrollbar->IsNull(), my_objHorizontalScrollbar->IsNull());
 	CheckScrollBars();
 }
 
 void PG_ScrollWidget::ScrollToWidget(PG_Widget* widget, bool bVertical) {
 	my_scrollarea->ScrollToWidget(widget, bVertical);
-	RecalcPositions(my_objVerticalScrollbar->IsVisible(), my_objHorizontalScrollbar->IsVisible());
+	RecalcPositions(!my_objVerticalScrollbar->IsNull(), !my_objHorizontalScrollbar->IsNull());
 	CheckScrollBars();
 }
 
@@ -251,12 +251,12 @@ Uint16 PG_ScrollWidget::GetWidgetCount() {
 
 bool PG_ScrollWidget::handleAreaChangedHeight(PG_ScrollArea* area, Uint16 h) {
 	if(h > my_scrollarea->h && my_enableVerticalScrollbar) {
-		RecalcPositions(true, my_objHorizontalScrollbar->IsVisible());
+		RecalcPositions(true, !my_objHorizontalScrollbar->IsNull());
 		my_objVerticalScrollbar->Show();
 	}
 	else {
 		my_objVerticalScrollbar->Hide();
-		RecalcPositions(false, my_objHorizontalScrollbar->IsVisible());
+		RecalcPositions(false, !my_objHorizontalScrollbar->IsNull());
 	}
 
 	Sint32 max_y = my_scrollarea->GetAreaHeight() - my_scrollarea->GetScrollPosY();
@@ -274,12 +274,12 @@ bool PG_ScrollWidget::handleAreaChangedHeight(PG_ScrollArea* area, Uint16 h) {
 
 bool PG_ScrollWidget::handleAreaChangedWidth(PG_ScrollArea* area, Uint16 w) {
 	if(w > my_scrollarea->w && my_enableHorizontalScrollbar) {
-		RecalcPositions(my_objVerticalScrollbar->IsVisible(), true);
+		RecalcPositions(!my_objVerticalScrollbar->IsNull(), true);
 		my_objHorizontalScrollbar->Show();
 	}
 	else {
 		my_objHorizontalScrollbar->Hide();
-		RecalcPositions(my_objVerticalScrollbar->IsVisible(), false);
+		RecalcPositions(!my_objVerticalScrollbar->IsNull(), false);
 	}
 
 	Sint32 max_x = my_scrollarea->GetAreaWidth() - my_scrollarea->GetScrollPosX();
@@ -301,6 +301,8 @@ PG_Widget* PG_ScrollWidget::GetFirstInList() {
 
 void PG_ScrollWidget::ScrollTo(Uint16 x, Uint16 y) {
 	my_scrollarea->ScrollTo(x, y);
+	RecalcPositions(!my_objVerticalScrollbar->IsNull(), !my_objHorizontalScrollbar->IsNull());
+	CheckScrollBars();
 }
 
 void PG_ScrollWidget::DeleteAll() {

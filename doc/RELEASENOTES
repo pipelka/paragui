@@ -35,6 +35,31 @@ Whats new in ParaGUI 1.1.9 ?
 - bumped version to 1.1.9
 - fixed a problem in PG_TimerObject (Thanks Ulf)
 
+- applied patches from Sebastian:
+- PG_ListBox: fixed GetSelectedIndex()
+- PG_Widget:
+    * added signals sigMouseEnter and sigMouseLeave
+    * made SetChildTransparency() call SetTransparency() recursively
+- PG_MultiLineEdit:
+    * improved text clipping
+    * fixed clipping of highlighted area
+    * draw code improvements
+    * code clean-up
+- PG_Application:
+    * clean up of ShutDown()
+    * removal of redundant VC++ stuff
+- replaced some Win32 macros with _MSC_VER
+- re-enabled and fixed some VC++ specific warnings
+- moved some member initializations of ParaGUI classes to constructor lists
+- added some doc updates
+- PG_Image: general clean up
+- PG_ScrollWidget: a problem when applying changes - while PG_ScrollWidget is hidden (like resizing, scrolling) - has been fixed
+- fixed both ParaGUI DLL export (thanks "Chris"!) and import
+- PG_RichEdit: fixed text clipping regarding vertical scroll bar
+- defined HAVE_STRDUP macro for VC++
+- PG_PopupMenu: added DLL interface for nested class MenuItem
+- replaced BKMODE_X macros with enum PG_Draw::BkMode to avoid some ambiguities (and to make it more C++ like ;))
+
 
 ----------------------------
 Whats new in ParaGUI 1.1.8 ?

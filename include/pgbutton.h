@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.16 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.17 $
     Status:           $State: Exp $
 */
 
@@ -188,7 +188,7 @@ public:
 
 		This member function set's the buttons background and tiling mode for a specific state.
 	*/
-	void SetBackground(STATE state, SDL_Surface* background, int mode = BKMODE_TILE);
+	void SetBackground(STATE state, SDL_Surface* background, PG_Draw::BkMode mode = PG_Draw::TILE);
 
 	/**
 	Set the color of the border

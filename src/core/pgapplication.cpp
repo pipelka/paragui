@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 22:44:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.20 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.21 $
     Status:           $State: Exp $
 */
 
@@ -67,7 +67,7 @@ PG_Font* PG_Application::DefaultFont = NULL;
 SDL_Surface* PG_Application::my_background = NULL;
 SDL_Surface* PG_Application::my_scaled_background = NULL;
 PG_Color PG_Application::my_backcolor;
-int PG_Application::my_backmode = BKMODE_TILE;
+PG_Draw::BkMode PG_Application::my_backmode = PG_Draw::TILE;
 bool PG_Application::disableDirtyUpdates = false;
 //bool PG_Application::my_quitEventLoop = false;
 
@@ -81,7 +81,8 @@ void PARAGUI_ShutDownCode() {
 }
 
 
-PG_Application::PG_Application() {
+PG_Application::PG_Application() 
+: my_quitEventLoop(false), emergencyQuit(false), enableAppIdleCalls(false) {
 
 	// set UTF8 encoding if UNICODE support is enabled
 	// we use the "C" locale because it's hard to get the current locale setting
@@ -90,10 +91,6 @@ PG_Application::PG_Application() {
 #ifdef ENABLE_UNICODE
 	setlocale(LC_CTYPE, "C.UTF-8");
 #endif
-
-	my_quitEventLoop = false;
-	emergencyQuit = false;
-	enableAppIdleCalls = false;
 
 	if(pGlobalApp != NULL) {
 		PG_LogWRN("PG_Application Object already exists !");
@@ -126,7 +123,7 @@ PG_Application::PG_Application() {
 	mutexScreen = SDL_CreateMutex();
 	my_background = NULL;
 	my_freeBackground = false;
-	my_backmode = BKMODE_TILE;
+	my_backmode = PG_Draw::TILE;
 	
 	// add our base dir to the searchpath
 	AddArchive(GetBaseDir());
@@ -436,7 +433,7 @@ SDL_Surface* PG_Application::SetScreen(SDL_Surface* surf) {
 }
 
 /**  */
-bool PG_Application::SetBackground(const std::string& filename, int mode) {
+bool PG_Application::SetBackground(const std::string& filename, PG_Draw::BkMode mode) {
 	if (filename.empty()) {
 		return false;
 	}
@@ -467,7 +464,7 @@ bool PG_Application::SetBackground(const std::string& filename, int mode) {
 }
 
 /**  */
-bool PG_Application::SetBackground(SDL_Surface* surface, int mode) {
+bool PG_Application::SetBackground(SDL_Surface* surface, PG_Draw::BkMode mode) {
 	if(surface == NULL)
 		return false;
 
@@ -501,7 +498,7 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 		SDL_FillRect(screen, (SDL_Rect*)&fillrect, my_backcolor.MapRGB(screen->format));
 		return;
 	}
-	if(my_backmode == BKMODE_STRETCH &&
+	if(my_backmode == PG_Draw::STRETCH &&
 	   (my_background->w != screen->w ||
 	    my_background->h != screen->h)) {
 		if(my_scaled_background && 
@@ -738,13 +735,13 @@ void PG_Application::Shutdown() {
 	//vector<PG_MessageObject*>::iterator list = objectList.begin();
 	PG_Widget* list = PG_Widget::GetWidgetList()->first();
 
-	while(list != NULL) {
-
 		PG_Widget* o = list;
-		list = list->next();
 
-		PG_Widget::GetWidgetList()->Remove(o);
+	while(o != NULL) {
+		list = list->next();
+		//PG_Widget::GetWidgetList()->Remove(o);	
 		delete o;
+		o = list;
 	}
 
 	// unload theme (and free the allocated mem)
@@ -1007,18 +1004,6 @@ void PG_Application::DeleteBackground() {
 	my_background = 0;
 }
 
-#ifdef WIN32
-bool PG_Application::LockScreen() {
-	return (SDL_mutexP(mutexScreen) == 0);
-}
-#endif
-
-#ifdef WIN32
-bool PG_Application::UnlockScreen() {
-	return (SDL_mutexV(mutexScreen) == 0);
-}
-#endif
-
 void PG_Application::DisableDirtyUpdates(bool disable) {
 	disableDirtyUpdates = disable;
 }
@@ -1040,12 +1025,6 @@ void PG_Application::FlushEventQueue() {
 		}*/
 	}
 }
-
-#ifdef WIN32
-SDL_Surface* PG_Application::GetScreen() {
-	return screen;
-}
-#endif
 
 void PG_Application::eventIdle() {
 	sigAppIdle(this);

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/11/30 17:48:57 $
+   Update Date:      $Date: 2004/12/01 11:28:22 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.24 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.25 $
    Status:           $State: Exp $
  */
 
@@ -50,7 +50,7 @@ public:
 	PG_WidgetDataInternal() : modalstatus(0), inDestruct(false), inMouseLeave(false), font(NULL), dirtyUpdate(false), id(-1),
 	transparency(0), quitModalLoop(false), visible(false), hidden(false), firstredraw(true),
 	childList(NULL), haveTooltip(false), fadeSteps(10), mouseInside(false), userdata(NULL),
-	userdatasize(0), widthText(TXT_HEIGHT_UNDEF), heightText(TXT_HEIGHT_UNDEF) {};
+	userdatasize(0), widthText(TXT_HEIGHT_UNDEF), heightText(TXT_HEIGHT_UNDEF), widgetParent(NULL) {};
 
 	int modalstatus;
 	bool inDestruct;
@@ -81,11 +81,8 @@ public:
 };
 
 PG_Widget::PG_Widget(PG_Widget* parent, const PG_Rect& rect, bool bObjectSurface) :
-PG_Rect(rect), my_srfObject(NULL) {
+PG_Rect(rect), my_srfObject(NULL), _mid(new PG_WidgetDataInternal) {
 
-	_mid = new PG_WidgetDataInternal;
-	
-	_mid->widgetParent = NULL;
 	_mid->havesurface = bObjectSurface;
 
 	//Set default font
@@ -254,7 +251,9 @@ bool PG_Widget::AcceptEvent(const SDL_Event * event) {
 
 
 /**  */
-void PG_Widget::eventMouseEnter() {}
+void PG_Widget::eventMouseEnter() {
+	sigMouseEnter();
+}
 
 
 /**  */
@@ -265,6 +264,7 @@ void PG_Widget::eventMouseLeave() {
 		GetParent()->eventMouseLeave();
 	}
 
+	sigMouseLeave();
 	/*if(GetParent()) {
 		GetParent()->eventMouseLeave();
 	}*/
@@ -519,12 +519,9 @@ bool PG_Widget::RemoveChild(PG_Widget * child) {
 }
 
 bool PG_Widget::IsMouseInside() {
-	PG_Point p;
 	int x, y;
-	
 	SDL_GetMouseState(&x, &y);
-	p.x = static_cast<Sint16>(x);
-	p.y = static_cast<Sint16>(y);
+	PG_Point p(x, y);
 	_mid->mouseInside = IsInside(p);
 
 	return _mid->mouseInside;
@@ -808,7 +805,7 @@ void PG_Widget::SetChildTransparency(Uint8 t) {
 	}
 
 	for(PG_Widget* i = _mid->childList->first(); i != NULL; i = i->next()) {
-		i->SetTransparency(t);
+		i->SetTransparency(t, true);
 	}
 	Update();
 }
@@ -1368,9 +1365,8 @@ void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const std::string& text) {
 	GetTextSize(w, h, text, _mid->font);
 }
 
-void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const std::string& text, PG_Font* font) {
-	PG_String ytext = text;
-	PG_FontEngine::GetTextSize(ytext, font, &w);
+void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const PG_String& text, PG_Font* font) {
+	PG_FontEngine::GetTextSize(text, font, &w);
 	h = font->GetFontHeight();
 }
 

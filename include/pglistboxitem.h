@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistboxitem.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -30,6 +30,7 @@
 #define PG_LISTBOXITEM_H
 
 #include "pglistboxbaseitem.h"
+#include "pgdraw.h"
 
 class PG_ListBox;
 
@@ -60,7 +61,7 @@ private:
 	SDL_Surface* my_srfHover;
 	SDL_Surface* my_srfSelected;
 
-	int my_bkmode[3];
+	PG_Draw::BkMode my_bkmode[3];
 	Uint8 my_blend[3];
 };
 

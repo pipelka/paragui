@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.21 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.22 $
     Status:           $State: Exp $
 */
 
@@ -101,7 +101,7 @@ public:
 	/**
 	Creates a PG_Widget with an internal object surface
 
-	@param parent		the parentobject for the new widget or NULL if it is a toplevel widget
+	@param parent		the parentobject for the new widget or NULL if it is a toplevel widget (a parent widget will destroy all children upon its own destruction, also all children will be clipped to their parent's dimension)
 	@param rect		initial position for the widget
 	@param bObjectSurface	flag if a surface for the object should be created
 	*/
@@ -318,14 +318,14 @@ public:
 	static void UpdateScreen();
 
 	/**
-	Make a widget visible
-	@param fade	do a smooth fade in if true
+	Make a widget visible (if you want a widget to show up the first time, use this method)
+	@param fade	do a smooth fade in if true (non-threaded)
 	*/
 	void Show(bool fade = false);
 
 	/**
 	Hide a widget
-	@param fade	do a smooth fade out if true
+	@param fade	do a smooth fade out if true (non-threaded)
 	*/
 	void Hide(bool fade = false);
 
@@ -512,7 +512,7 @@ public:
 
 	void GetTextSize(Uint16& w, Uint16& h, const std::string& text = PG_NULLSTR);
 
-	static void GetTextSize(Uint16& w, Uint16& h, const std::string& text, PG_Font* font);
+	static void GetTextSize(Uint16& w, Uint16& h, const PG_String& text, PG_Font* font);
 
 	int GetTextWidth();
 
@@ -744,6 +744,12 @@ public:
 	void SetModalStatus(int status);
 	
 	void EnableReceiver(bool enable, bool bRecursive = false);
+
+	template<class datatype = PG_Pointer> class SignalMouseEnter : public PG_Signal0<datatype> {};
+	template<class datatype = PG_Pointer> class SignalMouseLeave : public PG_Signal0<datatype> {};
+	
+	SignalMouseEnter<> sigMouseEnter;
+	SignalMouseLeave<> sigMouseLeave;
 
 	/**
 	  	change the parent of the widget.

@@ -133,7 +133,7 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	WidgetList = new PG_WidgetList(this, PG_Rect(30, 40, 220, 250));
 	WidgetList->SetDirtyUpdate(false);
 	WidgetList->SetTransparency(0);
-	WidgetList->SetBackground("default/wnd_close.bmp", BKMODE_TILE, 0xFF);
+	WidgetList->SetBackground("default/wnd_close.bmp", PG_Draw::TILE, 0xFF);
 	WidgetList->SetBackgroundBlend(0);
 			
 	WidgetList->EnableScrollBar(true, PG_ScrollBar::VERTICAL);
@@ -544,8 +544,7 @@ int main(int argc, char* argv[]) {
 	              tmp->GetID());
 	tmp = wnd.FindChild(1001);
 	if (tmp)
-	    PG_LogMSG("sought for '1001' and found it (name '%s')",
-	              tmp->GetName().c_str());
+	    PG_LogMSG("sought for '1001' and found it (name '%s')", tmp->GetName().c_str());
 
 	if(!bTestMode) {
 		// Enter main loop

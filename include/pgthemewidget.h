@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.13 $
     Status:           $State: Exp $
 */
 
@@ -121,8 +121,7 @@ public:
 	@param	mode			BKMODE_TILE | BKMODE_STRETCH | BKMODE_3TILEH | BKMODE_3TILEV | BKMODE_9TILE
 	*/
 	/**  */
-	bool SetBackground(const std::string& filename, int mode=BKMODE_TILE);
-
+	bool SetBackground(const std::string& filename, PG_Draw::BkMode mode=PG_Draw::TILE);
 
 	/**
 	Load the background image from a file and set the colorkey
@@ -131,7 +130,7 @@ public:
 	@param	mode			BKMODE_TILE | BKMODE_STRETCH | BKMODE_3TILEH | BKMODE_3TILEV | BKMODE_9TILE
 	*/
 	/**  */
-	bool SetBackground(const std::string& filename, int mode, const PG_Color& colorkey);
+	bool SetBackground(const std::string& filename, PG_Draw::BkMode mode, const PG_Color& colorkey);
 
 	/**
 	Define a surface as background image (will not be freed)
@@ -139,7 +138,7 @@ public:
 	@param	mode			BKMODE_TILE | BKMODE_STRETCH | BKMODE_3TILEH | BKMODE_3TILEV | BKMODE_9TILE
 	@return						true on success
 	*/
-	bool SetBackground(SDL_Surface* surface, int mode=BKMODE_TILE);
+	bool SetBackground(SDL_Surface* surface, PG_Draw::BkMode mode=PG_Draw::TILE);
 
 	/**
 	Defines the "blend-level" of gradient & background
@@ -221,7 +220,7 @@ public:
 
 	The generated surface is managed by the surfacecache. Don't delete these surface with SDL_FreeSurface. Please use DeleteThemedSurface.
 	*/
-	static SDL_Surface* CreateThemedSurface(const PG_Rect& r, PG_Gradient* gradient, SDL_Surface* background, int bkmode, Uint8 blend);
+	static SDL_Surface* CreateThemedSurface(const PG_Rect& r, PG_Gradient* gradient, SDL_Surface* background, PG_Draw::BkMode bkmode, Uint8 blend);
 
 	/**
 	Delete a themed surface
@@ -252,7 +251,7 @@ protected:
 
 	Uint8 my_blendLevel;
 	bool my_backgroundFree;
-	int my_backgroundMode;
+	PG_Draw::BkMode my_backgroundMode;
 	int my_bordersize;
 
 private:

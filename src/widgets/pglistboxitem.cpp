@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5.4.1.2.9 $
+    CVS/RCS Revision: $Revision: 1.5.4.1.2.10 $
     Status:           $State: Exp $
 */
 
@@ -37,7 +37,7 @@ PG_ListBoxItem::PG_ListBoxItem(PG_Widget* parent, int height, const std::string&
 	
 	for(int i=0; i<3; i++) {
 		my_background[i] = NULL;
-		my_bkmode[i] = BKMODE_TILE;
+		my_bkmode[i] = PG_Draw::TILE;
 		my_blend[i] = 0;
 		my_gradient[i] = NULL;
 	}

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.8 $
     Status:           $State: Exp $
 */
 
@@ -238,15 +238,15 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 				property->name = atts[i+1];
 			} else if(tcscmp(T(atts[i]), T("value")) == 0) {
 				if(tcscmp(T(atts[i+1]), T("TILE")) == 0) {
-					property->value = BKMODE_TILE;
+					property->value = PG_Draw::TILE;
 				} else if(tcscmp(T(atts[i+1]), T("STRETCH")) == 0) {
-					property->value = BKMODE_STRETCH;
+					property->value = PG_Draw::STRETCH;
 				} else if(tcscmp(T(atts[i+1]), T("3TILEH")) == 0) {
-					property->value = BKMODE_3TILEH;
+					property->value = PG_Draw::TILE3H;
 				} else if(tcscmp(T(atts[i+1]), T("3TILEV")) == 0) {
-					property->value = BKMODE_3TILEV;
+					property->value = PG_Draw::TILE3V;
 				} else if(tcscmp(T(atts[i+1]), T("9TILE")) == 0) {
-					property->value = BKMODE_9TILE;
+					property->value = PG_Draw::TILE9;
 				} else {
 					property->value = atoi(atts[i+1]);
 				}

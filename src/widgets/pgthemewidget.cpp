@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.14 $
     Status:           $State: Exp $
 */
 
@@ -70,7 +70,7 @@ void PG_ThemeWidget::Init(const std::string& style) {
 	my_backgroundFree = false;
 	my_background = NULL;
 	my_blendLevel = 0;
-	my_backgroundMode = BKMODE_TILE;
+	my_backgroundMode = PG_Draw::TILE;
 	my_bordersize = 0;
 	my_has_gradient = false;
 
@@ -113,7 +113,7 @@ void PG_ThemeWidget::LoadThemeStyle(const std::string& widgettype, const std::st
 		t->GetColor(widgettype, objectname, PG_PropStr::backgroundcolor, _mid->backgroundcolor);
 	}
 
-	std::string font = t->FindFontName(widgettype, objectname);
+	const std::string& font = t->FindFontName(widgettype, objectname);
 	int fontsize = t->FindFontSize(widgettype, objectname);
 	PG_Font::Style fontstyle = t->FindFontStyle(widgettype, objectname);
 
@@ -175,7 +175,7 @@ void PG_ThemeWidget::eventDraw(SDL_Surface* surface, const PG_Rect& rect) {
 	}
 }
 
-bool PG_ThemeWidget::SetBackground(const std::string& filename, int mode, const PG_Color &colorkey) {
+bool PG_ThemeWidget::SetBackground(const std::string& filename, PG_Draw::BkMode mode, const PG_Color &colorkey) {
 	// try to load the file
 	SDL_Surface* temp = PG_Application::LoadSurface(filename, true);
 
@@ -206,7 +206,7 @@ bool PG_ThemeWidget::SetBackground(const std::string& filename, int mode, const 
 	return (my_background != NULL);
 }
 
-bool PG_ThemeWidget::SetBackground(const std::string& filename, int mode) {
+bool PG_ThemeWidget::SetBackground(const std::string& filename, PG_Draw::BkMode mode) {
 
 	// try to load the file
 	SDL_Surface* temp = PG_Application::LoadSurface(filename, true);
@@ -236,7 +236,7 @@ bool PG_ThemeWidget::SetBackground(const std::string& filename, int mode) {
 }
 
 
-bool PG_ThemeWidget::SetBackground(SDL_Surface* surface, int mode) {
+bool PG_ThemeWidget::SetBackground(SDL_Surface* surface, PG_Draw::BkMode mode) {
 
 	if(!surface) {
 		return false;
@@ -418,7 +418,7 @@ void PG_ThemeWidget::SetTransparency(Uint8 t, bool bRecursive) {
 	PG_Widget::SetTransparency(t, bRecursive);
 }
 
-SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* gradient, SDL_Surface* background, int bkmode, Uint8 blend) {
+SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* gradient, SDL_Surface* background, PG_Draw::BkMode bkmode, Uint8 blend) {
 	SDL_Surface* cache_surface = NULL;
 	SDL_Surface* screen = PG_Application::GetScreen();
 	std::string key;

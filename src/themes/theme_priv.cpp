@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.11 $
     Status:           $State: Exp $
 */
 
@@ -39,8 +39,13 @@ THEME_THEME::~THEME_THEME() {
 	delete defaultfont;
 }
 
-inline THEME_WIDGET* THEME_THEME::FindWidget(const std::string& widgettype) {
-	return widget[widgettype];
+THEME_WIDGET* THEME_THEME::FindWidget(const std::string& widgettype) {
+	MAP_WIDGET::iterator i = widget.find(widgettype);
+	if(i == widget.end()) {
+		return NULL;
+	}
+	
+	return (*i).second;
 }
 
 THEME_OBJECT* THEME_THEME::FindObject(const std::string& widgettype, const std::string& objectname) {
@@ -135,6 +140,21 @@ void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& 
 	prop = (int)n;
 }
 
+void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& objectname, const std::string& name, PG_Draw::BkMode& prop) {
+	THEME_OBJECT* o = FindObject(widgettype, objectname);
+
+	if(o == NULL) {
+		return;
+	}
+
+	long n = o->FindProperty(name);
+	if(n == -1) {
+		return;
+	}
+	
+	prop = (PG_Draw::BkMode)n;
+}
+
 const std::string& THEME_THEME::FindString(const std::string& widgettype, const std::string& objectname, const std::string& name) {
 	THEME_OBJECT* object = FindObject(widgettype, objectname);
 
@@ -215,7 +235,12 @@ THEME_WIDGET::~THEME_WIDGET() {
 }
 
 inline THEME_OBJECT* THEME_WIDGET::FindObject(const std::string& objectname) {
-	return object[objectname];
+	MAP_OBJECT::iterator i = object.find(objectname);
+	if(i == object.end()) {
+		return NULL;
+	}
+	
+	return (*i).second;
 }
 
 THEME_OBJECT::THEME_OBJECT() {
@@ -248,26 +273,23 @@ THEME_OBJECT::~THEME_OBJECT() {
 }
 
 SDL_Surface* THEME_OBJECT::FindSurface(const std::string& name) {
-	THEME_FILENAME* result = filename[name];
+	MAP_FILENAME::iterator result = filename.find(name);
 
-	if(result == NULL) {
+	if(result == filename.end()) {
 		return NULL;
 	}
 
-	return result->surface;
+	return (*result).second->surface;
 }
 
 PG_Gradient* THEME_OBJECT::FindGradient(const std::string& name) {
-	/*if (!name)
-		return NULL;*/
-
-	THEME_GRADIENT* result = gradient[name];
-
-	if(result == NULL) {
+	MAP_GRADIENT::iterator result = gradient.find(name);
+	
+	if(result == gradient.end()) {
 		return NULL;
 	}
 
-	return static_cast<PG_Gradient*>(result);
+	return static_cast<PG_Gradient*>((*result).second);
 }
 
 void THEME_THEME::GetAlignment(const std::string& widgettype, const std::string& object, const std::string& name, PG_Label::TextAlign& align) {

@@ -1,18 +1,15 @@
 #ifndef WIN32_CONFIG_INCLUDED
 #define WIN32_CONFIG_INCLUDED
 
+#ifndef PARAGUI_DYNAMIC_EXPORTS
+#undef DECLSPEC
+#define DECLSPEC __declspec(dllimport)
+#endif
+
 #ifndef __MINGW32__
-// disable win32 warnings on exporting STL objects
+// disable some nerved non-critical warnings (for now)
 #pragma warning(disable: 4275)
 #pragma warning(disable: 4251)
-#pragma warning(disable: 4786)
-#pragma warning(disable: 4800)
-#pragma warning(disable: 4091)
-#pragma warning(disable: 4273)
-#pragma warning(disable: 4806)
-
-// strange thing but it works
-#define PATH_MAX MAX_PATH
 #endif
 
 /* Define if UNICODE support is enabled */
@@ -53,6 +50,10 @@
 
 /* SDL_image shared library */
 #define SDLIMAGE_LIB "sdl_image.dll"
+
+#ifdef _MSC_VER
+#define HAVE_STRDUP 1
+#endif
 
 /* Name of package */
 #define PACKAGE "paragui"

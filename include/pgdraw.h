@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 10:51:41 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdraw.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -45,44 +45,40 @@
 #define M_PI 3.14159265359
 #endif // M_PI
 
+namespace PG_Draw {
 
 // Background modes
-
-/**
-	Backgroundmode TILE.
-	Macro defining the background mode for tiling
-*/
-#define BKMODE_TILE			1
+DECLSPEC enum BkMode {
+	TILE,
 /**
 	Backgroundmode STRETCH.
 	Macro defining the background mode for stretching
 */
-#define BKMODE_STRETCH		2
+	STRETCH,
 /**
 	Backgroundmode 3TILEH.
 	Macro defining the background mode for horizontal 3 part tiling
     (the left part of the tile to the left, the right part to the right,
     the middle part repeatedly within the rest)
 */
-#define BKMODE_3TILEH		3
+	TILE3H,
 /**
 	Backgroundmode 3TILEV.
 	Macro defining the background mode for vertical 3 part tiling
 */
-#define BKMODE_3TILEV		4
+	TILE3V,
 /**
 	Backgroundmode 9TILE.
 	Macro defining the background mode for 9 part tiling
 */
-#define BKMODE_9TILE		5
+	TILE9
+};
 
 /**
 	@short ParaGUI drawing functions
 
 	These functions can be used for native drawing on surfaces.
 */
-
-namespace PG_Draw {
 
 //! Rotate and scale an SDL_Surface
 /*!
@@ -240,7 +236,7 @@ DECLSPEC SDL_Surface* CreateRGBSurface(Uint16 w, Uint16 h, int flags = SDL_SWSUR
 
     \note This function first draws the gradient, then the (partly transparent) background.
 */
-DECLSPEC void DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradient* gradient, SDL_Surface* background, int bkmode, Uint8 blend);
+DECLSPEC void DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradient* gradient, SDL_Surface* background, BkMode bkmode, Uint8 blend);
 
 /**
 	Draw a line.

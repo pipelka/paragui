@@ -1,5 +1,6 @@
 #include "pgapplication.h"
 #include "pgmultilineedit.h"
+#include "pglog.h"
 
 using namespace std;
 
@@ -48,11 +49,6 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 	int _x = 3;
 	int _y = 3; 
 
-	// should we draw the cursor ? 
-	if(IsCursorVisible()) { 
-		DrawTextCursor(); 
-	}
-
 	// figure out the cursor position that we start at 
 	int pos = 0; 
 	for (unsigned int i = 0; i < (unsigned int)my_firstLine; ++i) { 
@@ -66,6 +62,11 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 	int x1 = 0;
 	Uint16 w = 0;
 	int offset = 0;
+	PG_Color color(GetFontColor());
+	PG_Color inv_color(255 - color.r, 255 - color.g, 255 - color.b);
+	SDL_Surface* screen = PG_Application::GetScreen();
+	Uint32 highlightColor = SDL_MapRGB(screen->format, color.r, color.g, color.b);
+	PG_String s, middlepart;
 
 	for (unsigned int i = my_firstLine; i < (unsigned int)my_firstLine + maxLines && i < my_textdata.size(); ++i) { 
 		endpos = pos + my_textdata[i].size();
@@ -79,38 +80,43 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 			
 			// draw the initial unhighlighted part 
 			if (pos < start) { 
-				PG_String s = my_textdata[i].substr(0, start-pos); 
+				s = my_textdata[i].substr(0, start-pos);
 				PG_Widget::DrawText(x1, _y, s); 
 				PG_FontEngine::GetTextSize(s, GetFont(), &w); 
 				x1 += w; 
 				offset = start-pos; 
 			}
 
-			PG_String middlepart = my_textdata[i].c_str() + offset;
+			middlepart = my_textdata[i].c_str() + offset;
+
 			// check if the end part is unhighlighted
 			if (endpos > end) {
 				middlepart = middlepart.substr(0, middlepart.size() - (endpos-end));
-				string s = my_textdata[i].substr(end - pos, my_textdata[i].size() - (end - pos));
+				s = my_textdata[i].substr(end - pos, my_textdata[i].size() - (end - pos));
 				PG_FontEngine::GetTextSize(middlepart, GetFont(), &w);
 				PG_Widget::DrawText(x1+w, _y, s);
 			}
 			
-			PG_Color color(GetFontColor()); 
-			PG_Color inv_color(255 - color.r, 255 - color.g, 255 - color.b);			
 			SetFontColor(inv_color);
-			PG_FontEngine::GetTextSize(middlepart, GetFont(), &w);
-			SDL_Rect rect = {x + x1, y + _y, w, GetFontHeight()};
-			SDL_Surface* screen = PG_Application::GetScreen();
-			SDL_FillRect(screen, &rect, SDL_MapRGB(screen->format, color.r, color.g, color.b));
-			PG_Widget::DrawText(x1, _y, middlepart);
+			PG_FontEngine::GetTextSize(middlepart.c_str(), GetFont(), &w);
+			if(_y < my_height) {
+				SDL_Rect rect = {x + x1, y + _y, w, (_y + GetFontHeight() > my_height) ? my_height - _y : GetFontHeight()};
+				SDL_FillRect(screen, &rect, highlightColor);
+			}
+			PG_Widget::DrawText(x1, _y, middlepart.c_str());
 			SetFontColor(color); 
 		} 
 		else { 
-			PG_Widget::DrawText(_x, _y, my_textdata[i]);
+			PG_Widget::DrawText(_x, _y, my_textdata[i].c_str());
 		} 
 		_y += GetFontHeight(); 
 		pos += my_textdata[i].size();
 	} 
+
+	// should we draw the cursor ? 
+	if(IsCursorVisible()) {
+		DrawTextCursor();
+	}
 } 
 
 void PG_MultiLineEdit::DrawTextCursor() {
@@ -203,11 +209,12 @@ void PG_MultiLineEdit::GetCursorTextPosFromScreen(int x, int y, unsigned int& ho
 		ypos = my_textdata.size()-1;
 	}
 
-	unsigned int min = (unsigned int)-1; 
+	unsigned int min = static_cast<unsigned int>(-1); 
 	unsigned int min_xpos = 0; 
 	
 	// loop through to find the closest x position 
 	PG_String temp;
+
 	for (Uint16 i = 0; i <= my_textdata[ypos].size(); ++i) {  
 		// get the string up to that point 		
 		temp = my_textdata[ypos].substr(0, i);
@@ -226,7 +233,7 @@ void PG_MultiLineEdit::GetCursorTextPosFromScreen(int x, int y, unsigned int& ho
 
 	// set return data 
 	horzOffset = min_xpos;
-	lineOffset = (unsigned int)ypos; 
+	lineOffset = static_cast<unsigned int>(ypos); 
 }
 
 void PG_MultiLineEdit::GetCursorTextPos(unsigned int& horzOffset, unsigned int& lineOffset) { 
@@ -293,9 +300,11 @@ void PG_MultiLineEdit::CreateTextVector(bool bSetupVScroll) {
 	my_textdata.clear(); 
 	unsigned int start = 0, end = 0, last = 0; 
 	
+	PG_String temp;
+	
 	do { 
 		Uint16 lineWidth = 0; 
-		PG_String temp = my_text.substr(start, end-start);
+		temp = my_text.substr(start, end-start);
 		PG_FontEngine::GetTextSize(temp, GetFont(), &lineWidth); 
 		
 		if (lineWidth > w) { 
@@ -305,8 +314,8 @@ void PG_MultiLineEdit::CreateTextVector(bool bSetupVScroll) {
 				start = --end; 
 			} 
 			else { 
-				PG_String s = my_text.substr(start, last-start); 
-				my_textdata.push_back(s); 
+				temp = my_text.substr(start, last-start); 
+				my_textdata.push_back(temp); 
 				start = last; 
 				end = last-1; 
 			} 
@@ -318,8 +327,8 @@ void PG_MultiLineEdit::CreateTextVector(bool bSetupVScroll) {
 		} 
 		
 		else if (my_text[end] == '\n' || my_text[end] == '\0') { 
-			PG_String s = my_text.substr(start, end-start+1); 
-			my_textdata.push_back(s); 
+			temp = my_text.substr(start, end-start+1); 
+			my_textdata.push_back(temp); 
 			start = end+1; 
 			last = start; 
 		} 
@@ -340,7 +349,7 @@ void PG_MultiLineEdit::SetupVScroll() {
 	} 
 	
 	else { 
-		my_vscroll->SetRange(0, my_textdata.size() - my_height/GetFontHeight()); 
+		my_vscroll->SetRange(0, my_textdata.size() - my_height/GetFontHeight() + 1);
 		if (my_firstLine > my_vscroll->GetMaxRange()) {
 			SetVPosition(my_vscroll->GetMaxRange()); 
 		}
@@ -419,13 +428,19 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 		int x, y; 
   
 		switch(key_copy.keysym.sym) { 
-			case SDLK_RIGHT: 
 			case SDLK_LEFT: 
 				if (!(key_copy.keysym.mod & KMOD_SHIFT)) {
 					my_mark = -1; 
 				}
-				// break here, we still want PG_LineEdit to handle these 
-				break; 
+				PG_LineEdit::SetCursorPos(--my_cursorPosition);
+				return true;
+
+			case SDLK_RIGHT:
+				if(!(key_copy.keysym.mod & KMOD_SHIFT)) {
+					my_mark = -1; 
+				}
+				PG_LineEdit::SetCursorPos(++my_cursorPosition);
+				return true;
 			
 			case SDLK_UP: 
 				if (!(key_copy.keysym.mod & KMOD_SHIFT)) {
@@ -493,8 +508,6 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 		} 
 	} 
 
-		SetCursorPos(my_cursorPosition); 
-	
 	return PG_LineEdit::eventKeyDown(key); 
 }
 
@@ -552,14 +565,6 @@ bool PG_MultiLineEdit::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 } 
 
 bool PG_MultiLineEdit::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
-	if(!GetEditable()) {
-		return false;
-	}
-
-	if(!IsCursorVisible()) {
-		EditBegin();
-	}
-
 	return true;
 }
 
@@ -591,7 +596,7 @@ int PG_MultiLineEdit::ConvertCursorPos(unsigned int offset, unsigned int line) {
 void PG_MultiLineEdit::SetCursorPos(int p) {
 	my_isCursorAtEOL = false; 
 	my_allowHiddenCursor = false; 
-	PG_LineEdit::SetCursorPos(p);
+	//PG_LineEdit::SetCursorPos(p);
 	//Update();
 } 
 

@@ -200,22 +200,20 @@ PG_Label::TextAlign PG_Layout::GetParamAlign(const char **Source, char *What) {
 	return ret;
 }
 
-int PG_Layout::GetParamIMode(const char **Source, char *What) {
-	int	ret = BKMODE_TILE;
+PG_Draw::BkMode PG_Layout::GetParamIMode(const char **Source, char *What) {
+	PG_Draw::BkMode	ret = PG_Draw::TILE;
 	char *c = PG_Layout::GetParamStr(Source,What);
 
 	if (tcscmp(T(c),T("tile")) == 0)
-		ret = BKMODE_TILE;
+		ret = PG_Draw::TILE;
 	if (tcscmp(T(c),T("stretch")) == 0)
-		ret = BKMODE_STRETCH;
-	if (tcscmp(T(c),T("stretch")) == 0)
-		ret = BKMODE_STRETCH;
+		ret = PG_Draw::STRETCH;
 	if (tcscmp(T(c),T("3tileh")) == 0)
-		ret = BKMODE_3TILEH;
+		ret = PG_Draw::TILE3H;
 	if (tcscmp(T(c),T("3tilev")) == 0)
-		ret = BKMODE_3TILEV;
+		ret = PG_Draw::TILE3V;
 	if (tcscmp(T(c),T("9tile")) == 0)
-		ret = BKMODE_9TILE;
+		ret = PG_Draw::TILE9;
 
 	return(ret);
 }
@@ -370,8 +368,9 @@ static int SetThemeWidgetAtts(PG_ThemeWidget *Widget, const char **atts, ParseUs
 	PG_Gradient	grad;
 
 	c = PG_Layout::GetParamStr(atts, "image");
-	if (c[0] != 0)
+	if(c[0] != 0) {
 		Widget->SetBackground(c,PG_Layout::GetParamIMode(atts, "imode"));
+	}
 
 	int b = PG_Layout::GetParamInt(atts, "blend");
 	if(b != -1) {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.14 $
     Status:           $State: Exp $
 */
 
@@ -50,6 +50,8 @@ void PG_ListBox::AddChild(PG_Widget* item) {
 	item->SizeWidget(Width(), item->Height());	
 
 	PG_WidgetList::AddChild(item);
+
+	item->SetID(my_scrollarea->GetChildList()->size() - 1);
 }
 
 void PG_ListBox::SetMultiSelect(bool multi) {
@@ -78,6 +80,7 @@ void PG_ListBox::SelectItem(PG_ListBoxBaseItem* item, bool select) {
 		}
 
 		my_selectedItem = item;
+		my_selectindex = item->GetID();
 		my_selectedItem->Update();
 	}
 

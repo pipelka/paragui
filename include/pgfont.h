@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.11 $
     Status:           $State: Exp $
 */
 
@@ -153,7 +153,7 @@ public:
 	Get the current name of the font (filename)
 	@return the filename of the font
 	*/
-	std::string GetName();
+	const std::string& GetName();
 	
 	void SetIndex(int index);
 

@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ychar.h,v 1.1.2.2 2004/09/05 10:51:41 braindead Exp $
+ * $Id: ychar.h,v 1.1.2.3 2004/12/01 11:28:22 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2004/09/05 10:51:41 $
+ *  $Date: 2004/12/01 11:28:22 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.2 $
+ *  $Revision: 1.1.2.3 $
  *  $Source: /sources/paragui/paragui/include/Attic/ychar.h,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -25,7 +25,7 @@
 #ifndef YCHAR_H
 #define YCHAR_H
 
-#ifdef WIN32
+#ifdef _MSC_VER
 #pragma warning(disable : 4290)
 #endif
 

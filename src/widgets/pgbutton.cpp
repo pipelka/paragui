@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.17 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.18 $
     Status:           $State: Exp $
 */
 
@@ -38,7 +38,7 @@
 class PG_ButtonStateData {
 public:
 	PG_ButtonStateData() : srf(NULL), srf_icon(NULL), bordersize(1), transparency(0),
-	background(NULL), backMode(BKMODE_TILE), backBlend(0) {
+		background(NULL), backMode(PG_Draw::TILE), backBlend(0) {
 	};
 
 	SDL_Surface* srf;
@@ -47,7 +47,7 @@ public:
 	Uint8 transparency;
 	PG_Gradient gradState;
 	SDL_Surface* background;
-	int backMode;
+	PG_Draw::BkMode backMode;
 	int backBlend;
 };
 
@@ -462,7 +462,7 @@ void PG_Button::SetGradient(STATE state, const PG_Gradient& gradient) {
 	(*_mid)[state].gradState = gradient;
 }
 
-void PG_Button::SetBackground(STATE state, SDL_Surface* background, int mode) {
+void PG_Button::SetBackground(STATE state, SDL_Surface* background, PG_Draw::BkMode mode) {
 
 	if(!background) {
 		return;

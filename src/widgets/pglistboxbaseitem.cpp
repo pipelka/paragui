@@ -20,15 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.8 $
     Status:           $State: Exp $
 */
 
 #include "pglistboxbaseitem.h"
 #include "pglistbox.h"
-#include "pglog.h"
 
 PG_ListBoxBaseItem::PG_ListBoxBaseItem(PG_Widget* parent, Uint16 height, void* userdata) : PG_Label(parent, PG_Rect(0,0,0,height)) {
 	my_userdata = userdata;
@@ -50,6 +49,10 @@ PG_ListBoxBaseItem::~PG_ListBoxBaseItem() {
 	if(GetParent()->GetSelectedItem() == this) {
 		GetParent()->SelectItem(NULL);
 		//GetParent()->RemoveWidget(this, true, true);
+	}
+
+	for (PG_Widget* w = next(); w != NULL; w = w->next()) {
+		w->SetID(w->GetID() - 1);
 	}
 }
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtheme.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -32,6 +32,7 @@
 #include "paragui.h"
 #include "pglabel.h"
 #include "pgfont.h"
+#include "pgdraw.h"
 
 /**
 	@short Theme/style definition class
@@ -62,6 +63,7 @@ public:
 		}
 		prop = (Uint16)b;
 	}
+	virtual void GetProperty(const std::string& widgettype, const std::string& object, const std::string& name, PG_Draw::BkMode& prop) = 0;
 	virtual void GetAlignment(const std::string& widgettype, const std::string& object, const std::string& name, PG_Label::TextAlign& align) = 0;
 	virtual void GetColor(const std::string& widgettype, const std::string& object, const std::string& name, PG_Color& color) = 0;
 	virtual const std::string& FindString(const std::string& widgettype, const std::string& object, const std::string& name) = 0;

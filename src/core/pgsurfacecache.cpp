@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:45:40 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgsurfacecache.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.4.2.3 $
+    CVS/RCS Revision: $Revision: 1.2.4.4.2.4 $
     Status:           $State: Exp $
 */
 
@@ -112,7 +112,7 @@ void PG_SurfaceCache::Cleanup() {
 
 void PG_SurfaceCache::CreateKey(std::string &key, Uint16 w, Uint16 h,
                                 PG_Gradient* gradient, SDL_Surface* background,
-                                Sint8 bkmode, Uint8 blend) {
+								PG_Draw::BkMode bkmode, Uint8 blend) {
 	char tmpkey[256];
 	char colorkey[10];
 	int i=0;
@@ -170,7 +170,12 @@ void PG_SurfaceCache::CreateKey(std::string &key, Uint16 w, Uint16 h,
 }
 
 pg_surface_cache_t* PG_SurfaceCache::FindByKey(const std::string &key) {
-	return (*MY_SURFACEMAP)[key];
+	pg_surfacemap_t::iterator i = MY_SURFACEMAP->find(key);
+	if(i == MY_SURFACEMAP->end()) {
+		return NULL;
+	}
+	return (*i).second;
+	//return (*MY_SURFACEMAP)[key];
 }
 
 pg_surface_cache_t* PG_SurfaceCache::FindBySurface(SDL_Surface* surface) {
@@ -178,13 +183,18 @@ pg_surface_cache_t* PG_SurfaceCache::FindBySurface(SDL_Surface* surface) {
 }
 
 SDL_Surface* PG_SurfaceCache::FindSurface(const std::string &key) {
-	pg_surface_cache_t* t = (*MY_SURFACEMAP)[key];
+	pg_surfacemap_t::iterator i = MY_SURFACEMAP->find(key);
+	if(i == MY_SURFACEMAP->end()) {
+		return NULL;
+	}
+	return (*i).second->surface;
+	/*pg_surface_cache_t* t = (*MY_SURFACEMAP)[key];
 
 	if(t == NULL) {
 		return NULL;
 	}
 
-	return t->surface;
+	return t->surface;*/
 }
 
 SDL_Surface* PG_SurfaceCache::AddSurface(const std::string &key, SDL_Surface* surface) {

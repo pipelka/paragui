@@ -98,7 +98,7 @@ bool PG_Font::SetName(const std::string& fontfile) {
 	return (my_internaldata->FaceCache != NULL);
 }
 
-std::string PG_Font::GetName() {
+const std::string& PG_Font::GetName() {
 	return my_internaldata->name;
 }
 

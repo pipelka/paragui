@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgprogressbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -78,7 +78,7 @@ private:
 
 	PG_Gradient my_pbGradient;
 	SDL_Surface* my_pbBackground;
-	int my_pbBackmode;
+	PG_Draw::BkMode my_pbBackmode;
 	int my_pbBlend;
 	PG_Color my_colorText;
 	double my_percentCurrent;

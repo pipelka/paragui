@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/04/18 18:27:26 $
+    Update Date:      $Date: 2004/12/01 11:28:22 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/pgrect.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.7 $
+    CVS/RCS Revision: $Revision: 1.3.8.8 $
     Status:           $State: Exp $
 */
 
@@ -46,22 +46,22 @@ PG_Rect::PG_Rect(const PG_Rect& src) :
 my_xpos(x),
 my_ypos(y),
 my_width(w),
-my_height(h)
+my_height(h),
+my_next(NULL),
+my_prev(NULL)
 {
 	*this = src;
-	my_next = NULL;
-	my_prev = NULL;
 }
 
 PG_Rect::PG_Rect(const SDL_Rect& src) :
 my_xpos(x),
 my_ypos(y),
 my_width(w),
-my_height(h)
+my_height(h),
+my_next(NULL),
+my_prev(NULL)
 {
 	*this = src;
-	my_next = NULL;
-	my_prev = NULL;
 }
 
 PG_Rect::~PG_Rect() {}

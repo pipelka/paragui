@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/11/30 17:48:57 $
+   Update Date:      $Date: 2004/12/01 11:28:22 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.14 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.15 $
    Status:           $State: Exp $
 */
 
@@ -305,6 +305,9 @@ Sint32 PG_RichEdit::CompleteLines() {
 
 	if (top > my_scrollarea->GetAreaHeight()) {
 		my_scrollarea->SetAreaHeight(top);
+		if(my_objVerticalScrollbar->IsVisible() && my_scrollarea->GetAreaWidth() != my_width - my_objVerticalScrollbar->my_width) {
+			SetLineWidth(my_width - my_objVerticalScrollbar->my_width);
+		}
 	}
 
 	if(my_AutoVerticalResize || my_AutoHorizontalResize) {
@@ -371,6 +374,10 @@ size_t PG_RichEdit::CompleteLine(RichLineArray::iterator actualLine, Sint32 &lin
 	}
 
 	do {
+		// !!!
+		if (my_objVerticalScrollbar->IsVisible())
+			linePartWidthMax = my_scrollarea->GetAreaWidth() - linePartLeft - my_objVerticalScrollbar->my_width;
+		else
 		linePartWidthMax = my_scrollarea->GetAreaWidth() - linePartLeft;
 		if (childOnLine != widgetsOnLine.end())
 			linePartWidthMax = childOnLine->first - linePartLeft;
