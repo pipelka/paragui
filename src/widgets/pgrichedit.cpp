@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/04/28 16:35:30 $
+   Update Date:      $Date: 2002/05/28 12:37:31 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4 $
+   CVS/RCS Revision: $Revision: 1.3.6.1 $
    Status:           $State: Exp $
 */
 
@@ -180,7 +180,7 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, std::string *word, Uint32 *endMar
 		if ((Uint32)my_text[result] != my_Marks[MARK_SPACE])
 			increment = 0;
 		*word = my_text.substr(searchFrom, result - searchFrom + increment);
-
+		
 		if ((Uint32)my_text[result] == my_Marks[MARK_NONBREAKABLE_SPACE]) {
 			std::string newword;
 
@@ -238,7 +238,7 @@ Sint32 PG_RichEdit::CompleteLines() {
 		SizeWidget(my_width, my_listheight);
 	}
 
-	CheckScrollBars(my_width, my_height);
+	CheckScrollBars();
 	UpdateScrollBarsPos();
 	Update();
 
@@ -549,5 +549,19 @@ bool PG_RichEdit::ProcessLongLine(std::string &word, size_t &searchFrom, Uint32 
 	        break;            
 	    }  
 }    */
+	return true;
+}
+
+bool PG_RichEdit::LoadText(const char* textfile) {
+	PG_DataContainer* text = PG_FileArchive::ReadFile(textfile);
+	
+	if(text == NULL) {
+		return false;
+	}
+	
+	text->data()[text->size()] = 0;
+	SetText(text->data());
+	
+	delete text;
 	return true;
 }
