@@ -22,8 +22,29 @@ int main(int argc, char* argv[]) {
 		exit(-1);
 	}
 
-	PG_ColorSelector colorsel(NULL, PG_Rect(10,10,300,150));
-	colorsel.Show();
+	PG_ColorSelector colorsel1(NULL, PG_Rect(10,10,300,150));
+	colorsel1.Show();
+
+	PG_Gradient g;
+	g.colors[0].r = 255;
+	g.colors[0].g = 0;
+	g.colors[0].b = 0;
+	
+	g.colors[1].r = 0;
+	g.colors[1].g = 255;
+	g.colors[1].b = 0;
+	
+	g.colors[2].r = 0;
+	g.colors[2].g = 0;
+	g.colors[2].b = 255;
+	
+	g.colors[3].r = 255;
+	g.colors[3].g = 255;
+	g.colors[3].b = 255;
+	
+	PG_ColorSelector colorsel2(NULL, PG_Rect(10,170,300,150));
+	colorsel2.SetColorGradient(g);
+	colorsel2.Show();
 	
 	app.SetEmergencyQuit(true);
     app.Run();

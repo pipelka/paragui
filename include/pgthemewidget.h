@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/12 09:25:58 $
+    Update Date:      $Date: 2002/07/12 10:12:14 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -235,6 +235,8 @@ public:
 	static void DeleteThemedSurface(SDL_Surface* surface);
 
 	void SetSimpleBackground(bool simple);
+	
+	void SetBackgroundColor(const SDL_Color& c);
 	
 protected:
 

@@ -112,7 +112,11 @@ PG_ColorSelector::PG_ColorSelector(PG_Widget* parent, const PG_Rect&r, const cha
 
 	my_colorslider->SetBackground((SDL_Surface*)NULL);
 	my_colorslider->SetSimpleBackground(false);
-
+	my_colorslider->SetEventObject(MSG_SLIDE, this, (MSG_CALLBACK_OBJ)&PG_ColorSelector::handle_colorslide, NULL);
+	
+	my_colorresult = new PG_ThemeWidget(this, PG_Rect(r.h+20,r.h/2,r.w - ((r.h+20)+5), r.h - (5+r.h/2)));
+	my_colorresult->SetSimpleBackground(true);
+	
 	SetBaseColor(my_colorbox->GetBaseColor());
 }
 
@@ -144,4 +148,19 @@ void PG_ColorSelector::SetBaseColor(const SDL_Color& c) {
 	g.colors[3].b = 0;
 
 	my_colorslider->SetGradient(g);
+	
+	float v = my_colorslider->GetPosition();
+	
+	SDL_Color r;
+	r.r = (Uint8)(((float)c.r / 255.0) * (255.0 - v));
+	r.g = (Uint8)(((float)c.g / 255.0) * (255.0 - v));
+	r.b = (Uint8)(((float)c.b / 255.0) * (255.0 - v));
+	
+	my_colorresult->SetBackgroundColor(r);
+	my_colorresult->Update();
+}
+
+PARAGUI_CALLBACK(PG_ColorSelector::handle_colorslide) {
+	SetBaseColor(my_colorbox->GetBaseColor());
+	return true;
 }

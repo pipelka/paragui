@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/12 09:25:59 $
+    Update Date:      $Date: 2002/07/12 10:12:14 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -517,4 +517,8 @@ void PG_ThemeWidget::DeleteThemedSurface(SDL_Surface* surface) {
 
 void PG_ThemeWidget::SetSimpleBackground(bool simple) {
 	my_internaldata->simplebackground = simple;
+}
+
+void PG_ThemeWidget::SetBackgroundColor(const SDL_Color& c) {
+	my_internaldata->backgroundcolor = c;
 }
