@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/17 11:32:59 $
+    Update Date:      $Date: 2002/07/25 13:10:39 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -369,6 +369,11 @@ public:
 	*/
 	static PG_Widget *GetWidgetByName(const char *Name);
 
+	template<class T>
+	static T* GetWidgetByName(const char* Name) {
+		return static_cast<T*>(GetWidgetByName(Name));
+	}
+	
 	/**
        Get widget by id.
 
