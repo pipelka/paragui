@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/26 10:59:33 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.15 $
     Status:           $State: Exp $
 */
 
@@ -78,11 +78,11 @@ void PG_Window::SetTitle(const std::string& title, PG_Label::TextAlign alignment
 	SetText(title);
 }
 
-const std::string& PG_Window::GetText() {
+const PG_String& PG_Window::GetText() {
 	return my_labelTitle->GetText();
 }
 
-const std::string& PG_Window::GetTitle() {
+const PG_String& PG_Window::GetTitle() {
 	return GetText();
 }
 

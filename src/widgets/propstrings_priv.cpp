@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/26 10:59:32 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/propstrings_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.1.2.2 $
     Status:           $State: Exp $
 */
 
@@ -76,7 +76,7 @@ const std::string PG_PropStr::transparency1 = "transparency1";
 const std::string PG_PropStr::transparency2 = "transparency2";
 const std::string PG_PropStr::background0 = "background0";
 const std::string PG_PropStr::background1 = "background1";
-const std::string PG_PropStr::background2 = "background1";
+const std::string PG_PropStr::background2 = "background2";
 const std::string PG_PropStr::backmode0 = "backmode0";
 const std::string PG_PropStr::backmode1 = "backmode1";
 const std::string PG_PropStr::backmode2 = "backmode2";

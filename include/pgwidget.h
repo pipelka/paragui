@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/26 10:59:33 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.18 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.19 $
     Status:           $State: Exp $
 */
 
@@ -508,7 +508,7 @@ public:
 	/** Returns text
 	@return	Pointer to the text of the widget (read-only)
 	*/
-	virtual const std::string& GetText();
+	virtual const PG_String& GetText() const;
 
 	void GetTextSize(Uint16& w, Uint16& h, const std::string& text = PG_NULLSTR);
 
