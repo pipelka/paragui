@@ -1,6 +1,6 @@
 if BUILD_TEST_PHYSFS
 
-bin_PROGRAMS = test_physfs
+noinst_PROGRAMS = test_physfs
 
 INCLUDES = -I$(top_srcdir)
 
