@@ -14,6 +14,9 @@
 #define NUM_SPRITES	100
 #define MAX_SPEED 	1
 
+using namespace SigC;
+
+
 SDL_Surface *sprite;
 int numsprites;
 SDL_Rect *sprite_rects;

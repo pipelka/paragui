@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:37 $
+    Update Date:      $Date: 2004/10/28 11:49:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -96,7 +96,7 @@ public:
 
 		SignalSelectMenuItem<> sigSelectMenuItem;
 
-		typedef Slot2<bool, MenuItem*, PG_Pointer> MenuItemSlot;
+		typedef SigC::Slot2<bool, MenuItem*, PG_Pointer> MenuItemSlot;
 
 	public: // methods
 		MenuItem(PG_PopupMenu *parent,

@@ -263,14 +263,14 @@ int main(int argc, char* argv[]) {
 	PG_MenuBar menubar(NULL, PG_Rect(100, 0, 400, 30));
 	PG_PopupMenu   popmenu(NULL, 425, 140, "File");
 
-	popmenu.addMenuItem("Nail", 99, slot(handle_menu_click)).
-        addMenuItem("Quit", ID_APP_EXIT, slot(handle_menu_click), &app);
+	popmenu.addMenuItem("Nail", 99, SigC::slot(handle_menu_click)).
+        addMenuItem("Quit", ID_APP_EXIT, SigC::slot(handle_menu_click), &app);
  
 	menubar.Add("File", &popmenu);
 
 	menubar.Show();
 
-	myButton.sigClick.connect(slot(exit_handler), (PG_Pointer)&app);
+	myButton.sigClick.connect( SigC::slot(exit_handler), (PG_Pointer)&app);
 
 	// now we have to make the button visible
 

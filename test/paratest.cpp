@@ -27,6 +27,8 @@
 #define RESX 800
 #define RESY 600
 
+using namespace SigC;
+
 void Splash() {
     PG_ThemeWidget splash(NULL, PG_Rect(100,100,600,400), true);
     PG_ThemeWidget splash1(&splash, PG_Rect(10,10,580,380));

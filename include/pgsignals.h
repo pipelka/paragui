@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/07/07 08:44:22 $
+    Update Date:      $Date: 2004/10/28 11:49:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsignals.h,v $
-    CVS/RCS Revision: $Revision: 1.8.2.3 $
+    CVS/RCS Revision: $Revision: 1.8.2.4 $
     Status:           $State: Exp $
 */
 
@@ -32,87 +32,83 @@
 #include <sigc++/sigc++.h>
 #include "pgsigconvert.h"
 
-#ifndef DOXYGEN_SKIP
-using namespace SigC;
-using namespace SigCX;
-#endif // DOXYGEN_SKIP
 
 typedef void* PG_Pointer;
 
-template<class datatype = PG_Pointer> class PG_Signal0 : public Signal0<bool> {
+template<class datatype = PG_Pointer> class PG_Signal0 : public SigC::Signal0<bool> {
 public:
 
-	Connection connect(const Slot1<bool, datatype>& s, datatype data) {
-		return Signal0<bool>::connect(bind(s, data));
+	SigC::Connection connect(const SigC::Slot1<bool, datatype>& s, datatype data) {
+		return SigC::Signal0<bool>::connect(bind(s, data));
 	};
 
 };
 
-template<class P1, class datatype = PG_Pointer> class PG_Signal1 : public Signal1<bool, P1> {
+template<class P1, class datatype = PG_Pointer> class PG_Signal1 : public SigC::Signal1<bool, P1> {
 
-	static bool sig_convert0(Slot0<bool>& s, P1 p1) {
+	static bool sig_convert0(SigC::Slot0<bool>& s, P1 p1) {
 		return s();
 	}
 
 public:
 	
-	Connection connect(const Slot2<bool, P1, datatype>& s, datatype data) {
-		return Signal1<bool, P1>::connect(bind(s, data));
+	SigC::Connection connect(const SigC::Slot2<bool, P1, datatype>& s, datatype data) {
+		return SigC::Signal1<bool, P1>::connect(bind(s, data));
 	};
 
-	Connection connect(const Slot1<bool, datatype>& s, datatype data) {
+	SigC::Connection connect(const SigC::Slot1<bool, datatype>& s, datatype data) {
 		return connect(bind(s, data));
 	}
 
-	Connection connect(const Slot1<bool, P1>& s) {
-		return Signal1<bool, P1>::connect(s);
+	SigC::Connection connect(const SigC::Slot1<bool, P1>& s) {
+		return SigC::Signal1<bool, P1>::connect(s);
 	}
 
-	Connection connect(const Slot0<bool>& s) {
-		return Signal1<bool, P1>::connect(convert(s, sig_convert0));
+	SigC::Connection connect(const SigC::Slot0<bool>& s) {
+		return SigC::Signal1<bool, P1>::connect( SigCX::convert(s, sig_convert0));
 	}
 
 	PG_Signal1& operator=(const PG_Signal1&);
 };
 
 
-template<class P1, class P2, class datatype = PG_Pointer> class PG_Signal2 : public Signal2<bool, P1, P2> {
+template<class P1, class P2, class datatype = PG_Pointer> class PG_Signal2 : public SigC::Signal2<bool, P1, P2> {
 
-	static bool sig_convert_p2(Slot1<bool, P2>& s, P1 p1, P2 p2) {
+	static bool sig_convert_p2( SigC::Slot1<bool, P2>& s, P1 p1, P2 p2) {
 		return s(p2);
 	}
 
-	static bool sig_convert_p1(Slot1<bool, P1>& s, P1 p1, P2 p2) {
+	static bool sig_convert_p1( SigC::Slot1<bool, P1>& s, P1 p1, P2 p2) {
 		return s(p1);
 	}
 
-	static bool sig_convert0(Slot0<bool>& s, P1 p1, P2 p2) {
+	static bool sig_convert0( SigC::Slot0<bool>& s, P1 p1, P2 p2) {
 		return s();
 	}
 public:
 
-	Connection connect(const Slot3<bool, P1, P2, datatype>& s, datatype data) {
-		return Signal2<bool, P1, P2>::connect(bind(s, data));
+	SigC::Connection connect(const SigC::Slot3<bool, P1, P2, datatype>& s, datatype data) {
+		return SigC::Signal2<bool, P1, P2>::connect(bind(s, data));
 	}
 
-	Connection connect(const Slot2<bool, P1, datatype>& s, datatype data) {
-		return Signal2<bool, P1, P2>::connect(bind(s, data));
+	SigC::Connection connect(const SigC::Slot2<bool, P1, datatype>& s, datatype data) {
+		return SigC::Signal2<bool, P1, P2>::connect(bind(s, data));
 	};
 
-	Connection connect(const Slot2<bool, P1, P2>& s) {
-		return Signal2<bool, P1, P2>::connect(s);
+	SigC::Connection connect(const SigC::Slot2<bool, P1, P2>& s) {
+		return SigC::Signal2<bool, P1, P2>::connect(s);
 	}
 
-	Connection connect(const Slot1<bool, P2>& s) {
-		return Signal2<bool, P1, P2>::connect(convert(s, sig_convert_p2));
+	SigC::Connection connect(const SigC::Slot1<bool, P2>& s) {
+		return SigC::Signal2<bool, P1, P2>::connect( SigCX::convert(s, sig_convert_p2));
 	}
 
-	Connection connect(const Slot1<bool, P1>& s) {
-		return Signal2<bool, P1, P2>::connect(convert(s, sig_convert_p2));
+	SigC::Connection connect(const SigC::Slot1<bool, P1>& s) {
+		return SigC::Signal2<bool, P1, P2>::connect( SigCX::convert(s, sig_convert_p2));
 	}
 
-	Connection connect(const Slot0<bool>& s) {
-		return Signal2<bool, P1, P2>::connect(convert(s, sig_convert0));
+	SigC::Connection connect(const SigC::Slot0<bool>& s) {
+		return SigC::Signal2<bool, P1, P2>::connect( SigCX::convert(s, sig_convert0));
 	}
 
 private:

@@ -23,6 +23,13 @@ take a look into "TODO".
 
 
 ----------------------------
+Whats new in ParaGUI 1.1.9 ?
+----------------------------
+
+- removed SigC namespace usage in pgsingals.h (Thanks Martin Bickel <mbickel@asc-hq.org>)
+
+
+----------------------------
 Whats new in ParaGUI 1.1.8 ?
 ----------------------------
 
