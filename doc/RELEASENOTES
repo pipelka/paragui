@@ -31,6 +31,26 @@ Whats new in ParaGUI 1.1.7 ?
 - disabled alpha for application background
 - optimized PG_RectList
 - added docs
+- applied patches from Sebastian:
+  made AddWidget() / AddItem() obsolete (see roadmap for more info)
+  added param 'bool bRecursive' to PG_Widget::SetTransparency (set to false by default)
+  added PG_Button::SetTransparency(Uint8 t, bool bRecursive) to work properly
+  when a parent widget sets transparency recursively
+  improved graphical update of software cursor a bit by minimizing rect to be updated
+  merged multiple calls to SDL_UpdateRects to improve performance 
+  (see SDL reference for more info)
+  added PG_DropDown::GetIndent()
+  added PG_Label::GetIndent()
+  added PG_ListBox::GetIndent()
+  fixed PG_ListBox::GetSelectedItems() (sorry, my fault :))
+  fixed: sometimes PG_ListBox items were drawn although parent was not visible
+  removed unnecessary BringToFront() in PG_DropDown::handleButtonClick()
+  improved graphical update in PG_ListBox::SelectItem()
+  added 24 bpp support for fonts (thanks to Steve McCrea!)
+  fixed paratest.cpp VC.NET warnings
+  made some changes to paratest.cpp to make use of PG_Button::SetTransparency()
+  and the new way of adding items to lists
+  made some minor cleanups
 
 
 ----------------------------

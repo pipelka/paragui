@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.2 $
     Status:           $State: Exp $
 */
 
@@ -30,7 +30,7 @@
 #include "pglistbox.h"
 #include "pglog.h"
 
-PG_ListBoxBaseItem::PG_ListBoxBaseItem(int height, void* userdata) : PG_Label(NULL, PG_Rect(0,0,100,20), NULL) {
+PG_ListBoxBaseItem::PG_ListBoxBaseItem(PG_Widget* parent, int height, void* userdata) : PG_Label(parent, PG_Rect(0,0,100,20), NULL) {
 	my_userdata = userdata;
 	my_selected = false;
 	my_hover = false;
@@ -97,7 +97,7 @@ bool PG_ListBoxBaseItem::eventMouseButtonUp(const SDL_MouseButtonEvent* button) 
 		return false;
 	}
 
-	if(GetParent() == NULL) {
+	if(GetParent() == NULL || !GetParent()->IsVisible()) {
 		return true;
 	}
 

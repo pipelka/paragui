@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 10:11:15 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcolumnitem.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -54,7 +54,7 @@ public:
 	@param height height of the item in pixels.
 	@param userdata pointer to userdata this item should refer to.
 	*/
-	PG_ColumnItem(Uint32 columns, Uint32 height, void* userdata = NULL);
+	PG_ColumnItem(PG_Widget* parent, Uint32 columns, Uint32 height, void* userdata = NULL);
 
 	/** */
 	~PG_ColumnItem();

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/19 16:50:11 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -32,7 +32,10 @@
 #include "pglistboxitem.h"
 #include "pglineedit.h"
 
-PG_DropDown::PG_DropDown(PG_Widget* parent, int id, const PG_Rect& r, const char* style) : PG_Widget(parent, r) {
+PG_DropDown::PG_DropDown(PG_Widget* parent, int id, const PG_Rect& r, const char* style) : PG_Widget(parent, r),
+// needed for AddChild() evaluation - H. C.
+my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
+{
 	PG_Rect rect(0, 0, r.my_width - r.my_height, r.my_height);
 
 	SetID(id);
@@ -61,15 +64,29 @@ void PG_DropDown::LoadThemeStyle(const char* style) {
 	my_DropList->LoadThemeStyle(style);
 }
 
+void PG_DropDown::AddChild(PG_Widget* child) {
+	if (my_EditBox == NULL || my_DropButton == NULL || my_DropList == NULL) {
+		PG_Widget::AddChild(child);	
+	}
+	else {
+		my_DropList->AddChild(child);
+		my_DropList->SizeWidget(my_width, my_DropList->GetListHeight() + my_DropList->GetBorderSize()*2);
+	}
+}
+
+// obsolete -> roadmap
 void PG_DropDown::AddItem(const char* text, void* userdata, Uint16 height) {
 	Uint16 h = height;
+
+	PG_FontEngine::GetTextSize(text, GetFont(), NULL, NULL, NULL, NULL, &h);	
 
 	if(height == 0) {
 	    PG_FontEngine::GetTextSize(text, GetFont(), NULL, NULL, NULL, NULL, &h);
 	    h += 2;
 	}
 	
-	PG_ListBoxItem* item = new PG_ListBoxItem(h, text, NULL, userdata);
+	PG_ListBoxItem* item = new PG_ListBoxItem(NULL, h, text, NULL, userdata);
+
 	my_DropList->AddItem(item);
 	
 	my_DropList->SizeWidget(my_width, my_DropList->GetListHeight() + my_DropList->GetBorderSize()*2);
@@ -101,7 +118,7 @@ bool PG_DropDown::handleButtonClick(PG_Button* button) {
 	} else {
 		my_DropList->MoveRect(my_xpos, my_ypos+my_height);
 		my_DropList->Show();
-		my_DropList->BringToFront();
+		//my_DropList->BringToFront();
 	}
 
 	return true;
@@ -181,4 +198,8 @@ void PG_DropDown::SelectItem(const int n) {
 	
 	for (i=0; i < n; i++)
 	  my_DropList->SelectNextItem();
+}
+
+int PG_DropDown::GetIndent() {
+	return my_DropList->GetIndent();
 }

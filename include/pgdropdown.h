@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 10:11:15 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -101,6 +101,9 @@ public:
 	*/
 	void SetIndent(int indent);
 
+	/** Returns the item indentation */
+	int GetIndent();
+
 	/**
 	Set if the widget is editable by the user
 	@param	edit		true - widget is editable / false - widget is read only
@@ -148,6 +151,8 @@ public:
 	@param n number of item to select
 	*/
 	void SelectItem(const int n);
+
+	void AddChild(PG_Widget* child);
 
 	SignalSelectItem<> sigSelectItem;
 

@@ -13,7 +13,7 @@ bool handleListBoxItem(PG_ListBoxBaseItem* item) {
 	
 	for(int i=0; i<10; i++) {
 		sprintf(text,"NewItem %i", counter++);
-		list->AddItem(new PG_ListBoxItem(25, text));
+		new PG_ListBoxItem(list, 25, text);
 	}
 
 	list->Update();	
@@ -37,7 +37,7 @@ int main( int argc, char **argv )
 	int i;
 	
 	for(i=0; i<10; i++) {
-		items[i] = new PG_ListBoxItem(25, "");
+		items[i] = new PG_ListBoxItem(&listbox, 25, "");
 		items[i]->SetTextFormat("Item %i", i+1);
 		listbox.AddItem(items[i]);
 	}

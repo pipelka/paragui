@@ -882,7 +882,8 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 			h = 25;
 		}
 
-		PG_ListBoxItem *Widget = new PG_ListBoxItem(h, PG_Layout::GetParamStr(atts, "ltext"));
+		// to be updated!
+		PG_ListBoxItem *Widget = new PG_ListBoxItem(NULL, h, PG_Layout::GetParamStr(atts, "ltext"));
 		((PG_ListBox *)XMLParser->ParentObject)->AddItem(Widget);
 		XMLParser->ParentObject = Widget;
 
@@ -894,7 +895,8 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 	if (IsTag("columnitem","CI",XML_SECTION_LISTBOX)) {
 		XMLParser->Section = XML_SECTION_COLUMNITEM | XML_SECTION_COMWIDPARAMS;
 
-		PG_ColumnItem *Widget = new PG_ColumnItem(PG_Layout::GetParamInt(atts, "columns"),PG_Layout::GetParamInt(atts, "height"));
+		// to be updated!
+		PG_ColumnItem *Widget = new PG_ColumnItem(NULL, PG_Layout::GetParamInt(atts, "columns"),PG_Layout::GetParamInt(atts, "height"));
 		((PG_ListBox *)XMLParser->ParentObject)->AddItem(Widget);
 		XMLParser->ParentObject = Widget;
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.3 $
     Status:           $State: Exp $
 */
 
@@ -45,8 +45,8 @@ void PG_ListBox::AddWidget(PG_Widget* w) {
 	PG_WidgetList::AddWidget(w);
 }
 
-void PG_ListBox::AddItem(PG_ListBoxBaseItem* item) {
-    if (!item)
+void PG_ListBox::AddChild(PG_Widget* item) {
+	if (!item)
         return;
     
     Sint16 neww = Width() - my_widthScrollbar - (my_bordersize << 1);
@@ -55,8 +55,22 @@ void PG_ListBox::AddItem(PG_ListBoxBaseItem* item) {
         neww = 0;
     
 	item->SizeWidget(neww, item->Height());
-	item->SetIndent(my_indent);
-	AddWidget(item);
+	if (static_cast<PG_ListBoxBaseItem*>(item) != NULL) {
+		static_cast<PG_ListBoxBaseItem*>(item)->SetIndent(my_indent);
+	
+		// this is just around for ensuring compatibility to the obsolete method (-> roadmap) - H. C.
+		if (item->GetParent() != NULL) {
+			item->my_xpos = 0;
+			item->my_ypos = 0;			
+		}
+	}				
+	
+	PG_WidgetList::AddChild(item);
+}
+
+// obsolete -> roadmap
+void PG_ListBox::AddItem(PG_ListBoxBaseItem* item) {
+	AddChild(item);    
 }
 
 void PG_ListBox::SetMultiSelect(bool multi) {
@@ -84,9 +98,10 @@ void PG_ListBox::SelectItem(PG_ListBoxBaseItem* item, bool select) {
 		}
 
 		my_selectedItem = item;
+		my_selectedItem->Update();
 	}
 
-	Update();
+	//Update();
 	sigSelectItem(item);
 	eventSelectItem(item);
 }
@@ -166,6 +181,14 @@ int PG_ListBox::GetSelectedIndex() {
 }
 
 void PG_ListBox::GetSelectedItems(std::vector<PG_ListBoxBaseItem*>& items) {
-	for (Uint16 i = 0; i < GetWidgetCount(); ++i)
-		items.push_back((PG_ListBoxBaseItem*)FindWidget(i));	
+	for (Uint16 i = 0; i < GetWidgetCount(); ++i) {
+		PG_ListBoxBaseItem* item = static_cast<PG_ListBoxBaseItem*>(FindWidget(i));
+		if (item->IsSelected()) {
+			items.push_back(item);	
+		}
+	}
+}
+
+int PG_ListBox::GetIndent() {
+	return my_indent;
 }

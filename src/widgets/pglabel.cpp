@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -36,7 +36,8 @@ PG_Widget(parent, r) {
 
 	my_alignment = CENTER;
 	my_srfIcon = NULL;
-	my_indent = 0;
+	// might be set by PG_ListBox::AddChild()!
+	//my_indent = 0;
 	my_freeicon = false;
 
 	SetText(text);
@@ -153,4 +154,8 @@ SDL_Surface* PG_Label::GetIcon() {
 
 void PG_Label::SetIndent(int indent) {
 	my_indent = indent;
+}
+
+int PG_Label::GetIndent() {
+	return my_indent;
 }

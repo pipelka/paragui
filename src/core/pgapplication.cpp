@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/19 16:50:11 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.10 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.11 $
     Status:           $State: Exp $
 */
 
@@ -242,7 +242,7 @@ void PG_Application::ClearOldMousePosition() {
 
 void PG_Application::DrawCursor(bool update) {
 	int x, y;
-	PG_Rect saved;
+
 	if(!my_mouse_pointer || my_mouse_mode != SOFTWARE) {
 		return;
 	}
@@ -252,7 +252,52 @@ void PG_Application::DrawCursor(bool update) {
 	}
 
 	SDL_GetMouseState(&x, &y);
-	saved = my_mouse_position;
+
+	Sint16 dx = x - my_mouse_position.my_xpos;
+	Sint16 dy = y - my_mouse_position.my_ypos;
+
+	// calculate vertical update rect
+	PG_Rect vertical(0, my_mouse_position.my_ypos, abs(dx), my_mouse_pointer->h + abs(dy));
+	if(dx >= 0) {
+		vertical.my_xpos = my_mouse_position.my_xpos;
+	} else {
+		vertical.my_xpos = my_mouse_position.my_xpos + my_mouse_pointer->w + dx;
+	}	
+
+	// calculate horizontal update rect
+	PG_Rect horizontal(my_mouse_position.my_xpos, 0, my_mouse_pointer->w + abs(dx), abs(dy));	
+	if(dy >= 0) {
+		horizontal.my_ypos = my_mouse_position.my_ypos;
+	} else {
+		horizontal.my_ypos = my_mouse_position.my_ypos + my_mouse_pointer->h + dy;
+	}
+	
+	// clipping
+	if(vertical.my_xpos + vertical.my_width > screen->w) {
+		if(vertical.my_xpos >= screen->w) {
+			vertical.my_xpos = screen->w - 1;
+		}
+		vertical.my_width = screen->w - vertical.my_xpos;
+	}
+	if(vertical.my_ypos + vertical.my_height > screen->h) {
+		if(vertical.my_ypos >= screen->h) {
+			vertical.my_ypos = screen->h - 1;
+		}
+		vertical.my_height = screen->h - vertical.my_ypos;
+	}
+
+	if(horizontal.my_xpos + horizontal.my_width > screen->w) {
+		if(horizontal.my_xpos >= screen->w) {
+			horizontal.my_xpos = screen->w - 1;
+		}
+		horizontal.my_width = screen->w - horizontal.my_xpos;
+	}
+	if(horizontal.my_ypos + horizontal.my_height > screen->h) {
+		if(horizontal.my_ypos >= screen->h) {
+			horizontal.my_ypos = screen->h - 1;
+		}
+		horizontal.my_height = screen->h - horizontal.my_ypos;
+	}		
 
 	my_mouse_position.my_xpos = x;
 	my_mouse_position.my_ypos = y;
@@ -267,9 +312,10 @@ void PG_Application::DrawCursor(bool update) {
 	
 	// draw cursor
 	SDL_BlitSurface(my_mouse_pointer, 0, screen, &my_mouse_position);
+
 	if(!GetBulkMode() && update) {
-		SDL_UpdateRects(screen, 1, &saved);
-		SDL_UpdateRects(screen, 1, &my_mouse_position);
+		SDL_Rect rects[3] = {horizontal, vertical, my_mouse_position};
+		SDL_UpdateRects(screen, 3, rects);
 	}
 }
 void PG_Application::Quit() {

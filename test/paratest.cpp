@@ -84,11 +84,11 @@ public:
 	/** callback handler in another flavor */
 	bool handler_slider_btntrans(long data) {
 		// set transparency of passed in button
-		b->SetTransparency(data, data, data);
+		b->SetTransparency(static_cast<Uint8>(data));
 		b->Update();
 
 		// set transparency of class member (progress)
-		progress->SetTransparency(data);
+		progress->SetTransparency(static_cast<Uint8>(data));
 		progress->Update();
 		return true;
 	}
@@ -285,7 +285,7 @@ int main(int argc, char* argv[]) {
 	bool bTestMode = false;
 
 	strcpy(theme, "default");
-	
+
 	// initial flags for screensurface
 	Uint32 flags = SDL_SWSURFACE;
 	int bpp = 0;
@@ -456,6 +456,8 @@ int main(int argc, char* argv[]) {
 
 	PG_DropDown drop(NULL, 14, PG_Rect(50, 280, 300,25));
 	drop.SetIndent(5);
+	
+	//<obsolete>
 	drop.AddItem("Under construction");
 	drop.AddItem("Item 1");
 	drop.AddItem("Item 2");
@@ -463,6 +465,14 @@ int main(int argc, char* argv[]) {
 	drop.AddItem("Item 4");
 	drop.AddItem("Item 5");
 	drop.AddItem("Item 6");
+	//</obsolete>
+	// creating static objects and inserting them into the list
+	// isn't a good idea (the list will try to delete the objects
+	// and the static objects will be destroyed when leaving the
+	// application). Let's use dynamic objects.
+	new PG_ListBoxItem(&drop, 25, "Item 7");
+	new PG_ListBoxItem(&drop, 25, "Item 8");
+	new PG_ListBoxItem(&drop, 25, "Item 9");
 	drop.Show();
 
 	PG_Button list(NULL, BTN_ID_OK, PG_Rect(400,450,100,30), "List");

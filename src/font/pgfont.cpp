@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:01:03 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -161,6 +161,7 @@ inline void BlitTemplate(DT pixels, SDL_Surface* Surface, FT_Bitmap *Bitmap, int
 	cr = fc.r;
 	cg = fc.g;
 	cb = fc.b;
+
 	int alpha = Param->GetAlpha();
 
 	line = dst_pixels;
@@ -228,8 +229,34 @@ inline void BlitTemplate(DT pixels, SDL_Surface* Surface, FT_Bitmap *Bitmap, int
 					| (b >> Bloss) << Bshift
 	        	    | ((a >> Aloss) << Ashift & Amask);
 				// Set the pixel
+				*((DT) (dst_pixels)) = color;
 				break;
+			
+			case 3:																								
+				cr = (fc.r << format->Rshift) >> 16 & 0xff;
+				cg = (fc.g << format->Gshift) >> 8 & 0xff;				
+				cb = fc.b << format->Bshift & 0xff;
 				
+				if (v == 255) {
+					r = cr;
+					g = cg;
+					b = cb;
+				}
+				// calculate new RGB values
+				else {
+					b = *(dst_pixels);
+					g = *(dst_pixels+1);
+					r = *(dst_pixels+2);
+					r += ((cr - r) * v) >> 8;
+					g += ((cg - g) * v) >> 8;
+					b += ((cb - b) * v) >> 8;
+				}								
+ 								
+				*dst_pixels = b;
+				*(dst_pixels + 1) = g;
+				*(dst_pixels + 2) = r;
+				break;
+			
 			case 1:
 				SDL_GetRGBA(color, format, &r, &g, &b, &a);
 
@@ -254,9 +281,9 @@ inline void BlitTemplate(DT pixels, SDL_Surface* Surface, FT_Bitmap *Bitmap, int
 					a = v;
 				}
  				color = SDL_MapRGBA(format, r,g,b, a);
-				break;
-			}
-			*((DT) (dst_pixels)) = color;
+				*((DT) (dst_pixels)) = color;
+				break;			
+			}			
 
 		}
 		src_pixels -= xw;
@@ -316,8 +343,9 @@ bool PG_FontEngine::BlitFTBitmap(SDL_Surface *Surface, FT_Bitmap *Bitmap, int Po
 		return false;
 	}
 	
-	switch(Surface->format->BytesPerPixel) {
+	switch(Surface->format->BytesPerPixel) {						
 		case 1:
+		case 3:
 			BlitTemplate((Uint8*)Surface->pixels, Surface, Bitmap, PosX, PosY, x0, x1, y0, y1, Param);
 			break;
 		case 2:
@@ -325,6 +353,9 @@ bool PG_FontEngine::BlitFTBitmap(SDL_Surface *Surface, FT_Bitmap *Bitmap, int Po
 			break;
 		case 4:
 			BlitTemplate((Uint32*)Surface->pixels, Surface, Bitmap, PosX, PosY, x0, x1, y0, y1, Param);
+			break;
+		default:
+			PG_LogWRN("Unable to draw font: unsupported bit depth!");
 			break;
 	}
 

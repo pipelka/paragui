@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/17 12:41:17 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.9 $
     Status:           $State: Exp $
 */
 
@@ -405,9 +405,9 @@ void PG_ThemeWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 	}
 }
 
-void PG_ThemeWidget::SetTransparency(Uint8 t) {
+void PG_ThemeWidget::SetTransparency(Uint8 t, bool bRecursive) {
 	if(_mid->simplebackground || _mid->nocache) {
-		PG_Widget::SetTransparency(t);
+		PG_Widget::SetTransparency(t, bRecursive);
 		return;
 	}
 
@@ -417,7 +417,7 @@ void PG_ThemeWidget::SetTransparency(Uint8 t) {
 	} else if(GetTransparency() == 255) {
 		CreateSurface();
 	}
-	PG_Widget::SetTransparency(t);
+	PG_Widget::SetTransparency(t, bRecursive);
 }
 
 SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* gradient, SDL_Surface* background, int bkmode, Uint8 blend) {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 10:11:15 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
     Status:           $State: Exp $
 */
 
@@ -231,6 +231,8 @@ public:
 	/**  */
 	void SetPressed(bool pressed);
 
+	void SetTransparency(Uint8 t, bool bRecursive = false);
+	
 	/**  */
 	void SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high);
 

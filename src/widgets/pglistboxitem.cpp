@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/19 16:50:11 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5.4.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.5.4.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,7 @@
 #include "pgapplication.h"
 #include "pgtheme.h"
 
-PG_ListBoxItem::PG_ListBoxItem(int height, const char* text, SDL_Surface* icon, void* userdata, const char* style) : PG_ListBoxBaseItem(height, userdata) {
+PG_ListBoxItem::PG_ListBoxItem(PG_Widget* parent, int height, const char* text, SDL_Surface* icon, void* userdata, const char* style) : PG_ListBoxBaseItem(parent, height, userdata) {
 	
 	for(int i=0; i<3; i++) {
 		my_background[i] = NULL;

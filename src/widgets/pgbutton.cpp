@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/17 12:41:17 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -66,12 +66,8 @@ PG_Button::PG_Button(PG_Widget* parent, int id, const PG_Rect& r, const char* te
 
 	_mid->free_icons = false;
 
-	SetText(text);
-
 	_mid->togglemode = false;
 	_mid->isPressed = false;
-
-	SetID(id);
 
 	_mid->my_state = UNPRESSED;
 
@@ -94,6 +90,9 @@ PG_Button::PG_Button(PG_Widget* parent, int id, const PG_Rect& r, const char* te
 	_mid->backBlend[UNPRESSED] = 0;
 	_mid->backBlend[HIGHLITED] = 0;
 	_mid->backBlend[PRESSED] = 0;
+
+	SetText(text);
+	SetID(id);
 
 	LoadThemeStyle(style);
 }
@@ -230,8 +229,6 @@ void PG_Button::eventSizeWidget(Uint16 w, Uint16 h) {
 	}
 
 	FreeSurfaces();
-
-	return;
 }
 
 /**  */
@@ -442,6 +439,19 @@ void PG_Button::SetPressed(bool pressed) {
 
 	Update();
 }
+void PG_Button::SetTransparency(Uint8 t, bool bRecursive) {
+	_mid->my_transparency[UNPRESSED] = t;
+	_mid->my_transparency[PRESSED] = t;
+	_mid->my_transparency[HIGHLITED] = t;
+
+	if(!bRecursive || (GetChildList() == NULL)) {
+		return;
+	}
+
+	for(PG_Widget* i = static_cast<PG_Widget*>(GetChildList()->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+		i->SetTransparency(t, true);
+	}
+}
 
 /**  */
 void PG_Button::SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high) {
@@ -514,7 +524,7 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	
 		eventButtonSurface(&(_mid->srf[UNPRESSED]), UNPRESSED, w, h);
 		if(_mid->srf[UNPRESSED]) {
-				SDL_SetAlpha(_mid->srf[UNPRESSED], SDL_SRCALPHA, 255-_mid->my_transparency[UNPRESSED]);
+			SDL_SetAlpha(_mid->srf[UNPRESSED], SDL_SRCALPHA, 255-_mid->my_transparency[UNPRESSED]);
 		}
 	
 		eventButtonSurface(&(_mid->srf[PRESSED]), PRESSED, w, h);

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 10:11:15 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pglabel.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
     Status:           $State: Exp $
 */
 
@@ -83,6 +83,9 @@ public:
 	@param	indent		number of pixels for text indentation
 	*/
 	void SetIndent(int indent);
+
+	/** Returns the text indentation */
+	int GetIndent();
 
 protected:
 

@@ -20,15 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/07 10:01:32 $
+    Update Date:      $Date: 2004/02/21 13:58:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcolumnitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
     Status:           $State: Exp $
 */
 
 #include "pgcolumnitem.h"
 
-PG_ColumnItem::PG_ColumnItem(Uint32 columns, Uint32 height, void* userdata) : PG_ListBoxItem(height) {
+PG_ColumnItem::PG_ColumnItem(PG_Widget* parent, Uint32 columns, Uint32 height, void* userdata) : PG_ListBoxItem(parent, height) {
 	SetUserData(userdata);
 	my_columncount = columns;
 

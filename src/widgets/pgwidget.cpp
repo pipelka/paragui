@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/02/19 16:50:11 $
+   Update Date:      $Date: 2004/02/21 13:58:06 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.7 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.8 $
    Status:           $State: Exp $
  */
 
@@ -412,9 +412,8 @@ bool PG_Widget::MoveWidget(int x, int y) {
 		UpdateRect(horizontal);
 		UpdateRect(my_internaldata->rectClip);
 		PG_Application::LockScreen();
-		SDL_UpdateRects(my_srfScreen, 1, &my_internaldata->rectClip);
-		SDL_UpdateRects(my_srfScreen, 1, &vertical);
-		SDL_UpdateRects(my_srfScreen, 1, &horizontal);
+		SDL_Rect rects[3] = {my_internaldata->rectClip, vertical, horizontal};
+		SDL_UpdateRects(my_srfScreen, 3, rects);
 		PG_Application::UnlockScreen();
 	}
 
@@ -1456,13 +1455,9 @@ void PG_Widget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	}
 
 	// Set alpha
-	if(my_internaldata->transparency != 255) {
-		Uint8 a0 = srf->format->alpha;
-		Uint8 a1 = 255-my_internaldata->transparency;
-
-		if(a0 != a1) {
-			SDL_SetAlpha(srf, SDL_SRCALPHA, a1);
-		}
+	Uint8 a = 255-my_internaldata->transparency;
+	if(a != 0) {
+		SDL_SetAlpha(srf, SDL_SRCALPHA, a);
 
 		// Blit widget surface to screen
 #ifdef DEBUG
@@ -1502,8 +1497,16 @@ void PG_Widget::DrawBorder(const PG_Rect& r, int size, bool up) {
 	}
 }
 
-void PG_Widget::SetTransparency(Uint8 t) {
+void PG_Widget::SetTransparency(Uint8 t, bool bRecursive) {
 	my_internaldata->transparency = t;
+
+	if(!bRecursive || (GetChildList() == NULL)) {
+		return;
+	}
+
+	for(PG_Widget* i = static_cast<PG_Widget*>(GetChildList()->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+		i->SetTransparency(t, true);
+	}	
 }
 
 void PG_Widget::SetClipRect(PG_Rect& r) {
