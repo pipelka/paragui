@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/05 06:43:36 $
+    Update Date:      $Date: 2004/05/06 11:28:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.12 $
     Status:           $State: Exp $
 */
 
@@ -39,11 +39,17 @@
 #include "pgdraw.h"
 #include <string>
 
+
+class PG_ButtonDataInternal;
+
+
 /**
 	@author Alexander Pipelka
  
 	@short Button that uses themes.
- 
+
+	@image html pgbutton.png "button screenshot"
+
 
 	Several predefined button IDs exist. All of them are associated with
 	default icons used automatically when the given ID is assigned to a
@@ -115,16 +121,6 @@
 	\endverbatim
 	<p>
 	<h2>Code:</h2><p>
-*/
-
-class PG_ButtonDataInternal;
-
-/*
-	@author Alexander Pipelka
- 
-	@short Button that uses themes.
-
-	@image html pgbutton.png "button screenshot"
 */
 
 class DECLSPEC PG_Button : public PG_Widget  {
