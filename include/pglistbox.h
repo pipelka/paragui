@@ -20,14 +20,22 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2002/04/28 21:14:59 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_LISTBOX_H
 #define PG_LISTBOX_H
+
+#ifdef SWIG
+%include "swigcommon.h"
+%module pglistbox
+%{
+#include "pglistbox.h"
+    %}
+#endif
 
 #include "pgwidgetlist.h"
 #include "pglistboxitem.h"
@@ -48,7 +56,7 @@ public:
 	~PG_ListBox();
 
 	/** */
-	void AddItem(PG_ListBoxItem* item);
+	void AddItem(PG_ListBoxBaseItem* item);
 
 	/** */
 	void SetMultiSelect(bool multi = true);
@@ -57,7 +65,7 @@ public:
 	bool GetMultiSelect();
 
 	/** */
-	PG_ListBoxItem* GetSelectedItem();
+	PG_ListBoxBaseItem* GetSelectedItem();
 
 	/** */
 	void SelectItem(PG_ListBoxBaseItem* item, bool select = true);
@@ -87,9 +95,10 @@ public:
 	*/
 	void SetIndent(int indent);
 
-	PG_SignalSelectItem sigSelectItem;
-
 protected:
+
+	/** */
+	virtual bool eventSelectItem(PG_ListBoxBaseItem* item);
 
 	/** */
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
@@ -100,6 +109,8 @@ protected:
 	/** */
 	bool eventMouseMotion(const SDL_MouseMotionEvent* motion);
 
+	friend class PG_ListBoxBaseItem;
+	
 private:
 
 	void AddWidget(PG_Widget* w);
@@ -108,7 +119,7 @@ private:
 	int my_indent;
 	int my_selectindex;
 
-	PG_ListBoxItem* my_selectedItem;
+	PG_ListBoxBaseItem* my_selectedItem;
 
 };
 

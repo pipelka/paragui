@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/04/28 21:14:59 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -65,6 +65,7 @@ void PG_ListBoxBaseItem::Select(bool select) {
 	}
 
 	Update();
+	GetParent()->eventSelectItem(this);
 }
 
 int PG_ListBoxBaseItem::Height() {
