@@ -10,8 +10,8 @@ Libs=
 PrivateResource=paragui_private.rc
 ResourceIncludes=
 MakeIncludes=devc-stripdll.mak
-Compiler=-DBUILDING_DLL=1 _@@_-DXMLPARSEAPI="" _@@_-DPHYSFS_SUPPORTS_ZIP=1 _@@_-march=i586 _@@_-O2_@@_
-Linker=--export-all-symbols _@@_--add-stdcall-alias _@@_-lSDL _@@_-lSDL_image _@@_-lfreetype _@@_-lz_@@_
+Compiler=-DBUILDING_DLL=1 _@@_-DXMLPARSEAPI="" _@@_-DPHYSFS_SUPPORTS_ZIP=1 _@@_-march=i586 _@@_-Os_@@_
+Linker=--export-all-symbols_@@_--add-stdcall-alias_@@_--strip-all_@@_-lSDL _@@_-lSDL_image _@@_-lfreetype _@@_-lz_@@_
 IsCpp=1
 Icon=
 ExeOutput=bin
@@ -20,7 +20,7 @@ OverrideOutput=0
 OverrideOutputName=paragui.dll
 Folders=core,draw,expat,font,include,physfs,themes,widgets
 CommandLine=
-CppCompiler=-DBUILDING_DLL=1  _@@_-march=i586 _@@_-O2_@@__@@_
+CppCompiler=-DBUILDING_DLL=1_@@_-march=i586_@@_-Os_@@__@@_
 HostApplication=
 IncludeVersionInfo=1
 SupportXPThemes=0
