@@ -18,6 +18,9 @@
 
 const char *__PHYSFS_platformDirSeparator = "\\";
 
+static HANDLE ProcessHandle = NULL;     /* Current process handle */
+static DWORD ProcessID;                 /* ID assigned to current process */
+
 #define LOWORDER_UINT64(pos)       (PHYSFS_uint32)(pos & 0x00000000FFFFFFFF)
 #define HIGHORDER_UINT64(pos)      (PHYSFS_uint32)(pos & 0xFFFFFFFF00000000)
 #define INVALID_SET_FILE_POINTER	((DWORD)-1)
@@ -43,13 +46,32 @@ static const char *win32strerror(void)
 
 int __PHYSFS_platformInit(void)
 {
-    return(1);  /* always succeed. */
+	char* basedir = NULL;
+
+    /* Get Windows ProcessID associated with the current process */
+    ProcessID = GetCurrentProcessId();
+    /* Create a process handle associated with the current process ID */
+    ProcessHandle = GetCurrentProcess();
+
+    if(ProcessHandle == NULL) {
+        /* Process handle is required by other win32 functions */
+        return 0;
+    }
+
+	basedir = __PHYSFS_platformCalcBaseDir("dummy");
+	SetCurrentDirectory(basedir);
+
+    return(1);
 } /* __PHYSFS_platformInit */
 
 
 int __PHYSFS_platformDeinit(void)
 {
-    return(1);  /* always succeed. */
+    if(CloseHandle(ProcessHandle) != S_OK)
+        return 0;
+
+    /* It's all good */
+    return 1;
 } /* __PHYSFS_platformDeinit */
 
 
@@ -172,7 +194,7 @@ char *__PHYSFS_platformGetUserDir(void)
 	return home;
     }
 
-    char *home = copyEnvironmentVariable("HOME");
+    home = copyEnvironmentVariable("HOME");
 
     if (home != NULL)
         return(home);
@@ -626,13 +648,13 @@ PHYSFS_sint64 __PHYSFS_platformTell(void *opaque)
 
     /* Get current position */
     retval = SetFilePointer(FileHandle, 0, NULL, FILE_CURRENT);
-    //if(GetLastError() != NO_ERROR)
-    //{
+    if(GetLastError() != NO_ERROR)
+    {
         /* Set the error to GetLastError */
-        //__PHYSFS_setError(win32strerror());
+        __PHYSFS_setError(win32strerror());
         /* We errored out */
-        //retval = 0;
-    //}
+        retval = 0;
+    }
 
     return retval;
 } /* __PHYSFS_platformTell */
@@ -668,6 +690,10 @@ int __PHYSFS_platformEOF(void *opaque)
 
     /* Cast the generic handle to a Win32 handle */
     FileHandle = (HANDLE)opaque;
+
+	if(__PHYSFS_platformFileLength(opaque) == -1) {
+		return 1;
+	}
 
     /* Get the current position in the file */
     if((FilePosition = __PHYSFS_platformTell(opaque)) != 0)
@@ -744,41 +770,38 @@ int __PHYSFS_platformDelete(const char *path)
 
 void *__PHYSFS_platformCreateMutex(void)
 {
-    return (void *)0x1;
-    //return (void *)CreateMutex(NULL, FALSE, NULL);
+    return (void *)CreateMutex(NULL, FALSE, NULL);
 } /* __PHYSFS_platformCreateMutex */
 
 
 void __PHYSFS_platformDestroyMutex(void *mutex)
 {
-    //CloseHandle((HANDLE)mutex);
+    CloseHandle((HANDLE)mutex);
 } /* __PHYSFS_platformDestroyMutex */
 
 
 int __PHYSFS_platformGrabMutex(void *mutex)
 {
-	return 0;
+    int retval;
 
-//    int retval;
-
-    //if(WaitForSingleObject((HANDLE)mutex, INFINITE) == WAIT_FAILED)
-    //{
+    if(WaitForSingleObject((HANDLE)mutex, INFINITE) == WAIT_FAILED)
+    {
         /* Our wait failed for some unknown reason */
-        //retval = 1;
-    //}
-    //else
-    //{
+        retval = 1;
+    }
+    else
+    {
         /* Good to go */
-        //retval = 0;
-    //}
+        retval = 0;
+    }
 
-    //return retval;
+    return retval;
 } /* __PHYSFS_platformGrabMutex */
 
 
 void __PHYSFS_platformReleaseMutex(void *mutex)
 {
-    //ReleaseMutex((HANDLE)mutex);
+    ReleaseMutex((HANDLE)mutex);
 } /* __PHYSFS_platformReleaseMutex */
 
 /* end of win32.c ... */

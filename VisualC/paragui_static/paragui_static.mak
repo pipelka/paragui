@@ -37,21 +37,24 @@ ALL : "..\..\lib\paraguis.lib"
 
 CLEAN :
 	-@erase "$(INTDIR)\dir.obj"
-	-@erase "$(INTDIR)\grp.obj"
-	-@erase "$(INTDIR)\parastretch.obj"
+	-@erase "$(INTDIR)\drawline.obj"
+	-@erase "$(INTDIR)\drawtile.obj"
+	-@erase "$(INTDIR)\gradient.obj"
+	-@erase "$(INTDIR)\missing.obj"
+	-@erase "$(INTDIR)\paragui.obj"
 	-@erase "$(INTDIR)\pgapplication.obj"
 	-@erase "$(INTDIR)\pgbutton.obj"
 	-@erase "$(INTDIR)\pgbuttongroup.obj"
 	-@erase "$(INTDIR)\pgcheckbutton.obj"
+	-@erase "$(INTDIR)\pgcolors.obj"
 	-@erase "$(INTDIR)\pgcolumnitem.obj"
-	-@erase "$(INTDIR)\pgdrawline.obj"
-	-@erase "$(INTDIR)\pgdrawobject.obj"
+	-@erase "$(INTDIR)\pgdatacontainer.obj"
 	-@erase "$(INTDIR)\pgdropdown.obj"
 	-@erase "$(INTDIR)\pgeventobject.obj"
 	-@erase "$(INTDIR)\pgfile.obj"
 	-@erase "$(INTDIR)\pgfilearchive.obj"
 	-@erase "$(INTDIR)\pgfont.obj"
-	-@erase "$(INTDIR)\pggradientwidget.obj"
+	-@erase "$(INTDIR)\pgfont_impl.obj"
 	-@erase "$(INTDIR)\pgimage.obj"
 	-@erase "$(INTDIR)\pglabel.obj"
 	-@erase "$(INTDIR)\pglayout.obj"
@@ -60,7 +63,9 @@ CLEAN :
 	-@erase "$(INTDIR)\pglistboxbaseitem.obj"
 	-@erase "$(INTDIR)\pglistboxitem.obj"
 	-@erase "$(INTDIR)\pglog.obj"
+	-@erase "$(INTDIR)\pgmain.obj"
 	-@erase "$(INTDIR)\pgmaskedit.obj"
+	-@erase "$(INTDIR)\pgmenubar.obj"
 	-@erase "$(INTDIR)\pgmessagebox.obj"
 	-@erase "$(INTDIR)\pgmessageobject.obj"
 	-@erase "$(INTDIR)\pgmsgmap.obj"
@@ -71,21 +76,21 @@ CLEAN :
 	-@erase "$(INTDIR)\pgrect.obj"
 	-@erase "$(INTDIR)\pgrectlist.obj"
 	-@erase "$(INTDIR)\pgrichedit.obj"
-	-@erase "$(INTDIR)\pgrotozoom.obj"
 	-@erase "$(INTDIR)\pgscrollbar.obj"
 	-@erase "$(INTDIR)\pgslider.obj"
 	-@erase "$(INTDIR)\pgspinnerbox.obj"
-	-@erase "$(INTDIR)\pgstaticframe.obj"
 	-@erase "$(INTDIR)\pgsurfacecache.obj"
+	-@erase "$(INTDIR)\pgthemewidget.obj"
 	-@erase "$(INTDIR)\pgwidget.obj"
 	-@erase "$(INTDIR)\pgwidgetdnd.obj"
 	-@erase "$(INTDIR)\pgwidgetlist.obj"
 	-@erase "$(INTDIR)\pgwidgetlistex.obj"
 	-@erase "$(INTDIR)\pgwindow.obj"
 	-@erase "$(INTDIR)\physfs.obj"
-	-@erase "$(INTDIR)\rendertextrect.obj"
-	-@erase "$(INTDIR)\theme_priv.obj"
-	-@erase "$(INTDIR)\themeloader.obj"
+	-@erase "$(INTDIR)\rotozoom.obj"
+	-@erase "$(INTDIR)\setpixel.obj"
+	-@erase "$(INTDIR)\stretch.obj"
+	-@erase "$(INTDIR)\surface.obj"
 	-@erase "$(INTDIR)\unzip.obj"
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\win32.obj"
@@ -96,7 +101,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /ML /W3 /vmg /GX /O2 /I "../../physfs" /I "../../themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /Fp"$(INTDIR)\paragui_static.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_PROJ=/nologo /ML /W3 /vmg /GX /O2 /I "../../src/physfs" /I "../../src/themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /Fp"$(INTDIR)\paragui_static.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -136,20 +141,40 @@ BSC32_SBRS= \
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"../../lib/paraguis.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\parastretch.obj" \
+	"$(INTDIR)\missing.obj" \
 	"$(INTDIR)\pgapplication.obj" \
+	"$(INTDIR)\pgcolors.obj" \
+	"$(INTDIR)\pgdatacontainer.obj" \
+	"$(INTDIR)\pgeventobject.obj" \
+	"$(INTDIR)\pgfile.obj" \
+	"$(INTDIR)\pgfilearchive.obj" \
+	"$(INTDIR)\pglog.obj" \
+	"$(INTDIR)\pgmain.obj" \
+	"$(INTDIR)\pgmessageobject.obj" \
+	"$(INTDIR)\pgmsgmap.obj" \
+	"$(INTDIR)\pgnavigator.obj" \
+	"$(INTDIR)\pgrectlist.obj" \
+	"$(INTDIR)\pgsurfacecache.obj" \
+	"$(INTDIR)\pgfont.obj" \
+	"$(INTDIR)\pgfont_impl.obj" \
+	"$(INTDIR)\drawline.obj" \
+	"$(INTDIR)\drawtile.obj" \
+	"$(INTDIR)\gradient.obj" \
+	"$(INTDIR)\pgrect.obj" \
+	"$(INTDIR)\rotozoom.obj" \
+	"$(INTDIR)\setpixel.obj" \
+	"$(INTDIR)\stretch.obj" \
+	"$(INTDIR)\surface.obj" \
+	"$(INTDIR)\dir.obj" \
+	"$(INTDIR)\physfs.obj" \
+	"$(INTDIR)\unzip.obj" \
+	"$(INTDIR)\win32.obj" \
+	"$(INTDIR)\zip.obj" \
 	"$(INTDIR)\pgbutton.obj" \
 	"$(INTDIR)\pgbuttongroup.obj" \
 	"$(INTDIR)\pgcheckbutton.obj" \
 	"$(INTDIR)\pgcolumnitem.obj" \
-	"$(INTDIR)\pgdrawline.obj" \
-	"$(INTDIR)\pgdrawobject.obj" \
 	"$(INTDIR)\pgdropdown.obj" \
-	"$(INTDIR)\pgeventobject.obj" \
-	"$(INTDIR)\pgfile.obj" \
-	"$(INTDIR)\pgfilearchive.obj" \
-	"$(INTDIR)\pgfont.obj" \
-	"$(INTDIR)\pggradientwidget.obj" \
 	"$(INTDIR)\pgimage.obj" \
 	"$(INTDIR)\pglabel.obj" \
 	"$(INTDIR)\pglayout.obj" \
@@ -157,38 +182,23 @@ LIB32_OBJS= \
 	"$(INTDIR)\pglistbox.obj" \
 	"$(INTDIR)\pglistboxbaseitem.obj" \
 	"$(INTDIR)\pglistboxitem.obj" \
-	"$(INTDIR)\pglog.obj" \
 	"$(INTDIR)\pgmaskedit.obj" \
+	"$(INTDIR)\pgmenubar.obj" \
 	"$(INTDIR)\pgmessagebox.obj" \
-	"$(INTDIR)\pgmessageobject.obj" \
-	"$(INTDIR)\pgmsgmap.obj" \
-	"$(INTDIR)\pgnavigator.obj" \
 	"$(INTDIR)\pgpopupmenu.obj" \
 	"$(INTDIR)\pgprogressbar.obj" \
 	"$(INTDIR)\pgradiobutton.obj" \
-	"$(INTDIR)\pgrect.obj" \
-	"$(INTDIR)\pgrectlist.obj" \
 	"$(INTDIR)\pgrichedit.obj" \
-	"$(INTDIR)\pgrotozoom.obj" \
 	"$(INTDIR)\pgscrollbar.obj" \
 	"$(INTDIR)\pgslider.obj" \
 	"$(INTDIR)\pgspinnerbox.obj" \
-	"$(INTDIR)\pgstaticframe.obj" \
-	"$(INTDIR)\pgsurfacecache.obj" \
+	"$(INTDIR)\pgthemewidget.obj" \
 	"$(INTDIR)\pgwidget.obj" \
 	"$(INTDIR)\pgwidgetdnd.obj" \
 	"$(INTDIR)\pgwidgetlist.obj" \
 	"$(INTDIR)\pgwidgetlistex.obj" \
 	"$(INTDIR)\pgwindow.obj" \
-	"$(INTDIR)\rendertextrect.obj" \
-	"$(INTDIR)\theme_priv.obj" \
-	"$(INTDIR)\themeloader.obj" \
-	"$(INTDIR)\dir.obj" \
-	"$(INTDIR)\grp.obj" \
-	"$(INTDIR)\physfs.obj" \
-	"$(INTDIR)\unzip.obj" \
-	"$(INTDIR)\win32.obj" \
-	"$(INTDIR)\zip.obj"
+	"$(INTDIR)\paragui.obj"
 
 "..\..\lib\paraguis.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
@@ -205,21 +215,24 @@ ALL : "..\..\lib\paraguisd.lib"
 
 CLEAN :
 	-@erase "$(INTDIR)\dir.obj"
-	-@erase "$(INTDIR)\grp.obj"
-	-@erase "$(INTDIR)\parastretch.obj"
+	-@erase "$(INTDIR)\drawline.obj"
+	-@erase "$(INTDIR)\drawtile.obj"
+	-@erase "$(INTDIR)\gradient.obj"
+	-@erase "$(INTDIR)\missing.obj"
+	-@erase "$(INTDIR)\paragui.obj"
 	-@erase "$(INTDIR)\pgapplication.obj"
 	-@erase "$(INTDIR)\pgbutton.obj"
 	-@erase "$(INTDIR)\pgbuttongroup.obj"
 	-@erase "$(INTDIR)\pgcheckbutton.obj"
+	-@erase "$(INTDIR)\pgcolors.obj"
 	-@erase "$(INTDIR)\pgcolumnitem.obj"
-	-@erase "$(INTDIR)\pgdrawline.obj"
-	-@erase "$(INTDIR)\pgdrawobject.obj"
+	-@erase "$(INTDIR)\pgdatacontainer.obj"
 	-@erase "$(INTDIR)\pgdropdown.obj"
 	-@erase "$(INTDIR)\pgeventobject.obj"
 	-@erase "$(INTDIR)\pgfile.obj"
 	-@erase "$(INTDIR)\pgfilearchive.obj"
 	-@erase "$(INTDIR)\pgfont.obj"
-	-@erase "$(INTDIR)\pggradientwidget.obj"
+	-@erase "$(INTDIR)\pgfont_impl.obj"
 	-@erase "$(INTDIR)\pgimage.obj"
 	-@erase "$(INTDIR)\pglabel.obj"
 	-@erase "$(INTDIR)\pglayout.obj"
@@ -228,7 +241,9 @@ CLEAN :
 	-@erase "$(INTDIR)\pglistboxbaseitem.obj"
 	-@erase "$(INTDIR)\pglistboxitem.obj"
 	-@erase "$(INTDIR)\pglog.obj"
+	-@erase "$(INTDIR)\pgmain.obj"
 	-@erase "$(INTDIR)\pgmaskedit.obj"
+	-@erase "$(INTDIR)\pgmenubar.obj"
 	-@erase "$(INTDIR)\pgmessagebox.obj"
 	-@erase "$(INTDIR)\pgmessageobject.obj"
 	-@erase "$(INTDIR)\pgmsgmap.obj"
@@ -239,21 +254,21 @@ CLEAN :
 	-@erase "$(INTDIR)\pgrect.obj"
 	-@erase "$(INTDIR)\pgrectlist.obj"
 	-@erase "$(INTDIR)\pgrichedit.obj"
-	-@erase "$(INTDIR)\pgrotozoom.obj"
 	-@erase "$(INTDIR)\pgscrollbar.obj"
 	-@erase "$(INTDIR)\pgslider.obj"
 	-@erase "$(INTDIR)\pgspinnerbox.obj"
-	-@erase "$(INTDIR)\pgstaticframe.obj"
 	-@erase "$(INTDIR)\pgsurfacecache.obj"
+	-@erase "$(INTDIR)\pgthemewidget.obj"
 	-@erase "$(INTDIR)\pgwidget.obj"
 	-@erase "$(INTDIR)\pgwidgetdnd.obj"
 	-@erase "$(INTDIR)\pgwidgetlist.obj"
 	-@erase "$(INTDIR)\pgwidgetlistex.obj"
 	-@erase "$(INTDIR)\pgwindow.obj"
 	-@erase "$(INTDIR)\physfs.obj"
-	-@erase "$(INTDIR)\rendertextrect.obj"
-	-@erase "$(INTDIR)\theme_priv.obj"
-	-@erase "$(INTDIR)\themeloader.obj"
+	-@erase "$(INTDIR)\rotozoom.obj"
+	-@erase "$(INTDIR)\setpixel.obj"
+	-@erase "$(INTDIR)\stretch.obj"
+	-@erase "$(INTDIR)\surface.obj"
 	-@erase "$(INTDIR)\unzip.obj"
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\vc60.pdb"
@@ -265,7 +280,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MLd /W3 /Gm /vmg /GX /ZI /Od /I "../../physfs" /I "../../themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /Fp"$(INTDIR)\paragui_static.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
+CPP_PROJ=/nologo /MLd /W3 /Gm /vmg /GX /ZI /Od /I "../../src/physfs" /I "../../src/themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -305,20 +320,40 @@ BSC32_SBRS= \
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"../../lib/paraguisd.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\parastretch.obj" \
+	"$(INTDIR)\missing.obj" \
 	"$(INTDIR)\pgapplication.obj" \
+	"$(INTDIR)\pgcolors.obj" \
+	"$(INTDIR)\pgdatacontainer.obj" \
+	"$(INTDIR)\pgeventobject.obj" \
+	"$(INTDIR)\pgfile.obj" \
+	"$(INTDIR)\pgfilearchive.obj" \
+	"$(INTDIR)\pglog.obj" \
+	"$(INTDIR)\pgmain.obj" \
+	"$(INTDIR)\pgmessageobject.obj" \
+	"$(INTDIR)\pgmsgmap.obj" \
+	"$(INTDIR)\pgnavigator.obj" \
+	"$(INTDIR)\pgrectlist.obj" \
+	"$(INTDIR)\pgsurfacecache.obj" \
+	"$(INTDIR)\pgfont.obj" \
+	"$(INTDIR)\pgfont_impl.obj" \
+	"$(INTDIR)\drawline.obj" \
+	"$(INTDIR)\drawtile.obj" \
+	"$(INTDIR)\gradient.obj" \
+	"$(INTDIR)\pgrect.obj" \
+	"$(INTDIR)\rotozoom.obj" \
+	"$(INTDIR)\setpixel.obj" \
+	"$(INTDIR)\stretch.obj" \
+	"$(INTDIR)\surface.obj" \
+	"$(INTDIR)\dir.obj" \
+	"$(INTDIR)\physfs.obj" \
+	"$(INTDIR)\unzip.obj" \
+	"$(INTDIR)\win32.obj" \
+	"$(INTDIR)\zip.obj" \
 	"$(INTDIR)\pgbutton.obj" \
 	"$(INTDIR)\pgbuttongroup.obj" \
 	"$(INTDIR)\pgcheckbutton.obj" \
 	"$(INTDIR)\pgcolumnitem.obj" \
-	"$(INTDIR)\pgdrawline.obj" \
-	"$(INTDIR)\pgdrawobject.obj" \
 	"$(INTDIR)\pgdropdown.obj" \
-	"$(INTDIR)\pgeventobject.obj" \
-	"$(INTDIR)\pgfile.obj" \
-	"$(INTDIR)\pgfilearchive.obj" \
-	"$(INTDIR)\pgfont.obj" \
-	"$(INTDIR)\pggradientwidget.obj" \
 	"$(INTDIR)\pgimage.obj" \
 	"$(INTDIR)\pglabel.obj" \
 	"$(INTDIR)\pglayout.obj" \
@@ -326,38 +361,23 @@ LIB32_OBJS= \
 	"$(INTDIR)\pglistbox.obj" \
 	"$(INTDIR)\pglistboxbaseitem.obj" \
 	"$(INTDIR)\pglistboxitem.obj" \
-	"$(INTDIR)\pglog.obj" \
 	"$(INTDIR)\pgmaskedit.obj" \
+	"$(INTDIR)\pgmenubar.obj" \
 	"$(INTDIR)\pgmessagebox.obj" \
-	"$(INTDIR)\pgmessageobject.obj" \
-	"$(INTDIR)\pgmsgmap.obj" \
-	"$(INTDIR)\pgnavigator.obj" \
 	"$(INTDIR)\pgpopupmenu.obj" \
 	"$(INTDIR)\pgprogressbar.obj" \
 	"$(INTDIR)\pgradiobutton.obj" \
-	"$(INTDIR)\pgrect.obj" \
-	"$(INTDIR)\pgrectlist.obj" \
 	"$(INTDIR)\pgrichedit.obj" \
-	"$(INTDIR)\pgrotozoom.obj" \
 	"$(INTDIR)\pgscrollbar.obj" \
 	"$(INTDIR)\pgslider.obj" \
 	"$(INTDIR)\pgspinnerbox.obj" \
-	"$(INTDIR)\pgstaticframe.obj" \
-	"$(INTDIR)\pgsurfacecache.obj" \
+	"$(INTDIR)\pgthemewidget.obj" \
 	"$(INTDIR)\pgwidget.obj" \
 	"$(INTDIR)\pgwidgetdnd.obj" \
 	"$(INTDIR)\pgwidgetlist.obj" \
 	"$(INTDIR)\pgwidgetlistex.obj" \
 	"$(INTDIR)\pgwindow.obj" \
-	"$(INTDIR)\rendertextrect.obj" \
-	"$(INTDIR)\theme_priv.obj" \
-	"$(INTDIR)\themeloader.obj" \
-	"$(INTDIR)\dir.obj" \
-	"$(INTDIR)\grp.obj" \
-	"$(INTDIR)\physfs.obj" \
-	"$(INTDIR)\unzip.obj" \
-	"$(INTDIR)\win32.obj" \
-	"$(INTDIR)\zip.obj"
+	"$(INTDIR)\paragui.obj"
 
 "..\..\lib\paraguisd.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
@@ -374,21 +394,24 @@ ALL : "..\..\lib\paraguimts.lib"
 
 CLEAN :
 	-@erase "$(INTDIR)\dir.obj"
-	-@erase "$(INTDIR)\grp.obj"
-	-@erase "$(INTDIR)\parastretch.obj"
+	-@erase "$(INTDIR)\drawline.obj"
+	-@erase "$(INTDIR)\drawtile.obj"
+	-@erase "$(INTDIR)\gradient.obj"
+	-@erase "$(INTDIR)\missing.obj"
+	-@erase "$(INTDIR)\paragui.obj"
 	-@erase "$(INTDIR)\pgapplication.obj"
 	-@erase "$(INTDIR)\pgbutton.obj"
 	-@erase "$(INTDIR)\pgbuttongroup.obj"
 	-@erase "$(INTDIR)\pgcheckbutton.obj"
+	-@erase "$(INTDIR)\pgcolors.obj"
 	-@erase "$(INTDIR)\pgcolumnitem.obj"
-	-@erase "$(INTDIR)\pgdrawline.obj"
-	-@erase "$(INTDIR)\pgdrawobject.obj"
+	-@erase "$(INTDIR)\pgdatacontainer.obj"
 	-@erase "$(INTDIR)\pgdropdown.obj"
 	-@erase "$(INTDIR)\pgeventobject.obj"
 	-@erase "$(INTDIR)\pgfile.obj"
 	-@erase "$(INTDIR)\pgfilearchive.obj"
 	-@erase "$(INTDIR)\pgfont.obj"
-	-@erase "$(INTDIR)\pggradientwidget.obj"
+	-@erase "$(INTDIR)\pgfont_impl.obj"
 	-@erase "$(INTDIR)\pgimage.obj"
 	-@erase "$(INTDIR)\pglabel.obj"
 	-@erase "$(INTDIR)\pglayout.obj"
@@ -397,7 +420,9 @@ CLEAN :
 	-@erase "$(INTDIR)\pglistboxbaseitem.obj"
 	-@erase "$(INTDIR)\pglistboxitem.obj"
 	-@erase "$(INTDIR)\pglog.obj"
+	-@erase "$(INTDIR)\pgmain.obj"
 	-@erase "$(INTDIR)\pgmaskedit.obj"
+	-@erase "$(INTDIR)\pgmenubar.obj"
 	-@erase "$(INTDIR)\pgmessagebox.obj"
 	-@erase "$(INTDIR)\pgmessageobject.obj"
 	-@erase "$(INTDIR)\pgmsgmap.obj"
@@ -408,21 +433,21 @@ CLEAN :
 	-@erase "$(INTDIR)\pgrect.obj"
 	-@erase "$(INTDIR)\pgrectlist.obj"
 	-@erase "$(INTDIR)\pgrichedit.obj"
-	-@erase "$(INTDIR)\pgrotozoom.obj"
 	-@erase "$(INTDIR)\pgscrollbar.obj"
 	-@erase "$(INTDIR)\pgslider.obj"
 	-@erase "$(INTDIR)\pgspinnerbox.obj"
-	-@erase "$(INTDIR)\pgstaticframe.obj"
 	-@erase "$(INTDIR)\pgsurfacecache.obj"
+	-@erase "$(INTDIR)\pgthemewidget.obj"
 	-@erase "$(INTDIR)\pgwidget.obj"
 	-@erase "$(INTDIR)\pgwidgetdnd.obj"
 	-@erase "$(INTDIR)\pgwidgetlist.obj"
 	-@erase "$(INTDIR)\pgwidgetlistex.obj"
 	-@erase "$(INTDIR)\pgwindow.obj"
 	-@erase "$(INTDIR)\physfs.obj"
-	-@erase "$(INTDIR)\rendertextrect.obj"
-	-@erase "$(INTDIR)\theme_priv.obj"
-	-@erase "$(INTDIR)\themeloader.obj"
+	-@erase "$(INTDIR)\rotozoom.obj"
+	-@erase "$(INTDIR)\setpixel.obj"
+	-@erase "$(INTDIR)\stretch.obj"
+	-@erase "$(INTDIR)\surface.obj"
 	-@erase "$(INTDIR)\unzip.obj"
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\win32.obj"
@@ -433,7 +458,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MT /W3 /vmg /GX /O2 /I "../../physfs" /I "../../themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /Fp"$(INTDIR)\paragui_static.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_PROJ=/nologo /MT /W3 /vmg /GX /O2 /I "../../src/physfs" /I "../../src/themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "NDEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /Fp"$(INTDIR)\paragui_static.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -473,20 +498,40 @@ BSC32_SBRS= \
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"../../lib/paraguimts.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\parastretch.obj" \
+	"$(INTDIR)\missing.obj" \
 	"$(INTDIR)\pgapplication.obj" \
+	"$(INTDIR)\pgcolors.obj" \
+	"$(INTDIR)\pgdatacontainer.obj" \
+	"$(INTDIR)\pgeventobject.obj" \
+	"$(INTDIR)\pgfile.obj" \
+	"$(INTDIR)\pgfilearchive.obj" \
+	"$(INTDIR)\pglog.obj" \
+	"$(INTDIR)\pgmain.obj" \
+	"$(INTDIR)\pgmessageobject.obj" \
+	"$(INTDIR)\pgmsgmap.obj" \
+	"$(INTDIR)\pgnavigator.obj" \
+	"$(INTDIR)\pgrectlist.obj" \
+	"$(INTDIR)\pgsurfacecache.obj" \
+	"$(INTDIR)\pgfont.obj" \
+	"$(INTDIR)\pgfont_impl.obj" \
+	"$(INTDIR)\drawline.obj" \
+	"$(INTDIR)\drawtile.obj" \
+	"$(INTDIR)\gradient.obj" \
+	"$(INTDIR)\pgrect.obj" \
+	"$(INTDIR)\rotozoom.obj" \
+	"$(INTDIR)\setpixel.obj" \
+	"$(INTDIR)\stretch.obj" \
+	"$(INTDIR)\surface.obj" \
+	"$(INTDIR)\dir.obj" \
+	"$(INTDIR)\physfs.obj" \
+	"$(INTDIR)\unzip.obj" \
+	"$(INTDIR)\win32.obj" \
+	"$(INTDIR)\zip.obj" \
 	"$(INTDIR)\pgbutton.obj" \
 	"$(INTDIR)\pgbuttongroup.obj" \
 	"$(INTDIR)\pgcheckbutton.obj" \
 	"$(INTDIR)\pgcolumnitem.obj" \
-	"$(INTDIR)\pgdrawline.obj" \
-	"$(INTDIR)\pgdrawobject.obj" \
 	"$(INTDIR)\pgdropdown.obj" \
-	"$(INTDIR)\pgeventobject.obj" \
-	"$(INTDIR)\pgfile.obj" \
-	"$(INTDIR)\pgfilearchive.obj" \
-	"$(INTDIR)\pgfont.obj" \
-	"$(INTDIR)\pggradientwidget.obj" \
 	"$(INTDIR)\pgimage.obj" \
 	"$(INTDIR)\pglabel.obj" \
 	"$(INTDIR)\pglayout.obj" \
@@ -494,38 +539,23 @@ LIB32_OBJS= \
 	"$(INTDIR)\pglistbox.obj" \
 	"$(INTDIR)\pglistboxbaseitem.obj" \
 	"$(INTDIR)\pglistboxitem.obj" \
-	"$(INTDIR)\pglog.obj" \
 	"$(INTDIR)\pgmaskedit.obj" \
+	"$(INTDIR)\pgmenubar.obj" \
 	"$(INTDIR)\pgmessagebox.obj" \
-	"$(INTDIR)\pgmessageobject.obj" \
-	"$(INTDIR)\pgmsgmap.obj" \
-	"$(INTDIR)\pgnavigator.obj" \
 	"$(INTDIR)\pgpopupmenu.obj" \
 	"$(INTDIR)\pgprogressbar.obj" \
 	"$(INTDIR)\pgradiobutton.obj" \
-	"$(INTDIR)\pgrect.obj" \
-	"$(INTDIR)\pgrectlist.obj" \
 	"$(INTDIR)\pgrichedit.obj" \
-	"$(INTDIR)\pgrotozoom.obj" \
 	"$(INTDIR)\pgscrollbar.obj" \
 	"$(INTDIR)\pgslider.obj" \
 	"$(INTDIR)\pgspinnerbox.obj" \
-	"$(INTDIR)\pgstaticframe.obj" \
-	"$(INTDIR)\pgsurfacecache.obj" \
+	"$(INTDIR)\pgthemewidget.obj" \
 	"$(INTDIR)\pgwidget.obj" \
 	"$(INTDIR)\pgwidgetdnd.obj" \
 	"$(INTDIR)\pgwidgetlist.obj" \
 	"$(INTDIR)\pgwidgetlistex.obj" \
 	"$(INTDIR)\pgwindow.obj" \
-	"$(INTDIR)\rendertextrect.obj" \
-	"$(INTDIR)\theme_priv.obj" \
-	"$(INTDIR)\themeloader.obj" \
-	"$(INTDIR)\dir.obj" \
-	"$(INTDIR)\grp.obj" \
-	"$(INTDIR)\physfs.obj" \
-	"$(INTDIR)\unzip.obj" \
-	"$(INTDIR)\win32.obj" \
-	"$(INTDIR)\zip.obj"
+	"$(INTDIR)\paragui.obj"
 
 "..\..\lib\paraguimts.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
@@ -542,21 +572,24 @@ ALL : "..\..\lib\paraguimtsd.lib"
 
 CLEAN :
 	-@erase "$(INTDIR)\dir.obj"
-	-@erase "$(INTDIR)\grp.obj"
-	-@erase "$(INTDIR)\parastretch.obj"
+	-@erase "$(INTDIR)\drawline.obj"
+	-@erase "$(INTDIR)\drawtile.obj"
+	-@erase "$(INTDIR)\gradient.obj"
+	-@erase "$(INTDIR)\missing.obj"
+	-@erase "$(INTDIR)\paragui.obj"
 	-@erase "$(INTDIR)\pgapplication.obj"
 	-@erase "$(INTDIR)\pgbutton.obj"
 	-@erase "$(INTDIR)\pgbuttongroup.obj"
 	-@erase "$(INTDIR)\pgcheckbutton.obj"
+	-@erase "$(INTDIR)\pgcolors.obj"
 	-@erase "$(INTDIR)\pgcolumnitem.obj"
-	-@erase "$(INTDIR)\pgdrawline.obj"
-	-@erase "$(INTDIR)\pgdrawobject.obj"
+	-@erase "$(INTDIR)\pgdatacontainer.obj"
 	-@erase "$(INTDIR)\pgdropdown.obj"
 	-@erase "$(INTDIR)\pgeventobject.obj"
 	-@erase "$(INTDIR)\pgfile.obj"
 	-@erase "$(INTDIR)\pgfilearchive.obj"
 	-@erase "$(INTDIR)\pgfont.obj"
-	-@erase "$(INTDIR)\pggradientwidget.obj"
+	-@erase "$(INTDIR)\pgfont_impl.obj"
 	-@erase "$(INTDIR)\pgimage.obj"
 	-@erase "$(INTDIR)\pglabel.obj"
 	-@erase "$(INTDIR)\pglayout.obj"
@@ -565,7 +598,9 @@ CLEAN :
 	-@erase "$(INTDIR)\pglistboxbaseitem.obj"
 	-@erase "$(INTDIR)\pglistboxitem.obj"
 	-@erase "$(INTDIR)\pglog.obj"
+	-@erase "$(INTDIR)\pgmain.obj"
 	-@erase "$(INTDIR)\pgmaskedit.obj"
+	-@erase "$(INTDIR)\pgmenubar.obj"
 	-@erase "$(INTDIR)\pgmessagebox.obj"
 	-@erase "$(INTDIR)\pgmessageobject.obj"
 	-@erase "$(INTDIR)\pgmsgmap.obj"
@@ -576,21 +611,21 @@ CLEAN :
 	-@erase "$(INTDIR)\pgrect.obj"
 	-@erase "$(INTDIR)\pgrectlist.obj"
 	-@erase "$(INTDIR)\pgrichedit.obj"
-	-@erase "$(INTDIR)\pgrotozoom.obj"
 	-@erase "$(INTDIR)\pgscrollbar.obj"
 	-@erase "$(INTDIR)\pgslider.obj"
 	-@erase "$(INTDIR)\pgspinnerbox.obj"
-	-@erase "$(INTDIR)\pgstaticframe.obj"
 	-@erase "$(INTDIR)\pgsurfacecache.obj"
+	-@erase "$(INTDIR)\pgthemewidget.obj"
 	-@erase "$(INTDIR)\pgwidget.obj"
 	-@erase "$(INTDIR)\pgwidgetdnd.obj"
 	-@erase "$(INTDIR)\pgwidgetlist.obj"
 	-@erase "$(INTDIR)\pgwidgetlistex.obj"
 	-@erase "$(INTDIR)\pgwindow.obj"
 	-@erase "$(INTDIR)\physfs.obj"
-	-@erase "$(INTDIR)\rendertextrect.obj"
-	-@erase "$(INTDIR)\theme_priv.obj"
-	-@erase "$(INTDIR)\themeloader.obj"
+	-@erase "$(INTDIR)\rotozoom.obj"
+	-@erase "$(INTDIR)\setpixel.obj"
+	-@erase "$(INTDIR)\stretch.obj"
+	-@erase "$(INTDIR)\surface.obj"
 	-@erase "$(INTDIR)\unzip.obj"
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\vc60.pdb"
@@ -602,7 +637,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MTd /W3 /Gm /vmg /GX /ZI /Od /I "../../physfs" /I "../../themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /Fp"$(INTDIR)\paragui_static.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
+CPP_PROJ=/nologo /MTd /W3 /Gm /vmg /GX /ZI /Od /I "../../src/physfs" /I "../../src/themes" /I "../../src" /I "../../include" /D "HAVE_SDLIMAGE" /D "WIN32" /D "_DEBUG" /D "_MBCS" /D "_LIB" /D "PHYSFS_SUPPORTS_ZIP" /Fp"$(INTDIR)\paragui_static.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -642,20 +677,40 @@ BSC32_SBRS= \
 LIB32=link.exe -lib
 LIB32_FLAGS=/nologo /out:"../../lib/paraguimtsd.lib" 
 LIB32_OBJS= \
-	"$(INTDIR)\parastretch.obj" \
+	"$(INTDIR)\missing.obj" \
 	"$(INTDIR)\pgapplication.obj" \
+	"$(INTDIR)\pgcolors.obj" \
+	"$(INTDIR)\pgdatacontainer.obj" \
+	"$(INTDIR)\pgeventobject.obj" \
+	"$(INTDIR)\pgfile.obj" \
+	"$(INTDIR)\pgfilearchive.obj" \
+	"$(INTDIR)\pglog.obj" \
+	"$(INTDIR)\pgmain.obj" \
+	"$(INTDIR)\pgmessageobject.obj" \
+	"$(INTDIR)\pgmsgmap.obj" \
+	"$(INTDIR)\pgnavigator.obj" \
+	"$(INTDIR)\pgrectlist.obj" \
+	"$(INTDIR)\pgsurfacecache.obj" \
+	"$(INTDIR)\pgfont.obj" \
+	"$(INTDIR)\pgfont_impl.obj" \
+	"$(INTDIR)\drawline.obj" \
+	"$(INTDIR)\drawtile.obj" \
+	"$(INTDIR)\gradient.obj" \
+	"$(INTDIR)\pgrect.obj" \
+	"$(INTDIR)\rotozoom.obj" \
+	"$(INTDIR)\setpixel.obj" \
+	"$(INTDIR)\stretch.obj" \
+	"$(INTDIR)\surface.obj" \
+	"$(INTDIR)\dir.obj" \
+	"$(INTDIR)\physfs.obj" \
+	"$(INTDIR)\unzip.obj" \
+	"$(INTDIR)\win32.obj" \
+	"$(INTDIR)\zip.obj" \
 	"$(INTDIR)\pgbutton.obj" \
 	"$(INTDIR)\pgbuttongroup.obj" \
 	"$(INTDIR)\pgcheckbutton.obj" \
 	"$(INTDIR)\pgcolumnitem.obj" \
-	"$(INTDIR)\pgdrawline.obj" \
-	"$(INTDIR)\pgdrawobject.obj" \
 	"$(INTDIR)\pgdropdown.obj" \
-	"$(INTDIR)\pgeventobject.obj" \
-	"$(INTDIR)\pgfile.obj" \
-	"$(INTDIR)\pgfilearchive.obj" \
-	"$(INTDIR)\pgfont.obj" \
-	"$(INTDIR)\pggradientwidget.obj" \
 	"$(INTDIR)\pgimage.obj" \
 	"$(INTDIR)\pglabel.obj" \
 	"$(INTDIR)\pglayout.obj" \
@@ -663,38 +718,23 @@ LIB32_OBJS= \
 	"$(INTDIR)\pglistbox.obj" \
 	"$(INTDIR)\pglistboxbaseitem.obj" \
 	"$(INTDIR)\pglistboxitem.obj" \
-	"$(INTDIR)\pglog.obj" \
 	"$(INTDIR)\pgmaskedit.obj" \
+	"$(INTDIR)\pgmenubar.obj" \
 	"$(INTDIR)\pgmessagebox.obj" \
-	"$(INTDIR)\pgmessageobject.obj" \
-	"$(INTDIR)\pgmsgmap.obj" \
-	"$(INTDIR)\pgnavigator.obj" \
 	"$(INTDIR)\pgpopupmenu.obj" \
 	"$(INTDIR)\pgprogressbar.obj" \
 	"$(INTDIR)\pgradiobutton.obj" \
-	"$(INTDIR)\pgrect.obj" \
-	"$(INTDIR)\pgrectlist.obj" \
 	"$(INTDIR)\pgrichedit.obj" \
-	"$(INTDIR)\pgrotozoom.obj" \
 	"$(INTDIR)\pgscrollbar.obj" \
 	"$(INTDIR)\pgslider.obj" \
 	"$(INTDIR)\pgspinnerbox.obj" \
-	"$(INTDIR)\pgstaticframe.obj" \
-	"$(INTDIR)\pgsurfacecache.obj" \
+	"$(INTDIR)\pgthemewidget.obj" \
 	"$(INTDIR)\pgwidget.obj" \
 	"$(INTDIR)\pgwidgetdnd.obj" \
 	"$(INTDIR)\pgwidgetlist.obj" \
 	"$(INTDIR)\pgwidgetlistex.obj" \
 	"$(INTDIR)\pgwindow.obj" \
-	"$(INTDIR)\rendertextrect.obj" \
-	"$(INTDIR)\theme_priv.obj" \
-	"$(INTDIR)\themeloader.obj" \
-	"$(INTDIR)\dir.obj" \
-	"$(INTDIR)\grp.obj" \
-	"$(INTDIR)\physfs.obj" \
-	"$(INTDIR)\unzip.obj" \
-	"$(INTDIR)\win32.obj" \
-	"$(INTDIR)\zip.obj"
+	"$(INTDIR)\paragui.obj"
 
 "..\..\lib\paraguimtsd.lib" : "$(OUTDIR)" $(DEF_FILE) $(LIB32_OBJS)
     $(LIB32) @<<
@@ -714,321 +754,351 @@ LIB32_OBJS= \
 
 
 !IF "$(CFG)" == "paragui_static - Win32 Release" || "$(CFG)" == "paragui_static - Win32 Debug" || "$(CFG)" == "paragui_static - Win32 Release MT" || "$(CFG)" == "paragui_static - Win32 Debug MT"
-SOURCE=..\..\src\parastretch.cpp
+SOURCE=..\..\src\core\missing.cpp
 
-"$(INTDIR)\parastretch.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\missing.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgapplication.cpp
+SOURCE=..\..\src\core\pgapplication.cpp
 
 "$(INTDIR)\pgapplication.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgbutton.cpp
+SOURCE=..\..\src\core\pgcolors.cpp
 
-"$(INTDIR)\pgbutton.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pgcolors.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgbuttongroup.cpp
+SOURCE=..\..\src\core\pgdatacontainer.cpp
 
-"$(INTDIR)\pgbuttongroup.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pgdatacontainer.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgcheckbutton.cpp
-
-"$(INTDIR)\pgcheckbutton.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgcolumnitem.cpp
-
-"$(INTDIR)\pgcolumnitem.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgdrawline.cpp
-
-"$(INTDIR)\pgdrawline.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgdrawobject.cpp
-
-"$(INTDIR)\pgdrawobject.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgdropdown.cpp
-
-"$(INTDIR)\pgdropdown.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgeventobject.cpp
+SOURCE=..\..\src\core\pgeventobject.cpp
 
 "$(INTDIR)\pgeventobject.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgfile.cpp
+SOURCE=..\..\src\core\pgfile.cpp
 
 "$(INTDIR)\pgfile.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgfilearchive.cpp
+SOURCE=..\..\src\core\pgfilearchive.cpp
 
 "$(INTDIR)\pgfilearchive.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgfont.cpp
-
-"$(INTDIR)\pgfont.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pggradientwidget.cpp
-
-"$(INTDIR)\pggradientwidget.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgimage.cpp
-
-"$(INTDIR)\pgimage.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pglabel.cpp
-
-"$(INTDIR)\pglabel.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pglayout.cpp
-
-"$(INTDIR)\pglayout.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pglineedit.cpp
-
-"$(INTDIR)\pglineedit.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pglistbox.cpp
-
-"$(INTDIR)\pglistbox.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pglistboxbaseitem.cpp
-
-"$(INTDIR)\pglistboxbaseitem.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pglistboxitem.cpp
-
-"$(INTDIR)\pglistboxitem.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pglog.cpp
+SOURCE=..\..\src\core\pglog.cpp
 
 "$(INTDIR)\pglog.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgmaskedit.cpp
+SOURCE=..\..\src\core\pgmain.cpp
 
-"$(INTDIR)\pgmaskedit.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pgmain.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgmessagebox.cpp
-
-"$(INTDIR)\pgmessagebox.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgmessageobject.cpp
+SOURCE=..\..\src\core\pgmessageobject.cpp
 
 "$(INTDIR)\pgmessageobject.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgmsgmap.cpp
+SOURCE=..\..\src\core\pgmsgmap.cpp
 
 "$(INTDIR)\pgmsgmap.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgnavigator.cpp
+SOURCE=..\..\src\core\pgnavigator.cpp
 
 "$(INTDIR)\pgnavigator.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgpopupmenu.cpp
-
-"$(INTDIR)\pgpopupmenu.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgprogressbar.cpp
-
-"$(INTDIR)\pgprogressbar.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgradiobutton.cpp
-
-"$(INTDIR)\pgradiobutton.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgrect.cpp
-
-"$(INTDIR)\pgrect.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgrectlist.cpp
+SOURCE=..\..\src\core\pgrectlist.cpp
 
 "$(INTDIR)\pgrectlist.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgrichedit.cpp
-
-"$(INTDIR)\pgrichedit.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgrotozoom.cpp
-
-"$(INTDIR)\pgrotozoom.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgscrollbar.cpp
-
-"$(INTDIR)\pgscrollbar.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgslider.cpp
-
-"$(INTDIR)\pgslider.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgspinnerbox.cpp
-
-"$(INTDIR)\pgspinnerbox.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgstaticframe.cpp
-
-"$(INTDIR)\pgstaticframe.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\src\pgsurfacecache.cpp
+SOURCE=..\..\src\core\pgsurfacecache.cpp
 
 "$(INTDIR)\pgsurfacecache.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgwidget.cpp
+SOURCE=..\..\src\font\pgfont.cpp
 
-"$(INTDIR)\pgwidget.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pgfont.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgwidgetdnd.cpp
+SOURCE=..\..\src\font\pgfont_impl.cpp
 
-"$(INTDIR)\pgwidgetdnd.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pgfont_impl.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgwidgetlist.cpp
+SOURCE=..\..\src\draw\drawline.cpp
 
-"$(INTDIR)\pgwidgetlist.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drawline.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgwidgetlistex.cpp
+SOURCE=..\..\src\draw\drawtile.cpp
 
-"$(INTDIR)\pgwidgetlistex.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\drawtile.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\pgwindow.cpp
+SOURCE=..\..\src\draw\gradient.cpp
 
-"$(INTDIR)\pgwindow.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\gradient.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\rendertextrect.cpp
+SOURCE=..\..\src\draw\pgrect.cpp
 
-"$(INTDIR)\rendertextrect.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\pgrect.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\themes\theme_priv.cpp
+SOURCE=..\..\src\draw\rotozoom.cpp
 
-"$(INTDIR)\theme_priv.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\rotozoom.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\themes\themeloader.cpp
+SOURCE=..\..\src\draw\setpixel.cpp
 
-"$(INTDIR)\themeloader.obj" : $(SOURCE) "$(INTDIR)"
+"$(INTDIR)\setpixel.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\physfs\archivers\dir.c
+SOURCE=..\..\src\draw\stretch.cpp
+
+"$(INTDIR)\stretch.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\draw\surface.cpp
+
+"$(INTDIR)\surface.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\physfs\archivers\dir.c
 
 "$(INTDIR)\dir.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\physfs\archivers\grp.c
-
-"$(INTDIR)\grp.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
-SOURCE=..\..\physfs\physfs.c
+SOURCE=..\..\src\physfs\physfs.c
 
 "$(INTDIR)\physfs.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\physfs\archivers\unzip.c
+SOURCE=..\..\src\physfs\archivers\unzip.c
 
 "$(INTDIR)\unzip.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\physfs\platform\win32.c
+SOURCE=..\..\src\physfs\platform\win32.c
 
 "$(INTDIR)\win32.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\physfs\archivers\zip.c
+SOURCE=..\..\src\physfs\archivers\zip.c
 
 "$(INTDIR)\zip.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgbutton.cpp
+
+"$(INTDIR)\pgbutton.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgbuttongroup.cpp
+
+"$(INTDIR)\pgbuttongroup.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgcheckbutton.cpp
+
+"$(INTDIR)\pgcheckbutton.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgcolumnitem.cpp
+
+"$(INTDIR)\pgcolumnitem.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgdropdown.cpp
+
+"$(INTDIR)\pgdropdown.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgimage.cpp
+
+"$(INTDIR)\pgimage.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pglabel.cpp
+
+"$(INTDIR)\pglabel.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pglayout.cpp
+
+"$(INTDIR)\pglayout.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pglineedit.cpp
+
+"$(INTDIR)\pglineedit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pglistbox.cpp
+
+"$(INTDIR)\pglistbox.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pglistboxbaseitem.cpp
+
+"$(INTDIR)\pglistboxbaseitem.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pglistboxitem.cpp
+
+"$(INTDIR)\pglistboxitem.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgmaskedit.cpp
+
+"$(INTDIR)\pgmaskedit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgmenubar.cpp
+
+"$(INTDIR)\pgmenubar.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgmessagebox.cpp
+
+"$(INTDIR)\pgmessagebox.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgpopupmenu.cpp
+
+"$(INTDIR)\pgpopupmenu.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgprogressbar.cpp
+
+"$(INTDIR)\pgprogressbar.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgradiobutton.cpp
+
+"$(INTDIR)\pgradiobutton.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgrichedit.cpp
+
+"$(INTDIR)\pgrichedit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgscrollbar.cpp
+
+"$(INTDIR)\pgscrollbar.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgslider.cpp
+
+"$(INTDIR)\pgslider.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgspinnerbox.cpp
+
+"$(INTDIR)\pgspinnerbox.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgthemewidget.cpp
+
+"$(INTDIR)\pgthemewidget.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgwidget.cpp
+
+"$(INTDIR)\pgwidget.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgwidgetdnd.cpp
+
+"$(INTDIR)\pgwidgetdnd.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgwidgetlist.cpp
+
+"$(INTDIR)\pgwidgetlist.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgwidgetlistex.cpp
+
+"$(INTDIR)\pgwidgetlistex.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgwindow.cpp
+
+"$(INTDIR)\pgwindow.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\paragui.cpp
+
+"$(INTDIR)\paragui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 

@@ -36,19 +36,22 @@ ALL : "..\..\bin\paragui.dll"
 CLEAN :
 	-@erase "$(INTDIR)\dir.obj"
 	-@erase "$(INTDIR)\drawline.obj"
+	-@erase "$(INTDIR)\drawtile.obj"
 	-@erase "$(INTDIR)\gradient.obj"
-	-@erase "$(INTDIR)\grp.obj"
+	-@erase "$(INTDIR)\missing.obj"
 	-@erase "$(INTDIR)\paragui.obj"
 	-@erase "$(INTDIR)\pgapplication.obj"
 	-@erase "$(INTDIR)\pgbutton.obj"
 	-@erase "$(INTDIR)\pgcheckbutton.obj"
 	-@erase "$(INTDIR)\pgcolors.obj"
 	-@erase "$(INTDIR)\pgcolumnitem.obj"
+	-@erase "$(INTDIR)\pgdatacontainer.obj"
 	-@erase "$(INTDIR)\pgdropdown.obj"
 	-@erase "$(INTDIR)\pgeventobject.obj"
 	-@erase "$(INTDIR)\pgfile.obj"
 	-@erase "$(INTDIR)\pgfilearchive.obj"
 	-@erase "$(INTDIR)\pgfont.obj"
+	-@erase "$(INTDIR)\pgfont_impl.obj"
 	-@erase "$(INTDIR)\pgimage.obj"
 	-@erase "$(INTDIR)\pglabel.obj"
 	-@erase "$(INTDIR)\pglayout.obj"
@@ -59,6 +62,7 @@ CLEAN :
 	-@erase "$(INTDIR)\pglog.obj"
 	-@erase "$(INTDIR)\pgmain.obj"
 	-@erase "$(INTDIR)\pgmaskedit.obj"
+	-@erase "$(INTDIR)\pgmenubar.obj"
 	-@erase "$(INTDIR)\pgmessagebox.obj"
 	-@erase "$(INTDIR)\pgmessageobject.obj"
 	-@erase "$(INTDIR)\pgmsgmap.obj"
@@ -74,12 +78,14 @@ CLEAN :
 	-@erase "$(INTDIR)\pgspinnerbox.obj"
 	-@erase "$(INTDIR)\pgsurfacecache.obj"
 	-@erase "$(INTDIR)\pgthemewidget.obj"
+	-@erase "$(INTDIR)\pgtimerobject.obj"
 	-@erase "$(INTDIR)\pgwidget.obj"
 	-@erase "$(INTDIR)\pgwidgetdnd.obj"
 	-@erase "$(INTDIR)\pgwidgetlist.obj"
 	-@erase "$(INTDIR)\pgwidgetlistex.obj"
 	-@erase "$(INTDIR)\pgwindow.obj"
 	-@erase "$(INTDIR)\physfs.obj"
+	-@erase "$(INTDIR)\physfs_byteorder.obj"
 	-@erase "$(INTDIR)\rotozoom.obj"
 	-@erase "$(INTDIR)\setpixel.obj"
 	-@erase "$(INTDIR)\stretch.obj"
@@ -138,25 +144,28 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\paragui_dynamic.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /incremental:no /pdb:"$(OUTDIR)\paragui.pdb" /machine:I386 /out:"../../bin/paragui.dll" /implib:"../../lib/paragui.lib" /libpath:"../../lib" 
+LINK32_FLAGS=advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /incremental:no /pdb:"$(OUTDIR)\paragui.pdb" /machine:I386 /out:"../../bin/paragui.dll" /implib:"../../lib/paragui.lib" /libpath:"../../lib" 
 LINK32_OBJS= \
 	"$(INTDIR)\theme_priv.obj" \
 	"$(INTDIR)\themeloader.obj" \
 	"$(INTDIR)\dir.obj" \
-	"$(INTDIR)\grp.obj" \
 	"$(INTDIR)\physfs.obj" \
+	"$(INTDIR)\physfs_byteorder.obj" \
 	"$(INTDIR)\unzip.obj" \
 	"$(INTDIR)\win32.obj" \
 	"$(INTDIR)\zip.obj" \
 	"$(INTDIR)\drawline.obj" \
+	"$(INTDIR)\drawtile.obj" \
 	"$(INTDIR)\gradient.obj" \
 	"$(INTDIR)\pgrect.obj" \
 	"$(INTDIR)\rotozoom.obj" \
 	"$(INTDIR)\setpixel.obj" \
 	"$(INTDIR)\stretch.obj" \
 	"$(INTDIR)\surface.obj" \
+	"$(INTDIR)\missing.obj" \
 	"$(INTDIR)\pgapplication.obj" \
 	"$(INTDIR)\pgcolors.obj" \
+	"$(INTDIR)\pgdatacontainer.obj" \
 	"$(INTDIR)\pgeventobject.obj" \
 	"$(INTDIR)\pgfile.obj" \
 	"$(INTDIR)\pgfilearchive.obj" \
@@ -166,6 +175,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\pgnavigator.obj" \
 	"$(INTDIR)\pgsurfacecache.obj" \
 	"$(INTDIR)\pgfont.obj" \
+	"$(INTDIR)\pgfont_impl.obj" \
 	"$(INTDIR)\pgbutton.obj" \
 	"$(INTDIR)\pgcheckbutton.obj" \
 	"$(INTDIR)\pgcolumnitem.obj" \
@@ -178,6 +188,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\pglistboxbaseitem.obj" \
 	"$(INTDIR)\pglistboxitem.obj" \
 	"$(INTDIR)\pgmaskedit.obj" \
+	"$(INTDIR)\pgmenubar.obj" \
 	"$(INTDIR)\pgmessagebox.obj" \
 	"$(INTDIR)\pgmessageobject.obj" \
 	"$(INTDIR)\pgpopupmenu.obj" \
@@ -194,7 +205,8 @@ LINK32_OBJS= \
 	"$(INTDIR)\pgwidgetlist.obj" \
 	"$(INTDIR)\pgwidgetlistex.obj" \
 	"$(INTDIR)\pgwindow.obj" \
-	"$(INTDIR)\paragui.obj"
+	"$(INTDIR)\paragui.obj" \
+	"$(INTDIR)\pgtimerobject.obj"
 
 "..\..\bin\paragui.dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -212,19 +224,22 @@ ALL : "..\..\bin\paraguid.dll"
 CLEAN :
 	-@erase "$(INTDIR)\dir.obj"
 	-@erase "$(INTDIR)\drawline.obj"
+	-@erase "$(INTDIR)\drawtile.obj"
 	-@erase "$(INTDIR)\gradient.obj"
-	-@erase "$(INTDIR)\grp.obj"
+	-@erase "$(INTDIR)\missing.obj"
 	-@erase "$(INTDIR)\paragui.obj"
 	-@erase "$(INTDIR)\pgapplication.obj"
 	-@erase "$(INTDIR)\pgbutton.obj"
 	-@erase "$(INTDIR)\pgcheckbutton.obj"
 	-@erase "$(INTDIR)\pgcolors.obj"
 	-@erase "$(INTDIR)\pgcolumnitem.obj"
+	-@erase "$(INTDIR)\pgdatacontainer.obj"
 	-@erase "$(INTDIR)\pgdropdown.obj"
 	-@erase "$(INTDIR)\pgeventobject.obj"
 	-@erase "$(INTDIR)\pgfile.obj"
 	-@erase "$(INTDIR)\pgfilearchive.obj"
 	-@erase "$(INTDIR)\pgfont.obj"
+	-@erase "$(INTDIR)\pgfont_impl.obj"
 	-@erase "$(INTDIR)\pgimage.obj"
 	-@erase "$(INTDIR)\pglabel.obj"
 	-@erase "$(INTDIR)\pglayout.obj"
@@ -235,6 +250,7 @@ CLEAN :
 	-@erase "$(INTDIR)\pglog.obj"
 	-@erase "$(INTDIR)\pgmain.obj"
 	-@erase "$(INTDIR)\pgmaskedit.obj"
+	-@erase "$(INTDIR)\pgmenubar.obj"
 	-@erase "$(INTDIR)\pgmessagebox.obj"
 	-@erase "$(INTDIR)\pgmessageobject.obj"
 	-@erase "$(INTDIR)\pgmsgmap.obj"
@@ -250,12 +266,14 @@ CLEAN :
 	-@erase "$(INTDIR)\pgspinnerbox.obj"
 	-@erase "$(INTDIR)\pgsurfacecache.obj"
 	-@erase "$(INTDIR)\pgthemewidget.obj"
+	-@erase "$(INTDIR)\pgtimerobject.obj"
 	-@erase "$(INTDIR)\pgwidget.obj"
 	-@erase "$(INTDIR)\pgwidgetdnd.obj"
 	-@erase "$(INTDIR)\pgwidgetlist.obj"
 	-@erase "$(INTDIR)\pgwidgetlistex.obj"
 	-@erase "$(INTDIR)\pgwindow.obj"
 	-@erase "$(INTDIR)\physfs.obj"
+	-@erase "$(INTDIR)\physfs_byteorder.obj"
 	-@erase "$(INTDIR)\rotozoom.obj"
 	-@erase "$(INTDIR)\setpixel.obj"
 	-@erase "$(INTDIR)\stretch.obj"
@@ -277,7 +295,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src/physfs" /I "../../src/core" /I "../../include" /I "../../src/themes" /D "ZLIB_DLL" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /Fp"$(INTDIR)\paragui_dynamic.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
+CPP_PROJ=/nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src/physfs" /I "../../src/core" /I "../../include" /I "../../src/themes" /D "ZLIB_DLL" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /GZ /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -317,25 +335,28 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\paragui_dynamic.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=opengl32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib sdl.lib freetyped.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /incremental:yes /pdb:"$(OUTDIR)\paraguid.pdb" /debug /machine:I386 /out:"../../bin/paraguid.dll" /implib:"../../lib/paraguid.lib" /pdbtype:sept /libpath:"../../lib" 
+LINK32_FLAGS=advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /incremental:yes /pdb:"$(OUTDIR)\paraguid.pdb" /debug /machine:I386 /out:"../../bin/paraguid.dll" /implib:"../../lib/paraguid.lib" /pdbtype:sept /libpath:"../../lib" 
 LINK32_OBJS= \
 	"$(INTDIR)\theme_priv.obj" \
 	"$(INTDIR)\themeloader.obj" \
 	"$(INTDIR)\dir.obj" \
-	"$(INTDIR)\grp.obj" \
 	"$(INTDIR)\physfs.obj" \
+	"$(INTDIR)\physfs_byteorder.obj" \
 	"$(INTDIR)\unzip.obj" \
 	"$(INTDIR)\win32.obj" \
 	"$(INTDIR)\zip.obj" \
 	"$(INTDIR)\drawline.obj" \
+	"$(INTDIR)\drawtile.obj" \
 	"$(INTDIR)\gradient.obj" \
 	"$(INTDIR)\pgrect.obj" \
 	"$(INTDIR)\rotozoom.obj" \
 	"$(INTDIR)\setpixel.obj" \
 	"$(INTDIR)\stretch.obj" \
 	"$(INTDIR)\surface.obj" \
+	"$(INTDIR)\missing.obj" \
 	"$(INTDIR)\pgapplication.obj" \
 	"$(INTDIR)\pgcolors.obj" \
+	"$(INTDIR)\pgdatacontainer.obj" \
 	"$(INTDIR)\pgeventobject.obj" \
 	"$(INTDIR)\pgfile.obj" \
 	"$(INTDIR)\pgfilearchive.obj" \
@@ -345,6 +366,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\pgnavigator.obj" \
 	"$(INTDIR)\pgsurfacecache.obj" \
 	"$(INTDIR)\pgfont.obj" \
+	"$(INTDIR)\pgfont_impl.obj" \
 	"$(INTDIR)\pgbutton.obj" \
 	"$(INTDIR)\pgcheckbutton.obj" \
 	"$(INTDIR)\pgcolumnitem.obj" \
@@ -357,6 +379,7 @@ LINK32_OBJS= \
 	"$(INTDIR)\pglistboxbaseitem.obj" \
 	"$(INTDIR)\pglistboxitem.obj" \
 	"$(INTDIR)\pgmaskedit.obj" \
+	"$(INTDIR)\pgmenubar.obj" \
 	"$(INTDIR)\pgmessagebox.obj" \
 	"$(INTDIR)\pgmessageobject.obj" \
 	"$(INTDIR)\pgpopupmenu.obj" \
@@ -373,7 +396,8 @@ LINK32_OBJS= \
 	"$(INTDIR)\pgwidgetlist.obj" \
 	"$(INTDIR)\pgwidgetlistex.obj" \
 	"$(INTDIR)\pgwindow.obj" \
-	"$(INTDIR)\paragui.obj"
+	"$(INTDIR)\paragui.obj" \
+	"$(INTDIR)\pgtimerobject.obj"
 
 "..\..\bin\paraguid.dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -411,15 +435,15 @@ SOURCE=..\..\src\physfs\archivers\dir.c
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
-SOURCE=..\..\src\physfs\archivers\grp.c
-
-"$(INTDIR)\grp.obj" : $(SOURCE) "$(INTDIR)"
-	$(CPP) $(CPP_PROJ) $(SOURCE)
-
-
 SOURCE=..\..\src\physfs\physfs.c
 
 "$(INTDIR)\physfs.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\physfs\physfs_byteorder.c
+
+"$(INTDIR)\physfs_byteorder.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -444,6 +468,12 @@ SOURCE=..\..\src\physfs\archivers\zip.c
 SOURCE=..\..\src\draw\drawline.cpp
 
 "$(INTDIR)\drawline.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\draw\drawtile.cpp
+
+"$(INTDIR)\drawtile.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -483,6 +513,12 @@ SOURCE=..\..\src\draw\surface.cpp
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+SOURCE=..\..\src\core\missing.cpp
+
+"$(INTDIR)\missing.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
 SOURCE=..\..\src\core\pgapplication.cpp
 
 "$(INTDIR)\pgapplication.obj" : $(SOURCE) "$(INTDIR)"
@@ -492,6 +528,12 @@ SOURCE=..\..\src\core\pgapplication.cpp
 SOURCE=..\..\src\core\pgcolors.cpp
 
 "$(INTDIR)\pgcolors.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\core\pgdatacontainer.cpp
+
+"$(INTDIR)\pgdatacontainer.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -543,9 +585,21 @@ SOURCE=..\..\src\core\pgsurfacecache.cpp
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+SOURCE=..\..\src\core\pgtimerobject.cpp
+
+"$(INTDIR)\pgtimerobject.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
 SOURCE=..\..\src\font\pgfont.cpp
 
 "$(INTDIR)\pgfont.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\font\pgfont_impl.cpp
+
+"$(INTDIR)\pgfont_impl.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
@@ -618,6 +672,12 @@ SOURCE=..\..\src\widgets\pglistboxitem.cpp
 SOURCE=..\..\src\widgets\pgmaskedit.cpp
 
 "$(INTDIR)\pgmaskedit.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\widgets\pgmenubar.cpp
+
+"$(INTDIR)\pgmenubar.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
