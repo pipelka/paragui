@@ -1088,15 +1088,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 
 	if(XMLParser->Section & XML_SECTION_HEAD) {
 		// create tag description
-		PG_XMLTag* n = new PG_XMLTag;
-		
-		// fill in data
-		n->name = name;
-		const char** a = atts;
-		while(*a != NULL) {
-			n->atts.push_back(std::string(*a));
-			a++;
-		}
+		PG_XMLTag* n = new PG_XMLTag(name, atts);
 		PG_Application::GetApp()->SendMessage(NULL, MSG_XMLTAG, 0, (MSG_DATA)n);
 	}
 	
@@ -1226,4 +1218,52 @@ bool PG_Layout::Load(PG_Widget* parent, const char *filename, void (* WorkCallba
 		RestoreUserData(&XMLParser);
 
 	return true;
+}
+
+PG_XMLTag::PG_XMLTag(const char* n, const char** a) {
+	// fill in name
+	name = strdup(name);
+	
+	if(a == NULL) {
+		atts = NULL;
+		return;
+	}
+	
+	// get size of arry
+	const char** a0 = a;
+	int s=0;
+	while((*a0) != NULL) {
+		a0++;
+		s++;
+	}
+	
+	// alloc array of pointers
+	atts = (const char**)malloc((s+1)*sizeof(char*));
+	a0 = atts;
+	
+	// copy strings to new array
+	while(*a != NULL) {
+		*a0 = strdup(*a);
+		a0++;
+		a++;
+	}
+	*a0 = NULL;
+}
+
+PG_XMLTag::~PG_XMLTag() {
+	if(name != NULL) {
+		free((void*)name);
+	}
+	
+	if(atts == NULL) {
+		return;
+	}
+	
+	const char** a = atts;
+	while(*a) {
+		free((void*)*a);
+		a++;
+	}
+	
+	free((void*)atts);
 }
