@@ -10,7 +10,7 @@ ml_check_for_package expat
 ml_check_for_package freetype
 
 
-CONFIGOPTIONS="--prefix=$TOOLS --libdir=$TOOLS/lib --with-sdl-prefix=$TOOLS --with-themedir=/usr/share/paragui --disable-sdltest --disable-static --disable-rtti --target=$TARGETARCH"
+CONFIGOPTIONS="--prefix=$TOOLS --libdir=$TOOLS/lib --enable-internalphysfs --with-sdl-prefix=$TOOLS --with-themedir=/usr/share/paragui --disable-sdltest --disable-static --disable-rtti --target=$TARGETARCH"
 COMPILEOPTIONS=
 
 function ml_installlocal() {
