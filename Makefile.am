@@ -2,7 +2,7 @@ DISTCHECK_CONFIGURE_FLAGS=--enable-internalexpat --enable-internalphysfs
 
 SUBDIRS = include src data bindings test doc
 
-DIST_SUBDIRS = $(SUBDIRS) sdk
+DIST_SUBDIRS = $(SUBDIRS) sdk debian
 
 bin_SCRIPTS = paragui-config
 

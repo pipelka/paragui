@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/27 21:23:36 $
+    Update Date:      $Date: 2004/10/18 19:39:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pglog.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.4 $
     Status:           $State 
 */
 
@@ -166,7 +166,7 @@ namespace PG_LogConsole {
 	@param	maximum amount of log lines.
 	*/
 	DECLSPEC void SetMaxLogLines(Uint32 max);
-};
+}
 
 #endif
 

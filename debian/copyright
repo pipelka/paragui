@@ -1,0 +1,22 @@
+The stable version (1.0.x) was debianized by Bartosz Fenski <fenio@o2.pl> on Tue,  4 May 2004 20:33:23 +0200.
+This package is based on his work.
+
+The previous maintainer was Micheal Moerz <mikem@debian.org>.
+
+It was downloaded from: http://www.paragui.org/
+
+Upstream Author: Alexander Pipelka <pipelka@bms-austria.com>
+
+Copyright:
+
+Copyright 2000-2004 Alexander Pipelka <pipelka@bms-austria.com>
+
+License:
+
+This library is free software; you can redistribute it and/or modify it
+under the terms of the GNU Library General Public License as published by 
+the Free Software Foundation; either version 2, or (at your option) any
+later version.
+
+On Debian systems, the complete text of the GNU Library General Public 
+License can be found in the file `/usr/share/common-licenses/LGPL-2'.

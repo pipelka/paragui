@@ -11,6 +11,7 @@ xmingw32msvc-paragui.spec
 configure
 stamp-h
 stamp-h.in
+*-stamp
 *.tar.gz
 *.kdevses
 *.kdevprj
@@ -37,3 +38,4 @@ paragui-1.*
 .externalToolBuilders
 patches
 autopackage
+paragui-config.1

@@ -1,0 +1,9 @@
+libparagui1.1 (1.1.8-1) unstable; urgency=low
+
+  * Initial unstable package
+
+ -- Alexander Pipelka <pipelka@teleweb.at>  Mon, 18 Oct 2004 19:21:22 +0100
+
+Local variables:
+mode: debian-changelog
+End:
