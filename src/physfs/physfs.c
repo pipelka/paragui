@@ -8,6 +8,10 @@
  *  This file written by Ryan C. Gordon.
  */
 
+#if HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -107,7 +111,7 @@ static ErrMsg *findErrorForCurrentThread(void)
     ErrMsg *i;
     PHYSFS_uint64 tid;
 
-    if (initialized)
+    if (errorLock != NULL)
         __PHYSFS_platformGrabMutex(errorLock);
 
     if (errorMessages != NULL)
@@ -118,13 +122,14 @@ static ErrMsg *findErrorForCurrentThread(void)
         {
             if (i->tid == tid)
             {
-                __PHYSFS_platformReleaseMutex(errorLock);
+                if (errorLock != NULL)
+                    __PHYSFS_platformReleaseMutex(errorLock);
                 return(i);
             } /* if */
         } /* for */
     } /* if */
 
-    if (initialized)
+    if (errorLock != NULL)
         __PHYSFS_platformReleaseMutex(errorLock);
 
     return(NULL);   /* no error available. */
@@ -149,10 +154,14 @@ void __PHYSFS_setError(const char *str)
         memset((void *) err, '\0', sizeof (ErrMsg));
         err->tid = __PHYSFS_platformGetThreadID();
 
-        __PHYSFS_platformGrabMutex(errorLock);
+        if (errorLock != NULL)
+            __PHYSFS_platformGrabMutex(errorLock);
+
         err->next = errorMessages;
         errorMessages = err;
-        __PHYSFS_platformReleaseMutex(errorLock);
+
+        if (errorLock != NULL)
+            __PHYSFS_platformReleaseMutex(errorLock);
     } /* if */
 
     err->errorAvailable = 1;
@@ -184,6 +193,8 @@ static void freeErrorMessages(void)
         next = i->next;
         free(i);
     } /* for */
+
+    errorMessages = NULL;
 } /* freeErrorMessages */
 
 
@@ -306,7 +317,7 @@ static int appendDirSep(char **dir)
     if (strcmp((*dir + strlen(*dir)) - strlen(dirsep), dirsep) == 0)
         return(1);
 
-    ptr = (char*)realloc(*dir, strlen(*dir) + strlen(dirsep) + 1);
+    ptr = realloc(*dir, strlen(*dir) + strlen(dirsep) + 1);
     if (!ptr)
     {
         free(*dir);
@@ -346,7 +357,7 @@ static char *calculateBaseDir(const char *argv0)
             p = strstr(p + 1, dirsep);
         } /* while */
 
-        size = (size_t) (ptr - argv0);  /* !!! is this portable? */
+        size = (size_t) (ptr - argv0);
         retval = (char *) malloc(size + 1);
         BAIL_IF_MACRO(retval == NULL, ERR_OUT_OF_MEMORY, NULL);
         memcpy(retval, argv0, size);
@@ -420,7 +431,7 @@ int PHYSFS_init(const char *argv0)
     if (userDir != NULL)
     {
         ptr = __PHYSFS_platformRealPath(userDir);
-        //free(userDir);
+        free(userDir);
         userDir = ptr;
     } /* if */
 
@@ -716,7 +727,7 @@ int PHYSFS_setSaneConfig(const char *organization, const char *appName,
     BAIL_IF_MACRO(!initialized, ERR_NOT_INITIALIZED, 0);
 
         /* set write dir... */
-    str = (char*)malloc(strlen(userdir) + (strlen(organization) * 2) +
+    str = malloc(strlen(userdir) + (strlen(organization) * 2) +
                  (strlen(appName) * 2) + (strlen(dirsep) * 3) + 2);
     BAIL_IF_MACRO(str == NULL, ERR_OUT_OF_MEMORY, 0);
     sprintf(str, "%s.%s%s%s", userdir, organization, dirsep, appName);
@@ -780,7 +791,7 @@ int PHYSFS_setSaneConfig(const char *organization, const char *appName,
                 if (__PHYSFS_platformStricmp(ext, archiveExt) == 0)
                 {
                     const char *d = PHYSFS_getRealDir(*i);
-                    str = (char*)malloc(strlen(d) + strlen(dirsep) + l + 1);
+                    str = malloc(strlen(d) + strlen(dirsep) + l + 1);
                     if (str != NULL)
                     {
                         sprintf(str, "%s%s%s", d, dirsep, *i);
@@ -882,7 +893,7 @@ int __PHYSFS_verifySecurity(DirHandle *h, const char *fname)
     char *end;
     char *str;
 
-    start = str = (char*)malloc(strlen(fname) + 1);
+    start = str = malloc(strlen(fname) + 1);
     BAIL_IF_MACRO(str == NULL, ERR_OUT_OF_MEMORY, 0);
     strcpy(str, fname);
 
@@ -938,7 +949,7 @@ int PHYSFS_mkdir(const char *dname)
     h = writeDir->dirHandle;
     BAIL_IF_MACRO_MUTEX(!h->funcs->mkdir, ERR_NOT_SUPPORTED, stateLock, 0);
     BAIL_IF_MACRO_MUTEX(!__PHYSFS_verifySecurity(h, dname), NULL, stateLock, 0);
-    start = str = (char*)malloc(strlen(dname) + 1);
+    start = str = malloc(strlen(dname) + 1);
     BAIL_IF_MACRO_MUTEX(str == NULL, ERR_OUT_OF_MEMORY, stateLock, 0);
     strcpy(str, dname);
 
@@ -1001,11 +1012,13 @@ const char *PHYSFS_getRealDir(const char *filename)
         DirHandle *h = i->dirHandle;
         if (__PHYSFS_verifySecurity(h, filename))
         {
-            if (h->funcs->exists(h, filename))
+            if (!h->funcs->exists(h, filename))
+                __PHYSFS_setError(ERR_NO_SUCH_FILE);
+            else
             {
                 __PHYSFS_platformReleaseMutex(stateLock);
                 return(i->dirName);
-            } /* if */
+            } /* else */
         } /* if */
     } /* for */
     __PHYSFS_platformReleaseMutex(stateLock);
@@ -1142,6 +1155,44 @@ int PHYSFS_exists(const char *fname)
 } /* PHYSFS_exists */
 
 
+PHYSFS_sint64 PHYSFS_getLastModTime(const char *fname)
+{
+    PhysDirInfo *i;
+
+    BAIL_IF_MACRO(fname == NULL, ERR_INVALID_ARGUMENT, 0);
+    while (*fname == '/')
+        fname++;
+
+    if (*fname == '\0')   /* eh...punt if it's the root dir. */
+        return(1);
+
+    __PHYSFS_platformGrabMutex(stateLock);
+    for (i = searchPath; i != NULL; i = i->next)
+    {
+        DirHandle *h = i->dirHandle;
+        if (__PHYSFS_verifySecurity(h, fname))
+        {
+            if (!h->funcs->exists(h, fname))
+                __PHYSFS_setError(ERR_NO_SUCH_FILE);
+            else
+            {
+                PHYSFS_sint64 retval = -1;
+                if (h->funcs->getLastModTime == NULL)
+                    __PHYSFS_setError(ERR_NOT_SUPPORTED);
+                else
+                    retval = h->funcs->getLastModTime(h, fname);
+
+                __PHYSFS_platformReleaseMutex(stateLock);
+                return(retval);
+            } /* else */
+        } /* if */
+    } /* for */
+    __PHYSFS_platformReleaseMutex(stateLock);
+
+    return(-1);  /* error set in verifysecurity/exists */
+} /* PHYSFS_getLastModTime */
+
+
 int PHYSFS_isDirectory(const char *fname)
 {
     PhysDirInfo *i;
@@ -1159,12 +1210,14 @@ int PHYSFS_isDirectory(const char *fname)
         DirHandle *h = i->dirHandle;
         if (__PHYSFS_verifySecurity(h, fname))
         {
-            if (h->funcs->exists(h, fname))
+            if (!h->funcs->exists(h, fname))
+                __PHYSFS_setError(ERR_NO_SUCH_FILE);
+            else
             {
                 int retval = h->funcs->isDirectory(h, fname);
                 __PHYSFS_platformReleaseMutex(stateLock);
                 return(retval);
-            } /* if */
+            } /* else */
         } /* if */
     } /* for */
     __PHYSFS_platformReleaseMutex(stateLock);
@@ -1190,16 +1243,16 @@ int PHYSFS_isSymbolicLink(const char *fname)
         DirHandle *h = i->dirHandle;
         if (__PHYSFS_verifySecurity(h, fname))
         {
-            if (h->funcs->exists(h, fname))
+            if (!h->funcs->exists(h, fname))
+                __PHYSFS_setError(ERR_NO_SUCH_FILE);
+            else
             {
                 int retval = h->funcs->isSymLink(h, fname);
                 __PHYSFS_platformReleaseMutex(stateLock);
                 return(retval);
-            } /* if */
+            } /* else */
         } /* if */
     } /* for */
-
-/* !!! FIXME: setError ERR_FILE_NOT_FOUND? */
     __PHYSFS_platformReleaseMutex(stateLock);
 
     return(0);
@@ -1403,6 +1456,7 @@ PHYSFS_sint64 PHYSFS_fileLength(PHYSFS_file *handle)
     assert(h != NULL);
     assert(h->funcs != NULL);
     BAIL_IF_MACRO(h->funcs->fileLength == NULL, ERR_NOT_SUPPORTED, 0);
+
     return(h->funcs->fileLength(h));
 } /* PHYSFS_filelength */
 

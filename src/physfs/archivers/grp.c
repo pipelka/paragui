@@ -28,6 +28,12 @@
  *  This file written by Ryan C. Gordon.
  */
 
+#if HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
+#if (defined PHYSFS_SUPPORTS_GRP)
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,10 +44,6 @@
 
 #define __PHYSICSFS_INTERNAL__
 #include "physfs_internal.h"
-
-#if (!defined PHYSFS_SUPPORTS_GRP)
-#error PHYSFS_SUPPORTS_GRP must be defined.
-#endif
 
 typedef struct
 {
@@ -74,6 +76,7 @@ static LinkedStringList *GRP_enumerateFiles(DirHandle *h,
 static int GRP_exists(DirHandle *h, const char *name);
 static int GRP_isDirectory(DirHandle *h, const char *name);
 static int GRP_isSymLink(DirHandle *h, const char *name);
+static PHYSFS_sint64 GRP_getLastModTime(DirHandle *h, const char *name);
 static FileHandle *GRP_openRead(DirHandle *h, const char *name);
 
 static const FileFunctions __PHYSFS_FileFunctions_GRP =
@@ -96,6 +99,7 @@ const DirFunctions __PHYSFS_DirFunctions_GRP =
     GRP_exists,             /* exists() method         */
     GRP_isDirectory,        /* isDirectory() method    */
     GRP_isSymLink,          /* isSymLink() method      */
+    GRP_getLastModTime,     /* getLastModTime() method */
     GRP_openRead,           /* openRead() method       */
     NULL,                   /* openWrite() method      */
     NULL,                   /* openAppend() method     */
@@ -401,6 +405,13 @@ static int GRP_isSymLink(DirHandle *h, const char *name)
 } /* GRP_isSymLink */
 
 
+static PHYSFS_sint64 GRP_getLastModTime(DirHandle *h, const char *name)
+{
+    /* Just return the time of the GRP itself in the physical filesystem. */
+    return(__PHYSFS_platformGetLastModTime(((GRPinfo *) h->opaque)->filename));
+} /* GRP_getLastModTime */
+
+
 static FileHandle *GRP_openRead(DirHandle *h, const char *name)
 {
     const char *filename = ((GRPinfo *) h->opaque)->filename;
@@ -437,6 +448,8 @@ static FileHandle *GRP_openRead(DirHandle *h, const char *name)
     retval->dirHandle = h;
     return(retval);
 } /* GRP_openRead */
+
+#endif  /* defined PHYSFS_SUPPORTS_GRP */
 
 /* end of grp.c ... */
 

@@ -6,6 +6,10 @@
  *  This file written by Ryan C. Gordon.
  */
 
+#if HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #define __PHYSICSFS_INTERNAL__
 #include "physfs_internal.h"
 
@@ -216,6 +220,12 @@ void __PHYSFS_platformReleaseMutex(void *mutex)
 {
     /* not implemented, but can't call __PHYSFS_setError! */
 } /* __PHYSFS_platformReleaseMutex */
+
+
+PHYSFS_sint64 __PHYSFS_platformGetLastModTime(const char *fname)
+{
+    BAIL_MACRO(ERR_NOT_IMPLEMENTED, -1);
+} /* __PHYSFS_platformGetLastModTime */
 
 /* end of skeleton.c ... */
 

@@ -1,13 +1,25 @@
+Stuff that needs to be done and wishlist:
 
-- update the Makefile so that Cygwin can generate a DLL. The entire codebase
-  compiles under Cygwin otherwise.
-- Hmm...we can determine the actual CD-ROM drives under Win32, but how do you
-  decide that there's no disc in the drive?
-- MacOS support.
-- Move the integer types to something abstract. uint32, etc.
-- Ditch the "standard" i/o routines (fopen() and friends) and move this into
-  the platform drivers.
+These are in no particular order. A 1.0 release is reliant on doing most of
+ this stuff. Some might be dupes, some might be done already.
+
+- Include the Visual Studio.NET project file in CVS directly.
+- A PHYSFS_readUint32(), _readSint32(), etc API.
+- Improve ZIP_seek() (archivers/zip.c)
+- Make the zipfile parse symlinks with relative paths. See the function
+  expand_symlink_path() in archivers/zip.c ...
+- Actually, the zipfile driver could use a lot of tweaking. Please look
+  through it.
+- Other archivers: perhaps tar(.gz|.bz2), RPM, etc. These are less
+  important, since streaming archives aren't of much value to games (which
+  is why zipfiles are king: random access), but it could have uses for, say,
+  an installer/updater. I thought it might be neat to have MBOX and Maildir
+  support so that both "archives" look identical to an application; might be
+  nice for an email program. That's blue sky, unless someone wants to tackle
+  it.
+- Look for FIXMEs (many marked with "!!!" in comments).
+- Probably other stuff. Requests and recommendations are welcome.
+- Use __cdecl in physfs.h?
 
 // end of TODO ...
-
 

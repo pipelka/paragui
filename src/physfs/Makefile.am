@@ -1,26 +1,45 @@
-SUBDIRS = archivers platform
+lib_LTLIBRARIES = libphysfs.la
 
-noinst_LTLIBRARIES = libphysfs.la
+if BUILD_ZLIB
+ZLIB_DIR = zlib114
+ZLIB_LIB = zlib114/libz.la
+endif
 
-platform.c: $(srcdir)/$(PHYSFS_PLATFORMFILE)
-	cp -f $(srcdir)/$(PHYSFS_PLATFORMFILE) platform.c
+if BUILD_TEST_PHYSFS
+TEST_DIR = . test
+endif
 
-libphysfs_la_SOURCES = \
+SUBDIRS = archivers platform $(ZLIB_DIR) $(TEST_DIR)
+
+DIST_SUBDIRS = $(SUBDIRS) extras zlib114 test
+
+libphysfsincludedir = $(includedir)
+libphysfsinclude_HEADERS =	\
+	physfs.h
+
+libphysfs_la_SOURCES =	\
 	physfs.c \
-	physfs_byteorder.c \
-	platform.c
+	physfs_internal.h \
+	physfs_byteorder.c
 
-libphysfs_la_LIBADD = ./archivers/libarchivers.la
+libphysfs_la_LIBADD = \
+	archivers/libarchivers.la \
+	platform/libplatform.la \
+	$(ZLIB_LIB)
+
+libphysfs_la_INCLUDES = $(ZLIB_INC)
+
+libphysfs_la_LDFLAGS = 		\
+	-release $(LT_RELEASE)	\
+	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 
 EXTRA_DIST = \
-	physfs.h \
-	physfs_internal.h \
+	CREDITS \
+	LICENSE \
 	CHANGELOG \
 	INSTALL \
-	LICENSE \
-	TODO
-
-INCLUDES = -DPHYSFS_SUPPORTS_ZIP
-
-clean:
-	rm -f platform.c
+	TODO \
+	Doxyfile \
+	CWProjects.sit \
+	physfs.dsp \
+	test_physfs.dsp

@@ -1,31 +1,48 @@
 /*
- * Win32 platform-dependent support routines for PhysicsFS.
+ * Win32 support routines for PhysicsFS.
  *
  * Please see the file LICENSE in the source's root directory.
  *
- *  This file written by Ryan C. Gordon.
- *  Modified for ParaGUI by Alexander Pipelka
+ *  This file written by Ryan C. Gordon, and made sane by Gregory S. Read.
  */
 
+#if HAVE_CONFIG_H
+#  include <config.h>
+#endif
+
 #include <windows.h>
-#include <lm.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <time.h>
+#include <assert.h>
 
 #define __PHYSICSFS_INTERNAL__
 #include "physfs_internal.h"
 
+#define LOWORDER_UINT64(pos)       (PHYSFS_uint32)(pos & 0x00000000FFFFFFFF)
+#define HIGHORDER_UINT64(pos)      (PHYSFS_uint32)(pos & 0xFFFFFFFF00000000)
 
 const char *__PHYSFS_platformDirSeparator = "\\";
 
-static HANDLE ProcessHandle = NULL;     /* Current process handle */
-static DWORD ProcessID;                 /* ID assigned to current process */
+static int runningNT = 0;               /* TRUE if NT derived OS */
+static OSVERSIONINFO OSVersionInfo;     /* Information about the OS */
+static char *ProfileDirectory = NULL;   /* User profile folder */
 
-#define LOWORDER_UINT64(pos)       (PHYSFS_uint32)(pos & 0x00000000FFFFFFFF)
-#define HIGHORDER_UINT64(pos)      (PHYSFS_uint32)(pos & 0xFFFFFFFF00000000)
-#define INVALID_SET_FILE_POINTER	((DWORD)-1)
+/* Users without the platform SDK don't have this defined.  The original docs
+   for SetFilePointer() just said to compare with 0xFFFFFFF, so this should
+   work as desired */
+#ifndef INVALID_SET_FILE_POINTER
+#define INVALID_SET_FILE_POINTER 0xFFFFFFFF
+#endif
 
+/*
+ * Figure out what the last failing Win32 API call was, and
+ *  generate a human-readable string for the error message.
+ *
+ * The return value is a static buffer that is overwritten with
+ *  each call to this function.
+ */
 static const char *win32strerror(void)
 {
     static TCHAR msgbuf[255];
@@ -45,36 +62,116 @@ static const char *win32strerror(void)
 } /* win32strerror */
 
 
-int __PHYSFS_platformInit(void)
+/*
+ * Uninitialize any NT specific stuff done in doNTInit().
+ *
+ * Return zero if there was a catastrophic failure and non-zero otherwise.
+ */
+static int doNTDeinit(void)
 {
-	char* basedir = NULL;
+    /* nothing NT-specific to deinit at this point. */
+    return 1;  /* It's all good */
+} /* doNTDeinit */
 
-    /* Get Windows ProcessID associated with the current process */
-    ProcessID = GetCurrentProcessId();
+
+typedef BOOL (STDMETHODCALLTYPE FAR * LPFNGETUSERPROFILEDIR) (
+      HANDLE hToken,
+      LPTSTR lpProfileDir,
+      LPDWORD lpcchSize);
+   
+/*
+ * Initialize any NT specific stuff.  This includes any OS based on NT.
+ *
+ * Return zero if there was a catastrophic failure and non-zero otherwise.
+ */
+static int doNTInit(void)
+{
+    DWORD pathsize = 0;
+    char dummy[1];
+    BOOL rc = 0;
+    HANDLE ProcessHandle = NULL;     /* Current process handle */
+    HANDLE AccessTokenHandle = NULL; /* Security handle to process */
+    LPFNGETUSERPROFILEDIR GetUserProfileDirectory = NULL;
+    HMODULE lib = NULL;
+    const char *err = NULL;
+
+    /* Hooray for spaghetti code! */
+
+    lib = LoadLibrary("userenv.dll");
+    if (!lib)
+        goto ntinit_failed;
+
+    /* !!! FIXME: Handle Unicode? */
+    GetUserProfileDirectory = (LPFNGETUSERPROFILEDIR)
+                              GetProcAddress(lib, "GetUserProfileDirectoryA");
+    if (!GetUserProfileDirectory)
+        goto ntinit_failed;
+
     /* Create a process handle associated with the current process ID */
     ProcessHandle = GetCurrentProcess();
 
-    if(ProcessHandle == NULL) {
-        /* Process handle is required by other win32 functions */
-        return 0;
-    }
+    /* Create a process access token handle */
+    if(!OpenProcessToken(ProcessHandle, TOKEN_QUERY, &AccessTokenHandle))
+        goto ntinit_failed; /* we need that token to get the profile dir. */
 
-	basedir = __PHYSFS_platformCalcBaseDir("");
-	SetCurrentDirectory(basedir);
+    /* Should fail.  Will write the size of the profile path in pathsize */
+    /* Second parameter can't be NULL or the function fails. */
+    rc = GetUserProfileDirectory(AccessTokenHandle, dummy, &pathsize);
+    assert(!rc);  /* success?! */
 
-    return(1);
-} /* __PHYSFS_platformInit */
+    /* Allocate memory for the profile directory */
+    ProfileDirectory = (char *) malloc(pathsize);
+    if (ProfileDirectory == NULL)
+    {
+        err = ERR_OUT_OF_MEMORY;
+        goto ntinit_failed;
+    } /* if */
 
+    /* Try to get the profile directory */
+    if(!GetUserProfileDirectory(AccessTokenHandle, ProfileDirectory, &pathsize))
+        goto ntinit_failed;
 
-int __PHYSFS_platformDeinit(void)
+    goto ntinit_succeeded;  /* We made it: hit the showers. */
+
+ntinit_failed:
+    if (err == NULL) /* set an error string if we haven't yet. */
+        __PHYSFS_setError(win32strerror());
+
+    if (ProfileDirectory != NULL)
+    {
+        free(ProfileDirectory);
+        ProfileDirectory = NULL;
+    } /* if */
+
+    /* drop through and clean up the rest of the stuff... */
+
+ntinit_succeeded:
+    if (lib != NULL)
+        FreeLibrary(lib);
+
+    if (AccessTokenHandle != NULL)
+        CloseHandle(AccessTokenHandle);
+
+    return ((err == NULL) ? 1 : 0);
+} /* doNTInit */
+
+static BOOL MediaInDrive(const char *DriveLetter)
 {
-    if(CloseHandle(ProcessHandle) != S_OK)
-        return 0;
+    UINT OldErrorMode;
+    DWORD DummyValue;
+    BOOL ReturnValue;
 
-    /* It's all good */
-    return 1;
-} /* __PHYSFS_platformDeinit */
+    /* Prevent windows warning message to appear when checking media size */
+    OldErrorMode = SetErrorMode(SEM_FAILCRITICALERRORS);
+    
+    /* If this function succeeds, there's media in the drive */
+    ReturnValue = GetDiskFreeSpace(DriveLetter, &DummyValue, &DummyValue, &DummyValue, &DummyValue);
 
+    /* Revert back to old windows error handler */
+    SetErrorMode(OldErrorMode);
+
+    return ReturnValue;
+} /* MediaInDrive */
 
 char **__PHYSFS_platformDetectAvailableCDs(void)
 {
@@ -84,7 +181,7 @@ char **__PHYSFS_platformDetectAvailableCDs(void)
 
     for (drive_str[0] = 'A'; drive_str[0] <= 'Z'; drive_str[0]++)
     {
-        if (GetDriveType(drive_str) == DRIVE_CDROM)
+        if (GetDriveType(drive_str) == DRIVE_CDROM && MediaInDrive(drive_str))
         {
             char **tmp = realloc(retval, sizeof (char *) * cd_count + 1);
             if (tmp)
@@ -102,30 +199,41 @@ char **__PHYSFS_platformDetectAvailableCDs(void)
 
     retval[cd_count - 1] = NULL;
     return(retval);
-} /* __PHYSFS_platformDetectAvailableCDs */
+} /* __PHYSFS_detectAvailableCDs */
 
 
 static char *getExePath(const char *argv0)
 {
     char *filepart = NULL;
-    char *retval = (char *) malloc(sizeof (TCHAR) * (MAX_PATH + 1));
-    DWORD buflen = GetModuleFileName(NULL, retval, MAX_PATH + 1);
-	char *ptr;
+    char *retval;
+	DWORD buflen;
+		
+	retval = (char *) malloc(sizeof (TCHAR) * (MAX_PATH + 1));
+	BAIL_IF_MACRO(retval == NULL, ERR_OUT_OF_MEMORY, NULL);
+    buflen = GetModuleFileName(NULL, retval, MAX_PATH + 1);
+	if (buflen == 0)
+    {
+        const char *err = win32strerror();
+        free(retval);
+        BAIL_MACRO(err, NULL);
+    } /* if */
 
     retval[buflen] = '\0';  /* does API always null-terminate the string? */
 
-	/* make sure the string was not truncated. */
+        /* make sure the string was not truncated. */
     if (__PHYSFS_platformStricmp(&retval[buflen - 4], ".exe") == 0)
     {
-        ptr = strrchr(retval, '\\');
+        char *ptr = strrchr(retval, '\\');
         if (ptr != NULL)
         {
             *(ptr + 1) = '\0';  /* chop off filename. */
 
             /* free up the bytes we didn't actually use. */            
-            retval = (char *) realloc(retval, strlen(retval) + 1);
-            if (retval != NULL)
-                return(retval);
+            ptr = (char *) realloc(retval, strlen(retval) + 1);
+            if (ptr != NULL)
+			    retval = ptr;
+
+            return(retval);
         } /* if */
     } /* if */
 
@@ -159,6 +267,7 @@ char *__PHYSFS_platformGetUserName(void)
         BAIL_IF_MACRO(retval == NULL, ERR_OUT_OF_MEMORY, NULL);
         if (GetUserName(retval, &bufsize) == 0)  /* ?! */
         {
+            __PHYSFS_setError(win32strerror());
             free(retval);
             retval = NULL;
         } /* if */
@@ -168,66 +277,27 @@ char *__PHYSFS_platformGetUserName(void)
 } /* __PHYSFS_platformGetUserName */
 
 
-static char *copyEnvironmentVariable(const char *varname)
-{
-    const char *envr = getenv(varname);
-    char *retval = NULL;
-
-    if (envr != NULL)
-    {
-        retval = malloc(strlen(envr) + 1);
-        if (retval != NULL)
-            strcpy(retval, envr);
-    } /* if */
-
-    return(retval);
-} /* copyEnvironmentVariable */
-
-
 char *__PHYSFS_platformGetUserDir(void)
 {
-    char *home = NULL;
-    const char *homedrive = getenv("HOMEDRIVE");
-    const char *homepath = getenv("HOMEPATH");
-
-    if(getenv("USERPROFILE") != NULL) {
-	home = copyEnvironmentVariable("USERPROFILE");
-	return home;
-    }
-
-    home = copyEnvironmentVariable("HOME");
-
-    if (home != NULL)
-        return(home);
-
-    if ((homedrive != NULL) && (homepath != NULL))
-    {
-        char *retval = (char *) malloc(strlen(homedrive)+strlen(homepath)+2);
-        if (retval != NULL)
-        {
-            strcpy(retval, homedrive);
-            if ((homepath[0] != '\\') &&
-                (homedrive[strlen(homedrive)-1] != '\\'))
-            {
-                strcat(retval, "\\");
-            } /* if */
-            strcat(retval, homepath);
-            return(retval);
-        } /* if */
-    } /* if */
-
-    return(NULL);
+    char *retval = (char *) malloc(strlen(ProfileDirectory) + 1);
+    BAIL_IF_MACRO(retval == NULL, ERR_OUT_OF_MEMORY, NULL);
+    strcpy(retval, ProfileDirectory); /* calculated at init time. */
+	return retval;
 } /* __PHYSFS_platformGetUserDir */
 
 
 PHYSFS_uint64 __PHYSFS_platformGetThreadID(void)
 {
-    return((int) GetCurrentThreadId());
+    return((PHYSFS_uint64)GetCurrentThreadId());
 } /* __PHYSFS_platformGetThreadID */
 
 
+/* ...make this Cygwin AND Visual C friendly... */
 int __PHYSFS_platformStricmp(const char *x, const char *y)
 {
+#if (defined _MSC_VER)
+    return(stricmp(x, y));
+#else
     int ux, uy;
 
     do
@@ -243,6 +313,7 @@ int __PHYSFS_platformStricmp(const char *x, const char *y)
     } while ((ux) && (uy));
 
     return(0);
+#endif
 } /* __PHYSFS_platformStricmp */
 
 
@@ -293,6 +364,7 @@ char *__PHYSFS_platformCvtToDependent(const char *prepend,
 } /* __PHYSFS_platformCvtToDependent */
 
 
+/* Much like my college days, try to sleep for 10 milliseconds at a time... */
 void __PHYSFS_platformTimeslice(void)
 {
     Sleep(10);
@@ -307,10 +379,27 @@ LinkedStringList *__PHYSFS_platformEnumerateFiles(const char *dirname,
     LinkedStringList *prev = NULL;
     HANDLE dir;
     WIN32_FIND_DATA ent;
-	char path[255];
-	sprintf(path, "%s\\*.*", dirname);
+    char *SearchPath;
+    size_t len = strlen(dirname);
 
-    dir = FindFirstFile(path, &ent);
+    /* Allocate a new string for path, maybe '\\', "*", and NULL terminator */
+    SearchPath = (char *) _alloca(len + 3);
+    BAIL_IF_MACRO(SearchPath == NULL, ERR_OUT_OF_MEMORY, NULL);
+
+    /* Copy current dirname */
+    strcpy(SearchPath, dirname);
+
+    /* if there's no '\\' at the end of the path, stick one in there. */
+    if (SearchPath[len - 1] != '\\')
+    {
+        SearchPath[len++] = '\\';
+        SearchPath[len] = '\0';
+    } /* if */
+
+    /* Append the "*" to the end of the string */
+    strcat(SearchPath, "*");
+
+    dir = FindFirstFile(SearchPath, &ent);
     BAIL_IF_MACRO(dir == INVALID_HANDLE_VALUE, win32strerror(), NULL);
 
     do
@@ -341,7 +430,7 @@ LinkedStringList *__PHYSFS_platformEnumerateFiles(const char *dirname,
 
         prev = l;
         l->next = NULL;
-    } while( FindNextFile(dir, &ent) != 0 );
+    } while (FindNextFile(dir, &ent) != 0);
 
     FindClose(dir);
     return(retval);
@@ -365,6 +454,7 @@ char *__PHYSFS_platformCurrentDir(void)
 } /* __PHYSFS_platformCurrentDir */
 
 
+/* this could probably use a cleanup. */
 char *__PHYSFS_platformRealPath(const char *path)
 {
     char *retval = NULL;
@@ -381,10 +471,7 @@ char *__PHYSFS_platformRealPath(const char *path)
          *  We'll need to check for "." and ".." dirs, though, just in case.
          */
     if ((path[0] == '\\') && (path[1] == '\\'))
-    {
-        BAIL_IF_MACRO(retval == NULL, ERR_OUT_OF_MEMORY, NULL);
         strcpy(retval, path);
-    } /* if */
 
     else
     {
@@ -496,6 +583,59 @@ int __PHYSFS_platformMkDir(const char *path)
 } /* __PHYSFS_platformMkDir */
 
 
+/* 
+ * Get OS info and save it.
+ *
+ * Returns non-zero if successful, otherwise it returns zero on failure.
+ */
+int getOSInfo(void)
+{
+    /* Get OS info */
+    OSVersionInfo.dwOSVersionInfoSize = sizeof(OSVersionInfo);
+    BAIL_IF_MACRO(!GetVersionEx(&OSVersionInfo), win32strerror(), 0);
+
+    /* Set to TRUE if we are runnign a WinNT based OS 4.0 or greater */
+    runningNT = (OSVersionInfo.dwPlatformId == VER_PLATFORM_WIN32_NT) &&
+        (OSVersionInfo.dwMajorVersion > 3);
+
+    return 1;
+}
+
+int __PHYSFS_platformInit(void)
+{
+    BAIL_IF_MACRO(!getOSInfo(), NULL, 0);
+
+    /* If running an NT system (NT/Win2k/XP, etc...) */
+    if(runningNT)
+    {
+        BAIL_IF_MACRO(!doNTInit(), NULL, 0);
+    } /* if */
+    else
+    {
+        /* Profile directory is the exe path on 95/98/ME systems. */
+    	ProfileDirectory = getExePath(NULL);
+        BAIL_IF_MACRO(ProfileDirectory == NULL, win32strerror(), 0);
+    } /* else */
+
+    return 1;  /* It's all good */
+}
+
+int __PHYSFS_platformDeinit(void)
+{
+    if (runningNT)
+    {
+        BAIL_IF_MACRO(!doNTDeinit(), NULL, 0);
+    } /* if */
+
+    if (ProfileDirectory != NULL)
+    {
+        free(ProfileDirectory);
+        ProfileDirectory = NULL;
+    } /* if */
+
+    return 1; /* It's all good */
+}
+
 void *__PHYSFS_platformOpenRead(const char *filename)
 {
     HANDLE FileHandle;
@@ -505,13 +645,9 @@ void *__PHYSFS_platformOpenRead(const char *filename)
     FileHandle = CreateFile(filename, GENERIC_READ, FILE_SHARE_READ, NULL, 
         OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
-    /* If CreateFile() failed */
-    if(FileHandle == INVALID_HANDLE_VALUE)
-        return NULL;
-
+    BAIL_IF_MACRO(FileHandle == INVALID_HANDLE_VALUE, win32strerror(), NULL);
     return (void *)FileHandle;
-} /* __PHYSFS_platformOpenRead */
-
+}
 
 void *__PHYSFS_platformOpenWrite(const char *filename)
 {
@@ -522,13 +658,9 @@ void *__PHYSFS_platformOpenWrite(const char *filename)
     FileHandle = CreateFile(filename, GENERIC_WRITE, FILE_SHARE_READ, NULL, 
         CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-    /* If CreateFile() failed */
-    if(FileHandle == INVALID_HANDLE_VALUE)
-        return NULL;
-
+    BAIL_IF_MACRO(FileHandle == INVALID_HANDLE_VALUE, win32strerror(), NULL);
     return (void *)FileHandle;
-} /* __PHYSFS_platformOpenWrite */
-
+}
 
 void *__PHYSFS_platformOpenAppend(const char *filename)
 {
@@ -537,17 +669,11 @@ void *__PHYSFS_platformOpenAppend(const char *filename)
     /* Open an existing file for appending only.  File can be opened by others
        who request read access to the file only. */
     FileHandle = CreateFile(filename, GENERIC_WRITE, FILE_SHARE_READ, NULL, 
-        TRUNCATE_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+        OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
-    /* If CreateFile() failed */
-    if(FileHandle == INVALID_HANDLE_VALUE)
-        /* CreateFile might have failed because the file doesn't exist, so
-           we'll just create a new file for writing then */
-        return __PHYSFS_platformOpenWrite(filename);
-
+    BAIL_IF_MACRO(FileHandle == INVALID_HANDLE_VALUE, win32strerror(), NULL);
     return (void *)FileHandle;
-} /* __PHYSFS_platformOpenAppend */
-
+}
 
 PHYSFS_sint64 __PHYSFS_platformRead(void *opaque, void *buffer,
                                     PHYSFS_uint32 size, PHYSFS_uint32 count)
@@ -563,23 +689,19 @@ PHYSFS_sint64 __PHYSFS_platformRead(void *opaque, void *buffer,
     /*!!! - uint32 might be a greater # than DWORD */
     if(!ReadFile(FileHandle, buffer, count * size, &CountOfBytesRead, NULL))
     {
-        /* Set the error to GetLastError */
-        __PHYSFS_setError(win32strerror());
-        /* We errored out */
-        retval = -1;
-    }
+        BAIL_MACRO(win32strerror(), -1);
+    } /* if */
     else
     {
         /* Return the number of "objects" read. */
         /* !!! - What if not the right amount of bytes was read to make an object? */
         retval = CountOfBytesRead / size;
-    }
+    } /* else */
 
     return retval;
-} /* __PHYSFS_platformRead */
+}
 
-
-PHYSFS_sint64 __PHYSFS_platformWrite(void *opaque, const void *buffer,
+PHYSFS_sint64 __PHYSFS_platformWrite(void *opaque, void *buffer,
                                      PHYSFS_uint32 size, PHYSFS_uint32 count)
 {
     HANDLE FileHandle;
@@ -593,21 +715,17 @@ PHYSFS_sint64 __PHYSFS_platformWrite(void *opaque, const void *buffer,
     /*!!! - uint32 might be a greater # than DWORD */
     if(!WriteFile(FileHandle, buffer, count * size, &CountOfBytesWritten, NULL))
     {
-        /* Set the error to GetLastError */
-        __PHYSFS_setError(win32strerror());
-        /* We errored out */
-        retval = -1;
-    }
+        BAIL_MACRO(win32strerror(), -1);
+    } /* if */
     else
     {
         /* Return the number of "objects" read. */
         /*!!! - What if not the right number of bytes was written? */
         retval = CountOfBytesWritten / size;
-    }
+    } /* else */
 
     return retval;
-} /* __PHYSFS_platformWrite */
-
+}
 
 int __PHYSFS_platformSeek(void *opaque, PHYSFS_uint64 pos)
 {
@@ -638,39 +756,65 @@ int __PHYSFS_platformSeek(void *opaque, PHYSFS_uint64 pos)
     }
 
     return retval;
-} /* __PHYSFS_platformSeek */
-
+}
 
 PHYSFS_sint64 __PHYSFS_platformTell(void *opaque)
 {
     HANDLE FileHandle;
+    DWORD HighOrderPos = 0; 
+    DWORD LowOrderPos;
     PHYSFS_sint64 retval;
 
     /* Cast the generic handle to a Win32 handle */
     FileHandle = (HANDLE)opaque;
 
     /* Get current position */
-    retval = SetFilePointer(FileHandle, 0, NULL, FILE_CURRENT);
-/*    if(GetLastError() != NO_ERROR)
+    if(((LowOrderPos = SetFilePointer(FileHandle, 0, &HighOrderPos, FILE_CURRENT))
+        == INVALID_SET_FILE_POINTER) && (GetLastError() != NO_ERROR))
     {
+        /* Set the error to GetLastError */
         __PHYSFS_setError(win32strerror());
+        /* We errored out */
         retval = 0;
     }
-*/
+    else
+    {
+        /* Combine the high/low order to create the 64-bit position value */
+        retval = HighOrderPos;
+        retval = retval << 32;
+        retval |= LowOrderPos;
+    }
 
+    /*!!! Can't find a file pointer routine?!?!?!!?!?*/
     return retval;
-} /* __PHYSFS_platformTell */
-
+}
 
 PHYSFS_sint64 __PHYSFS_platformFileLength(void *handle)
 {
     HANDLE FileHandle;
+    DWORD FileSizeHigh;
+    DWORD FileSizeLow;
+    PHYSFS_sint64 retval;
 
     /* Cast the generic handle to a Win32 handle */
-    FileHandle = (HANDLE)handle;  
-    return GetFileSize(FileHandle, NULL);
-} /* __PHYSFS_platformFileLength */
+    FileHandle = (HANDLE)handle;
 
+    /* Get the file size.  Condition evaluates to TRUE if an error occured */
+    if(((FileSizeLow = GetFileSize(FileHandle, &FileSizeHigh))
+        == INVALID_SET_FILE_POINTER) && (GetLastError() != NO_ERROR))
+    {
+        BAIL_MACRO(win32strerror(), -1);
+    } /* if */
+    else
+    {
+        /* Combine the high/low order to create the 64-bit position value */
+        retval = FileSizeHigh;
+        retval = retval << 32;
+        retval |= FileSizeLow;
+    } /* else */
+
+    return retval;
+}
 
 int __PHYSFS_platformEOF(void *opaque)
 {
@@ -681,15 +825,15 @@ int __PHYSFS_platformEOF(void *opaque)
     /* Cast the generic handle to a Win32 handle */
     FileHandle = (HANDLE)opaque;
 
-	if(__PHYSFS_platformFileLength(FileHandle) == -1) {
-		return 1;
-	}
-
     /* Get the current position in the file */
-	FilePosition = __PHYSFS_platformTell(FileHandle);
-    return (FilePosition >= (__PHYSFS_platformFileLength(FileHandle) - 1));
-} /* __PHYSFS_platformEOF */
+    if((FilePosition = __PHYSFS_platformTell(opaque)) != 0)
+    {
+        /* Non-zero if EOF is equal to the file length */
+        retval = FilePosition == __PHYSFS_platformFileLength(opaque);
+    }
 
+    return retval;
+}
 
 int __PHYSFS_platformFlush(void *opaque)
 {
@@ -707,8 +851,7 @@ int __PHYSFS_platformFlush(void *opaque)
     }
 
     return retval;
-} /* __PHYSFS_platformFlush */
-
+}
 
 int __PHYSFS_platformClose(void *opaque)
 {
@@ -726,8 +869,7 @@ int __PHYSFS_platformClose(void *opaque)
     }
 
     return retval;
-} /* __PHYSFS_platformClose */
-
+}
 
 int __PHYSFS_platformDelete(const char *path)
 {
@@ -750,20 +892,17 @@ int __PHYSFS_platformDelete(const char *path)
     }
 
     return retval;
-} /* __PHYSFS_platformDelete */
-
+}
 
 void *__PHYSFS_platformCreateMutex(void)
 {
     return (void *)CreateMutex(NULL, FALSE, NULL);
-} /* __PHYSFS_platformCreateMutex */
-
+}
 
 void __PHYSFS_platformDestroyMutex(void *mutex)
 {
     CloseHandle((HANDLE)mutex);
-} /* __PHYSFS_platformDestroyMutex */
-
+}
 
 int __PHYSFS_platformGrabMutex(void *mutex)
 {
@@ -772,22 +911,62 @@ int __PHYSFS_platformGrabMutex(void *mutex)
     if(WaitForSingleObject((HANDLE)mutex, INFINITE) == WAIT_FAILED)
     {
         /* Our wait failed for some unknown reason */
-        retval = 1;
+        retval = 0;
     }
     else
     {
         /* Good to go */
-        retval = 0;
+        retval = 1;
     }
 
     return retval;
-} /* __PHYSFS_platformGrabMutex */
-
+}
 
 void __PHYSFS_platformReleaseMutex(void *mutex)
 {
     ReleaseMutex((HANDLE)mutex);
-} /* __PHYSFS_platformReleaseMutex */
+}
+
+static time_t FileTimeToTimeT(FILETIME *ft)
+{
+    SYSTEMTIME st_utc;
+    SYSTEMTIME st_localtz;
+    TIME_ZONE_INFORMATION TimeZoneInfo;
+    struct tm tm;
+
+    FileTimeToSystemTime(ft, &st_utc);
+    GetTimeZoneInformation(&TimeZoneInfo);
+    SystemTimeToTzSpecificLocalTime(&TimeZoneInfo, &st_utc, &st_localtz);
+
+    tm.tm_sec = st_localtz.wSecond;
+    tm.tm_min = st_localtz.wMinute;
+    tm.tm_hour = st_localtz.wHour;
+    tm.tm_mday = st_localtz.wDay;
+    tm.tm_mon = st_localtz.wMonth - 1;
+    tm.tm_year = st_localtz.wYear - 1900;
+    tm.tm_wday = st_localtz.wDayOfWeek;
+    tm.tm_yday = -1;
+    tm.tm_isdst = -1;
+    return mktime(&tm);
+} /* FileTimeToTimeT */
+
+PHYSFS_sint64 __PHYSFS_platformGetLastModTime(const char *fname)
+{
+    WIN32_FILE_ATTRIBUTE_DATA AttributeData;
+
+    GetFileAttributesEx(fname, GetFileExInfoStandard, &AttributeData);
+    /* 0 return value indicates an error or not supported */
+    if(AttributeData.ftLastWriteTime.dwHighDateTime == 0 &&
+        AttributeData.ftLastWriteTime.dwLowDateTime == 0)
+    {
+        /* Return error */
+        BAIL_MACRO(win32strerror(), -1);
+    }
+
+    /* Return UNIX time_t version of last write time */
+    return (PHYSFS_sint64)FileTimeToTimeT(&AttributeData.ftLastWriteTime);
+    /*return (PHYSFS_sint64)FileTimeToTimeT(&AttributeData.ftCreationTime);*/
+} /* __PHYSFS_platformGetLastModTime */
 
 /* end of win32.c ... */
 

@@ -1,7 +1,19 @@
+noinst_LTLIBRARIES = libplatform.la
+
+if BUILD_BEOS_CPP
+libplatform_la_SOURCES = \
+	posix.c \
+	beos.cpp
+else
+libplatform_la_SOURCES = \
+	posix.c \
+	unix.c
+endif
+
 EXTRA_DIST = \
-	beos.c \
-	skeleton.c \
-	macclassic.c \
+	posix.c \
 	unix.c \
-	unix_nocdrom.c \
-	win32.c
+	skeleton.c \
+	win32.c \
+	macclassic.c \
+	beos.cpp
