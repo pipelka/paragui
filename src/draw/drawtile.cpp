@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/01/22 16:52:42 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/drawtile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
     Status:           $State: Exp $
 */
 
@@ -38,14 +38,16 @@ void PG_Draw::DrawTile(SDL_Surface* surface, const PG_Rect& ref, const PG_Rect& 
 	PG_Point index2;
 	PG_Rect oldclip;
 
-    if (!surface || !tilemap)
-            return;
+	if (!surface || !tilemap) {
+		return;
+	}
 
-    if (!tilemap->w || !tilemap->h || !surface->w || !surface->h)
-            return;
+	if (!tilemap->w || !tilemap->h || !surface->w || !surface->h) {
+		return;
+	}
 
-    int dx = abs((double)(drawrect.x - ref.x));
-    int dy = abs((double)(drawrect.y - ref.y));
+	int dx = (int)abs((double)(drawrect.x - ref.x));
+	int dy = (int)abs((double)(drawrect.y - ref.y));
 
 	index1.x = dx / tilemap->w;
 	index1.y = dy / tilemap->h;

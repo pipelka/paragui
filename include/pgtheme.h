@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/01/22 16:52:42 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtheme.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,7 @@
 
 #include "paragui.h"
 #include "pglabel.h"
+#include "pgfont.h"
 
 /**
 	@short Theme/style definition class
@@ -43,10 +44,10 @@ public:
 
 	virtual const char* FindDefaultFontName() = 0;
 	virtual int FindDefaultFontSize() = 0;
-	virtual int FindDefaultFontStyle() = 0;
+	virtual PG_Font::Style FindDefaultFontStyle() = 0;
 	virtual const char* FindFontName(const char* widgettype, const char* objectname) = 0;
 	virtual int FindFontSize(const char* widgettype, const char* objectname) = 0;
-	virtual int FindFontStyle(const char* widgettype, const char* objectname) = 0;
+	virtual PG_Font::Style FindFontStyle(const char* widgettype, const char* objectname) = 0;
 	virtual SDL_Surface* FindSurface(const char* widgettype, const char* object, const char* name) = 0;
 	virtual PG_Gradient* FindGradient(const char* widgettype, const char* object, const char* name) = 0;
 	virtual void GetProperty(const char* widgettype, const char* object, const char* name, long& prop) = 0;

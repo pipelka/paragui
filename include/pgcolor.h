@@ -26,18 +26,16 @@ public:
 
 	PG_Color& operator=(Uint32 c);
 
-	//operator SDL_Color();
-	
 	operator Uint32() const;
-	
+
 	inline Uint32 MapRGB(SDL_PixelFormat* format) const {
 		return SDL_MapRGB(format, r, g, b);
 	}
-	
+
 	inline Uint32 MapRGBA(SDL_PixelFormat* format, Uint8 a) const {
 		return SDL_MapRGBA(format, r, g, b, a);
 	}
-	
+
 	inline bool operator!=(const PG_Color& c) const {
 		return ((r != c.r) || (g != c.g) || (b != c.b));
 	}

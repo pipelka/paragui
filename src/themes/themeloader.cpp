@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/01/22 16:52:43 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.4 $
     Status:           $State: Exp $
 */
 
@@ -67,6 +67,8 @@ PARSE_INFO;
 #define THEMEMODE_THEME			1
 #define THEMEMODE_WIDGET		2
 #define THEMEMODE_OBJECT		3
+
+#define THEME_SUFFIX ".theme"
 
 #define BUFFSIZE	512
 

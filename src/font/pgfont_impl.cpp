@@ -5,7 +5,7 @@
 struct PG_FontDataInternal {
 	PG_Color color;
 	int alpha;
-	int style;
+	PG_Font::Style style;
 
 	int size;
 	int index;
@@ -29,7 +29,7 @@ PG_Font::PG_Font(const char* fontfile, int size, int index) {
 	my_internaldata->color.g = 255;
 	my_internaldata->color.b = 255;
 	my_internaldata->alpha = 255;
-	my_internaldata->style = 0;
+	my_internaldata->style = NORMAL;
 
 	my_internaldata->FaceCache = PG_FontEngine::LoadFontFace(fontfile, size, index);
 	
@@ -73,11 +73,11 @@ int PG_Font::GetAlpha() {
 	return my_internaldata->alpha;
 }
 	
-void PG_Font::SetStyle(int s) {
+void PG_Font::SetStyle(Style s) {
 	my_internaldata->style = s;
 }
 
-int PG_Font::GetStyle() {
+PG_Font::Style PG_Font::GetStyle() {
 	return my_internaldata->style;
 }
 	

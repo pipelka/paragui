@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:01:03 $
+    Update Date:      $Date: 2004/01/22 16:52:42 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.5 $
     Status:           $State: Exp $
 */
 
@@ -408,7 +408,7 @@ public:
 	@param	Style	Binary combination (OR) of PG_FSTYLE_NORMAL, PG_FSTYLE_BOLD, PG_FSTYLE_ITALIC and PG_FSTYLE_UNDERLINE
 	@return   0 when OK
 	*/
-	static void SetFontStyle(int Style);
+	static void SetFontStyle(PG_Font::Style Style);
 
 	/**
 	Set default font size

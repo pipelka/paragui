@@ -300,7 +300,7 @@ static int SetWidgetAtts(PG_Widget *Widget, const char **atts, ParseUserData_t *
 
 	i = PG_Layout::GetParamInt(atts, "fstyle");
 	if (i != -1) {
-		Widget->SetFontStyle(i);
+		Widget->SetFontStyle((PG_Font::Style)i);
 	}
 
 	i = PG_Layout::GetParamInt(atts, "findex");

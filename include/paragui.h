@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:01:02 $
+    Update Date:      $Date: 2004/01/22 16:52:42 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.5 $
     Status:           $State: Exp $
 */
 
@@ -37,119 +37,111 @@
 #ifndef PARAGUI_H
 #define PARAGUI_H
 
-// SDL
+//
+// SDL includes
+//
 #include "SDL.h"
 #include "SDL_thread.h"
 
-#include "paraconfig.h"
+//
+// undefine PACKAGE, VERSION (collision with others)
+//
+#undef PACKAGE
+#undef VERSION
 
+#define PG_VERSIONNUM(X, Y, Z) ((X)*10000 + (Y)*100 + (Z))
+
+//
+// include system configuration
+//
+#if (defined(WIN32) || defined(__WIN32__)) && (defined(__MINGW32__) || defined(_MSC_VER) || defined(__BCPLUSPLUS__) || defined(__MWERKS__))
+#include "paraconfig_win32.h"
+#elif defined(__MACOS__) // MacOS
+#include "paraconfig_macos.h"
+#else // GNU
+#include "paraconfig_gnu.h"
+#endif
+
+//
+// STL map / hash_map
+//
+#if defined(HAVE_HASH_MAP)
+#define HASH_MAP_INC <hash_map>
+#define MAP_INC <hash_map>
+#define STL_MAP hash_map
+#elif defined(HAVE_EXT_HASH_MAP)
+#define HASH_MAP_INC <ext/hash_map>
+#define MAP_INC <ext/hash_map>
+#if PG_VERSIONNUM(__GNUC__, __GNUC_MINOR__, 0) >= PG_VERSIONNUM(3, 1, 0)
+#define STL_MAP __gnu_cxx::hash_map
+#else
+#define STL_MAP hash_map
+#endif
+#else
+#define MAP_INC <map>
+#define STL_MAP map
+#endif
+
+
+//
+// Modelled after g++ stdc++ v3
+//
+#if defined(EXCEPTIONS_ENABLED) || defined(__EXCEPTIONS)
+#define PG_TRY try
+#define PG_CATCH_ALL catch(...)
+#define PG_THROW(_ex_) throw _ex_
+#define PG_RETHROW throw
+#define PG_NOTHROW throw()
+#define PG_UNWIND(action) catch(...) {action; throw;}
+#define PG_CATCH(_ex_, _name_) catch(_ex_& _name_)
+#else
+#define PG_TRY
+#define PG_CATCH_ALL if (false)
+#define PG_THROW(_ex_)
+#define PG_RETHROW
+#define PG_NOTHROW
+#define PG_UNWIND
+#define PG_CATCH(_ex_, _name_) if (false)
+#endif
+
+//
+// Replacement for strdup
+//
+#ifndef HAVE_STRDUP
+extern "C" {
+char* strdup(const char* s);
+}
+#endif
+
+//
+// Replacement for fnmatch
+//
+#ifndef HAVE_FNMATCH
+extern "C" {
+/* Bits set in the FLAGS argument to `fnmatch'.  */
+#define	FNM_PATHNAME	(1 << 0) /* No wildcard can ever match `/'.  */
+#define	FNM_NOESCAPE	(1 << 1) /* Backslashes don't quote special chars.  */
+#define	FNM_PERIOD	(1 << 2) /* Leading `.' is matched only explicitly.  */
+#define	__FNM_FLAGS	(FNM_PATHNAME|FNM_NOESCAPE|FNM_PERIOD)
+
+/* Value returned by `fnmatch' if STRING does not match PATTERN.  */
+#define	FNM_NOMATCH	1
+
+int fnmatch(const char *, const char *, int);
+}
+#else
+#include <fnmatch.h>
+#endif
+
+//
 //our default namespace is std
+//
 using namespace std;
-
-/**
-	calculate the minimum of 2 values
-*/
-#define PG_MAX(a, b)	((a<b) ? b : a)
-
-/**
-	calculate the maximum of 2 values
-*/
-#define PG_MIN(a, b)	((a<b) ? a : b)
-
-/**
-	default display depth.
-	this is the default  display depth used for PG_Application::InitScreen.
-*/
-//#define DISPLAY_DEPTH 16
-
-/**
-	suffix for theme (xml) files.
-	The themeloader tries to open themefiles with the extension THEME_SUFFIX
-*/
-#define THEME_SUFFIX ".theme"
-
-// internal widget ids
 
 /**
 	Internal widget ID.
 	All internal widget ID's start at this value.
 */
 #define	PG_WIDGETID_INTERNAL	10000
-
-// Scrollbar up,down,dragbutton
-
-/**
-	ID Scrollbar Button "up".
-	This is the widget ID of the "up" button.
-*/
-//#define PG_IDSCROLLBAR_UP		PG_WIDGETID_INTERNAL + 1
-/**
-	ID Scrollbar Button "down".
-	This is the widget ID of the "down" button.
-*/
-//#define PG_IDSCROLLBAR_DOWN	PG_WIDGETID_INTERNAL + 2
-/**
-	ID Scrollbar Button "left".
-	This is the widget ID of the "left" button.
-*/
-//#define PG_IDSCROLLBAR_LEFT		PG_WIDGETID_INTERNAL + 3
-/**
-	ID Scrollbar Button "right".
-	This is the widget ID of the "right" button.
-*/
-//#define PG_IDSCROLLBAR_RIGHT	PG_WIDGETID_INTERNAL + 4
-/**
-	ID Scrollbar Button "drag".
-	This is the widget ID of the scrollbar slider in the middle.
-*/
-//#define PG_IDSCROLLBAR_DRAG	PG_WIDGETID_INTERNAL + 5
-
-// WidgetList scrollbar
-/**
-	ID WidgetList Scrollbar.
-	This is the widget ID of the scrollbar inside a widgetlist.
-*/
-//#define PG_IDWIDGETLIST_SCROLL	PG_WIDGETID_INTERNAL + 10
-
-// Dropdown box
-/**
-	ID DropDown button.
-	This is the widget ID of the button inside a dropdown widget.
-*/
-//#define PG_IDDROPDOWN_BOX	PG_WIDGETID_INTERNAL + 11
-
-// SpinnerBox
-/**
-	ID SpinnerBox up.
-	This is the widget ID of the "up" button inside a spinnerbox widget.
-*/
-//#define PG_IDSPINNERBOX_UP		PG_WIDGETID_INTERNAL + 12
-/**
-	ID SpinnerBox down.
-	This is the widget ID of the "down" button inside a spinnerbox widget.
-*/
-//#define PG_IDSPINNERBOX_DOWN	PG_WIDGETID_INTERNAL + 13
-
-// Window
-/**
-	ID Window clode.
-	This is the widget ID of the "close" button inside a window widget.
-*/
-//#define PG_WINDOW_CLOSE		PG_WIDGETID_INTERNAL + 14
-//#define PG_WINDOW_MINIMIZE	PG_WIDGETID_INTERNAL + 15
-//#define PG_WINDOW_RESTORE		PG_WIDGETID_INTERNAL + 15
-
-// Application object
-/**
-	ID Application.
-	This is the MessageObject ID of the main application object.
-*/
-//#define PG_IDAPPLICATION		PG_WIDGETID_INTERNAL + 100
-
-// Font styles
-//#define PG_FSTYLE_NORMAL	0x00
-//#define PG_FSTYLE_BOLD		0x01
-//#define PG_FSTYLE_ITALIC	0x02
-//#define PG_FSTYLE_UNDERLINE	0x04
 
 #endif // PARAGUI_H

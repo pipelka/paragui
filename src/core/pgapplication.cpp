@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/01/22 16:52:42 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.3 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.4 $
     Status:           $State: Exp $
 */
 
@@ -885,7 +885,7 @@ void PG_Application::SetFontAlpha(int Alpha) {
 	DefaultFont->SetAlpha(Alpha);
 }
 
-void PG_Application::SetFontStyle(int Style) {
+void PG_Application::SetFontStyle(PG_Font::Style Style) {
 	DefaultFont->SetStyle(Style);
 }
 

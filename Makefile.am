@@ -82,11 +82,3 @@ style_cvs:
 style_personal:
 	cd $(top_srcdir)/src && make style_personal
 	cd $(top_srcdir)include && make style_personal
-
-mlz: $(PACKAGE)-$(VERSION).tar.gz
-	mkdir $(PACKAGE)-$(VERSION)
-	cp $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
-	cp -Rf $(top_srcdir)/mlz/* $(PACKAGE)-$(VERSION)
-	rm -Rf $(PACKAGE)-$(VERSION)/CVS
-	tar -czvf $(PACKAGE)-$(VERSION)_ML1.0.0-beta3.mlz $(PACKAGE)-$(VERSION)
-	rm -Rf $(PACKAGE)-$(VERSION)

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/12/02 15:27:59 $
+   Update Date:      $Date: 2004/01/22 16:52:43 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.3 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.4 $
    Status:           $State: Exp $
  */
 
@@ -35,6 +35,17 @@
 #include "pgdraw.h"
 #include "pglayout.h"
 #include "pgtheme.h"
+
+/**
+	calculate the minimum of 2 values
+*/
+#define PG_MAX(a, b)	((a<b) ? b : a)
+
+/**
+	calculate the maximum of 2 values
+*/
+#define PG_MIN(a, b)	((a<b) ? a : b)
+
 
 bool PG_Widget::bBulkUpdate = false;
 PG_RectList PG_Widget::widgetList;
@@ -332,37 +343,7 @@ void PG_Widget::AddChild(PG_Widget * child) {
 	}
 
 	my_internaldata->childList->Add(child);
-
-    //AddChildToCache(child, child->GetName());
-	//AddChildToCache(child,  child->GetID());
 }
-
-/*void PG_Widget::AddChildToCache(PG_Widget *child, const char *name) {
-	if (name == NULL) {
-		return;
-	}
-
-	if (FindChild(name)) {
-			PG_LogDBG("Child with name '%s' already exists in the name cache. Ignoring the new child.", name);
-	}
-	else {
-			string n = name;
-			my_internaldata->childrenNameMap[n] = child;
-	}
-}*/
-
-/*void PG_Widget::AddChildToCache(PG_Widget *child, int id) {
-	if (id <= 0) {
-		return;
-	}
-
-	if (FindChild(id)) {
-			PG_LogDBG("Child with ID '%d' already exists in the id cache. Ignoring the new child.", id);
-	}
-	else {
-		my_internaldata->childrenIdMap[id] = child;
-	}
-}*/
 
 /**  */
 bool PG_Widget::MoveWindow(int x, int y) {
@@ -539,15 +520,6 @@ bool PG_Widget::RemoveChild(PG_Widget * child) {
 	if(my_internaldata->childList == NULL || child == NULL) {
 		return false;
 	}
-
-    //const char *name = child->GetName();
-    //int id = child->GetID();
-
-    /*if (FindChild(name))
-        my_internaldata->childrenNameMap[name] = 0;
-
-    if (FindChild(id))
-        my_internaldata->childrenIdMap[id] = 0;*/
 
 	return my_internaldata->childList->Remove(child);
 }
@@ -930,7 +902,7 @@ void PG_Widget::LoadThemeStyle(const char* widgettype, const char* objectname) {
 
 	const char *font = t->FindFontName(widgettype, objectname);
 	int fontsize = t->FindFontSize(widgettype, objectname);
-	int fontstyle = t->FindFontStyle(widgettype, objectname);
+	PG_Font::Style fontstyle = t->FindFontStyle(widgettype, objectname);
 
 	if(font != NULL)
 		SetFontName(font, true);
@@ -1314,7 +1286,7 @@ void PG_Widget::SetFontAlpha(int Alpha, bool bRecursive) {
 	}
 }
 
-void PG_Widget::SetFontStyle(int Style, bool bRecursive) {
+void PG_Widget::SetFontStyle(PG_Font::Style Style, bool bRecursive) {
 	my_internaldata->font->SetStyle(Style);
 
 	if(!bRecursive || (GetChildList() == NULL)) {
@@ -1627,21 +1599,11 @@ void PG_Widget::DrawHLine(int x, int y, int w, const PG_Color& color) {
 	if((y < my_internaldata->rectClip.y) || (y >= (my_internaldata->rectClip.y+my_internaldata->rectClip.h))) {
 		return;
 	}
-	
-	/*SDL_GetClipRect(surface, &rect);
-
-	if((y < rect.y) || (y >= (rect.y+rect.h))) {
-		return;
-	}*/
 
 	// clip to widget cliprect
 	int x0 = PG_MAX(x, my_internaldata->rectClip.x);
 	int x1 = PG_MIN(x+w, my_internaldata->rectClip.x+my_internaldata->rectClip.w);
 	Uint32 c = color.MapRGB(surface->format);
-
-	// clip to surface cliprect
-	/*x0 = PG_MAX(x0, rect.x);
-	x1 = PG_MIN(x1, rect.x+rect.w);*/
 
 	int wl = (x1-x0);
 	
@@ -1673,20 +1635,10 @@ void PG_Widget::DrawVLine(int x, int y, int h, const PG_Color& color) {
 		return;
 	}
 	
-	/*SDL_GetClipRect(surface, &rect);
-
-	if((x < rect.x) || (x >= (rect.x+rect.w))) {
-		return;
-	}*/
-
 	// clip to widget cliprect
 	int y0 = PG_MAX(y, my_internaldata->rectClip.y);
 	int y1 = PG_MIN(y+h, my_internaldata->rectClip.y+my_internaldata->rectClip.h);
 	Uint32 c = color.MapRGB(surface->format);
-
-	// clip to surface cliprect
-	/*y0 = PG_MAX(y0, rect.y);
-	y1 = PG_MIN(y1, rect.y+rect.h);*/
 
 	int hl = (y1-y0);
 	
@@ -1834,29 +1786,6 @@ void PG_Widget::GetClipRects(PG_Rect& src, PG_Rect& dst) {
 	GetClipRects(src, dst, *this);
 }
 
-/*bool PG_Widget::eventMessage(MSG_MESSAGE* msg) {
-	bool rc = false;
-
-    if (!msg)
-        return false;
-
-	if((msg->_to != this) && (msg->_to != NULL)) {
-		return false;
-	}
-
-	if(PG_MessageObject::eventMessage(msg)) {
-		return true;
-	}
-
-	switch(msg->type) {
-		default:
-			rc = false;
-			break;
-	}
-
-	return rc;
-}*/
-
 void PG_Widget::SetID(int id) {
 	my_internaldata->id = id;
 }
@@ -1876,15 +1805,6 @@ bool PG_Widget::GetDirtyUpdate() {
 
 void PG_Widget::SetHidden(bool hidden) {
 	my_internaldata->hidden = hidden;
-	/*if(my_internaldata->childList == NULL) {
-		return;
-	}
-	PG_RectList::iterator list = my_internaldata->childList->begin();
-
-	while (list != my_internaldata->childList->end()) {
-		(*list)->SetHidden(hidden);
-		list++;
-	}*/
 }
 
 	

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 14:23:22 $
+    Update Date:      $Date: 2004/01/22 16:52:42 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -280,10 +280,6 @@ protected:
 	static vector<PG_MessageObject*> objectList;
 
 	static PG_MessageObject* captureObject;
-
-	// mutexes -- unused, but still here to keep binary compatibility
-	SDL_mutex* my_mutexSendMessage;
-	SDL_mutex* my_mutexReceiveMessage;
 
 private:
 

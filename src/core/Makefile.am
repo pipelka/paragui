@@ -1,13 +1,28 @@
 noinst_LTLIBRARIES = libpgcore.la
 
-libpgcore_la_SOURCES = physfsrwops.cpp 	missing.cpp 	pgdatacontainer.cpp 	pgapplication.cpp 	pgcolors.cpp 	pgfilearchive.cpp 	pgfile.cpp 	pglog.cpp 	pgmain.cpp 	pgmessageobject.cpp 	pgnavigator.cpp 	pgrectlist.cpp 	pgsurfacecache.cpp 	pgtimerobject.cpp 	pgsigconvert.cpp pgcolor.cpp
+libpgcore_la_SOURCES = \
+	physfsrwops.cpp \
+	missing.cpp \
+	pgdatacontainer.cpp \
+	pgapplication.cpp \
+	pgcolors.cpp \
+	pgfilearchive.cpp \
+	pgfile.cpp \
+	pglog.cpp \
+	pgmain.cpp \
+	pgmessageobject.cpp \
+	pgnavigator.cpp \
+	pgrectlist.cpp \
+	pgsurfacecache.cpp \
+	pgtimerobject.cpp \
+	pgsigconvert.cpp \
+	pgcolor.cpp
 
 libpgcore_la_LIBADD = \
 	$(SIGC_LIBS)
 
 EXTRA_DIST = \
-	physfsrwops.h \
-	pgmsgmap.h
+	physfsrwops.h
 
 INCLUDES = \
 	$(SIGC_CFLAGS) \

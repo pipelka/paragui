@@ -82,12 +82,3 @@ EXTRA_DIST = \
 	pokus.xml \
 	icon.bmp \
 	paratest.dev
-
-mlz: $(PACKAGE)-$(VERSION).tar.gz
-	mkdir $(PACKAGE)-$(VERSION)
-	cp $(PACKAGE)-$(VERSION).tar.gz $(PACKAGE)-$(VERSION)
-	cp -rf mlz/* $(PACKAGE)-$(VERSION)
-	rm -Rf $(PACKAGE)-$(VERSION)/CVS
-	rm -Rf $(PACKAGE)-$(VERSION)/init.d/CVS
-	tar -czvf $(PACKAGE)-$(VERSION)_ML1.0.0-beta3.mlz $(PACKAGE)-$(VERSION)
-	rm -Rf $(PACKAGE)-$(VERSION)

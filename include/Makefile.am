@@ -1,10 +1,8 @@
 libparaguiincludedir = $(includedir)/paragui
 
 libparaguiinclude_HEADERS = \
-	paraconfig.h \
 	paraconfig_gnu.h \
 	paragui.h \
-	paragui_types.h \
 	pgpoint.h \
 	pgrect.h \
 	pgrectlist.h \
@@ -30,7 +28,6 @@ libparaguiinclude_HEADERS = \
 	pgcolumnitem.h \
 	pgdropdown.h \
 	pgsurfacecache.h \
-	pgeventobject.h \
 	pgpopupmenu.h \
 	pgmessagebox.h \
 	pgmaskedit.h \
@@ -49,7 +46,6 @@ libparaguiinclude_HEADERS = \
 	pgdraw.h \
 	pginfo.h \
 	pgmenubar.h \
-	pgcompat.h \
 	pgdatacontainer.h \
 	pgtimerobject.h \
 	pgsignals.h \

@@ -46,14 +46,6 @@ PG_Color& PG_Color::operator=(Uint32 c) {
 	return *this;
 }
 
-/*PG_Color::operator SDL_Color*() {
-	return static_cast<SDL_Color*>(this);
-}*/
-
-/*PG_Color::operator SDL_Color() {
-	return *this;
-}*/
-
 PG_Color::operator Uint32() const {
 	return (r << 16) | (g << 8) | b; 
 }
