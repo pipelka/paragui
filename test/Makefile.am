@@ -34,7 +34,7 @@ INCLUDES = \
 	$(SIGC_CFLAGS) \
 	$(EXPAT_INCLUDE) \
 	$(FREETYPE_CFLAGS) \
-	../include
+	-I../include
 
 $(PACKAGE)-$(VERSION).tar.gz: dist
 

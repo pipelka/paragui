@@ -23,14 +23,14 @@ PG_TabBar::PG_TabBar(PG_Widget* parent, const PG_Rect r, const char* style) : PG
 PG_TabBar::~PG_TabBar() {
 }
 	
-PG_Button* PG_TabBar::AddTab(const char* text, int id) {
+PG_Button* PG_TabBar::AddTab(const char* text) {
 	Uint16 height = 0;
 	Uint16 width = 0;
 	
 	GetTextSize(width, height, text);
 	width += 6;
 	
-	PG_Button* b = new PG_Button(NULL, id, PG_Rect(my_tabList->GetListWidth(), 0, width, my_height), text);
+	PG_Button* b = new PG_Button(NULL, -1, PG_Rect(my_tabList->GetListWidth(), 0, width, my_height), text);
 	b->SetToggle(true);
 	b->sigButtonClick.connect(slot(this, &PG_TabBar::handleTabClick));
 	
@@ -47,6 +47,13 @@ PG_Button* PG_TabBar::AddTab(const char* text, int id) {
 		b->SetPressed(true);
 		my_selectedTab = b;
 	}
+	return b;
+}
+
+PG_Button* PG_TabBar::AddTab(const char* text, PG_TabSelectSlot slot) {
+	PG_Button* b = AddTab(text);
+	b->sigButtonClick.connect(slot);
+	
 	return b;
 }
 

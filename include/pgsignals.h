@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 19:08:11 $
+    Update Date:      $Date: 2002/04/27 23:43:39 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsignals.h,v $
-    CVS/RCS Revision: $Revision: 1.2 $
+    CVS/RCS Revision: $Revision: 1.3 $
     Status:           $State: Exp $
 */
 
@@ -304,5 +304,7 @@ typedef PG_Signal1<PG_Application*> PG_SignalAppQuit;
 typedef PG_Signal1<const SDL_ResizeEvent*> PG_SignalVideoResize;
 
 typedef PG_Signal2<PG_TabBar*, PG_Button*> PG_SignalTabSelect;
+
+typedef Slot1<bool, PG_Button*> PG_TabSelectSlot;
 
 #endif // PG_SIGNALS_H

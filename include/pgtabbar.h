@@ -11,7 +11,9 @@ public:
 	PG_TabBar(PG_Widget* parent, const PG_Rect r, const char* style = "TabBar");
 	~PG_TabBar();
 	
-	PG_Button* AddTab(const char* text, int id);
+	PG_Button* AddTab(const char* text);
+
+	PG_Button* AddTab(const char* text, PG_TabSelectSlot slot);
 	
 	PG_SignalTabSelect sigTabSelect;
 	

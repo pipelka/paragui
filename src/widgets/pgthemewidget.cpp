@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/04/27 23:43:39 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
@@ -399,14 +399,15 @@ void PG_ThemeWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 			SDL_FillRect(my_srfScreen, (SDL_Rect*)&dst, c);
 		}
 	} else if (my_internaldata->nocache) {
-		my_internaldata->cachesurface = CreateThemedSurface(
-		                      *this,
-		                      my_has_gradient ? &my_gradient : 0,
-		                      my_background,
-		                      my_backgroundMode,
-		                      my_blendLevel);
-		PG_Widget::eventBlit(my_internaldata->cachesurface, src, dst);
-		DeleteThemedSurface(my_internaldata->cachesurface);
+		PG_Rect dest = *this;
+		PG_Draw::DrawThemedSurface(
+			my_srfScreen,
+			dest,
+			my_has_gradient ? &my_gradient : 0,
+			my_background,
+			my_backgroundMode,
+			my_blendLevel);
+		//PG_Widget::eventBlit(my_internaldata->cachesurface, src, dst);
 		my_internaldata->cachesurface = NULL;
 	}
 
