@@ -74,16 +74,16 @@ public:
 	}
 
 	/** callback handler in another flavor */
-	bool handle_slide_btntrans(PG_Slider* slider, long pos) {
-		PG_Button* b = NULL; //(PG_Button*)clientdata;
+	bool handle_slide_btntrans(PG_Slider* slider, long pos, PG_Pointer* data) {
+		PG_Button* b = static_cast<PG_Button*>(data);
 	
 		// set transparency of passed in button
-		//b->SetTransparency(data, data, data);
-		//b->Update();
+		b->SetTransparency((Unit8)pos, (Unit8)pos, (Unit8)pos);
+		b->Update();
 
 		// set transparency of class member (progress)
-		//progress->SetTransparency(data);
-		//progress->Update();
+		progress->SetTransparency(data);
+		progress->Update();
 		return true;
 	}
 
@@ -128,7 +128,7 @@ PG_Window(parent, r, windowtext, WF_SHOW_CLOSE | WF_SHOW_MINIMIZE)
 	s->SetTransparency(200);
 	s->SetPosition(50);
 
-	s->sigSlide.connect(slot(this, &TestWindow::handle_slide_btntrans));
+	s->sigSlide.connect(slot(this, &TestWindow::handle_slide_btntrans), &b);
 
 	WidgetList->AddWidget(s);
 		
@@ -426,7 +426,7 @@ int main(int argc, char* argv[]) {
 
 	// connect the "MSG_SLIDE" event with "handler_slider" of slider_label (see macro above, just for testing)
 	slider.sigSlide.connect(slot(&slider_label, &MySliderLabel::handle_slide));
-
+	
 	slider.Show();
 
 	PG_Button popbtn(NULL, 20, PG_Rect(430, 250,100,25), "Pop me");
