@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/02/29 11:23:24 $
+   Update Date:      $Date: 2004/03/01 15:18:52 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.3 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.4 $
    Status:           $State: Exp $
 */
 
@@ -77,26 +77,29 @@ void PG_RichEdit::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect&
 	PG_WidgetList::eventBlit(srf, src, dst);
 
 	RichLineArray::iterator line;
+	int deltax = (my_objHorizontalScrollbar->IsVisible()) ? my_objHorizontalScrollbar->GetPosition() : 0;
+	int deltay = (my_objVerticalScrollbar->IsVisible()) ? my_objVerticalScrollbar->GetPosition() : 0;
 
 	for (line = my_RichText.begin(); line != my_RichText.end(); line++) {
-		{
-			RichLinePartArray::iterator linePart;
+		if ((Sint32)(line->my_BaseLine - deltay) < 0) {
+			continue;
+		}
 
-			for (linePart = line->my_LineParts.begin(); linePart != line->my_LineParts.end(); linePart++) {
-				Size_tArray::iterator word;
-				Uint32 width = 0;
+		RichLinePartArray::iterator linePart;
 
-				for (word = linePart->my_WordIndexes.begin(); word != linePart->my_WordIndexes.end(); word++) {
-					int deltax = (my_objHorizontalScrollbar->IsVisible()) ? my_objHorizontalScrollbar->GetPosition() : 0;
-					int deltay = (my_objVerticalScrollbar->IsVisible()) ? my_objVerticalScrollbar->GetPosition() : 0;
+		for (linePart = line->my_LineParts.begin(); linePart != line->my_LineParts.end(); linePart++) {
+			Size_tArray::iterator word;
+			Uint32 width = 0;
 
-					PG_FontEngine::RenderText(PG_Application::GetScreen(), dst, my_xpos - deltax + width + linePart->my_Left,  my_ypos + line->my_BaseLine - deltay, my_ParsedWords[*word].my_Word.c_str(), GetFont());
-					width += my_ParsedWords[*word].my_WidthAfterFormating;
-				}
+			for (word = linePart->my_WordIndexes.begin(); word != linePart->my_WordIndexes.end(); word++) {
+				PG_FontEngine::RenderText(PG_Application::GetScreen(), dst, my_xpos - deltax + width + linePart->my_Left,  my_ypos + line->my_BaseLine - deltay, my_ParsedWords[*word].my_Word.c_str(), GetFont());
+				width += my_ParsedWords[*word].my_WidthAfterFormating;
 			}
 		}
-		if ((Sint32)(line->my_BaseLine - my_objVerticalScrollbar->GetPosition() - line->my_LineSpace) >= Height())
+
+		if ((Sint32)(line->my_BaseLine - deltay - line->my_LineSpace) >= Height()) {
 			break;
+		}
 	}
 }
 
