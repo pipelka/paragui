@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/04/27 19:08:11 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.6 $
+    CVS/RCS Revision: $Revision: 1.7 $
     Status:           $State: Exp $
 */
 
@@ -349,6 +349,15 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		return false;
 	}
 
+	if(!IsMouseInside() && my_internaldata->togglemode) {
+		if(my_state == BTN_STATE_PRESSED && !my_internaldata->isPressed) {
+			my_state = BTN_STATE_NORMAL;
+		}
+		ReleaseCapture();
+		Update();
+		return false;
+	}
+	
 	if(my_internaldata->togglemode) {
 		if(!my_internaldata->isPressed) {
 			my_state = BTN_STATE_PRESSED;
@@ -577,6 +586,11 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 			break;
 	}
 
+	if(my_internaldata->isPressed) {
+		t = my_transparency[1];
+		srf = my_internaldata->srf_down;
+	}
+	
 	// blit it
 
 	if(t != 255) {

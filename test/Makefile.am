@@ -1,32 +1,40 @@
 AUTOMAKE_OPTIONS = foreign
 
-bin_PROGRAMS = animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
+bin_PROGRAMS = tabbar animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
+
+tabbar_SOURCES = tabbar.cpp
+tabbar_LDADD = ../src/libparagui.la -lfreetype
 
 windowresize_SOURCES = windowresize.cpp
-windowresize_LDADD = $(PARAGUI_LIBS)
+windowresize_LDADD = ../src/libparagui.la -lfreetype
 
 dropdown_SOURCES = dropdown.cpp
-dropdown_LDADD = $(PARAGUI_LIBS)
+dropdown_LDADD = ../src/libparagui.la -lfreetype
 
 animation_SOURCES = animation.cpp
-animation_LDADD = $(PARAGUI_LIBS)
+animation_LDADD = ../src/libparagui.la -lfreetype
 
 dblbuffer_SOURCES = dblbuffer.cpp
-dblbuffer_LDADD = $(PARAGUI_LIBS)
+dblbuffer_LDADD = ../src/libparagui.la -lfreetype
 
 paratest_SOURCES = paratest.cpp
-paratest_LDADD = $(PARAGUI_LIBS)
+paratest_LDADD = ../src/libparagui.la -lfreetype
 
 navtest_SOURCES = navtest.cpp
-navtest_LDADD = $(PARAGUI_LIBS)
+navtest_LDADD = ../src/libparagui.la -lfreetype
 
 windowtest_SOURCES = windowtest.cpp
-windowtest_LDADD = $(PARAGUI_LIBS)
+windowtest_LDADD = ../src/libparagui.la -lfreetype
 
 layouttest_SOURCES = layouttest.cpp
-layouttest_LDADD = $(PARAGUI_LIBS)
+layouttest_LDADD = ../src/libparagui.la -lfreetype
 
-INCLUDES = $(PARAGUI_CFLAGS)
+INCLUDES = \
+	$(SDL_CFLAGS) \
+	$(SIGC_CFLAGS) \
+	$(EXPAT_INCLUDE) \
+	$(FREETYPE_CFLAGS) \
+	../include
 
 $(PACKAGE)-$(VERSION).tar.gz: dist
 

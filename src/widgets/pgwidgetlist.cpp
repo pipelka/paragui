@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 11:57:23 $
+    Update Date:      $Date: 2002/04/27 19:08:11 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.5 $
     Status:           $State: Exp $
 */
 
@@ -441,6 +441,16 @@ PG_Widget* PG_WidgetList::FindWidget(int index) {
 	}
 
 	return my_widgetList[index];
+}
+
+int PG_WidgetList::FindIndex(PG_Widget* widget) {
+	for(int i=0; i< (int)my_widgetList.size(); i++) {
+		if(my_widgetList[i] == widget) {
+			return i;
+		}
+	}
+	
+	return -1;
 }
 
 int PG_WidgetList::GetWidgetCount() {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/04/27 19:08:11 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.6 $
     Status:           $State: Exp $
 */
 
@@ -108,6 +108,8 @@ public:
 	*/
 	PG_Widget* FindWidget(int index);
 
+	int FindIndex(PG_Widget* widget);
+	
 	/**
 	Remove all widgets from the list (without deletion)
 	*/
@@ -140,6 +142,14 @@ public:
 	*/
 	void ScrollTo(int index, int direction = PG_SB_VERTICAL);
 
+	inline Uint32 GetListWidth() {
+		return my_listwidth;
+	}
+
+	inline Uint32 GetListHeight() {
+		return my_listheight;
+	}
+	
 protected:
 
 	/** */

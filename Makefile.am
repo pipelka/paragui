@@ -1,8 +1,8 @@
 AUTOMAKE_OPTIONS = 1.4
 
-SUBDIRS = include src data
+SUBDIRS = include src data test
 
-DIST_SUBDIRS = $(SUBDIRS) test
+DIST_SUBDIRS = $(SUBDIRS)
 
 bin_SCRIPTS = paragui-config
 

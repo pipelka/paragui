@@ -516,6 +516,7 @@ src/themes/Makefile
 src/core/Makefile
 src/widgets/Makefile
 data/Makefile
+test/Makefile
 paragui.spec
 paragui-config
 paragui.pc

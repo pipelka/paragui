@@ -1,3 +1,31 @@
+/*
+    ParaGUI - crossplatform widgetset
+    Copyright (C) 2000,2001,2002  Alexander Pipelka
+ 
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License as published by the Free Software Foundation; either
+    version 2 of the License, or (at your option) any later version.
+ 
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+ 
+    You should have received a copy of the GNU Library General Public
+    License along with this library; if not, write to the Free
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ 
+    Alexander Pipelka
+    pipelka@teleweb.at
+ 
+    Last Update:      $Author: braindead $
+    Update Date:      $Date: 2002/04/27 19:08:11 $
+    Source File:      $Source: /sources/paragui/paragui/include/pgsignals.h,v $
+    CVS/RCS Revision: $Revision: 1.2 $
+    Status:           $State: Exp $
+*/
+
 #ifndef PG_SIGNALS_H
 #define PG_SIGNALS_H
 
@@ -19,6 +47,7 @@ class PG_MenuItem;
 class PG_Window;
 class PG_Application;
 class PG_MessageObject;
+class PG_TabBar;
 
 using namespace SigC;
 
@@ -260,6 +289,8 @@ typedef PG_Signal1<PG_LineEdit*> PG_SignalEditReturn;
 
 typedef Signal2<bool, PG_MenuItem*, PG_Pointer*> PG_SignalMenuItemSelected;
 
+typedef Slot2<bool, PG_MenuItem*, PG_Pointer*> PG_MenuItemSlot;
+
 typedef PG_Signal1<PG_Window*> PG_SignalWindowClose;
 
 typedef PG_Signal1<PG_Window*> PG_SignalWindowMinimize;
@@ -270,6 +301,8 @@ typedef PG_Signal1<PG_MessageObject*> PG_SignalAppIdle;
 
 typedef PG_Signal1<PG_Application*> PG_SignalAppQuit;
 
-typedef PG_Signal1 <const SDL_ResizeEvent*> PG_SignalVideoResize;
+typedef PG_Signal1<const SDL_ResizeEvent*> PG_SignalVideoResize;
+
+typedef PG_Signal2<PG_TabBar*, PG_Button*> PG_SignalTabSelect;
 
 #endif // PG_SIGNALS_H

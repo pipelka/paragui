@@ -27,9 +27,8 @@ pgwidgetdnd.cpp \
 pgwidgetlist.cpp \
 pgwidgetlistex.cpp \
 pgwindow.cpp \
-pgmenubar.cpp
-#pgbuttongroup.cpp \
-#pgnotebook.cpp \
+pgmenubar.cpp \
+pgtabbar.cpp
 
 EXTRA_DIST =
 
