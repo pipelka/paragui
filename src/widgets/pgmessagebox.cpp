@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/01 14:36:03 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -67,6 +67,7 @@ void PG_MessageBox::Init(const char* windowtext, int textalign, const char* styl
 	buttonflag=0;
 
 	my_textbox = new PG_RichEdit(this, PG_Rect(10, 40, my_width-20, my_height-50));
+	my_textbox->SendToBack();
 	my_textbox->SetTransparency(255);
 	my_textbox->SetText(windowtext);
 

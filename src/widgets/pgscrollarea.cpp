@@ -157,5 +157,5 @@ void PG_ScrollArea::SetAreaHeight(Uint16 h) {
 		return;
 	}
 	my_area.h = h;
-	sigAreaChangedHeight(this, my_area.w);
+	sigAreaChangedHeight(this, my_area.h);
 }
