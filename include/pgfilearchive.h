@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:37 $
+    Update Date:      $Date: 2003/04/18 11:15:28 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.6 $
     Status:           $State: Exp $
 */
 
@@ -260,6 +260,17 @@ public:
 	*/
 	static SDL_Surface* LoadSurface(const char* filename, bool convert = false);
 
+	/**
+	Load a surface (image) from the archive and apply a colorkey
+	all loaded surface will be cached
+	@param filename imagefile to load
+	@param usekey true - apply colorkey
+	@param colorkey colorkey
+	@param convert convert the loaded surface into screen format (default = false)
+	@return pointer to loaded SDL_Surface or NULL
+	*/
+	static SDL_Surface* LoadSurface(const char* filename, bool usekey, Uint32 colorkey, bool convert = false);
+	
 	/**
 	Removes the surface from the cache
 	@param bDeleteIfExists delete (free) the surface if it isn't in the cache

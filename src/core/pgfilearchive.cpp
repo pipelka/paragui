@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/05 14:48:33 $
+    Update Date:      $Date: 2003/04/18 11:15:28 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.13 $
+    CVS/RCS Revision: $Revision: 1.2.4.14 $
     Status:           $State: Exp $
 */
 
@@ -256,6 +256,10 @@ PG_DataContainer* PG_FileArchive::ReadFile(const char* filename) {
 }
 
 SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
+	return LoadSurface(filename, false, 0, convert);
+}
+
+SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool usekey, Uint32 colorkey, bool convert) {
 	if(filename == NULL) {
 		return NULL;
 	}
@@ -299,7 +303,11 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 		PG_LogERR("PhysFS reported: '%s'", PG_FileArchive::GetLastError());
 		PG_LogERR("SDL reported: '%s'", SDL_GetError());
 	}
-	
+
+	if(usekey == true) {
+		SDL_SetColorKey(surface, SDL_SRCCOLORKEY, colorkey);
+	}
+
 	if(convert && !PG_Application::GetGLMode()) {
 		SDL_Surface* tmpsrf = NULL;
 		if (surface->flags & SDL_SRCALPHA)
