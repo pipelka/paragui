@@ -11,9 +11,10 @@ ROADMAP LEADING TO 1.2
 1.1.6 - API cleanup (all binary incompatible changes allowed)
 1.1.7 - Performance tuning / more API cleanups
 1.1.8 - unify constructors (e.g.: PG_Widget(PG_Widget* parent, const PG_Rect& rect))
-        needed for factory. redesign of event-handling.
-1.1.9 - merge object factory from paragui2
+        needed for factory. redesign of event-handling. merge object factory from paragui2.
+1.1.9 - bug fixing and API reality check
 1.1.10 - merge and rework XML layoutloader
+1.1.11 - bug fixing and API freeze
 1.1.? - i'll consult my magic orb
 
 If you want to take part in the development process - drop me a few lines or
