@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:24:19 $
+    Update Date:      $Date: 2004/01/30 18:51:56 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14.2.3 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.4 $
     Status:           $State: Exp $
 */
 
@@ -56,10 +56,7 @@ PG_FileArchive::PG_FileArchive() {
 		}
 
 		// try different names to find SDL_image
-		SDL_image_obj = SDL_LoadObject("libSDL_image.so");
-		if(SDL_image_obj == NULL) {
-			SDL_image_obj = SDL_LoadObject("libSDL_image-1.2.so.0");
-		}
+		SDL_image_obj = SDL_LoadObject(SDLIMAGE_LIB);
 		if(SDL_image_obj == NULL) {
 			PG_LogMSG("SDL_image not found! Only bmp images can be loaded!");
 		}

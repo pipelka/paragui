@@ -274,6 +274,13 @@ if test "$ft2test" = "yes"; then
     
 fi
 
+# check name of shared lib SDL_image
+SDLIMAGE_LIBS="-lSDL_image $SDL_LIBS"
+SDLimage_lib_spec=`echo $SDLIMAGE_LIBS | sed 's/.*-L\([[^ ]]*\).*/\1\/libSDL_image-*.so.*/'`
+SDLimage_lib=`ls ${SDLimage_lib_spec} | head -1 | sed 's/.*\/\(.*\)/\1/'`
+echo "-- ${SDLimage_lib_spec} -> $SDLimage_lib"
+AC_DEFINE_UNQUOTED([SDLIMAGE_LIB], "$SDLimage_lib", [SDL_image shared library])
+			
 CFLAGS="$CFLAGS $FREETYPE_CFLAGS"
 
 dnl Check for expat
