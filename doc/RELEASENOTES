@@ -38,6 +38,7 @@ Whats new in ParaGUI 1.1.7 ?
 - reworked nearly all class constructors
 - splitted PG_WidgetList in PG_ScrollWidget / PG_WidgetList
 - PG_RichEdit is now inherited from PG_ScrollWidget
+- PG_ScrollBar / PG_Slider cleanup
 - applied patches from Sebastian:
   made AddWidget() / AddItem() obsolete (see roadmap for more info)
   added param 'bool bRecursive' to PG_Widget::SetTransparency (set to false by default)

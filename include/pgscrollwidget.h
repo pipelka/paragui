@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/08 11:30:59 $
+    Update Date:      $Date: 2004/03/08 16:52:39 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.1.2.2 $
     Status:           $State: Exp $
 */
 
@@ -64,34 +64,6 @@ public:
 	void LoadThemeStyle(const char* widgettype);
 
 	/**
-	Remove a widget from the list.
-	@param index	index of the widget
-	*/
-	//bool RemoveWidgetAt(int index);
-
-	/**
-	Remove and delete a widget from the list.
-	@param	index		index of the widget
-	*/
-	//bool DeleteWidgetAt(int index);
-
-	/**
-	Find a widget by a given index
-
-	@param	index		index of the widget to find
-	@return					pointer to the widget
-	*/
-	//PG_Widget* FindWidget(int index);
-
-	/**
-	Find the index of a given widget
-
-	@param	widget		pointer to the widget
-	@return				index of the widget
-	*/
-	//int FindIndex(PG_Widget* widget);
-
-	/**
 	Enable / disable the Scrollbar (override automatic display)
 	@param enable true - enable scrollbar / false - disable scrollbar
 	@param direction modified scrollbar (PG_ScrollBar::VERTICAL | PG_ScrollBar::HORIZONTAL)
@@ -99,35 +71,18 @@ public:
 	void EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
 
 	/**
+	scroll to a give X/Y-Coordinate within the client area.
+	@param x X-Position
+	@param y Y-Position
+	*/
+	void ScrollTo(Uint16 x, Uint16 y);
+
+	/**
 	Scroll to a widget
 	@param widget the target widget
 	@param bVertical scroll direction
 	*/
 	void ScrollToWidget(PG_Widget* widget, bool bVertical = true);
-
-	/**
-	Scroll the list to a given index
-	@param index index of the widget to scroll to
-	@param bVertical scroll direction
-	*/
-	//void ScrollToWidget(int index, bool bVertical = true);
-
-	/**
-	Scroll to the specified Y-Position
-	@param ypos new Y-Position
-	Will scroll to the new position and update the scrollbars.
-	*/
-	//void ScrollTo(Uint16 ypos);
-	
-	/**
-	Scroll one page up
-	*/
-	//void PageUp();
-	
-	/**
-	Scroll one page down
-	*/
-	//void PageDown();
 
 	Uint16 GetListHeight();
 
@@ -153,14 +108,6 @@ protected:
 	bool handleAreaChangedHeight(PG_ScrollArea* area, Uint16 h);
 
 	bool handleAreaChangedWidth(PG_ScrollArea* area, Uint16 w);
-
-	/**
-	Search for a widget at a given y-position
-
-	@param	y			the position
-	@return				pointer to the widget or NULL
-	*/
-	//PG_Widget* GetWidgetFromPos(Sint32 y);
 
 	PG_ScrollBar* my_objVerticalScrollbar;
 	PG_ScrollBar* my_objHorizontalScrollbar;

@@ -468,7 +468,7 @@ int main(int argc, char* argv[]) {
 	// isn't a good idea (the list will try to delete the objects
 	// and the static objects will be destroyed when leaving the
 	// application). Let's use dynamic objects.
-	PG_ListBoxItem* item = new PG_ListBoxItem(&drop, 25, "Item 7");
+	new PG_ListBoxItem(&drop, 25, "Item 7");
 	new PG_ListBoxItem(&drop, 25, "Item 8");
 	new PG_ListBoxItem(&drop, 25, "Item 9");
 	drop.SetIndent(5);

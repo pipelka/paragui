@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/08 16:52:39 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgslider.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -31,46 +31,18 @@
 #include "pgtheme.h"
 
 PG_Slider::PG_Slider(PG_Widget* parent, const PG_Rect& r, ScrollDirection direction, int id, const char* style) : PG_ScrollBar(parent, r, direction, id) {
+	delete scrollbutton[0];
+	scrollbutton[0] = NULL;
 
-	my_showButtons = false;
-
-	if(sb_direction == VERTICAL) {
-		my_sliderSize = r.my_width;
-		position[3].h = r.my_width;
-	} else {
-		my_sliderSize = r.my_height;
-		position[3].w = r.my_height;
-	}
-
-	LoadThemeStyle(style);
-
-	dragbutton->SizeWidget(position[3].w, position[3].h);
-	dragbutton->SetTickMode(true);
-
-	if(!my_showButtons) {
-
-		position[0].w = 0;
-		position[0].h = 0;
-		position[1].w = 0;
-		position[1].h = 0;
-
-		position[2].x = 0;
-		position[2].y = 0;
-		position[2].w = r.my_width;
-		position[2].h = r.my_height;
-
-		delete scrollbutton[0];
-		scrollbutton[0] = NULL;
-
-		delete scrollbutton[1];
-		scrollbutton[1] = NULL;
-
-		SetPosition(scroll_min);
-	}
+	delete scrollbutton[1];
+	scrollbutton[1] = NULL;
 
 	// connect signals
 	sigScrollPos.connect(sigSlideEnd.slot());
 	sigScrollTrack.connect(sigSlide.slot());
+	
+	LoadThemeStyle(style);
+	SetPosition(scroll_min);
 }
 
 PG_Slider::~PG_Slider() {}
@@ -78,32 +50,101 @@ PG_Slider::~PG_Slider() {}
 void PG_Slider::LoadThemeStyle(const char* widgettype) {
 	PG_Theme* t = PG_Application::GetTheme();
 
-	//PG_ScrollBar::LoadThemeStyle(widgettype);
-
-	if(sb_direction == VERTICAL) {
-		t->GetProperty(widgettype, "SliderDragV", "height", position[3].h);
-		my_sliderSize = position[3].h;
-
-		scrollbutton[0]->LoadThemeStyle(widgettype, "SliderUp");
-		scrollbutton[1]->LoadThemeStyle(widgettype, "SliderDown");
-	} else {
-		t->GetProperty(widgettype, "SliderDragH", "width", position[3].w);
-		my_sliderSize = position[3].w;
-
-		scrollbutton[0]->LoadThemeStyle(widgettype, "SliderLeft");
-		scrollbutton[1]->LoadThemeStyle(widgettype, "SliderRight");
-	}
-
 	dragbutton->LoadThemeStyle(widgettype, "SliderDrag");
 
 	if(sb_direction == VERTICAL) {
+		Uint16 h = dragbutton->h;
+		t->GetProperty(widgettype, "SliderDragV", "height", h);
 		dragbutton->LoadThemeStyle(widgettype, "SliderDragV");
+		dragbutton->SizeWidget(dragbutton->w, h);
 		PG_ThemeWidget::LoadThemeStyle(widgettype, "SliderV");
 	} else {
+		Uint16 w = dragbutton->w;
+		t->GetProperty(widgettype, "SliderDragH", "width", w);
 		dragbutton->LoadThemeStyle(widgettype, "SliderDragH");
+		dragbutton->SizeWidget(w, dragbutton->h);
 		PG_ThemeWidget::LoadThemeStyle(widgettype, "SliderH");
 	}
 
+	RecalcPositions();
+}
+
+void PG_Slider::RecalcPositions() {
+	position[0] = PG_Rect::null;
+	position[1] = PG_Rect::null;
+
+	position[2].x = 0;
+	position[2].y = 0;
+	position[2].w = w;
+	position[2].h = h;
+
+	if(sb_direction == VERTICAL) {
+		position[3].x = 0;
+		position[3].w = w;
+		position[3].h = dragbutton->h;
+
+		if((scroll_max - scroll_min) == 0) {
+			position[3].y = position[2].y;
+		} else {
+			position[3].y = ((position[2].h - position[3].h) / (scroll_max - scroll_min)) * scroll_current;
+		}
+	} else {
+		position[3].y = 0;
+		position[3].w = dragbutton->w;
+		position[3].h = h;
+
+		if((scroll_max - scroll_min) == 0) {
+			position[3].x = position[2].x;
+		} else {
+			position[3].x = ((position[2].w - position[3].w) / (scroll_max - scroll_min)) * scroll_current;
+		}
+	}
+
+	int pos = 	scroll_current - scroll_min;
+
+	if(sb_direction == VERTICAL) {
+		position[3].x = 0;
+		position[3].h = (Uint16)((double)position[2].h / ((double)position[2].h / (double)position[3].h));
+		position[3].y = (Uint16)(position[0].h + (((double)position[2].h - (double)position[3].h) / (double)(scroll_max - scroll_min)) * (double)pos);
+	} else {
+		position[3].y = 0;
+		position[3].w = (Uint16)((double)position[2].w / ((double)position[2].w / (double)position[3].w) );
+		position[3].x = (Uint16)(position[0].w + (((double)position[2].w - (double)position[3].w) / (double)(scroll_max - scroll_min)) * (double)pos);
+	}
+
+	// bordersize
+	for(int i=2; i<4; i++) {
+		if(i == 3 || i == 2) {
+			if(sb_direction == VERTICAL) {
+				position[i].x += my_bordersize;
+				if(position[i].w > 2*my_bordersize) {
+					position[i].w -= 2*my_bordersize;
+				}
+			}
+			else {
+				position[i].y += my_bordersize;
+				if(position[i].h > 2*my_bordersize) {
+					position[i].h -= 2*my_bordersize;
+				}
+			}
+			continue;
+		}
+		position[i].x += my_bordersize;
+		position[i].y += my_bordersize;
+		if(position[i].w > 2*my_bordersize) {
+			position[i].w -= 2*my_bordersize;
+		}
+		if(position[i].h > 2*my_bordersize) {
+			position[i].h -= 2*my_bordersize;
+		}
+	}
+	if(scrollbutton[0] != NULL) {
+		scrollbutton[0]->MoveWidget(position[0]);
+	}
+	if(scrollbutton[1] != NULL) {
+		scrollbutton[1]->MoveWidget(position[1]);
+	}
+	dragbutton->MoveWidget(position[3]);
 }
 
 bool PG_Slider::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
@@ -125,29 +166,4 @@ bool PG_Slider::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 	sigSlideEnd(this, scroll_current);
 
 	return true;
-}
-
-void PG_Slider::eventSizeWidget(Uint16 w, Uint16 h) {
-	PG_ScrollBar::eventSizeWidget(w, h);
-
-	if(!my_showButtons) {
-
-		position[0].w = 0;
-		position[0].h = 0;
-		position[1].w = 0;
-		position[1].h = 0;
-
-		position[2].x = 0;
-		position[2].y = 0;
-		position[2].w = w;
-		position[2].h = h;
-	}
-
-	if(sb_direction == VERTICAL) {
-		position[3].h = my_sliderSize;
-	} else {
-		position[3].w = my_sliderSize;
-	}
-
-	dragbutton->SizeWidget(position[3].w, position[3].h);
 }

@@ -288,7 +288,6 @@ int main(int argc, char* argv[]) {
 	PG_Rect sc_rect2(200, 200, 300, 100);
 	PG_ScrollBar myscroll2(NULL, sc_rect2, PG_ScrollBar::HORIZONTAL);
 
-	myscroll2.SetWindowSize(10);
 	myscroll2.SetRange(0, 100);
 	myscroll2.SetPageSize(10);
 	myscroll2.SetLineSize(5);

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/08 16:52:39 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -49,7 +49,7 @@ protected:
 class ScrollButton : public PG_Button {
 	public:
 
-		ScrollButton(PG_ScrollBar* parent, int id, const PG_Rect& r);
+		ScrollButton(PG_ScrollBar* parent, const PG_Rect& r = PG_Rect::null);
 		virtual ~ScrollButton();
 
 		void SetTickMode(bool on);
@@ -75,7 +75,6 @@ class ScrollButton : public PG_Button {
 		/** */
 		bool my_tickMode;
 
-		int my_tempPos;
 	};
 #endif		// DOXYGEN_SKIP
 
@@ -118,9 +117,6 @@ public:
 	int GetPosition();
 
 	/**  */
-	void SetWindowSize(Uint32 wsize);
-
-	/**  */
 	void SetRange(Uint32 min, Uint32 max);
 
 	/**  */
@@ -161,19 +157,18 @@ protected:
 	int my_linesize;
 	int my_pagesize;
 
-	//int scroll_windowsize;
-
 	PG_Button* scrollbutton[2];
 	ScrollButton* dragbutton;
 	PG_Rect position[4];
 
 	ScrollDirection sb_direction;
-	int id;
+
+	virtual void RecalcPositions();
 
 	friend class ScrollButton;
 
 private:
-
+	
 	PG_ScrollBar(const PG_ScrollBar&);
 	PG_ScrollBar& operator=(PG_ScrollBar&);
 

@@ -612,10 +612,10 @@ static int SetScrollBarAtts(PG_ScrollBar *Widget, const char **atts, ParseUserDa
 		Widget->SetPosition(i);
 	}
 
-	i = PG_Layout::GetParamInt(atts, "wsize");
+	/*i = PG_Layout::GetParamInt(atts, "wsize");
 	if (i != -1) {
 		Widget->SetWindowSize(i);
-	}
+	}*/
 
 	i = PG_Layout::GetParamInt(atts, "lsize");
 	if (i != -1) {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/08 16:52:39 $
     Source File:      $Source: /sources/paragui/paragui/include/pgslider.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -53,20 +53,13 @@ public:
 	SignalSlide<long> sigSlide;
 	SignalSlideEnd<long> sigSlideEnd;
 
+	void RecalcPositions();
+
 protected:
 
 	/** */
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
 
-	/** */
-	void eventSizeWidget(Uint16 w, Uint16 h);
-
-	/** */
-	bool my_showButtons;
-
-private:
-
-	int my_sliderSize;
 };
 
 #endif	// PG_SLIDER_H

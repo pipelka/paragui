@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/08 16:52:39 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgscrollbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -40,70 +40,24 @@ PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, const PG_Rect& r, ScrollDirection 
 
 	my_linesize = 1;
 	my_pagesize = 5;
-	//scroll_windowsize = 1;
 
-	if(direction == VERTICAL) {
-		position[0].x = 0;
-		position[0].y = 0;
-		position[0].w = r.my_width;
-		position[0].h = r.my_width;
-
-		position[1].x = 0;
-		position[1].y = r.my_height-r.my_width;
-		position[1].w = r.my_width;
-		position[1].h = r.my_width;
-
-		position[2].x = 0;
-		position[2].y = r.my_width;
-		position[2].w = r.my_width;
-		position[2].h = r.my_height-(r.my_width*2+1);
-        if ((Sint16)position[2].h < 0)
-            position[2].h = 0;
-		position[3].x = 0;
-		position[3].w = r.my_width;
-		position[3].h = (Uint16)((double)position[2].h / 2.0);
-		position[3].y = (Uint16)(r.my_width + (((double)position[2].h - (double)position[3].h) / (double)(scroll_max - scroll_min)) * (double)scroll_current);
-	} else {
-		position[0].x = 0;
-		position[0].y = 0;
-		position[0].w = r.my_height;
-		position[0].h = r.my_height;
-
-		position[1].x = r.my_width - r.my_height;
-		position[1].y = 0;
-		position[1].w = r.my_height;
-		position[1].h = r.my_height;
-
-		position[2].x = r.my_height;
-		position[2].y = 0;
-		position[2].w = r.my_width-(r.my_height*2+1);
-		if ((Sint16)position[2].w < 0) {
-		       position[2].w = 0;
-		}
-		       
-		position[2].h = r.my_height;
-
-		position[3].y = 0;
-		position[3].w = (Uint16)((double)position[2].w / 2.0);
-		position[3].h = r.my_height;
-		position[3].x = (Uint16)(r.my_height + (((double)position[2].w - (double)position[3].w) / (double)(scroll_max - scroll_min)) * (double)scroll_current);
-	}
-
-	scrollbutton[0] = new PG_Button(this, position[0]);
+	scrollbutton[0] = new PG_Button(this);
 	scrollbutton[0]->SetID((direction == VERTICAL) ? IDSCROLLBAR_UP : IDSCROLLBAR_LEFT);
 	scrollbutton[0]->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 	
-	scrollbutton[1] = new PG_Button(this, position[1]);
+	scrollbutton[1] = new PG_Button(this);
 	scrollbutton[1]->SetID((direction == VERTICAL) ? IDSCROLLBAR_DOWN : IDSCROLLBAR_RIGHT);
 	scrollbutton[1]->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 
-	dragbutton = new ScrollButton(this, IDSCROLLBAR_DRAG, position[3]);
+	dragbutton = new ScrollButton(this);
+	dragbutton->SetID(IDSCROLLBAR_DRAG);
 	dragbutton->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 
 	if(strcmp(style, "Scrollbar") != 0) {
 		LoadThemeStyle("Scrollbar");
 	}
 	LoadThemeStyle(style);
+	SetPosition(0);
 }
 
 PG_ScrollBar::~PG_ScrollBar() {}
@@ -129,13 +83,11 @@ void PG_ScrollBar::LoadThemeStyle(const char* widgettype) {
 		dragbutton->LoadThemeStyle(widgettype, "ScrollbarDragH");
 		PG_ThemeWidget::LoadThemeStyle(widgettype, "ScrollbarH");
 	}
+	RecalcPositions();
 }
 
-/**  */
-void PG_ScrollBar::eventSizeWidget(Uint16 w, Uint16 h) {
-
-	PG_ThemeWidget::eventSizeWidget(w, h);
-
+void PG_ScrollBar::RecalcPositions() {
+	
 	if(sb_direction == VERTICAL) {
 		position[0].x = 0;
 		position[0].y = 0;
@@ -150,7 +102,7 @@ void PG_ScrollBar::eventSizeWidget(Uint16 w, Uint16 h) {
 		position[2].x = 0;
 		position[2].y = w;
 		position[2].w = w;
-		position[2].h = abs(h-(w*2+1));
+		position[2].h = abs(h-(w*2));
 
 		position[3].x = 0;
 		position[3].w = w;
@@ -161,11 +113,6 @@ void PG_ScrollBar::eventSizeWidget(Uint16 w, Uint16 h) {
 		} else {
 			position[3].y = ((position[2].h - position[3].h) / (scroll_max - scroll_min)) * scroll_current;
 		}
-
-		scrollbutton[0]->MoveWidget(PG_Rect(0, 0, w, w), false);
-		scrollbutton[1]->MoveWidget(PG_Rect(0, abs(h-w), w, w), false);
-
-		dragbutton->SizeWidget(position[3].w, position[3].h, false);
 	} else {
 		position[0].x = 0;
 		position[0].y = 0;
@@ -179,7 +126,7 @@ void PG_ScrollBar::eventSizeWidget(Uint16 w, Uint16 h) {
 
 		position[2].x = h;
 		position[2].y = 0;
-		position[2].w = abs(w-(h*2+1));
+		position[2].w = abs(w-(h*2));
 		position[2].h = h;
 
 		position[3].y = 0;
@@ -191,13 +138,60 @@ void PG_ScrollBar::eventSizeWidget(Uint16 w, Uint16 h) {
 		} else {
 			position[3].x = ((position[2].w - position[3].w) / (scroll_max - scroll_min)) * scroll_current;
 		}
-
-		scrollbutton[0]->MoveWidget(PG_Rect(0, 0, h, h), false);
-		scrollbutton[1]->MoveWidget(PG_Rect(abs(w-h), 0, h, h), false);
-
-		dragbutton->SizeWidget(position[3].w, position[3].h, false);
 	}
 
+	int pos = 	scroll_current - scroll_min;
+
+	if(sb_direction == VERTICAL) {
+		position[3].x = 0;
+		position[3].h = (Uint16)((double)position[2].h / ((double)position[2].h / (double)position[3].h));
+		position[3].y = (Uint16)(position[0].h + (((double)position[2].h - (double)position[3].h) / (double)(scroll_max - scroll_min)) * (double)pos);
+	} else {
+		position[3].y = 0;
+		position[3].w = (Uint16)((double)position[2].w / ((double)position[2].w / (double)position[3].w) );
+		position[3].x = (Uint16)(position[0].w + (((double)position[2].w - (double)position[3].w) / (double)(scroll_max - scroll_min)) * (double)pos);
+	}
+
+	// bordersize
+	for(int i=0; i<4; i++) {
+		if(i == 3 || i == 2) {
+			if(sb_direction == VERTICAL) {
+				position[i].x += my_bordersize;
+				if(position[i].w > 2*my_bordersize) {
+					position[i].w -= 2*my_bordersize;
+				}
+			}
+			else {
+				position[i].y += my_bordersize;
+				if(position[i].h > 2*my_bordersize) {
+					position[i].h -= 2*my_bordersize;
+				}
+			}
+			continue;
+		}
+		position[i].x += my_bordersize;
+		position[i].y += my_bordersize;
+		if(position[i].w > 2*my_bordersize) {
+			position[i].w -= 2*my_bordersize;
+		}
+		if(position[i].h > 2*my_bordersize) {
+			position[i].h -= 2*my_bordersize;
+		}
+	}
+	if(scrollbutton[0] != NULL) {
+		scrollbutton[0]->MoveWidget(position[0]);
+	}
+	if(scrollbutton[1] != NULL) {
+		scrollbutton[1]->MoveWidget(position[1]);
+	}
+	dragbutton->MoveWidget(position[3]);
+}
+
+void PG_ScrollBar::eventSizeWidget(Uint16 w, Uint16 h) {
+
+	PG_ThemeWidget::eventSizeWidget(w, h);
+
+	RecalcPositions();
 	SetPosition(scroll_current);
 	return;
 }
@@ -254,8 +248,8 @@ bool PG_ScrollBar::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 }
 
 
-PG_ScrollBar::ScrollButton::ScrollButton(PG_ScrollBar* parent, int id, const PG_Rect& r) : PG_Button(parent, r) {
-	SetID(id);
+PG_ScrollBar::ScrollButton::ScrollButton(PG_ScrollBar* parent, const PG_Rect& r) : PG_Button(parent, r) {
+	SetID(IDSCROLLBAR_DRAG);
 	my_tickMode = false;
 }
 
@@ -288,7 +282,7 @@ bool PG_ScrollBar::ScrollButton::eventMouseMotion(const SDL_MouseMotionEvent* mo
 				p.y = maxy;
 			}
 
-			MoveWidget(0, p.y);
+			MoveWidget(GetParent()->position[2].x, p.y);
 		} else {
 			p.x -= offset.x;
 
@@ -307,10 +301,8 @@ bool PG_ScrollBar::ScrollButton::eventMouseMotion(const SDL_MouseMotionEvent* mo
 				p.x = maxx;
 			}
 
-			MoveWidget(p.x, 0);
+			MoveWidget(p.x, GetParent()->position[2].y);
 		}
-
-		my_tempPos = GetPosFromPoint(p);
 
 		int pos = GetPosFromPoint(p);
 		if(GetParent()->scroll_current != pos || my_tickMode) {
@@ -320,7 +312,7 @@ bool PG_ScrollBar::ScrollButton::eventMouseMotion(const SDL_MouseMotionEvent* mo
 
 	}
 
-	return true; //PG_Button::eventMouseMotion(motion);
+	return true;
 }
 
 /**  */
@@ -359,17 +351,7 @@ void PG_ScrollBar::SetPosition(int pos) {
 		return;
 	}
 
-	if(sb_direction == VERTICAL) {
-		position[3].x = 0;
-		position[3].h = (Uint16)((double)position[2].h / ((double)position[2].h / (double)position[3].h));
-		position[3].y = (Uint16)(position[0].h + (((double)position[2].h - (double)position[3].h) / (double)(scroll_max - scroll_min)) * (double)pos);
-	} else {
-		position[3].y = 0;
-		position[3].w = (Uint16)((double)position[2].w / ((double)position[2].w / (double)position[3].w) );
-		position[3].x = (Uint16)(position[0].w + (((double)position[2].w - (double)position[3].w) / (double)(scroll_max - scroll_min)) * (double)pos);
-	}
-
-	dragbutton->MoveWidget(position[3].x, position[3].y);
+	RecalcPositions();
 }
 
 int PG_ScrollBar::GetPosition() {
@@ -427,19 +409,6 @@ void PG_ScrollBar::ScrollButton::SetTickMode(bool on) {
 }
 
 /**  */
-void PG_ScrollBar::SetWindowSize(Uint32 wsize) {
-	/*
-	scroll_windowsize = wsize;
-
-	if(scroll_windowsize > (scroll_max - scroll_min)){
-		scroll_windowsize = (scroll_max - scroll_min);
-}
-	*/
-
-	//SizeWidget(displayrect.w, displayrect.h);
-}
-
-/**  */
 void PG_ScrollBar::SetRange(Uint32 min, Uint32 max) {
 	scroll_min = min;
 	scroll_max = max;
@@ -470,19 +439,19 @@ int PG_ScrollBar::ScrollButton::GetPosFromPoint(PG_Point p) {
 	if(p.y < 0)
 		p.y = 0;
 
-	if(!my_tickMode) {
+	//if(!my_tickMode) {
 		if(GetParent()->sb_direction == VERTICAL) {
-			pos = (int)( (((double)(p.y - GetParent()->position[3].w)) * (double)(range)) / ( (double)GetParent()->position[2].h - (double)GetParent()->position[3].h) + .5 );
+			pos = (double)(p.y - GetParent()->position[2].y) / (((double)GetParent()->position[2].h - (double)GetParent()->position[3].h) / (double)range);
 		} else {
-			pos = (int)( (((double)(p.x - GetParent()->position[3].h)) * (double)(range)) / ( (double)GetParent()->position[2].w - (double)GetParent()->position[3].w) + .5 );
+			pos = (double)(p.x - GetParent()->position[2].x) / (((double)GetParent()->position[2].w - (double)GetParent()->position[3].w) / (double)range);
 		}
-	} else {
+	/*} else {
 		if(GetParent()->sb_direction == VERTICAL) {
 			pos = (int)( (((double)(p.y)) * (double)(range)) / ( (double)GetParent()->position[2].h - (double)GetParent()->position[3].h) + .5 );
 		} else {
 			pos = (int)( (((double)(p.x)) * (double)(range)) / ( (double)GetParent()->position[2].w - (double)GetParent()->position[3].w) + .5 );
 		}
-	}
+	}*/
 
 	if(pos < 0)
 		pos = 0;
