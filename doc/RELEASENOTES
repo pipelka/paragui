@@ -65,6 +65,8 @@ Whats new in ParaGUI 1.1.8 ?
 - PG_Rect: simplified some if-clauses
 - surface.cpp: tiny check added, another one removed
 - surface.cpp: preserved clip rect
+- applied patches from Fred Ollinger:
+- many many documentation updates
 
 
 ----------------------------

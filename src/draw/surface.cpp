@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/02 20:27:52 $
+    Update Date:      $Date: 2004/04/18 18:27:26 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/surface.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -91,7 +91,6 @@ static void Draw3TileH(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uin
 
 	// blit part 2 (middle)
 
-	// set cliprect
 	dstrect.SetRect(r.x+w, r.y, r.w-w*2, h);
 	SDL_SetClipRect(dst, &dstrect);
 
@@ -324,13 +323,10 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 	bool bColorKey = false;
 	PG_Color uColorKey;
 	Uint32 c;
+    PG_Rect oldclip;
 		
 	// check if we have anything to do
-	if(!gradient && !background) {
-		return;
-	}
-
-	if (!r.h || !r.w)
+	if (!surface || !r.h || !r.w)
         	return;
 
 	// draw the gradient first
@@ -366,6 +362,8 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 	if(((gradient == NULL) || (blend == 0)) && bColorKey) {
 		SDL_SetColorKey(background, 0, 0);
 	}
+
+    SDL_GetClipRect(surface, &oldclip);
 	
 	switch(bkmode) {
 
@@ -428,6 +426,8 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 
 	}
 
+    SDL_SetClipRect(surface, (SDL_Rect*)&oldclip);
+    
 	if((/*(gradient == NULL) ||*/ (blend == 0)) && bColorKey) {
 		c = uColorKey.MapRGB(background->format);
 		SDL_SetColorKey(background, SDL_SRCCOLORKEY, c);

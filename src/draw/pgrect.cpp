@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/04/18 18:27:26 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/pgrect.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.6 $
+    CVS/RCS Revision: $Revision: 1.3.8.7 $
     Status:           $State: Exp $
 */
 
@@ -86,16 +86,7 @@ PG_Rect PG_Rect::IntersectRect(const PG_Rect& p, const PG_Rect& c) {
 	cy1 = c.my_ypos + c.my_height - 1;
 
 	// check if the rectangles intersect
-	if(/*(cx0 < px0) && */(cx1 < px0))
-		return result;
-
-	if((cx0 > px1) /*&& (cx1 > px1)*/)
-		return result;
-
-	if(/*(cy0 < py0) && */(cy1 < py0))
-		return result;
-
-	if((cy0 > py1) /*&& (cy1 > py1)*/)
+	if((cx1 < px0) || (cx0 > px1) || (cy1 < py0) || (cy0 > py1))
 		return result;
 
 	// intersect x

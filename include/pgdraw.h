@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 10:11:15 $
+    Update Date:      $Date: 2004/04/18 18:27:26 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdraw.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -60,6 +60,8 @@
 /**
 	Backgroundmode 3TILEH.
 	Macro defining the background mode for horizontal 3 part tiling
+    (the left part of the tile to the left, the right part to the right,
+    the middle part repeatedly within the rest)
 */
 #define BKMODE_3TILEH		3
 /**
@@ -166,7 +168,7 @@ DECLSPEC void BlitScale(SDL_Surface *src, SDL_Surface *dst, bool smooth = true);
 	Creates a surface filled with a gradient
 
 	@param r		the dimensions of the surface to be created
-	@param gradient the gradient colors to use
+	@param gradient the gradient colors to use (order: ul(upper left), ur, dl, dr)
 	@return			a SDL_Surface pointer to the new surface
 
 	This function creates a new surface filled with a given gradient defined by a set of colors
@@ -188,10 +190,29 @@ DECLSPEC SDL_Surface* CreateGradient(const PG_Rect& r, PG_Gradient& gradient);
 DECLSPEC SDL_Surface* CreateGradient(const PG_Rect& r, const PG_Color& ul, const PG_Color& ur, const PG_Color& dl, const PG_Color& dr);
 
 /**
+    Draw a gradient on a surface
+
+    @param surface  the surface to draw the gradient to
+    @param r        the rectangle where the gradient should be drawn
+    @param gradient the gradient colors (order: ul(upper left), ur, dl, dr)
+
+    \note If the surface is clipped, the gradient is only drawn within 
+    the intersection of the clipping rect and r.
 */
 DECLSPEC void DrawGradient(SDL_Surface* surface, const PG_Rect& r, PG_Gradient& gradient);
 
 /**
+    Draw a gradient on a surface
+
+    @param surface  the surface to draw the gradient to
+    @param r        the rectangle where the gradient should be drawn
+	@param ul		upper/left gradient color
+	@param ur		upper/right gradient color
+	@param dl		lower/left gradient color
+	@param dr		lower/right gradient color
+
+    This function is the same as the other one above except that the gradient
+    colors are the arguments instead of a gradient.
 */
 DECLSPEC void DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_Color& ul, const PG_Color& ur, const PG_Color& dl, const PG_Color& dr);
 
@@ -213,7 +234,10 @@ DECLSPEC SDL_Surface* CreateRGBSurface(Uint16 w, Uint16 h, int flags = SDL_SWSUR
 	@param gradient		pointer to a gradient structure (may be NULL)
 	@param background	pointer to a background surface (may be NULL)
 	@param bkmode		the mode how to fill in the background surface (BKMODE_TILE | BKMODE_STRETCH)
-	@param blend				the blend-level between gradient an background
+	@param blend                the blend-level between gradient an background; the
+                                higher the blend level the more transparent the background is.
+
+    \note This function first draws the gradient, then the (partly transparent) background.
 */
 DECLSPEC void DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradient* gradient, SDL_Surface* background, int bkmode, Uint8 blend);
 
@@ -237,6 +261,9 @@ DECLSPEC void DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Ui
 	@param y y position
 	@param c color
 	@param surface destination surface
+
+    \note This function assumes that the surface has already been locked if
+    neccessary.
 */
 DECLSPEC void SetPixel(int x, int y, const PG_Color& c, SDL_Surface * surface);
 
@@ -253,6 +280,18 @@ inline void BlitSurface(SDL_Surface* srf_src, const PG_Rect& rect_src, SDL_Surfa
 	SDL_BlitSurface(srf_src, (PG_Rect*)&rect_src, srf_dst, (PG_Rect*)&rect_dst);
 }
 
+/** 
+    Tiles a surface with a given image
+    
+    @param surface  the surface to draw to
+    @param ref      unused, to be removed
+    @param drawrect the area on the surface you want to draw to
+    @param tilemap  the image you want to tile the surface with
+   
+    This function takes the tilemap and repeatedly blits it on the surface.
+    If drawrect->w is not a multiple of tilemap->w (the same with the height),
+    the tiles on the right or lower border are cut off appropriately.
+  */
 DECLSPEC void DrawTile(SDL_Surface* surface, const PG_Rect& ref, const PG_Rect& drawrect, SDL_Surface* tilemap);
 
 #ifndef DOXYGEN_SKIP
