@@ -519,7 +519,7 @@ dnl fi
 AC_CHECK_LIB(jpeg,jpeg_read_header)
 AC_CHECK_LIB(tiff,TIFFClose)
 AC_CHECK_LIB(png,png_create_read_struct)
-dnl SYSTEM_LIBS="$SYSTEM_LIBS $LIBS -lz"
+dnl SYSTEM_LIBS="$SYSTEM_LIBS $LIBS"
 dnl LIBS="$OLDLIBS"
 
 AC_CHECK_FUNCS(vsnprintf)
@@ -528,7 +528,7 @@ AC_CHECK_FUNCS(strdup)
 AC_CHECK_FUNCS(fnmatch)
 
 PARAGUI_CFLAGS="$STL_CFLAGS $FREETYPE_CFLAGS $SDL_CFLAGS $RTTI_FLAGS $EXTRA_FLAGS"
-PARAGUI_LIBS="-lparagui $SDL_LIBS -lz $IMAGE_LIBS $LIBEXPAT $FREETYPE_LIBS $EXTRA_LIBS $LIBSTDCPP"
+PARAGUI_LIBS="-lparagui $SDL_LIBS $IMAGE_LIBS $LIBEXPAT $FREETYPE_LIBS $EXTRA_LIBS $LIBSTDCPP"
 
 CXXFLAGS="$STLPORT_FLAGS $CFLAGS $IMAGE_INCLUDE $RTTI_FLAGS $EXCEPTIONS_FLAGS -I$prefix/include"
 
@@ -549,15 +549,15 @@ fi
 
 AC_SUBST(RPM_ROOT)
 
+echo "Running configure for PhysFS ..."
+AC_CONFIG_SUBDIRS(src/physfs)
+
 # Finally create all the generated files
 AC_OUTPUT([
 Makefile
 doc/Makefile
 include/Makefile
 src/Makefile
-src/physfs/Makefile
-src/physfs/archivers/Makefile
-src/physfs/platform/Makefile
 src/expat/Makefile
 src/draw/Makefile
 src/font/Makefile

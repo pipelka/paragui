@@ -25,9 +25,12 @@ automake -c -a --foreign || ( echo "***ERROR*** automake failed." ; exit 1 )
 echo "Running autoconf ..."
 autoconf || ( echo "***ERROR*** autoconf failed." ; exit 1 )
 
-#echo "Running autogen.sh in the \"test\" directory ..."
-#cp -f paragui.m4 test/acinclude.m4
-#test/autogen.sh
+echo "Bootstrapping physfs ..."
+cd src/physfs && ./bootstrap
+
+echo "Running autogen.sh in the \"test\" directory ..."
+cp -f paragui.m4 test/acinclude.m4
+test/autogen.sh
 
 echo 
 echo "Checking for tools needed to maintain the package ..."

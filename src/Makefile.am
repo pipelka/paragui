@@ -15,8 +15,6 @@ libparagui_la_LDFLAGS = \
 
 libparagui_la_LIBADD = \
 	-L@prefix@/lib \
-	-lz \
-	$(SIGC_LIBS) \
 	$(SDL_LIBS) \
 	$(IMAGE_LIBS) \
 	$(EXPAT_LIB) \
@@ -29,7 +27,6 @@ libparagui_la_LIBADD = \
 	$(LIBSTDCPP)
 
 INCLUDES = \
-	$(SIGC_CFLAGS) \
 	$(SDL_CFLAGS) \
 	-I$(top_srcdir)/include
 

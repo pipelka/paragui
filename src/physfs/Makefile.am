@@ -3,6 +3,8 @@ lib_LTLIBRARIES = libphysfs.la
 if BUILD_ZLIB
 ZLIB_DIR = zlib114
 ZLIB_LIB = zlib114/libz.la
+else
+ZLIB_LIB = -lz
 endif
 
 if BUILD_TEST_PHYSFS

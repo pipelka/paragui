@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/06/21 21:13:40 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/surface.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -63,7 +63,13 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 	// draw the gradient first
 	if((background == NULL) || (background && (blend > 0))) {
 		if(gradient != NULL) {
+			if(SDL_MUSTLOCK(surface)) {
+				SDL_LockSurface(surface);
+			}
 			DrawGradient(surface, r, *gradient);
+			if(SDL_MUSTLOCK(surface)) {
+				SDL_UnlockSurface(surface);
+			}
 		}
 	}
 
