@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/31 13:25:45 $
+    Update Date:      $Date: 2002/05/31 14:58:26 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.5 $
+    CVS/RCS Revision: $Revision: 1.2.4.6 $
     Status:           $State: Exp $
 */
 
@@ -558,7 +558,7 @@ PG_Theme* PG_Application::LoadTheme(const char* xmltheme, bool asDefault, const 
 		PG_LogDBG("'::data:' added to searchpath");
 	}
 
-	if(PARAGUI_THEMEDIR) != NULL) {
+	if(PARAGUI_THEMEDIR != NULL) {
 		PG_LogDBG("'"PARAGUI_THEMEDIR"' added to searchpath");
 	}
 
