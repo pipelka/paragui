@@ -28,6 +28,10 @@ Whats new in ParaGUI 1.0.2 ?
 - added PG_FileArchive::OpenFileRWops
 - added PG_RadioButton:SetAlignment
 - missing DECLSPEC added to pgfont.h
+- added surface locking for direct pixel access rendering
+  (text, gradient).
+- added new messagetype to process XML layout tags
+  from the <head> section (MSG_XMLTAG).
 
 
 ----------------------------
