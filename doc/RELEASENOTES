@@ -59,6 +59,18 @@ Whats new in ParaGUI 1.1.7 ?
   made some changes to paratest.cpp to make use of PG_Button::SetTransparency()
   and the new way of adding items to lists
   made some minor cleanups
+  fixed VC complaint concerning PG_Application::GetScreen()
+  added PG_ListBox::SetAlignment() / GetAlignment()
+  added PG_DropDown::SetAlignment() / GetAlignment()
+  added PG_Window::GetIcon()
+  modified PG_Application::SetCaption() to use ParaGUI's SetIcon() insteadof SDL's
+  fixed a potential crash occuring when having only one widget in a PG_RectList
+  made PG_ListBox / PG_DropDown::SetIndent() work before adding items
+  added a simple mouse wheel handling for PG_ListBox and PG_DropDown
+  made PG_Widget's destructor call RemoveFromWidgetList() only if widget has no parent
+  added "break"s to PG_Window::handleButtonClick()
+  connected a slider's sigSlideEnd signal in paratest.cpp
+  made use of new SetAlignment() method in paratest.cpp
 - applied patches from Ulf Lorenz
   documented pgsurfacecache.h
   remove obsolete code from drawline.cpp

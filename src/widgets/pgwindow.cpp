@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/09 09:18:26 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.8 $
     Status:           $State: Exp $
 */
 
@@ -225,11 +225,13 @@ bool PG_Window::handleButtonClick(PG_Button* button) {
 		case IDWINDOW_CLOSE:
 			Hide();
 			sigClose(this);
+			break;
 
 		// minimize window
 		case IDWINDOW_MINIMIZE:
 			Hide();
 			sigMinimize(this);
+			break;
 	}
 
 	// just in case we're modal
@@ -252,6 +254,10 @@ void PG_Window::SetIcon(SDL_Surface* icon) {
 	if (my_buttonMinimize)
 		my_labelTitle->SetIndent(my_buttonMinimize->my_width);
 	my_labelTitle->SetIcon(icon);
+}
+
+SDL_Surface* PG_Window::GetIcon() {
+	return my_labelTitle->GetIcon();
 }
 
 void PG_Window::eventShow() {

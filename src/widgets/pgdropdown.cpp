@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/01 16:03:31 $
+    Update Date:      $Date: 2004/03/09 09:18:26 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
     Status:           $State: Exp $
 */
 
@@ -197,4 +197,12 @@ void PG_DropDown::SelectItem(const int n) {
 
 Uint16 PG_DropDown::GetIndent() {
 	return my_DropList->GetIndent();
+}
+
+void PG_DropDown::SetAlignment(PG_Label::TextAlign style) {
+	my_DropList->SetAlignment(style);
+}
+
+PG_Label::TextAlign PG_DropDown::GetAlignment() {
+	return my_DropList->GetAlignment();
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/01 15:09:51 $
+    Update Date:      $Date: 2004/03/09 09:18:25 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
     Status:           $State: Exp $
 */
 
@@ -30,6 +30,7 @@
 #define PG_LISTBOX_H
 
 #include "pgwidgetlist.h"
+#include "pglabel.h"
 
 class PG_ListBoxBaseItem;
 
@@ -96,6 +97,17 @@ public:
 	Uint16 GetIndent();
 
 	/**
+	Set the alignment for all items
+	@param style alignment to be used for all items
+	*/
+	void SetAlignment(PG_Label::TextAlign style);
+	
+	/**
+	Returns the set alignment rule of this list
+	*/
+	PG_Label::TextAlign GetAlignment();
+	
+	/**
 	Returns the index of the last selected item
 	*/
 	int GetSelectedIndex();
@@ -127,6 +139,7 @@ private:
 	bool my_multiselect;
 	Uint16 my_indent;
 	int my_selectindex;
+	PG_Label::TextAlign my_alignment;
 
 	PG_ListBoxBaseItem* my_selectedItem;
 

@@ -163,6 +163,7 @@ PG_Window(parent, r, windowtext, DEFAULT)
 
 	PG_DropDown* drop = new PG_DropDown(this, PG_Rect(260, 60, 200,25));
 	drop->SetIndent(5);
+	drop->SetAlignment(PG_Label::CENTER);
 	drop->AddItem("Under construction");
 	drop->AddItem("Item 1");
 	drop->AddItem("Item 2");
@@ -474,6 +475,7 @@ int main(int argc, char* argv[]) {
 	drop.SetIndent(5);
 
 	slider.sigSlide.connect(slot(hande_slideIndent), (PG_Pointer)&drop);
+	slider.sigSlideEnd.connect(slot(hande_slideIndent), (PG_Pointer)&drop);
 	drop.Show();
 
 	PG_Button list(NULL, PG_Rect(400,450,100,30), "List", PG_Button::OK);

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 16:24:05 $
+    Update Date:      $Date: 2004/03/09 09:18:25 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
     Status:           $State: Exp $
 */
 
@@ -35,6 +35,7 @@
 
 #include "pgwidget.h"
 #include "pgsignals.h"
+#include "pglabel.h"
 
 class PG_Button;
 class PG_LineEdit;
@@ -151,6 +152,17 @@ public:
 	@param n number of item to select
 	*/
 	void SelectItem(const int n);
+
+	/**
+	Set the item's alignment
+	@param style alignment to be set for the item
+	*/
+	void SetAlignment(PG_Label::TextAlign style);
+
+	/**
+	Returns the set alignment rule of this list
+	*/
+	PG_Label::TextAlign GetAlignment();
 
 	void AddChild(PG_Widget* child);
 

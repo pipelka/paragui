@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/02 20:08:24 $
+    Update Date:      $Date: 2004/03/09 09:18:26 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2.2.8 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.9 $
     Status:           $State: Exp $
 */
 
@@ -72,7 +72,6 @@ PG_RectList::~PG_RectList() {}
 }*/
 
 PG_Widget* PG_RectList::IsInside(const PG_Point& p) {
-
 	// loop down all rects till we find a match
 	for(PG_Widget* i = last(); i != NULL; i = i->prev()) {
 
@@ -152,6 +151,10 @@ bool PG_RectList::Remove(PG_Rect* rect) {
 		my_first = rect->next();
 		if(my_first != NULL) {
 			my_first->my_prev = NULL;
+		}
+		// first and last
+		else {
+			my_last = NULL;
 		}
 	}
 	// last

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/01 18:10:29 $
+    Update Date:      $Date: 2004/03/09 09:18:26 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.3 $
     Status:           $State  
 */
 
@@ -219,13 +219,13 @@ void PG_LogConsole::Update() {
 	PG_LogWindowData->SetText(buffer);
 }
 
-/*void PG_LogConsole::SetTitle(const char* title, PG_Label::TextAlign alignment) {
+void PG_LogConsole::SetTitle(const char* title, PG_Label::TextAlign alignment) {
 	my_title = title;
 
 	if (PG_LogWindow) {
 		PG_LogWindow->SetTitle(title, alignment);
 	}
-}*/
+}
 
 void PG_LogConsole::Show() {
 	if(PG_LogWindow) {

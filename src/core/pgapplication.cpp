@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/09 09:18:25 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.12 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.13 $
     Status:           $State: Exp $
 */
 
@@ -839,17 +839,17 @@ void PG_Application::SetIcon(const char *filename) {
 
 	//Clean up
 	delete[] mask;
-	return;
 }
 
 void PG_Application::SetCaption(const char *title, const char *icon) {
-	SDL_WM_SetCaption(title,icon);
-	return;
+	SDL_WM_SetCaption(title, NULL);
+	if (icon != NULL) {
+		SetIcon(icon);
+	}
 }
 
 void PG_Application::GetCaption(char **title, char **icon) {
 	SDL_WM_GetCaption(title,icon);
-	return;
 }
 
 int PG_Application::Iconify(void) {
@@ -1045,6 +1045,12 @@ void PG_Application::FlushEventQueue() {
 		}*/
 	}
 }
+
+#ifdef WIN32
+SDL_Surface* PG_Application::GetScreen() {
+	return screen;
+}
+#endif
 
 /*
  * Local Variables:

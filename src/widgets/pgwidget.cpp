@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/03 14:52:35 $
+   Update Date:      $Date: 2004/03/09 09:18:26 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.10 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.11 $
    Status:           $State: Exp $
  */
 
@@ -181,8 +181,9 @@ PG_Widget::~PG_Widget() {
 	if (GetParent() != NULL) {
 		GetParent()->RemoveChild(this);
 	}
-    
-	RemoveFromWidgetList();
+	else {
+		RemoveFromWidgetList();
+	}
 
 	// remove childlist
 	delete _mid->childList;

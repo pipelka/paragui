@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/08 11:30:59 $
+    Update Date:      $Date: 2004/03/09 09:18:26 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.11 $
     Status:           $State: Exp $
 */
 
@@ -32,7 +32,7 @@
 #include "pglog.h"
 
 PG_ListBox::PG_ListBox(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_WidgetList(parent, r, style),
-my_selectedItem(NULL) {
+my_selectedItem(NULL), my_alignment(PG_Label::LEFT) {
 	my_multiselect = false;
 	my_indent = 0;
 	my_selectindex = 0;
@@ -47,9 +47,8 @@ void PG_ListBox::AddChild(PG_Widget* item) {
         return;
 	}
 
-	item->SizeWidget(Width(), item->Height());
-	static_cast<PG_ListBoxBaseItem*>(item)->SetIndent(my_indent);
-	
+	item->SizeWidget(Width(), item->Height());	
+
 	PG_WidgetList::AddChild(item);
 }
 
@@ -185,4 +184,22 @@ void PG_ListBox::GetSelectedItems(std::vector<PG_ListBoxBaseItem*>& items) {
 
 Uint16 PG_ListBox::GetIndent() {
 	return my_indent;
+}
+
+void PG_ListBox::SetAlignment(PG_Label::TextAlign style) {
+	my_alignment = style;
+	
+	PG_RectList* list = my_scrollarea->GetChildList();
+	if(list == NULL) {
+		return;
+	}
+	
+	for(PG_Widget* i = list->first(); i != NULL; i = i->next()) {
+		static_cast<PG_ListBoxBaseItem*>(i)->SetAlignment(style);
+	}
+	Update();
+}
+
+PG_Label::TextAlign PG_ListBox::GetAlignment() {
+	return my_alignment;
 }

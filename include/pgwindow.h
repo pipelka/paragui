@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/09 09:18:25 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -91,6 +91,12 @@ public:
 	*/
 	const char* GetTitle();
 
+	/**
+	get window icon
+	@return pointer to the window's icon
+	*/
+	SDL_Surface* GetIcon();
+	
 	void SetIcon(const char* filename);
 	
 	void SetIcon(SDL_Surface* icon);
