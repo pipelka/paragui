@@ -10,6 +10,7 @@ EXTRA_DIST = \
 	requirements.doc \
 	roadmap.doc \
 	screenshots.doc \
+	tutorial.doc \
 	visualc.doc \
 	header.html \
 	footer.html
