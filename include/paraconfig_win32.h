@@ -17,6 +17,9 @@
 /* Define the default path to the theme files */
 #define PARAGUI_THEMEDIR "./data"
 
+/* Define if you have the fnmatch function.  */
+/* #undef HAVE_FNMATCH */
+
 /* Define if you have the strdup function.  */
 #define HAVE_STRDUP 1
 

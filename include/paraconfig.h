@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/03 08:27:17 $
+    Update Date:      $Date: 2002/06/06 22:10:46 $
     Source File:      $Source: /sources/paragui/paragui/include/paraconfig.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.9 $
     Status:           $State: Exp $
 */
 
@@ -146,6 +146,24 @@ extern int SDL_RegisterApp(char*, Uint32, void*);
 extern "C" {
 char* strdup(char* s);
 }
+#endif
+
+// Replacement for fnmatch
+#ifndef HAVE_FNMATCH
+extern "C" {
+/* Bits set in the FLAGS argument to `fnmatch'.  */
+#define	FNM_PATHNAME	(1 << 0) /* No wildcard can ever match `/'.  */
+#define	FNM_NOESCAPE	(1 << 1) /* Backslashes don't quote special chars.  */
+#define	FNM_PERIOD	(1 << 2) /* Leading `.' is matched only explicitly.  */
+#define	__FNM_FLAGS	(FNM_PATHNAME|FNM_NOESCAPE|FNM_PERIOD)
+
+/* Value returned by `fnmatch' if STRING does not match PATTERN.  */
+#define	FNM_NOMATCH	1
+
+int fnmatch((const char *, const char *, int));
+}
+#else
+#include <fnmatch.h>
 #endif
 
 #endif // CONFIG_INCLUDED

@@ -1086,6 +1086,10 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		return;
 	}
 
+	if(XMLParser->Section & XML_SECTION_HEAD) {
+		
+	}
+	
 	PG_LogWRN("Unknown tag `%s` in section %d !",name,XMLParser->Section);
 	return;
 }

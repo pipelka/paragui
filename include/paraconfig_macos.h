@@ -16,6 +16,9 @@
 /* Define if mpatrol memory profiler support is enabled */
 /* #undef MPATROL_ENABLED */
 
+/* Define if you have the fnmatch function.  */
+/* #undef HAVE_FNMATCH */
+
 /* Define if you have the strdup function.  */
 /* #undef HAVE_STRDUP */
 

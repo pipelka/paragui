@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/28 09:41:44 $
+    Update Date:      $Date: 2002/06/06 22:10:46 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -289,9 +289,10 @@ public:
 	
 	\note The caller owns the returned vector and is responsible for deleting the returned structure.
 	\param dir directory to list files in
+	\param wildcard wildcard for file pattern matching
 	\return the file list
 	*/
-	static PG_FileList* GetFileList(const char *dir);
+	static PG_FileList* GetFileList(const char *dir, const char* wildcard="*");
 	
 private:
 

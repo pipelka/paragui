@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/31 12:17:29 $
+    Update Date:      $Date: 2002/06/06 22:10:46 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.3 $
+    CVS/RCS Revision: $Revision: 1.2.4.4 $
     Status:           $State: Exp $
 */
 
@@ -111,24 +111,19 @@ char **PG_FileArchive::EnumerateFiles(const char *dir) {
 	return PHYSFS_enumerateFiles(dir);
 }
 
-PG_FileList* PG_FileArchive::GetFileList(const char *dir) {
+PG_FileList* PG_FileArchive::GetFileList(const char *dir, const char* wildcard) {
 	char **tempList = EnumerateFiles(dir);
 	
 	if( tempList == NULL ) {
 		return NULL;
 	}
 
-	PG_FileList* retVal = NULL;
+	PG_FileList* retVal = new PG_FileList;
 	
-	// Scan through to get the length of the listing to get the proper vector size.
-	Uint32 size = 0;
-	for( size = 0; tempList[ size ] != NULL; ++size) {}
-	
-	// Now we're ready to initialize everything.
-	retVal = new std::vector< std::string >;
-	retVal->reserve( size );
-	for( Uint32 i = 0; i < size; ++i ) {
-		retVal->push_back(std::string(tempList[ i ]));
+	for( char** i = tempList; *i != NULL; i++) {
+		if(fnmatch(wildcard, *i, FNM_PATHNAME) == 0) {
+			retVal->push_back(std::string(*i));
+		}
 	}
 	
 	// Clean up.
