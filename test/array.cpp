@@ -25,9 +25,10 @@ int main( int argc, char **argv )
 	app.InitScreen( 640, 480, 0 );
 	app.SetEmergencyQuit(true);
 	
-	PG_ArrayWidget a(NULL, PG_Rect(50,50,150,250));	
-	a.Show();
+	PG_ArrayWidget* a = new PG_ArrayWidget(NULL, PG_Rect(50,50,150,250));	
+	a->Show();
 	app.Run();
+	delete a;
 	
 	return 0;
 }
