@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2002/06/10 13:17:17 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -33,9 +33,16 @@
 #ifndef PG_FONT_H
 #define PG_FONT_H
 
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgfile
+%{
+#include "pgfont.h"
+%}
+#endif
+
 #include "paragui.h"
 #include "pgdatacontainer.h"
-#include "pgrect.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -58,7 +65,7 @@ struct PG_FontDataInternal;
 
 	This class defines the parameters of a font (size, style, ...)
 */
-class PG_Font {
+class DECLSPEC PG_Font {
 public:
 	
 	/**
@@ -183,8 +190,9 @@ public:
 	@return true on success
 	*/
 	static bool RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const char *Text, PG_Font* ParamIn);
-
+#ifndef SWIG
 	static bool RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const char *Text, PG_Font* ParamIn);
+#endif
 
 	/**
 	*/
@@ -214,6 +222,8 @@ private:
 	*/
 	static PG_GlyphCacheItem* GetGlyph(PG_Font *Param, int glyph_index);
 
+#ifndef SWIG
+
 	typedef std::map<FT_F26Dot6, PG_FontFaceCacheItem*> MAP_SUBITEMS;
 
 	class FONT_ITEM {
@@ -234,6 +244,7 @@ private:
 	static FT_Library my_library;
 
 	friend class PG_Font;
+#endif
 };
 
 #endif
