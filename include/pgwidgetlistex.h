@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/30 18:27:08 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlistex.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $
     Status:           $State: Exp $
 */
 
@@ -57,7 +57,9 @@ public:
 	/**
 	Remove a widget from the list
 
-	@param	w			pointer to a widget
+	@param w			pointer to a widget
+	@param shiftx	reposition all widgets to the right of the removed widget
+	@param shifty	reposition all widgets below
 	*/
 	bool RemoveWidget(PG_Widget* w, bool shiftx = false, bool shifty = false);
 };

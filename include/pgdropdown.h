@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/17 12:41:17 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -75,12 +75,14 @@ public:
 	~PG_DropDown();
 
 	/** */
-	void LoadThemeStyle(const char* style);
+	void LoadThemeStyle(const char* widgettype);
 
 	/**
 	Add a new item to the dropdown box
 	@param text text of the new item
 	@param userdata pointer to userdefined data linked to the item.
+	@param height Height of the listbox item in pixels. If 0 the height will
+			be calculated using the text height.
 	*/
 	void AddItem(const char* text, void* userdata = NULL, Uint16 height = 0);
 
@@ -143,7 +145,7 @@ public:
 
 	/**
 	Select the n-th item
-	@parm n		number of item to select
+	@param n number of item to select
 	*/
 	void SelectItem(const int n);
 

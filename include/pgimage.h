@@ -20,9 +20,9 @@
     pipelka@teleweb.at 
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2003/12/02 15:27:57 $ 
+    Update Date:      $Date: 2004/02/21 10:11:15 $ 
     Source File:      $Source: /sources/paragui/paragui/include/pgimage.h,v $ 
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.1 $ 
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $ 
     Status:           $State: Exp $ 
 */
 
@@ -86,7 +86,7 @@ protected:
 	void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
 
 	/** */
-	void eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst);
+	void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);
 };
 
 #endif // PG_IMAGE_H

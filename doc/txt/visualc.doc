@@ -91,7 +91,7 @@
 		Add it to paths in similar way as is described in step 4. of <b>Building ParaGUI library</b>.<br><br>
 	\li Choose the configuration Debug or Release same way as step 5. of Building ParaGUI library.<br><br>
 	\li Build the project with "Project|Build" command.<br>
-		File [/bin/<examplename>.exe] should becreated in the "bin" directory.<br><br>
+		File [/bin/examplename.exe] should becreated in the "bin" directory.<br><br>
 	\li Test your ParaGUI example.<br>
 		It will need some dlls to run (sdl.dll, sdl_image.dll). Just copy
 		them to bin directory or move them into system searching paths for dlls.<br><br>

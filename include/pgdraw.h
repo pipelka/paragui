@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:57 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdraw.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -235,9 +235,7 @@ DECLSPEC void DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Ui
 	Set a pixel.
 	@param x x position
 	@param y y position
-	@param r red color component
-	@param g green color component
-	@param b blue color component
+	@param c color
 	@param surface destination surface
 */
 DECLSPEC void SetPixel(int x, int y, const PG_Color& c, SDL_Surface * surface);
@@ -246,7 +244,7 @@ DECLSPEC void SetPixel(int x, int y, const PG_Color& c, SDL_Surface * surface);
 	replacement for SDL_BlitSurface
 	@param srf_src	source surface
 	@param rect_src	PG_Rect of the source rectangle
-	@param dst_src	destination surface
+	@param srf_dst	destination surface
 	@param rect_dst	PG_Rect of the destination rectangle
 
 	This function simply replaces SDL_BlitSurface and uses PG_Rect instead of SDL_Rect.

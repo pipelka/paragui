@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:57 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcheckbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -65,7 +65,7 @@ public:
 protected:
 
 	/** */
-	bool eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetButton);
+	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
 
 };
 

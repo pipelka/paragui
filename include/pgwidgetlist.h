@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:01:03 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -84,7 +84,7 @@ public:
 	/**
 	Remove a widget from the list
 
-	@param	index	index of the widget
+	@param index	index of the widget
 	@param shiftx	reposition all widgets to the right of the removed widget
 	@param shifty	reposition all widgets below
 	*/
@@ -93,7 +93,9 @@ public:
 	/**
 	Remove and delete a widget from the list
 
-	@param	w			pointer to a widget
+	@param w pointer to a widget
+	@param shiftx	reposition all widgets to the right of the removed widget
+	@param shifty	reposition all widgets below
 	*/
 	bool DeleteWidget(PG_Widget* w, bool shiftx = false, bool shifty = false);
 
@@ -118,7 +120,7 @@ public:
 	@param	widget		pointer to the widget
 	@return				index of the widget
 	*/
-	int FindIndex(PG_Widget* w);
+	int FindIndex(PG_Widget* widget);
 	
 	/**
 	Remove all widgets from the list (without deletion)
@@ -137,18 +139,22 @@ public:
 
 	/**
 	Enable / disable the Scrollbar (override automatic display)
+	@param enable true - enable scrollbar / false - disable scrollbar
+	@param direction modified scrollbar (PG_ScrollBar::VERTICAL | PG_ScrollBar::HORIZONTAL)
 	*/
 	void EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
 
 	/**
 	Scroll the list to a widget
 	@param	widget
+	@param direction scroll direction (PG_ScrollBar::VERTICAL | PG_ScrollBar::HORIZONTAL)
 	*/
 	void ScrollTo(PG_Widget* widget, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
 
 	/**
 	Scroll the list to a given index
-	@param	index
+	@param index index of the widget to scroll to
+	@param direction scroll direction (PG_ScrollBar::VERTICAL | PG_ScrollBar::HORIZONTAL)
 	*/
 	void ScrollTo(int index, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
 
@@ -168,7 +174,7 @@ public:
 protected:
 
 	/** */
-	void eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst);
+	void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);
 
 	/**  */
 	void eventShow();

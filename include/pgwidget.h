@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/19 16:50:10 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -130,7 +130,7 @@ public:
 
 	Loads the defined style of a given widgettype and objectname.
 	*/
-	virtual void LoadThemeStyle(const char* widgettype, const char* objectnmae);
+	virtual void LoadThemeStyle(const char* widgettype, const char* objectname);
 
 	/**
 	Start to drag a widget
@@ -180,7 +180,7 @@ public:
 	Resize a widget
 
 	@param w	new widget-width
-	@param w	new widget-height
+	@param h	new widget-height
 	@return		function succeeded
 
 	This function resizes the widget
@@ -242,8 +242,9 @@ public:
 	/**
 	Process a native PG_ event
 
-	@param event	PG_ event to process
-	@return		true if the event was sucessfully processed
+	@param event PG_ event to process
+	@param bModal set to true if processing takes place in a modal loop
+	@return	true if the event was sucessfully processed
 
 	ProcessEvent asks the widget to process a given event.
 	*/
@@ -604,7 +605,7 @@ public:
 	/**
 	Render text inside the widget
 	@param x x-position where the text should appear
-	@param x y-position where the text should appear
+	@param y y-position where the text should appear
 	@param text pointer to text string
 	*/
 	void DrawText(int x, int y, const char* text);
@@ -612,7 +613,7 @@ public:
 	/**
 	Render text inside the widget and clip to a given clipping rectangle
 	@param x x-position where the text should appear
-	@param x y-position where the text should appear
+	@param y y-position where the text should appear
 	@param text pointer to text string
 	@param cliprect text bounding rectangle
 	*/
@@ -622,16 +623,16 @@ public:
 	Render text inside the widget and set the font color
 	@param rect rectangle where the text should appear
 	@param text pointer to text string
-	@param color color of the rendered text
+	@param c color of the rendered text
 	*/
 	void DrawText(const PG_Rect& rect, const char* text, const PG_Color& c);
 
 	/**
 	Render text inside the widget and set the font color
 	@param x x-position where the text should appear
-	@param x y-position where the text should appear
+	@param y y-position where the text should appear
 	@param text pointer to text string
-	@param color color of the rendered text
+	@param c color of the rendered text
 	*/
 	void DrawText(int x, int y, const char* text, const PG_Color& c);
 
@@ -652,16 +653,13 @@ public:
 
 	/**
 	Set the clipping rectangle for the object
-	@param	x					x-position in client coordinates
-	@param	y					y-position in client coordinates
-	@param	w					width of the clipping rectangle
-	@param	h					height of the clipping rectangle
+	@param r clipping rectangle
 	*/
 	void SetClipRect(PG_Rect& r);
 
 	/**
 	Get the current clipping rectangle
-	@return						the clipping rectangle
+	@return the clipping rectangle
 	*/
 	PG_Rect* GetClipRect();
 
@@ -791,18 +789,18 @@ protected:
 	@param surface the widgets drawing surface.
 	@param rect rectangle to draw within.
 	This eventhandler is called whenevener the widget contents should be redrawn.
-	@Note Only widgets with drawing surfaces (see the constructor) will call this eventhandler.
+	@note Only widgets with drawing surfaces (see the constructor) will call this eventhandler.
 	*/
 	virtual void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
 
 	/**
 	overridable eventhandler to blit the widget contents to the screen
-	@param srf surface to be blitted
+	@param surface pointer to SDL_Surface to be blitted
 	@param src source rectangle (client coordinates)
 	@param dst destination rectangle (screen coordinates)
 	Override this eventhandler to perform custom blitting behaviour (without drawing onto the widget surface).
 	*/
-	virtual void eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst);
+	virtual void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);
 
 	/**
 	overridable eventhandler called whenever the widget gets shown.

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessagebox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -45,28 +45,30 @@ public:
 	/**
 	Creates a PopUp with 2 Buttons
 		
-	@param parent							Parent widget
-	@param r									rectangle of PopUp
-	@param windowtitle					Title of window
-	@param windowtext					Text to appear in window
-	@param btn1								Struct PG_Rect to create Button 1
-	@param btn1text						Text to appear in Button 1
-	@param btn2								Struct PG_Rect to create Button 2
-	@param btn2text						Text to appear in Button 2
-	@param textalign						Alignment for windowtext
+	@param parent Parent widget
+	@param r rectangle of PopUp
+	@param windowtitle Title of window
+	@param windowtext Text to appear in window
+	@param btn1 Struct PG_Rect to create Button 1
+	@param btn1text Text to appear in Button 1
+	@param btn2 Struct PG_Rect to create Button 2
+	@param btn2text Text to appear in Button 2
+	@param textalign Alignment for windowtext
+	@param style widgetstyle to use (default "MessageBox")
 	*/
 	PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, const PG_Rect& btn2, const char* btn2text, PG_Label::TextAlign textalign = PG_Label::CENTER, const char* style="MessageBox");
 
 	/**
 	Creates a PopUp with 1 Button
 
-	@param parent							Parent widget
-	@param r									rectangle of PopUp
-	@param windowtitle					Title of window
-	@param windowtext					Text to appear in window
-	@param btn1								Struct PG_Rect to create Button 1
-	@param btn1text						Text to appear in Button 1
-	@param textalign						Alignment for windowtext
+	@param parent Parent widget
+	@param r rectangle of PopUp
+	@param windowtitle Title of window
+	@param windowtext Text to appear in window
+	@param btn1 Struct PG_Rect to create Button 1
+	@param btn1text Text to appear in Button 1
+	@param textalign Alignment for windowtext
+	@param style widgetstyle to use (default "MessageBox")
 	*/
 	PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, PG_Label::TextAlign textalign = PG_Label::CENTER, const char* style="MessageBox");
 

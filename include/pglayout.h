@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/31 16:14:08 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pglayout.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.3 $
     Status:           $State: Exp $
 */
 
@@ -60,6 +60,8 @@ namespace PG_Layout {
 						(from the XML layout). If NULL all new widgets will be created as toplevel
 						widgets
 	@param filename	name of the XML layoutfile
+	@param WorkCallback progress callback function (OBSOLETE)
+	@param UserSpace ???
 	@return true on success
 */
 DECLSPEC bool Load(PG_Widget* parent, const char *filename, void (* WorkCallback)(int now, int max), void *UserSpace);

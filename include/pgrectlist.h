@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/19 16:50:10 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrectlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -57,8 +57,8 @@ public:
 
 	/**
 		add a widget to the list
-		@param	rect	pointer to the widget (rect)
-	 
+		@param rect pointer to the widget (rect)
+		@param front insert the rectangle at the head of the list if true
 		This functions adds the widget to the back of the list.
 	*/
 	void Add(PG_Widget* rect, bool front = false);

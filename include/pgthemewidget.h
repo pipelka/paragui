@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/17 12:41:17 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.6 $
     Status:           $State: Exp $
 */
 
@@ -241,7 +241,7 @@ protected:
 	void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
 
 	/** */
-	void eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst);
+	void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);
 
 
 	bool my_has_gradient;

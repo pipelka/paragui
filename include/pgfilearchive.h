@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:24:19 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.3 $
     Status:           $State: Exp $
 */
 
@@ -104,7 +104,7 @@ public:
 
 	  This function returns frees a previously retrieved list (GetSearchPath()).
 
-	 \param the list to free
+	 @param list the list to free
 	*/
 	static void FreeList(void* list);
 
@@ -264,7 +264,8 @@ public:
 	
 	/**
 	Removes the surface from the cache
-	@param bDeleteIfExists delete (free) the surface if it isn't in the cache
+	@param surface pointer to the SDL_Surface to remove
+	@param bDeleteIfNotExists delete (free) the surface if it isn't in the cache
 	@return pointer to the SDL_Surface to remove
 	*/
 	static bool UnloadSurface(SDL_Surface* surface, bool bDeleteIfNotExists = true);

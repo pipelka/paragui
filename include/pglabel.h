@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:57 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pglabel.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
@@ -62,10 +62,10 @@ public:
 	~PG_Label();
 
 	/** */
-	void LoadThemeStyle(const char* style);
+	void LoadThemeStyle(const char* widgettype);
 
 	/** */
-	void LoadThemeStyle(const char* widgettype, const char* object);
+	void LoadThemeStyle(const char* widgettype, const char* objectname);
 
 	/** Sets text alignment */
 	void SetAlignment(TextAlign a);
@@ -93,7 +93,7 @@ protected:
 	void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
 
 	/** */
-	void eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst);
+	void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);
 
 	SDL_Surface* my_srfIcon;
 

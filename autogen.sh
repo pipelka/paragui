@@ -54,5 +54,17 @@ echo "Checking for \"unix2dos\" ..."
     echo "(Please don't distribute unconverted VisualC projects!)"
 }
 
+echo "Checking for \"doxygen\" ..."
+( which doxygen >/dev/null 2>&1 ) || {
+    echo "***WARNING** doxygen not found!"
+    echo "You will be unable to generate the API documentation"
+}
+
+echo "Checking for \"dot\" ..."
+( which dot >/dev/null 2>&1 ) || {
+    echo "***WARNING** graphviz not found!"
+    echo "Class diagrams will be disabled in your API documentation"
+}
+
 echo
 echo "Please run ./configure now."

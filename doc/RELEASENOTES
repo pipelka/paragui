@@ -10,7 +10,8 @@ ROADMAP LEADING TO 1.2
 1.1.5 - signals handled by libsigc++
 1.1.6 - API cleanup (all binary incompatible changes allowed)
 1.1.7 - Performance tuning / more API cleanups
-1.1.8 - unify constructors (e.g.: PG_Widget(PG_Widget* parent, const PG_Rect& rect)) - needed for factory
+1.1.8 - unify constructors (e.g.: PG_Widget(PG_Widget* parent, const PG_Rect& rect))
+        needed for factory
 1.1.9 - merge object factory from paragui2
 1.1.10 - merge and rework XML layoutloader
 1.1.? - i'll consult my magic orb
@@ -69,7 +70,8 @@ Whats new in ParaGUI 1.1.6 ?
   updated layout loader to handle new background modes
   changing the background results in redrawing the screen properly
   fixed disabling background
-  PG_Draw::CreateRGBSurface() will check for invalid surface first before doing any work on it
+  PG_Draw::CreateRGBSurface() will check for invalid surface first before doing 
+  any work on it
   replaced some Redraw()s with Update()s
   disabling PG_LineEdit removes edit cursor
   fixed handling keys like '@' in PG_LineEdit

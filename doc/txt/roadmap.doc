@@ -2,9 +2,12 @@
 
 \page	roadmap		The current roadmap (TODO's and plans)
 
-The following things need your help:
+\section roadmap_sect1 Development roadmap
 
-\li Documentation
-\li Tutorials
+\include RELEASENOTES
+
+\section roadmap_sect2 Outstanding issues
+
+\include TODO
 
 */

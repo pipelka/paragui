@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/02/21 10:11:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgprogressbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -69,11 +69,8 @@ public:
 protected:
 
 	/** */
-	void eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst);
+	void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);
 
-	/**
-	void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
-	*/
 private:
 
 	PG_ProgressBar(const PG_ProgressBar&);
@@ -89,4 +86,3 @@ private:
 };
 
 #endif // PG_PROGRESSBAR_H
-
