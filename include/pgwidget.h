@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/29 09:22:34 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.20 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.21 $
     Status:           $State: Exp $
 */
 
@@ -599,7 +599,7 @@ public:
 	@param rect rectangle where the text should appear
 	@param text pointer to text string
 	*/
-	void DrawText(const PG_Rect& rect, const std::string& text);
+	void DrawText(const PG_Rect& rect, const PG_String& text);
 
 	/**
 	Render text inside the widget
@@ -607,7 +607,7 @@ public:
 	@param y y-position where the text should appear
 	@param text pointer to text string
 	*/
-	void DrawText(int x, int y, const std::string& text);
+	void DrawText(int x, int y, const PG_String& text);
 
 	/**
 	Render text inside the widget and clip to a given clipping rectangle
@@ -616,7 +616,7 @@ public:
 	@param text pointer to text string
 	@param cliprect text bounding rectangle
 	*/
-	void DrawText(int x, int y, const std::string& text, const PG_Rect& cliprect);
+	void DrawText(int x, int y, const PG_String& text, const PG_Rect& cliprect);
 
 	/**
 	Render text inside the widget and set the font color
@@ -624,7 +624,7 @@ public:
 	@param text pointer to text string
 	@param c color of the rendered text
 	*/
-	void DrawText(const PG_Rect& rect, const std::string& text, const PG_Color& c);
+	void DrawText(const PG_Rect& rect, const PG_String& text, const PG_Color& c);
 
 	/**
 	Render text inside the widget and set the font color
@@ -633,7 +633,7 @@ public:
 	@param text pointer to text string
 	@param c color of the rendered text
 	*/
-	void DrawText(int x, int y, const std::string& text, const PG_Color& c);
+	void DrawText(int x, int y, const PG_String& text, const PG_Color& c);
 
 	/**  */
 	void DrawBorder(const PG_Rect& r, int size, bool up = true);

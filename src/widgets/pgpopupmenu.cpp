@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/11/17 21:34:21 $
+   Update Date:      $Date: 2004/11/30 17:48:57 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.8 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.9 $
    Status:           $State: Exp $
  */
 
@@ -148,7 +148,7 @@ bool PG_PopupMenu::MenuItem::renderSurface(SDL_Surface *canvas, SDL_Surface **te
 	blitRect.h = h;
 
 	myParent->SetFontColor(*tcol);
-	PG_FontEngine::RenderText(canvas, blitRect, blitRect.x, blitRect.y+myParent->GetFontAscender(), myCaption.c_str(), myParent->GetFont());
+	PG_FontEngine::RenderText(canvas, blitRect, blitRect.x, blitRect.y+myParent->GetFontAscender(), myCaption, myParent->GetFont());
 
 	//SDL_BlitSurface(*text, NULL, canvas, &blitRect);
 

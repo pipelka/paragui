@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/11/17 21:34:21 $
+   Update Date:      $Date: 2004/11/30 17:48:57 $
    Source File:      $Source: /sources/paragui/paragui/include/pgrichedit.h,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.9 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.10 $
    Status:           $State: Exp $
 */
 
@@ -108,7 +108,7 @@ protected:
 	bool my_AutoHorizontalResize;
 
 	struct RichWordDescription {
-		std::string my_Word;
+		PG_String my_Word;
 		Uint32 my_Width;
 		Uint32 my_EndSpaceWidth;
 		Uint32 my_WidthAfterFormating;
@@ -190,8 +190,8 @@ private:
 	size_t CompleteLine(RichLineArray::iterator actualLine, Sint32 &lineTop, size_t searchFrom, Uint32 &lineSpace, Uint32 &lineAscent, bool changeAlign);
 	Sint32 CompleteLinePart(size_t searchFrom, Sint32 lineTop, Uint32 &lineSpace, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, bool &breakLine, Uint32 &lineAscent, bool changeAlign);
 	void GetWidgetsOnLine(Sint32 lineTop, Uint32 lineHeight, WidgetMap &widgetsOnLine, bool clear);
-	bool ProcessLongLine(std::string &word, size_t &searchFrom, Uint32 oldFind, Sint32 lineTop, Uint32 &lineSpace, bool normalLine, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, Uint32 &lineAscent);
-	size_t GetWord(size_t searchFrom, std::string *word, Uint32 *endMark);
+	bool ProcessLongLine(PG_String &word, size_t &searchFrom, Uint32 oldFind, Sint32 lineTop, Uint32 &lineSpace, bool normalLine, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, Uint32 &lineAscent);
+	size_t GetWord(size_t searchFrom, PG_String *word, Uint32 *endMark);
 	void AlignLinePart(RichLinePartArray::iterator actualLinePart, Uint32 align, bool breakLine);
 	void AlignLine(RichLineArray::iterator actualLine, WidgetMap &widgetsOnLine, Uint32 align);
 	void ParseWords();

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcolumnitem.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
     Status:           $State: Exp $
 */
 
@@ -86,7 +86,7 @@ public:
 	@param column index of the column.
 	@return text of the column.
 	*/
-	const std::string& GetColumnText(Uint32 column);
+	const PG_String& GetColumnText(Uint32 column);
 
 	/*
 	Return the number of columns in this item.
@@ -104,7 +104,7 @@ private:
 	Uint32 my_columncount;
 
 	std::vector <Uint32> my_columnwidth;
-	std::vector <std::string> my_columntext;
+	std::vector <PG_String> my_columntext;
 };
 
 #endif	// PG_COLUMNITEM_H

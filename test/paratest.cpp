@@ -251,7 +251,7 @@ bool TestWindow::handleButtonClick(PG_Button* button) {
 
 bool handle_menu_click(PG_PopupMenu::MenuItem* item, PG_Pointer clientdata) {
 	std::cout << "menu item '" << item->getId() << "' (\""
-		<< item->getCaption() << "\") clicked" << std::endl;
+		<< item->getCaption().c_str() << "\") clicked" << std::endl;
 
 	switch (item->getId()) {
 		case 5:

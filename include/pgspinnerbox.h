@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -93,7 +93,7 @@ public:
 	int GetMaxValue() {
 		return( m_iMaxValue );
 	}
-	const std::string& GetMask() {
+	const PG_String& GetMask() {
 		return( m_sMask );
 	}
 
@@ -112,7 +112,7 @@ private:
 	int m_iMinValue;
 	int m_iMaxValue;
 	int m_iValue;
-	std::string m_sMask;
+	PG_String m_sMask;
 	void SetTextValue();
 	void AdjustSize();
 };

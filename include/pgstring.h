@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/26 08:05:22 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgstring.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.1.2.2 $
     Status:           $State: Exp $
 */
 
@@ -38,7 +38,7 @@
 #define PG_String YString
 #else
 #include <string>
-#define PG_Char char
+#define PG_Char unsigned char
 #define PG_String std::string
 #endif
 

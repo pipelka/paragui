@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.10 $
     Status:           $State: Exp $
 */
 
@@ -37,7 +37,7 @@
 #include "pgdatacontainer.h"
 #include "pgcolor.h"
 #include "pgrect.h"
-#include <string>
+#include "pgstring.h"
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -192,13 +192,13 @@ public:
 	@param ParamIn		pointer to font
 	@return true on success
 	*/
-	static bool RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const std::string& Text, PG_Font* ParamIn);
+	static bool RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const PG_String& Text, PG_Font* ParamIn);
 	
-	static bool RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const std::string& Text, PG_Font* ParamIn);
+	static bool RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const PG_String& Text, PG_Font* ParamIn);
 
 	/**
 	*/
-	static bool GetTextSize(const std::string& Text, PG_Font* ParamIn, Uint16 *Width = NULL, Uint16 *Height = NULL, int *BaselineY = NULL, int *FontLineSkip = NULL, Uint16 *FontHeight = NULL, int *Ascent = NULL, int *Descent = NULL);
+	static bool GetTextSize(const PG_String& Text, PG_Font* ParamIn, Uint16 *Width = NULL, Uint16 *Height = NULL, int *BaselineY = NULL, int *FontLineSkip = NULL, Uint16 *FontHeight = NULL, int *Ascent = NULL, int *Descent = NULL);
 
 protected:
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmaskedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.2 $
+    CVS/RCS Revision: $Revision: 1.3.8.3 $
     Status:           $State: Exp $
 */
 
@@ -63,7 +63,7 @@ void PG_MaskEdit::SetMask(const std::string& mask) {
 	PG_LineEdit::SetText(my_displaymask);
 }
 
-const std::string& PG_MaskEdit::GetMask() {
+const PG_String& PG_MaskEdit::GetMask() {
 	return my_mask;
 }
 

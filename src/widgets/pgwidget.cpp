@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/11/29 09:22:34 $
+   Update Date:      $Date: 2004/11/30 17:48:57 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.23 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.24 $
    Status:           $State: Exp $
  */
 
@@ -1321,7 +1321,8 @@ void PG_Widget::SetSizeByText(int Width, int Height, const std::string& Text) {
 		}
 	}
 	else {
-		if (!PG_FontEngine::GetTextSize(Text, _mid->font, &w, &h, &baselineY)) {
+		PG_String ytext = Text;
+		if (!PG_FontEngine::GetTextSize(ytext, _mid->font, &w, &h, &baselineY)) {
 			return;
 		}
 	}
@@ -1368,7 +1369,8 @@ void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const std::string& text) {
 }
 
 void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const std::string& text, PG_Font* font) {
-	PG_FontEngine::GetTextSize(text, font, &w);
+	PG_String ytext = text;
+	PG_FontEngine::GetTextSize(ytext, font, &w);
 	h = font->GetFontHeight();
 }
 
@@ -1387,7 +1389,7 @@ int PG_Widget::GetTextHeight() {
 	return _mid->font->GetFontAscender();
 }
 
-void PG_Widget::DrawText(const PG_Rect& rect, const std::string& text) {
+void PG_Widget::DrawText(const PG_Rect& rect, const PG_String& text) {
 	if(my_srfObject == NULL) {
 		PG_FontEngine::RenderText(PG_Application::GetScreen(), _mid->rectClip, my_xpos+ rect.x, my_ypos + rect.y + GetFontAscender(), text, _mid->font);
 	}
@@ -1396,11 +1398,11 @@ void PG_Widget::DrawText(const PG_Rect& rect, const std::string& text) {
 	}
 }
 
-void PG_Widget::DrawText(int x, int y, const std::string& text) {
+void PG_Widget::DrawText(int x, int y, const PG_String& text) {
 	DrawText(PG_Rect(x,y,w-x,h-y), text);
 }
 
-void PG_Widget::DrawText(int x, int y, const std::string& text, const PG_Rect& cliprect) {
+void PG_Widget::DrawText(int x, int y, const PG_String& text, const PG_Rect& cliprect) {
 	if(my_srfObject == NULL) {
 		PG_Rect rect = cliprect;
 		rect.x += my_xpos;
@@ -1414,12 +1416,12 @@ void PG_Widget::DrawText(int x, int y, const std::string& text, const PG_Rect& c
 	}
 }
 
-void PG_Widget::DrawText(const PG_Rect& rect, const std::string& text, const PG_Color& c) {
+void PG_Widget::DrawText(const PG_Rect& rect, const PG_String& text, const PG_Color& c) {
 	SetFontColor(c);
 	DrawText(rect, text);
 }
 
-void PG_Widget::DrawText(int x, int y, const std::string& text, const PG_Color& c) {
+void PG_Widget::DrawText(int x, int y, const PG_String& text, const PG_Color& c) {
 	DrawText(PG_Rect(x,y,w,h), text, c);
 }
 

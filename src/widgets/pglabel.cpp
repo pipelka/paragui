@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
     Status:           $State: Exp $
 */
 
@@ -180,7 +180,8 @@ void PG_Label::SetSizeByText(int Width, int Height, const std::string& Text) {
 		}
 	}
 	else {
-		if (!PG_FontEngine::GetTextSize(Text, GetFont(), &w, &h, &baselineY)) {
+		PG_String ytext = Text;
+		if (!PG_FontEngine::GetTextSize(ytext, GetFont(), &w, &h, &baselineY)) {
 			return;
 		}
 	}

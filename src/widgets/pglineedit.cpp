@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.14 $
     Status:           $State: Exp $
 */
 
@@ -104,17 +104,17 @@ void PG_LineEdit::DrawTextCursor() {
 
 Uint16 PG_LineEdit::GetCursorXPos() {
 	Uint16 w;
-	PG_String drawtext(GetDrawText());
 
 	int newpos = my_cursorPosition - my_offsetX;
 
 	if(newpos == 0)
 		return 0;
 
-	if(drawtext[0] == 0)
+	PG_String drawtext = GetDrawText().substr(0, newpos);
+	if(drawtext.empty())
 		return 0;
 
-	PG_FontEngine::GetTextSize(PG_String(drawtext, 0, newpos), GetFont(), &w);
+	PG_FontEngine::GetTextSize(drawtext, GetFont(), &w);
 
 	return w;
 }

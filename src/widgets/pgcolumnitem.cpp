@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 16:05:50 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcolumnitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
     Status:           $State: Exp $
 */
 
@@ -31,14 +31,15 @@
 PG_ColumnItem::PG_ColumnItem(PG_Widget* parent, Uint32 columns, Uint16 height, void* userdata, const std::string& style) : PG_ListBoxItem(parent, height, PG_NULLSTR, NULL, NULL, style) {
 	SetUserData(userdata);
 	my_columncount = columns;
-
+	static PG_String YEmpty;
+	
 	my_columnwidth.reserve(columns);
 	my_columntext.reserve(columns);
 
 	// fill our vectors with the default values
 	for(Uint32 i=0; i<my_columncount; i++) {
 		my_columnwidth.push_back(Width()/my_columncount);
-		my_columntext.push_back(PG_NULLSTR);
+		my_columntext.push_back(YEmpty);
 	}
 
 }
@@ -94,7 +95,7 @@ int PG_ColumnItem::GetColumnWidth(Uint32 column) {
 	return my_columnwidth[column];
 }
 
-const std::string& PG_ColumnItem::GetColumnText(Uint32 column) {
+const PG_String& PG_ColumnItem::GetColumnText(Uint32 column) {
 	return my_columntext[column];
 }
 

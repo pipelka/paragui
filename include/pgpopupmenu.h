@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -32,6 +32,7 @@
 
 #include "pgthemewidget.h"
 #include "pgsignals.h"
+#include "pgstring.h"
 
 #include <string>
 #include <list>
@@ -137,7 +138,7 @@ public:
 		inline int getId() const;
 		inline PG_PopupMenu *getSubMenu() const;
 	
-		inline const std::string& getCaption() const;
+		inline const PG_String& getCaption() const;
 	
 		inline operator PG_Point const&() const;
 	
@@ -148,7 +149,7 @@ public:
 	
 	protected: // data
 		unsigned      myFlags;
-		std::string   myCaption;
+		PG_String     myCaption;
 		PG_PopupMenu *myParent;
 	
 		PG_PopupMenu *mySubMenu;
@@ -411,7 +412,7 @@ inline PG_PopupMenu *PG_PopupMenu::MenuItem::getSubMenu() const {
 	return mySubMenu;
 }
 
-inline const std::string& PG_PopupMenu::MenuItem::getCaption() const {
+inline const PG_String& PG_PopupMenu::MenuItem::getCaption() const {
 	return myCaption;
 }
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:23 $
+    Update Date:      $Date: 2004/11/30 17:48:58 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -505,11 +505,11 @@ bool PG_FontEngine::BlitFTBitmap(SDL_Surface *Surface, FT_Bitmap *Bitmap, int Po
 #endif
 
 
-bool PG_FontEngine::RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const std::string& Text, PG_Font *ParamIn) {
+bool PG_FontEngine::RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const PG_String& Text, PG_Font *ParamIn) {
 	return RenderText(Surface, (PG_Rect*)&ClipRect, BaseLineX, BaseLineY, Text, ParamIn);
 }
 
-bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const std::string& Text, PG_Font* font) {
+bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const PG_String& Text, PG_Font* font) {
 	static bool bRecursion = false;
 	int OriBaseX = BaseLineX;
 	FT_UInt previous = 0;
@@ -528,32 +528,24 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 		SDL_LockSurface(Surface);
 	}		
 	
-	PG_String sText(Text);
-
-#ifndef ENABLE_UNICODE
-	unsigned char c;
-#else
-	YChar c;
-#endif
+	YChar c0;
 
 	//Go thu text and draw characters
-	for (PG_String::iterator c0 = sText.begin(); c0 != sText.end(); c0++) {
+	int len = Text.size();
+	for(int i = 0; i < len; i++) {
 		int glyph_index;
 		PG_GlyphCacheItem* Glyph;
 		int OldBaseLineX = BaseLineX;
 
-#ifndef ENABLE_UNICODE
-		c = (unsigned char)(*c0);
-#else
-		c = (*c0);
-#endif
+		c0 = Text[i];
 
 		//Skip drawing we go non-printable char
-		if (c<32)
+		if (c0 < 32) {
 			continue;
+		}
 
 		//Get glyph index
-		glyph_index = FT_Get_Char_Index(Face, c);
+		glyph_index = FT_Get_Char_Index(Face, c0);
 
 		//Make space between characters == kerneling
 		if ( FaceCache->Use_Kerning && previous && glyph_index ) {
@@ -566,7 +558,7 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 		Glyph = GetGlyph(font, glyph_index);
 
 		//Blit glyph bitmap into the surface
-		if (c != ' ') {
+		if (c0 != ' ') {
 			BlitFTBitmap(Surface, &Glyph->Bitmap, BaseLineX + Glyph->Bitmap_left, BaseLineY - Glyph->Bitmap_top, font, ClipRect);
 		}
 
@@ -607,7 +599,7 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 	return true;
 }
 
-bool PG_FontEngine::GetTextSize(const std::string& Text, PG_Font* font, Uint16 *Width, Uint16 *Height, int *BaselineY, int *FontLineSkip, Uint16 *FontHeight, int *Ascent, int *Descent) {
+bool PG_FontEngine::GetTextSize(const PG_String& Text, PG_Font* font, Uint16 *Width, Uint16 *Height, int *BaselineY, int *FontLineSkip, Uint16 *FontHeight, int *Ascent, int *Descent) {
 	FT_UInt			previous = 0;
 	int				BaseLineX = 0;
 	int				preBaseLineY = 0;
@@ -639,32 +631,24 @@ bool PG_FontEngine::GetTextSize(const std::string& Text, PG_Font* font, Uint16 *
 			preDescent = FaceCache->Descent;
 	}
 
-	PG_String sText(Text);
-
 	//Go thu text and get sizes of the characters
 
-#ifndef ENABLE_UNICODE
-	unsigned char c;
-#else
-	YChar c;
-#endif
+	YChar c0;
 
-	for (PG_String::iterator c0 = sText.begin(); c0 !=sText.end(); c0++) {
+	int len = Text.size();
+	for(int i = 0; i < len; i++) {
 		int glyph_index;
 		PG_GlyphCacheItem	*Glyph;
 
-#ifndef ENABLE_UNICODE
-		c = (unsigned char)(*c0);
-#else
-		c = (*c0);
-#endif
+		c0 = Text[i];
 
 		//Skip non-printable char
-		if (c<32)
+		if (c0 < 32) {
 			continue;
+		}
 
 		//Get glyph index
-		glyph_index = FT_Get_Char_Index(Face, c);
+		glyph_index = FT_Get_Char_Index(Face, c0);
 
 		//Make space between characters == kerneling
 		if ( FaceCache->Use_Kerning && previous && glyph_index ) {

@@ -79,14 +79,14 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 			
 			// draw the initial unhighlighted part 
 			if (pos < start) { 
-				string s = my_textdata[i].substr(0, start-pos); 
+				PG_String s = my_textdata[i].substr(0, start-pos); 
 				PG_Widget::DrawText(x1, _y, s); 
 				PG_FontEngine::GetTextSize(s, GetFont(), &w); 
 				x1 += w; 
 				offset = start-pos; 
 			}
 
-			string middlepart = my_textdata[i].c_str() + offset;
+			PG_String middlepart = my_textdata[i].c_str() + offset;
 			// check if the end part is unhighlighted
 			if (endpos > end) {
 				middlepart = middlepart.substr(0, middlepart.size() - (endpos-end));
@@ -207,7 +207,7 @@ void PG_MultiLineEdit::GetCursorTextPosFromScreen(int x, int y, unsigned int& ho
 	unsigned int min_xpos = 0; 
 	
 	// loop through to find the closest x position 
-	string temp;
+	PG_String temp;
 	for (Uint16 i = 0; i <= my_textdata[ypos].size(); ++i) {  
 		// get the string up to that point 		
 		temp = my_textdata[ypos].substr(0, i);
@@ -277,7 +277,7 @@ void PG_MultiLineEdit::GetCursorPos(int& x, int& y) {
 	GetCursorTextPos(currentPos, line); 
 
 	// now get the x,y position 
-	string temp = my_textdata[line].substr(0, currentPos);
+	PG_String temp = my_textdata[line].substr(0, currentPos);
 
 	Uint16 w; 
 	PG_FontEngine::GetTextSize(temp, GetFont(), &w); 

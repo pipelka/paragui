@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2004/11/30 17:48:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmaskedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -55,7 +55,7 @@ public:
 	Get current input mask
 	@return						input mask
 	*/
-	const std::string& GetMask();
+	const PG_String& GetMask();
 
 	/**
 	Set the "spacer" character. This char is displayed instead of "#"
