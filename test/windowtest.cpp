@@ -43,7 +43,7 @@ int main(int argc,char *argv[])
 
 	app=new PG_Application();
 	app->SetEmergencyQuit(true);
-	app->LoadTheme("default");
+	app->LoadTheme("simple");
 	app->InitScreen(800,600,0,SDL_SWSURFACE);
 
 	mywidget=new CMyWidget(NULL,PG_Rect(200,200,350,250));
