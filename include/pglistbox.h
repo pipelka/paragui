@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:03 $
+    Update Date:      $Date: 2004/05/02 20:54:45 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
     Status:           $State: Exp $
 */
 
@@ -38,6 +38,8 @@ class PG_ListBoxBaseItem;
 	@author Alexander Pipelka
 	
 	@short A scrollable box that can hold any number of text items
+
+	@image html listbox.png "listbox screenshot"
 */
 
 class DECLSPEC PG_ListBox : public PG_WidgetList {
