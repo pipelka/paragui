@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = 1.4
 
-SUBDIRS = include src data bindings
+SUBDIRS = include src data
 
 DIST_SUBDIRS = $(SUBDIRS) test
 

@@ -1,3 +1,0 @@
-SUBDIRS= @BINDINGS@ .
-
-DIST_SUBDIRS = python
