@@ -86,6 +86,7 @@ CLEAN :
 	-@erase "$(INTDIR)\pgwindow.obj"
 	-@erase "$(INTDIR)\physfs.obj"
 	-@erase "$(INTDIR)\physfs_byteorder.obj"
+	-@erase "$(INTDIR)\physfsrwops.obj"
 	-@erase "$(INTDIR)\rotozoom.obj"
 	-@erase "$(INTDIR)\setpixel.obj"
 	-@erase "$(INTDIR)\stretch.obj"
@@ -94,7 +95,11 @@ CLEAN :
 	-@erase "$(INTDIR)\themeloader.obj"
 	-@erase "$(INTDIR)\unzip.obj"
 	-@erase "$(INTDIR)\vc60.idb"
+	-@erase "$(INTDIR)\Version.res"
 	-@erase "$(INTDIR)\win32.obj"
+	-@erase "$(INTDIR)\xmlparse.obj"
+	-@erase "$(INTDIR)\xmlrole.obj"
+	-@erase "$(INTDIR)\xmltok.obj"
 	-@erase "$(INTDIR)\zip.obj"
 	-@erase "..\..\bin\paragui.dll"
 	-@erase "..\..\lib\paragui.exp"
@@ -104,7 +109,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /vmg /GX /O2 /I "../../src/physfs" /I "../../src/themes" /I "../../src/core" /I "../../include" /D "ZLIB_DLL" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_PROJ=/nologo /G5 /MD /W3 /vmg /GX /O1 /I "../../src/physfs" /I "../../src/themes" /I "../../src/core" /I "../../include" /D "ZLIB_DLL" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -139,12 +144,13 @@ CPP_PROJ=/nologo /MD /W3 /vmg /GX /O2 /I "../../src/physfs" /I "../../src/themes
 MTL=midl.exe
 MTL_PROJ=/nologo /D "NDEBUG" /mktyplib203 /win32 
 RSC=rc.exe
+RSC_PROJ=/l 0x405 /fo"$(INTDIR)\Version.res" /d "NDEBUG" 
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\paragui_dynamic.bsc" 
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /incremental:no /pdb:"$(OUTDIR)\paragui.pdb" /machine:I386 /out:"../../bin/paragui.dll" /implib:"../../lib/paragui.lib" /libpath:"../../lib" 
+LINK32_FLAGS=advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib /nologo /dll /incremental:no /pdb:"$(OUTDIR)\paragui.pdb" /machine:I386 /out:"../../bin/paragui.dll" /implib:"../../lib/paragui.lib" /libpath:"../../lib" 
 LINK32_OBJS= \
 	"$(INTDIR)\theme_priv.obj" \
 	"$(INTDIR)\themeloader.obj" \
@@ -174,6 +180,8 @@ LINK32_OBJS= \
 	"$(INTDIR)\pgmsgmap.obj" \
 	"$(INTDIR)\pgnavigator.obj" \
 	"$(INTDIR)\pgsurfacecache.obj" \
+	"$(INTDIR)\pgtimerobject.obj" \
+	"$(INTDIR)\physfsrwops.obj" \
 	"$(INTDIR)\pgfont.obj" \
 	"$(INTDIR)\pgfont_impl.obj" \
 	"$(INTDIR)\pgbutton.obj" \
@@ -205,8 +213,11 @@ LINK32_OBJS= \
 	"$(INTDIR)\pgwidgetlist.obj" \
 	"$(INTDIR)\pgwidgetlistex.obj" \
 	"$(INTDIR)\pgwindow.obj" \
+	"$(INTDIR)\xmlparse.obj" \
+	"$(INTDIR)\xmlrole.obj" \
+	"$(INTDIR)\xmltok.obj" \
 	"$(INTDIR)\paragui.obj" \
-	"$(INTDIR)\pgtimerobject.obj"
+	"$(INTDIR)\Version.res"
 
 "..\..\bin\paragui.dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -274,6 +285,7 @@ CLEAN :
 	-@erase "$(INTDIR)\pgwindow.obj"
 	-@erase "$(INTDIR)\physfs.obj"
 	-@erase "$(INTDIR)\physfs_byteorder.obj"
+	-@erase "$(INTDIR)\physfsrwops.obj"
 	-@erase "$(INTDIR)\rotozoom.obj"
 	-@erase "$(INTDIR)\setpixel.obj"
 	-@erase "$(INTDIR)\stretch.obj"
@@ -283,7 +295,11 @@ CLEAN :
 	-@erase "$(INTDIR)\unzip.obj"
 	-@erase "$(INTDIR)\vc60.idb"
 	-@erase "$(INTDIR)\vc60.pdb"
+	-@erase "$(INTDIR)\Version.res"
 	-@erase "$(INTDIR)\win32.obj"
+	-@erase "$(INTDIR)\xmlparse.obj"
+	-@erase "$(INTDIR)\xmlrole.obj"
+	-@erase "$(INTDIR)\xmltok.obj"
 	-@erase "$(INTDIR)\zip.obj"
 	-@erase "$(OUTDIR)\paraguid.pdb"
 	-@erase "..\..\bin\paraguid.dll"
@@ -330,12 +346,13 @@ CPP_PROJ=/nologo /MD /W3 /Gm /vmg /GX /ZI /Od /I "../../src/physfs" /I "../../sr
 MTL=midl.exe
 MTL_PROJ=/nologo /D "_DEBUG" /mktyplib203 /win32 
 RSC=rc.exe
+RSC_PROJ=/l 0x405 /fo"$(INTDIR)\Version.res" /d "_DEBUG" 
 BSC32=bscmake.exe
 BSC32_FLAGS=/nologo /o"$(OUTDIR)\paragui_dynamic.bsc" 
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /incremental:yes /pdb:"$(OUTDIR)\paraguid.pdb" /debug /machine:I386 /out:"../../bin/paraguid.dll" /implib:"../../lib/paraguid.lib" /pdbtype:sept /libpath:"../../lib" 
+LINK32_FLAGS=advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib /nologo /dll /incremental:yes /pdb:"$(OUTDIR)\paraguid.pdb" /debug /machine:I386 /out:"../../bin/paraguid.dll" /implib:"../../lib/paraguid.lib" /pdbtype:sept /libpath:"../../lib" 
 LINK32_OBJS= \
 	"$(INTDIR)\theme_priv.obj" \
 	"$(INTDIR)\themeloader.obj" \
@@ -365,6 +382,8 @@ LINK32_OBJS= \
 	"$(INTDIR)\pgmsgmap.obj" \
 	"$(INTDIR)\pgnavigator.obj" \
 	"$(INTDIR)\pgsurfacecache.obj" \
+	"$(INTDIR)\pgtimerobject.obj" \
+	"$(INTDIR)\physfsrwops.obj" \
 	"$(INTDIR)\pgfont.obj" \
 	"$(INTDIR)\pgfont_impl.obj" \
 	"$(INTDIR)\pgbutton.obj" \
@@ -396,8 +415,11 @@ LINK32_OBJS= \
 	"$(INTDIR)\pgwidgetlist.obj" \
 	"$(INTDIR)\pgwidgetlistex.obj" \
 	"$(INTDIR)\pgwindow.obj" \
+	"$(INTDIR)\xmlparse.obj" \
+	"$(INTDIR)\xmlrole.obj" \
+	"$(INTDIR)\xmltok.obj" \
 	"$(INTDIR)\paragui.obj" \
-	"$(INTDIR)\pgtimerobject.obj"
+	"$(INTDIR)\Version.res"
 
 "..\..\bin\paraguid.dll" : "$(OUTDIR)" $(DEF_FILE) $(LINK32_OBJS)
     $(LINK32) @<<
@@ -591,6 +613,12 @@ SOURCE=..\..\src\core\pgtimerobject.cpp
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+SOURCE=..\..\src\core\physfsrwops.c
+
+"$(INTDIR)\physfsrwops.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
 SOURCE=..\..\src\font\pgfont.cpp
 
 "$(INTDIR)\pgfont.obj" : $(SOURCE) "$(INTDIR)"
@@ -777,10 +805,34 @@ SOURCE=..\..\src\widgets\pgwindow.cpp
 	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 
+SOURCE=..\..\src\expat\xmlparse.c
+
+"$(INTDIR)\xmlparse.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\expat\xmlrole.c
+
+"$(INTDIR)\xmlrole.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=..\..\src\expat\xmltok.c
+
+"$(INTDIR)\xmltok.obj" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
 SOURCE=..\..\src\paragui.cpp
 
 "$(INTDIR)\paragui.obj" : $(SOURCE) "$(INTDIR)"
 	$(CPP) $(CPP_PROJ) $(SOURCE)
+
+
+SOURCE=.\Version.rc
+
+"$(INTDIR)\Version.res" : $(SOURCE) "$(INTDIR)"
+	$(RSC) $(RSC_PROJ) $(SOURCE)
 
 
 

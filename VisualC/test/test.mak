@@ -53,7 +53,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MD /W3 /vmg /GX /O2 /I "../../src" /I "../../include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"$(INTDIR)\test.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
+CPP_PROJ=/nologo /G5 /MD /W3 /vmg /GX /O2 /I "../../src" /I "../../include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp"$(INTDIR)\test.pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /FD /c 
 
 .c{$(INTDIR)}.obj::
    $(CPP) @<<
@@ -174,7 +174,7 @@ BSC32_FLAGS=/nologo /o"$(OUTDIR)\test.bsc"
 BSC32_SBRS= \
 	
 LINK32=link.exe
-LINK32_FLAGS=sdld.lib paraguid.lib sdlmain.lib /nologo /subsystem:windows /incremental:yes /pdb:"$(OUTDIR)\testd.pdb" /debug /machine:I386 /out:"../../bin/testd.exe" /pdbtype:sept /libpath:"../../lib" 
+LINK32_FLAGS=sdl.lib paraguid.lib sdlmain.lib /nologo /subsystem:windows /incremental:yes /pdb:"$(OUTDIR)\testd.pdb" /debug /machine:I386 /out:"../../bin/testd.exe" /pdbtype:sept /libpath:"../../lib" 
 LINK32_OBJS= \
 	"$(INTDIR)\paratest.obj" \
 	"..\..\lib\paraguid.lib"

@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_DYNAMIC_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /G5 /MD /W3 /vmg /GX /O2 /I "../../src/physfs" /I "../../src/themes" /I "../../src/core" /I "../../include" /D "ZLIB_DLL" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /FD /c
+# ADD CPP /nologo /G5 /MD /W3 /vmg /GX /O1 /I "../../src/physfs" /I "../../src/themes" /I "../../src/core" /I "../../include" /D "ZLIB_DLL" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "PARAGUI_EXPORTS" /D "PHYSFS_SUPPORTS_ZIP" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x405 /d "NDEBUG"
@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /machine:I386
-# ADD LINK32 advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /machine:I386 /out:"../../bin/paragui.dll" /implib:"../../lib/paragui.lib" /libpath:"../../lib"
+# ADD LINK32 advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib /nologo /dll /machine:I386 /out:"../../bin/paragui.dll" /implib:"../../lib/paragui.lib" /libpath:"../../lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "paragui_dynamic - Win32 Debug"
@@ -81,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib expat.lib /nologo /dll /debug /machine:I386 /out:"../../bin/paraguid.dll" /implib:"../../lib/paraguid.lib" /pdbtype:sept /libpath:"../../lib"
+# ADD LINK32 advapi32.lib sdl.lib freetype.lib sdl_image.lib zlib.lib /nologo /dll /debug /machine:I386 /out:"../../bin/paraguid.dll" /implib:"../../lib/paraguid.lib" /pdbtype:sept /libpath:"../../lib"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -383,6 +383,74 @@ SOURCE=..\..\src\widgets\pgwidgetlistex.cpp
 # Begin Source File
 
 SOURCE=..\..\src\widgets\pgwindow.cpp
+# End Source File
+# End Group
+# Begin Group "expat"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=..\..\src\expat\ascii.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\asciitab.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\expat.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\iasciitab.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\latin1tab.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\nametab.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\utf8tab.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\xmldef.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\xmlparse.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\xmlparse.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\xmlrole.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\xmlrole.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\xmltchar.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\xmltok.c
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\xmltok.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\expat\xmltok_impl.h
 # End Source File
 # End Group
 # Begin Source File
