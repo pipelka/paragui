@@ -168,15 +168,15 @@ SOURCE=..\..\src\core\pgapplication.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\core\pgcolor.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\core\pgcolors.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=..\..\src\core\pgdatacontainer.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\core\pgeventobject.cpp
 # End Source File
 # Begin Source File
 
@@ -196,11 +196,15 @@ SOURCE=..\..\src\core\pgmain.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\core\pgmsgmap.cpp
+SOURCE=..\..\src\core\pgnavigator.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\core\pgnavigator.cpp
+SOURCE=..\..\src\core\pgpoint.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\core\pgsigconvert.cpp
 # End Source File
 # Begin Source File
 
@@ -461,6 +465,10 @@ SOURCE=..\..\include\pgbutton.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\pgcolor.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\pgcolors.h
 # End Source File
 # Begin Source File
@@ -478,10 +486,6 @@ SOURCE=..\..\include\pgdraw.h
 # Begin Source File
 
 SOURCE=..\..\include\pgdropdown.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\pgeventobject.h
 # End Source File
 # Begin Source File
 
@@ -553,6 +557,10 @@ SOURCE=..\..\include\pgnavigator.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\include\pgpoint.h
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\include\pgpopupmenu.h
 # End Source File
 # Begin Source File
@@ -578,6 +586,10 @@ SOURCE=..\..\include\pgrichedit.h
 # Begin Source File
 
 SOURCE=..\..\include\pgscrollbar.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\pgsigconvert.h
 # End Source File
 # Begin Source File
 
