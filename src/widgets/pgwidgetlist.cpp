@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:41 $
+    Update Date:      $Date: 2003/01/21 15:54:36 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -439,6 +439,21 @@ PG_Widget* PG_WidgetList::FindWidget(int index) {
 	return my_widgetList[index];
 }
 
+int PG_WidgetList::FindIndex(PG_Widget* w) {
+	int index = 0;
+
+	vector < PG_Widget* >::iterator i;
+
+	for(i = my_widgetList.begin(); i != my_widgetList.end(); i++) {
+		if((*i) == w) {
+			return index;
+		}
+		index++;
+	}
+
+	return -1;
+}
+
 int PG_WidgetList::GetWidgetCount() {
 	return my_widgetCount;
 }
@@ -543,4 +558,12 @@ void PG_WidgetList::ScrollTo(int index, int direction) {
 	}
 
 	ScrollTo(w, direction);
+}
+
+void PG_WidgetList::PageUp() {
+	ScrollToY(my_internaldata->my_scrolldeltay - my_height );
+}
+
+void PG_WidgetList::PageDown() {
+	ScrollToY(my_internaldata->my_scrolldeltay + my_height );
 }

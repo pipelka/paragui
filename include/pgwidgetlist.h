@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:39 $
+    Update Date:      $Date: 2003/01/21 15:54:33 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -117,6 +117,14 @@ public:
 	PG_Widget* FindWidget(int index);
 
 	/**
+	Find the index of a given widget
+
+	@param	widget		pointer to the widget
+	@return				index of the widget
+	*/
+	int FindIndex(PG_Widget* w);
+	
+	/**
 	Remove all widgets from the list (without deletion)
 	*/
 	void RemoveAll();
@@ -151,6 +159,16 @@ public:
 #else
 	void ScrollTo(int index, int direction = PG_SB_VERTICAL);
 #endif
+
+	/**
+	Scroll one page up
+	*/
+	void PageUp();
+	
+	/**
+	Scroll one page down
+	*/
+	void PageDown();
 
 protected:
 
