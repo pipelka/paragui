@@ -19,10 +19,10 @@
     Alexander Pipelka
     pipelka@teleweb.at
  
-    Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/30 20:50:26 $
+    Last Update:      $Author: eross $
+    Update Date:      $Date: 2002/08/17 21:53:11 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.8 $
+    CVS/RCS Revision: $Revision: 1.2.4.9 $
     Status:           $State: Exp $
 */
 
@@ -37,6 +37,8 @@
 #endif
 
 #include "physfsrwops.h"
+
+extern "C" { int fnmatch(const char *pattern, const char *string, int flags);}
 
 Uint32 PG_FileArchive::my_instance_count = 0;
 PG_SurfaceCache PG_FileArchive::my_cache;
@@ -301,7 +303,7 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 	}
 	
 	if(convert && !PG_Application::GetGLMode()) {
-		SDL_Surface* tmpsrf = SDL_DisplayFormat(surface);
+		SDL_Surface* tmpsrf = SDL_DisplayFormatAlpha(surface);
 		if(tmpsrf) {
 			SDL_FreeSurface(surface);
 			surface = tmpsrf;
