@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/31 07:43:25 $
+    Update Date:      $Date: 2002/05/31 12:57:16 $
     Source File:      $Source: /sources/paragui/paragui/include/paraconfig.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -34,8 +34,37 @@
 
 #define PG_VERSIONNUM(X, Y, Z) ((X)*10000 + (Y)*100 + (Z))
 
-#if (defined(WIN32) || defined(__WIN32__)) && (defined(_MSC_VER) || defined(__BCPLUSPLUS__))
+//stuff needed for MWERKS Codewarrior (7+)
+//this is before the OS specific stuff as strdup_macos.h needs some of these defined 
+#ifdef __MWERKS__
+using std::abs;
+using std::malloc;
+using std::free;
+using std::memset;
+using std::fabs;
+using std::sin;
+using std::cos;
+using std::ceil;
+using std::memcpy;
+using std::calloc;
+using std::floor;
+using std::exit;
+using std::atexit;
+using std::getenv;
+using std::sqrt;
+
+using std::strcpy;
+using std::strcmp;
+using std::strchr;
+using std::strlen;
+using std::strcat;
+using std::strncpy;
+#endif
+
+#if (defined(WIN32) || defined(__WIN32__)) && (defined(_MSC_VER) || defined(__BCPLUSPLUS__)) || defined(__MWERKS__))
 #include "paraconfig_win32.h"
+#elif defined(__MACOS__) 
+#include "paraconfig_macos.h"
 #else // GNU
 #include "paraconfig_gnu.h"
 
