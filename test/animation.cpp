@@ -95,7 +95,7 @@ PlayField::~PlayField() {
 
 void PlayField::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst) {
 
-	SDL_FillRect(my_srfScreen, (SDL_Rect*)&dst, 0);
+	SDL_FillRect(PG_Application::GetScreen(), (SDL_Rect*)&dst, 0);
 	
 	if (tickstate==0) {
 		// we draw our first line
@@ -181,7 +181,7 @@ PlayField2::~PlayField2() {
 
 void PlayField2::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst) {
 
-	SDL_FillRect(my_srfScreen, (SDL_Rect*)&dst, 0);
+	SDL_FillRect(PG_Application::GetScreen(), (SDL_Rect*)&dst, 0);
 	
 	for (int i=0; i<3; i++)
 	{
@@ -208,8 +208,8 @@ void PlayField2::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Re
 	temp_color.g = (my_color.g * tickstate)/40;
 	temp_color.b = (my_color.b * tickstate)/40;
 
-	temp_int = temp_color.MapRGB(my_srfScreen->format);
-	SDL_FillRect(my_srfScreen, (SDL_Rect *)&temp_rect, temp_int);
+	temp_int = temp_color.MapRGB(PG_Application::GetScreen()->format);
+	SDL_FillRect(PG_Application::GetScreen(), (SDL_Rect *)&temp_rect, temp_int);
 }
 
 Uint32 PlayField2::eventTimer(PG_TimerID id, Uint32 interval) {
@@ -253,7 +253,6 @@ int main(int argc, char* argv[]) {
 
 	PG_Button myButton(
 		NULL,		// an optional parent widget for our button - NULL for no parent
-		1,		// the widget id (used to identify events)
 		rect,		// the screen position where the button should appear
 		"Quit"		// some textlabel for the button
 		);
@@ -283,11 +282,11 @@ int main(int argc, char* argv[]) {
 	// usually this is done with PG_Application::Run()
 
 	PG_Rect sc_rect(50, 50, 100, 300);
-	PG_ScrollBar myscroll(NULL, 100, sc_rect, PG_ScrollBar::VERTICAL);
+	PG_ScrollBar myscroll(NULL, sc_rect, PG_ScrollBar::VERTICAL);
 	myscroll.Show();
 
 	PG_Rect sc_rect2(200, 200, 300, 100);
-	PG_ScrollBar myscroll2(NULL, 101, sc_rect2, PG_ScrollBar::HORIZONTAL);
+	PG_ScrollBar myscroll2(NULL, sc_rect2, PG_ScrollBar::HORIZONTAL);
 
 	myscroll2.SetWindowSize(10);
 	myscroll2.SetRange(0, 100);

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgslider.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -30,7 +30,7 @@
 #include "pgapplication.h"
 #include "pgtheme.h"
 
-PG_Slider::PG_Slider(PG_Widget* parent, int id, const PG_Rect& r, ScrollDirection direction, const char* style) : PG_ScrollBar(parent, id, r, direction) {
+PG_Slider::PG_Slider(PG_Widget* parent, const PG_Rect& r, ScrollDirection direction, int id, const char* style) : PG_ScrollBar(parent, r, direction, id) {
 
 	my_showButtons = false;
 

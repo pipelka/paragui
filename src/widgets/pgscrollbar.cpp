@@ -20,16 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:01:03 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgscrollbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
     Status:           $State: Exp $
 */
 
 #include "pgscrollbar.h"
 #include "pgapplication.h"
 
-PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, ScrollDirection direction, const char* style) : PG_ThemeWidget(parent, r, style) {
+PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, const PG_Rect& r, ScrollDirection direction, int id, const char* style) : PG_ThemeWidget(parent, r, style) {
 	sb_direction = direction;
 
 	SetID(id);
@@ -77,8 +77,9 @@ PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, ScrollDi
 		position[2].x = r.my_height;
 		position[2].y = 0;
 		position[2].w = r.my_width-(r.my_height*2+1);
-		if ((Sint16)position[2].w < 0)
+		if ((Sint16)position[2].w < 0) {
 		       position[2].w = 0;
+		}
 		       
 		position[2].h = r.my_height;
 
@@ -88,22 +89,20 @@ PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, ScrollDi
 		position[3].x = (Uint16)(r.my_height + (((double)position[2].w - (double)position[3].w) / (double)(scroll_max - scroll_min)) * (double)scroll_current);
 	}
 
-	scrollbutton[0] = new PG_Button(
-	                      this,
-	                      (direction == VERTICAL) ? IDSCROLLBAR_UP : IDSCROLLBAR_LEFT,
-	                      position[0]);
+	scrollbutton[0] = new PG_Button(this, position[0]);
+	scrollbutton[0]->SetID((direction == VERTICAL) ? IDSCROLLBAR_UP : IDSCROLLBAR_LEFT);
 	scrollbutton[0]->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 	
-	scrollbutton[1] = new PG_Button(
-	                      this,
-	                      (direction == VERTICAL) ? IDSCROLLBAR_DOWN : IDSCROLLBAR_RIGHT,
-	                      position[1]);
+	scrollbutton[1] = new PG_Button(this, position[1]);
+	scrollbutton[1]->SetID((direction == VERTICAL) ? IDSCROLLBAR_DOWN : IDSCROLLBAR_RIGHT);
 	scrollbutton[1]->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 
 	dragbutton = new ScrollButton(this, IDSCROLLBAR_DRAG, position[3]);
 	dragbutton->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 
-	LoadThemeStyle("Scrollbar");
+	if(strcmp(style, "Scrollbar") != 0) {
+		LoadThemeStyle("Scrollbar");
+	}
 	LoadThemeStyle(style);
 }
 
@@ -163,10 +162,10 @@ void PG_ScrollBar::eventSizeWidget(Uint16 w, Uint16 h) {
 			position[3].y = ((position[2].h - position[3].h) / (scroll_max - scroll_min)) * scroll_current;
 		}
 
-		scrollbutton[0]->MoveWidget(PG_Rect(0, 0, w, w));
-		scrollbutton[1]->MoveWidget(PG_Rect(0, abs(h-w), w, w));
+		scrollbutton[0]->MoveWidget(PG_Rect(0, 0, w, w), false);
+		scrollbutton[1]->MoveWidget(PG_Rect(0, abs(h-w), w, w), false);
 
-		dragbutton->SizeWidget(position[3].w, position[3].h);
+		dragbutton->SizeWidget(position[3].w, position[3].h, false);
 	} else {
 		position[0].x = 0;
 		position[0].y = 0;
@@ -193,10 +192,10 @@ void PG_ScrollBar::eventSizeWidget(Uint16 w, Uint16 h) {
 			position[3].x = ((position[2].w - position[3].w) / (scroll_max - scroll_min)) * scroll_current;
 		}
 
-		scrollbutton[0]->MoveWidget(PG_Rect(0, 0, h, h));
-		scrollbutton[1]->MoveWidget(PG_Rect(abs(w-h), 0, h, h));
+		scrollbutton[0]->MoveWidget(PG_Rect(0, 0, h, h), false);
+		scrollbutton[1]->MoveWidget(PG_Rect(abs(w-h), 0, h, h), false);
 
-		dragbutton->SizeWidget(position[3].w, position[3].h);
+		dragbutton->SizeWidget(position[3].w, position[3].h, false);
 	}
 
 	SetPosition(scroll_current);
@@ -255,7 +254,8 @@ bool PG_ScrollBar::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 }
 
 
-PG_ScrollBar::ScrollButton::ScrollButton(PG_ScrollBar* parent, int id, const PG_Rect& r) : PG_Button(parent, id, r) {
+PG_ScrollBar::ScrollButton::ScrollButton(PG_ScrollBar* parent, int id, const PG_Rect& r) : PG_Button(parent, r) {
+	SetID(id);
 	my_tickMode = false;
 }
 

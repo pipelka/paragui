@@ -14,7 +14,6 @@ int main( int argc, char **argv )
    PG_Window b( NULL, PG_Rect( 60, 110, 100, 100 ), "Window XP, .");
 
    a.SizeWidget( 400, 200 );
-
    b.SizeWidget( 400, 200 );
 
    a.Show();

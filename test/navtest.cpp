@@ -83,11 +83,11 @@ int main(int argc, char* argv[]) {
 	}
 
 	// construct some widgets
-	PG_Button btn1(NULL, 1, PG_Rect(295,20,50,50), "UP");
-	PG_Button btn2(NULL, 2, PG_Rect(200,80,50,50), "LEFT");
-	PG_Button btn3(NULL, 3, PG_Rect(390,80,50,50), "RIGHT");
-	PG_Button btn4(NULL, 4, PG_Rect(295,80,50,50), "HOME");
-	PG_Button btn5(NULL, 5, PG_Rect(295,140,50,50), "DOWN");
+	PG_Button btn1(NULL, PG_Rect(295,20,50,50), "UP");
+	PG_Button btn2(NULL, PG_Rect(200,80,50,50), "LEFT");
+	PG_Button btn3(NULL, PG_Rect(390,80,50,50), "RIGHT");
+	PG_Button btn4(NULL, PG_Rect(295,80,50,50), "HOME");
+	PG_Button btn5(NULL, PG_Rect(295,140,50,50), "DOWN");
 	PG_LineEdit edit1(NULL, PG_Rect(200,200,250,25));
 
 	// show them

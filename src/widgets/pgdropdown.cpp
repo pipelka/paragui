@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -32,7 +32,7 @@
 #include "pglistboxitem.h"
 #include "pglineedit.h"
 
-PG_DropDown::PG_DropDown(PG_Widget* parent, int id, const PG_Rect& r, const char* style) : PG_Widget(parent, r),
+PG_DropDown::PG_DropDown(PG_Widget* parent, const PG_Rect& r, int id, const char* style) : PG_Widget(parent, r),
 // needed for AddChild() evaluation - H. C.
 my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 {
@@ -43,7 +43,8 @@ my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 	my_EditBox = new PG_LineEdit(this, rect, style);
 
 	PG_Rect rbutton(abs(r.my_width - r.my_height), 0, r.my_height, r.my_height);
-	my_DropButton = new PG_Button(this, IDDROPDOWN_BOX, rbutton, NULL, style);
+	my_DropButton = new PG_Button(this, rbutton, NULL, -1, style);
+	my_DropButton->SetID(IDDROPDOWN_BOX);
 	my_DropButton->sigClick.connect(slot(*this, &PG_DropDown::handleButtonClick));
 
 	PG_Rect rlist(r.my_xpos, r.my_ypos + r.my_height +1, r.my_width, r.my_height /* * 5 */);

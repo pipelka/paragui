@@ -118,16 +118,16 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	WidgetList->EnableScrollBar(true, PG_ScrollBar::VERTICAL);
 	WidgetList->EnableScrollBar(true, PG_ScrollBar::HORIZONTAL);
 		
-	(new PG_Button(this, 100, PG_Rect(260,130,110,30), "<< ADD"))->sigClick.connect(slot(*this, &TestWindow::handleButtonClick));
+	(new PG_Button(this, PG_Rect(260,130,110,30), "<< ADD", 100))->sigClick.connect(slot(*this, &TestWindow::handleButtonClick));
 	
-	(new PG_Button(this, 101, PG_Rect(260,165,110,30), ">> REMOVE"))->sigClick.connect(slot(*this, &TestWindow::handleButtonClick));
+	(new PG_Button(this, PG_Rect(260,165,110,30), ">> REMOVE", 101))->sigClick.connect(slot(*this, &TestWindow::handleButtonClick));
 	
-	b = new PG_Button(NULL, BTN_ID_YES, PG_Rect(0,0, 400,50), "YES");
+	b = new PG_Button(WidgetList, PG_Rect(0,0, 400,50), "YES", PG_Button::YES);
 	b->SetTransparency(128,128,128);
 	b->SetFontName("qnx/font.ttf");
-	WidgetList->AddWidget(b);
+	//WidgetList->AddWidget(b);
 
-	PG_Slider* s = new PG_Slider(NULL, 20, PG_Rect(0, 0, 200,20), PG_ScrollBar::HORIZONTAL);
+	PG_Slider* s = new PG_Slider(WidgetList, PG_Rect(0, 0, 200,20), PG_ScrollBar::HORIZONTAL);
 	s->SetRange(0,255);
 	s->SetTransparency(200);
 	s->SetPosition(50);
@@ -135,12 +135,13 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	s->sigSlide.connect(slot(*this, &TestWindow::handler_slider_btntrans));
 	s->sigSlideEnd.connect(slot(*this, &TestWindow::handler_slider_btntrans));
 
-	WidgetList->AddWidget(s);
+	//WidgetList->AddWidget(s);
 		
-	WidgetList->AddWidget(new PG_LineEdit(NULL, PG_Rect(0,0,80,30)));
+	//WidgetList->AddWidget(new PG_LineEdit(NULL, PG_Rect(0,0,80,30)));
+	new PG_LineEdit(WidgetList, PG_Rect(0,0,80,30));
 
-	PG_CheckButton* check = new PG_CheckButton(NULL, 10, PG_Rect(0,0,200,25), "CheckButton 2");
-	WidgetList->AddWidget(check);
+	PG_CheckButton* check = new PG_CheckButton(WidgetList, PG_Rect(0,0,200,25), "CheckButton 2");
+	//WidgetList->AddWidget(check);
 
 	progress = new PG_ProgressBar(this, PG_Rect(260, 90, 150, 25));
 	progress->SetTransparency(128);
@@ -148,17 +149,19 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	progress->SetID(1001);
 	progress->SetFontAlpha(128);
 		
-	PG_ScrollBar* scroll = new PG_ScrollBar(this, 1, PG_Rect(415,90,20,150));
+	PG_ScrollBar* scroll = new PG_ScrollBar(this, PG_Rect(415,90,20,150));
+	scroll->SetID(1);
 	scroll->sigScrollPos.connect(slot(*this, &TestWindow::handleScrollPos));
 	scroll->sigScrollTrack.connect(slot(*this, &TestWindow::handleScrollPos));
 	scroll->SetRange(0, 100);
 
-	PG_ScrollBar* scroll1 = new PG_ScrollBar(this, 2, PG_Rect(435,90,20,150));
+	PG_ScrollBar* scroll1 = new PG_ScrollBar(this, PG_Rect(435,90,20,150));
+	scroll1->SetID(2);
 	scroll1->sigScrollPos.connect(slot(*this, &TestWindow::handleScrollPos));
 	scroll1->sigScrollTrack.connect(slot(*this, &TestWindow::handleScrollPos));
 	scroll1->SetRange(0, 255);
 
-	PG_DropDown* drop = new PG_DropDown(this, 15, PG_Rect(260, 60, 200,25));
+	PG_DropDown* drop = new PG_DropDown(this, PG_Rect(260, 60, 200,25));
 	drop->SetIndent(5);
 	drop->AddItem("Under construction");
 	drop->AddItem("Item 1");
@@ -219,8 +222,9 @@ bool TestWindow::handleButtonClick(PG_Button* button) {
 
 	if(id == 101) {
 		PG_Widget* w = WidgetList->FindWidget(4);
+		PG_LogDBG("FindWidget(4) = %p", w);
 		if(w != NULL) {
-			WidgetList->RemoveWidget(w, true, true);
+			//WidgetList->RemoveWidget(w, true, true);
 			delete w;
 		}
 		
@@ -255,7 +259,7 @@ void PrintChildObjects(PG_RectList *RectList, char *TabSpace) {
 		return;
 	}
 
-    PG_Widget* list = static_cast<PG_Widget*>(RectList->first());
+    PG_Widget* list = RectList->first();
 	const char* name = NULL;
 
     while(list != NULL) {
@@ -266,7 +270,7 @@ void PrintChildObjects(PG_RectList *RectList, char *TabSpace) {
 		sprintf(tab,"  %s",TabSpace);	
 		PrintChildObjects(list->GetChildList(), tab);
 
-		list = static_cast<PG_Widget*>(list->next);
+		list = list->next();
 	}
     
 }
@@ -366,19 +370,19 @@ int main(int argc, char* argv[]) {
 	wnd1.SetID(101);
 	
 	// create 2 radiobutton groups
-	PG_RadioButton radio1(NULL, 1, PG_Rect(50,0,200,25), "RadioButton 1");
-	PG_RadioButton radio2(NULL, 2, PG_Rect(50,25,200,25), "RadioButton 2", &radio1);
-	PG_RadioButton radio3(NULL, 3, PG_Rect(50,50,200,25), "RadioButton 3", &radio1);
+	PG_RadioButton radio1(NULL, PG_Rect(50,0,200,25), "RadioButton 1");
+	PG_RadioButton radio2(NULL, PG_Rect(50,25,200,25), "RadioButton 2", &radio1);
+	PG_RadioButton radio3(NULL, PG_Rect(50,50,200,25), "RadioButton 3", &radio1);
 	radio1.SetAlignment(PG_Label::RIGHT);
 	
-	PG_RadioButton radio4(NULL, 4, PG_Rect(50,90,200,25), "RadioButton 4");
-	PG_RadioButton radio5(NULL, 5, PG_Rect(50,115,200,25), "RadioButton 5", &radio4);
-	PG_RadioButton radio6(NULL, 6, PG_Rect(50,140,200,25), "RadioButton 6", &radio4);
+	PG_RadioButton radio4(NULL, PG_Rect(50,90,200,25), "RadioButton 4");
+	PG_RadioButton radio5(NULL, PG_Rect(50,115,200,25), "RadioButton 5", &radio4);
+	PG_RadioButton radio6(NULL, PG_Rect(50,140,200,25), "RadioButton 6", &radio4);
 
-	PG_CheckButton check1(NULL, 7, PG_Rect(300,140,180,25), "CheckButton 1");
-	PG_PopupMenu   popmenu(NULL, 425, 140, "My Menu");
-	PG_PopupMenu   submenu(NULL, 425, 140, "My SubMenu");
-	PG_PopupMenu   subsubmenu(NULL, 425, 140, "");
+	PG_CheckButton check1(NULL, PG_Rect(300,140,180,25), "CheckButton 1");
+	PG_PopupMenu popmenu(NULL, 425, 140, "My Menu");
+	PG_PopupMenu submenu(NULL, 425, 140, "My SubMenu");
+	PG_PopupMenu subsubmenu(NULL, 425, 140, "");
 	
 	submenu.sigSelectMenuItem.connect(slot(handle_menu_click), NULL);
 	subsubmenu.sigSelectMenuItem.connect(slot(handle_menu_click), NULL);
@@ -424,7 +428,7 @@ int main(int argc, char* argv[]) {
 
 	check1.Show();
 
-	PG_ScrollBar scroll(NULL, 10, PG_Rect(50, 200, 300, 20), PG_ScrollBar::HORIZONTAL );
+	PG_ScrollBar scroll(NULL, PG_Rect(50, 200, 300, 20), PG_ScrollBar::HORIZONTAL );
 	scroll.Show();
 
 	PG_MaskEdit edit(NULL, PG_Rect(260,0,200,25));
@@ -437,7 +441,7 @@ int main(int argc, char* argv[]) {
 	slider_label.Show();
 
 	// create the slider
-	PG_Slider slider(NULL, 11, PG_Rect(50, 250, 300,20), PG_ScrollBar::HORIZONTAL);
+	PG_Slider slider(NULL, PG_Rect(50, 250, 300,20), PG_ScrollBar::HORIZONTAL);
 	slider.SetRange(5,20);
 	//slider.SetTransparency(128);
 
@@ -447,14 +451,14 @@ int main(int argc, char* argv[]) {
 
 	slider.Show();
 
-	PG_Button popbtn(NULL, 20, PG_Rect(430, 250,100,25), "Pop me");
+	PG_Button popbtn(NULL, PG_Rect(430, 250,100,25), "Pop me");
 	popbtn.sigClick.connect(slot(handle_popup), (PG_Pointer)&popmenu);
 	popbtn.Show();
 
 	PG_SpinnerBox spin(NULL, PG_Rect(550,250,130,25));
 	spin.Show();
 
-	PG_DropDown drop(NULL, 14, PG_Rect(50, 280, 300,25));
+	PG_DropDown drop(NULL, PG_Rect(50, 280, 300,25));
 	drop.SetIndent(5);
 	
 	//<obsolete>
@@ -475,18 +479,15 @@ int main(int argc, char* argv[]) {
 	new PG_ListBoxItem(&drop, 25, "Item 9");
 	drop.Show();
 
-	PG_Button list(NULL, BTN_ID_OK, PG_Rect(400,450,100,30), "List");
+	PG_Button list(NULL, PG_Rect(400,450,100,30), "List", PG_Button::OK);
 	list.sigClick.connect(slot(handle_list));
 	list.Show();
 
-	PG_Button quit(NULL, BTN_ID_CLOSE, PG_Rect(600,450,100,30), "Quit");
+	PG_Button quit(NULL, PG_Rect(600,450,100,30), "Quit", PG_Button::CLOSE);
 	quit.sigClick.connect(slot(handle_exit), (PG_Pointer)&app);
 	quit.Show();
 
-	// hehe, now it gets interesting ...
-	PG_Button show_wnd(NULL, BTN_ID_APPLY, PG_Rect(500,450,100,30), "Window");
-
-	// yeah, man.. believe your eyes
+	PG_Button show_wnd(NULL, PG_Rect(500,450,100,30), "Window", PG_Button::APPLY);
 	show_wnd.sigClick.connect(slot(wnd, &TestWindow::handle_show_window));
     
 	show_wnd.Show();

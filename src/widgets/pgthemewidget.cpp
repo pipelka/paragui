@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.10 $
     Status:           $State: Exp $
 */
 
@@ -73,11 +73,6 @@ void PG_ThemeWidget::Init(const char* style) {
 	my_has_gradient = false;
 
 	my_image = NULL;
-	/*_mid->freeimage = false;
-	_mid->simplebackground = false;
-	_mid->nocache = false;
-
-	_mid->cachesurface = NULL;*/
 
 	LoadThemeStyle(style);
 }
@@ -330,11 +325,6 @@ bool PG_ThemeWidget::LoadImage(const char* filename) {
 }
 
 void PG_ThemeWidget::eventSizeWidget(Uint16 w, Uint16 h) {
-
-	if((w == Width()) && (h == Height())) {
-		return;
-	}
-
 	DeleteThemedSurface(_mid->cachesurface);
 	_mid->cachesurface = NULL;
 }
@@ -376,9 +366,9 @@ void PG_ThemeWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 	} else if (_mid->simplebackground) {
 		if(GetTransparency() < 255) {
 			Uint32 c = _mid->backgroundcolor.MapRGBA(
-			               my_srfScreen->format,
+			               PG_Application::GetScreen()->format,
 						   255-GetTransparency());
-			SDL_FillRect(my_srfScreen, (SDL_Rect*)&dst, c);
+			SDL_FillRect(PG_Application::GetScreen(), (SDL_Rect*)&dst, c);
 		}
 	} else if (_mid->nocache) {
 		_mid->cachesurface = CreateThemedSurface(

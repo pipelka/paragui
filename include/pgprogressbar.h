@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 10:11:15 $
+    Update Date:      $Date: 2004/02/28 18:49:05 $
     Source File:      $Source: /sources/paragui/paragui/include/pgprogressbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -46,7 +46,7 @@ class DECLSPEC PG_ProgressBar : public PG_ThemeWidget {
 public:
 
 	/** */
-	PG_ProgressBar(PG_Widget* parent, const PG_Rect& r, const char* style="Progressbar");
+	PG_ProgressBar(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="Progressbar");
 
 	/** */
 	~PG_ProgressBar();

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:05 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
     Status:           $State: Exp $
 */
 
@@ -116,7 +116,7 @@
 	<h2>Code:</h2><p>
 */
 
-struct PG_ButtonDataInternal;
+class PG_ButtonDataInternal;
 
 class DECLSPEC PG_Button : public PG_Widget  {
 public:
@@ -151,12 +151,12 @@ public:
 	/**
 	Constructor for the PG_Button class
 	@param parent	pointer to the parent widget or NULL
-	@param id id of the button (can be used in callbacks)
 	@param r screen position of the button
+	@param id id of the button (can be used in callbacks)
 	@param text button label
 	@param style themestyle of the button
 	*/
-	PG_Button(PG_Widget* parent, int id, const PG_Rect& r, const char* text = NULL, const char* style="Button");
+	PG_Button(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* text = NULL, int id = -1, const char* style="Button");
 
 	/**  */
 	virtual ~PG_Button();
@@ -300,42 +300,5 @@ private:
 
 	PG_ButtonDataInternal* _mid;
 };
-
-// Standard button IDs
-/**
-	Standard button ID: OK.
-	DEPRECATED, USE PG_Button::OK
-*/
-#define BTN_ID_OK PG_Button::OK
-/**
-	Standard button ID: YES.
-	DEPRECATED, USE PG_Button::YES
-*/
-#define BTN_ID_YES PG_Button::YES
-/**
-	Standard button ID: NO.
-	DEPRECATED, USE PG_Button::NO
-*/
-#define BTN_ID_NO PG_Button::NO
-/**
-	Standard button ID: APPLY.
-	DEPRECATED, USE PG_Button::APPLY
-*/
-#define BTN_ID_APPLY PG_Button::APPLY
-/**
-	Standard button ID: CANCEL.
-	DEPRECATED, USE PG_Button::CANCEL
-*/
-#define BTN_ID_CANCEL PG_Button::CANCEL
-/**
-	Standard button ID: CLOSE.
-	DEPRECATED, USE PG_Button::CLOSE
-*/
-#define BTN_ID_CLOSE PG_Button::CLOSE
-/**
-	Standard button ID: HELP.
-	DEPRECATED, USE PG_Button::HELP
-*/
-#define BTN_ID_HELP PG_Button::HELP
 
 #endif // PG_BUTTON_H

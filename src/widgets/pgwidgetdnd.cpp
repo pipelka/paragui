@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetdnd.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.8.1 $
     Status:           $State: Exp $
 */
 
@@ -321,7 +321,7 @@ void PG_WidgetDnD::cacheDragArea(PG_Point p) {
 	dstrect.w = dragimagecache->w;
 	dstrect.h = dragimagecache->h;
 
-	PG_Draw::BlitSurface(GetScreenSurface(), srcrect, dragimagecache, dstrect);
+	PG_Draw::BlitSurface(PG_Application::GetScreen(), srcrect, dragimagecache, dstrect);
 
 	PG_Application::UnlockScreen();
 }
@@ -346,7 +346,7 @@ void PG_WidgetDnD::restoreDragArea(PG_Point p) {
 	dstrect.w = dragimagecache->w;
 	dstrect.h = dragimagecache->h;
 
-	PG_Draw::BlitSurface(dragimagecache, srcrect, GetScreenSurface(), dstrect);
+	PG_Draw::BlitSurface(dragimagecache, srcrect, PG_Application::GetScreen(), dstrect);
 
 	PG_Application::UnlockScreen();
 }
@@ -364,11 +364,11 @@ void PG_WidgetDnD::CheckCursorPos(int& x, int& y) {
 	if(y<0)
 		y=0;
 
-	if(x + dragimage->w > GetScreenSurface()->w)
-		x = GetScreenSurface()->w - dragimage->w;
+	if(x + dragimage->w > PG_Application::GetScreen()->w)
+		x = PG_Application::GetScreen()->w - dragimage->w;
 
-	if(y + dragimage->h > GetScreenSurface()->h)
-		y = GetScreenSurface()->h - dragimage->h;
+	if(y + dragimage->h > PG_Application::GetScreen()->h)
+		y = PG_Application::GetScreen()->h - dragimage->h;
 }
 
 /** */
@@ -391,7 +391,7 @@ void PG_WidgetDnD::drawDragArea(PG_Point pt, SDL_Surface* image) {
 	dstrect.h = image->h;
 
 	PG_Application::LockScreen();
-	PG_Draw::BlitSurface(image, srcrect, GetScreenSurface(), dstrect);
+	PG_Draw::BlitSurface(image, srcrect, PG_Application::GetScreen(), dstrect);
 	PG_Application::UnlockScreen();
 
 }
@@ -404,7 +404,7 @@ void PG_WidgetDnD::updateDragArea(PG_Point pt, SDL_Surface* image) {
 	dstrect.w = image->w;
 	dstrect.h = image->h;
 
-	SDL_UpdateRects(GetScreenSurface(), 1, &dstrect);
+	SDL_UpdateRects(PG_Application::GetScreen(), 1, &dstrect);
 }
 
 /**  */

@@ -22,9 +22,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:21 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/drawline.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.1 $
+    CVS/RCS Revision: $Revision: 1.3.8.2 $
     Status:           $State: Exp $
 */
 
@@ -34,9 +34,6 @@ void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const PG_Color& c, Uint
 	Uint32 xp, yp, xf, yf;
 	static Uint32 oldx, oldy;
 
-    if (!width || !surface)
-        return; // no need to waste time
-    
 	//	width=1? Only need to draw 1 pixel
 	if(width==1) {
 		PG_Draw::SetPixel(x, y, c, surface);
@@ -102,9 +99,6 @@ void octant0(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 deltax, Uint32 d
 	int error;
 	int deltay2deltax2;	/* delta y2 - deltax2 */
 
-    if (!surface || !width)
-        return;
-    
 	/* setup intial error used in drawing loop */
 	deltay2 = deltay << 1;
 	deltay2deltax2 = deltay2 - (int)(deltax << 1);
@@ -137,9 +131,6 @@ void octant1(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 deltax, Uint32 d
 	int error;
 	int deltax2deltay2;	/* delta x2 - deltay2 */
 
-    if (!width || !surface)
-        return;
-    
 	/* setup intial error used in drawing loop */
 	deltax2 = deltax << 1;
 	deltax2deltay2 = deltax2 - (int)(deltay << 1);
@@ -188,7 +179,7 @@ void PG_Draw::DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Ui
 
 	} /* end of the if */
 
-	/* handle four seperate cases */
+	/* handle four separate cases */
 	deltax = x1 - x0;
 	deltay = y1 - y0;
 	if (deltax > 0) {

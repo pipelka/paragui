@@ -40,9 +40,8 @@ void PG_MenuBar::Add(const char* text, PG_PopupMenu* menu, Uint16 indent, Uint16
 
 	last->button = new PG_Button(
 							this,
-							 -1,
 							PG_Rect(xpos, my_btnOffsetY, width, my_height - my_btnOffsetY*2),
-							text,
+							text, -1,
 							my_style.c_str());
 
 	last->button->SetFontSize(GetFontSize());

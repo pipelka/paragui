@@ -20,22 +20,25 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/pgrect.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.4 $
+    CVS/RCS Revision: $Revision: 1.3.8.5 $
     Status:           $State: Exp $
 */
 
 #include "pgrect.h"
+
+PG_Rect PG_Rect::null;
 
 PG_Rect::PG_Rect(Sint16 xv, Sint16 yv, Uint16 wv, Uint16 hv) : 
 my_xpos(x), 
 my_ypos(y), 
 my_width(w), 
 my_height(h),
-next(NULL),
-prev(NULL),
-index(0) {
+index(0),
+my_next(NULL),
+my_prev(NULL)
+{
 	SetRect(xv, yv, wv, hv);
 }
 
@@ -44,9 +47,10 @@ my_xpos(x),
 my_ypos(y),
 my_width(w),
 my_height(h),
-next(NULL),
-prev(NULL),
-index(0) {
+index(0),
+my_next(NULL),
+my_prev(NULL)
+{
 	SetRect(0, 0, 0, 0);
 }
 
@@ -57,8 +61,8 @@ my_width(w),
 my_height(h)
 {
 	*this = src;
-	next = NULL;
-	prev = NULL;
+	my_next = NULL;
+	my_prev = NULL;
 }
 
 PG_Rect::PG_Rect(const SDL_Rect& src) :
@@ -68,8 +72,8 @@ my_width(w),
 my_height(h)
 {
 	*this = src;
-	next = NULL;
-	prev = NULL;
+	my_next = NULL;
+	my_prev = NULL;
 }
 
 PG_Rect::~PG_Rect() {}
@@ -144,8 +148,8 @@ PG_Rect PG_Rect::IntersectRect(const PG_Rect& p) const {
 
 PG_Rect& PG_Rect::operator =(const PG_Rect& src) {
 	SetRect(src.x, src.y, src.w, src.h);
-	next = NULL;
-	prev = NULL;
+	my_next = NULL;
+	my_prev = NULL;
 	return *this;
 }
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/19 16:50:11 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2.2.4 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.5 $
     Status:           $State: Exp $
 */
 
@@ -71,21 +71,18 @@ PG_RectList::~PG_RectList() {}
 }*/
 
 PG_Widget* PG_RectList::IsInside(const PG_Point& p) {
-	PG_Widget* testrect;
 
 	// loop down all rects till we find a match
-	for(PG_Rect* i = last(); i != NULL; i = i->prev) {
-
-		testrect = static_cast<PG_Widget*>(i);
+	for(PG_Widget* i = last(); i != NULL; i = i->prev()) {
 
 		// check if the tested rect is visible
-		if(!testrect->IsVisible() || testrect->IsHidden()) {
+		if(!i->IsVisible() || i->IsHidden()) {
 			continue;
 		}
 
 		// check for a match
-		if(testrect->GetClipRect()->IsInside(p)) {
-			return testrect;
+		if(i->GetClipRect()->IsInside(p)) {
+			return i;
 		}
 	}
 
@@ -93,7 +90,7 @@ PG_Widget* PG_RectList::IsInside(const PG_Point& p) {
 }
 
 void PG_RectList::Add(PG_Widget* rect, bool front) {
-	if(rect->next != NULL || rect->prev != NULL) {
+	if(rect->next() != NULL || rect->prev() != NULL) {
 		PG_LogWRN("PG_RectList::Add(...) Trying to add a linked PG_Rect object");
 		return;
 	}
@@ -109,27 +106,27 @@ void PG_RectList::Add(PG_Widget* rect, bool front) {
 	
 	if(front) {
 		if(my_first != NULL) {
-			my_first->prev = rect;
+			my_first->my_prev = rect;
 			rect->index = index;
 		}
 		else {
 			rect->index = my_first->index-1;
 		}
-		rect->next = my_first;
-		rect->prev = NULL;
+		rect->my_next = my_first;
+		rect->my_prev = NULL;
 		my_first = rect;
 		return;
 	}
 
 	if(my_first == NULL) {
 		my_first = rect;
-		rect->prev = NULL;
-		rect->next = NULL;
+		rect->my_prev = NULL;
+		rect->my_next = NULL;
 	}
 	else {
-		my_last->next = rect;
-		rect->next = NULL;
-		rect->prev = my_last;
+		my_last->my_next = rect;
+		rect->my_next = NULL;
+		rect->my_prev = my_last;
 	}
 	my_last = rect;
 	rect->index = index;
@@ -140,35 +137,35 @@ bool PG_RectList::Remove(PG_Rect* rect) {
 		return false;
 	}
 
-	if((rect->next == NULL) && (rect->prev == NULL) && (my_first != rect)) {
-		//PG_LogWRN("PG_RectList::Add(...) Trying to remove an unlinked PG_Rect object");
+	if((rect->next() == NULL) && (rect->prev() == NULL) && (my_first != rect)) {
+		//PG_LogWRN("PG_RectList::Remove(...) Trying to remove an unlinked PG_Rect object");
 		return false;
 	}
 	
 	my_count--;
 
 	// first in list
-	if(rect == my_first) {
-		my_first = rect->next;
+	if(rect->my_prev == NULL) {
+		my_first = rect->next();
 		if(my_first != NULL) {
-			my_first->prev = NULL;
+			my_first->my_prev = NULL;
 		}
 	}
 	// last
-	else if(rect == my_last) {
-		my_last = rect->prev;
+	else if(rect->my_next == NULL) {
+		my_last = rect->my_prev;
 		if(my_last != NULL) {
-			my_last->next = NULL;
+			my_last->my_next = NULL;
 		}
 	}
 	// in between
 	else {
-		rect->prev->next = rect->next;
-		rect->next->prev = rect->prev;
+		rect->my_prev->my_next = rect->my_next;
+		rect->my_next->my_prev = rect->my_prev;
 	}
 
-	rect->next = NULL;
-	rect->prev = NULL;
+	rect->my_next = NULL;
+	rect->my_prev = NULL;
 
 	return true;
 }
@@ -177,7 +174,7 @@ void PG_RectList::Blit(const PG_Rect& rect) {
 	Blit(rect, first());
 }
 
-void PG_RectList::Blit(const PG_Rect& rect, PG_Rect* start, PG_Rect* end) {
+void PG_RectList::Blit(const PG_Rect& rect, PG_Widget* start, PG_Widget* end) {
 	if(start == NULL) {
 		return;
 	}
@@ -190,7 +187,7 @@ void PG_RectList::Blit(const PG_Rect& rect, PG_Rect* start, PG_Rect* end) {
 	SDL_GetClipRect(screen, &o);
 
 	// blit all objects in the list
-	for(PG_Widget* i = static_cast<PG_Widget*>(start); i != end; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = start; i != end; i = i->next()) {
 
 		if(!i->IsVisible() || i->IsHidden()) {
 			continue;
@@ -222,7 +219,7 @@ void PG_RectList::Blit(const PG_Rect& rect, PG_Rect* start, PG_Rect* end) {
 
 void PG_RectList::Blit() {
 	// blit all objects in the list
-	for(PG_Widget* i = static_cast<PG_Widget*>(first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = first(); i != NULL; i = i->next()) {
 		if(!i->IsVisible() || i->IsHidden()) {
 			continue;
 		}
@@ -250,7 +247,7 @@ bool PG_RectList::SendToBack(PG_Widget* rect) {
 }
 
 PG_Widget* PG_RectList::Find(int id) {
-	for(PG_Widget* i = static_cast<PG_Widget*>(first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = first(); i != NULL; i = i->next()) {
 		if(i->GetID() == id) {
 			return i;
 		}
@@ -259,7 +256,7 @@ PG_Widget* PG_RectList::Find(int id) {
 }
 
 PG_Widget* PG_RectList::Find(const char* name) {
-	for(PG_Widget* i = static_cast<PG_Widget*>(first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = first(); i != NULL; i = i->next()) {
 		if(strcmp(i->GetName(), name) == 0) {
 			return i;
 		}

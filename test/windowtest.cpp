@@ -57,7 +57,7 @@ int main(int argc,char *argv[])
 		"Ok",
 		PG_Label::CENTER);
 		
-	PG_DropDown* drop = new PG_DropDown(msgbox, 15, PG_Rect(5, 60, 200,25));
+	PG_DropDown* drop = new PG_DropDown(msgbox, PG_Rect(5, 60, 200,25));
 	drop->SetIndent(5);
 	drop->AddItem("Under construction");
 	drop->AddItem("Item 1");

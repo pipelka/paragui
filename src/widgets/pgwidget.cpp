@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/02/21 13:58:06 $
+   Update Date:      $Date: 2004/02/28 18:49:06 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.8 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.9 $
    Status:           $State: Exp $
  */
 
@@ -46,6 +46,8 @@
 */
 #define PG_MIN(a, b)	((a<b) ? a : b)
 
+#define TXT_HEIGHT_UNDEF 0xFFFF
+
 
 bool PG_Widget::bBulkUpdate = false;
 PG_RectList PG_Widget::widgetList;
@@ -53,84 +55,48 @@ int PG_Widget::my_ObjectCounter = 0;
 
 class PG_WidgetDataInternal {
 public:
-	PG_WidgetDataInternal() {};
-
-	PG_Font* font;
-
-	bool quitModalLoop;
-	bool dirtyUpdate;
-	
-	PG_Widget* widgetParent;
-	PG_RectList* childList;
-
-	char* userdata;
-	int userdatasize;
-
-	PG_Point ptDragStart;
-	PG_Rect rectClip;
-
-	int id;
-	bool mouseInside;
-	int fadeSteps;
-	bool haveTooltip;
-	bool visible;
-	bool firstredraw;
-	Uint8 transparency;
-	bool havesurface;
-
-	Uint16 widthText;
-	Uint16 heightText;
+	PG_WidgetDataInternal() : inDestruct(false), font(NULL), dirtyUpdate(false), id(-1),
+	transparency(0), quitModalLoop(false), visible(false), hidden(false), firstredraw(true),
+	childList(NULL), haveTooltip(false), fadeSteps(10), mouseInside(false), userdata(NULL),
+	userdatasize(0), widthText(TXT_HEIGHT_UNDEF), heightText(TXT_HEIGHT_UNDEF) {};
 
 	bool inDestruct;
+	PG_Font* font;
+	bool dirtyUpdate;
+	int id;
+	Uint8 transparency;
+	bool quitModalLoop;
+	bool visible;
+	bool hidden;
+	bool firstredraw;
+	PG_RectList* childList;
+	bool haveTooltip;
+	int fadeSteps;
+	bool mouseInside;
+	char* userdata;
+	int userdatasize;
+	Uint16 widthText;
+	Uint16 heightText;
+	
+	PG_Widget* widgetParent;
+	PG_Point ptDragStart;
+	PG_Rect rectClip;
+	bool havesurface;
 	string name;
 	
-	bool hidden;
 };
 
-#define TXT_HEIGHT_UNDEF 0xFFFF
-
-PG_Widget::PG_Widget(PG_Widget* parent, const PG_Rect& rect) :
-	PG_Rect(rect),
-	my_srfObject(NULL)
-{
-	InitWidget(parent, false);
-}
-
 PG_Widget::PG_Widget(PG_Widget* parent, const PG_Rect& rect, bool bObjectSurface) :
-	PG_Rect(rect),
-	my_srfObject(NULL)
-{
-	InitWidget(parent, bObjectSurface);
-}
+PG_Rect(rect), my_srfObject(NULL) {
 
-void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
-
-	my_internaldata = new PG_WidgetDataInternal;
+	_mid = new PG_WidgetDataInternal;
 	
-	my_internaldata->inDestruct = false;
-	my_internaldata->font = NULL;
-	my_internaldata->dirtyUpdate = false;
-	my_internaldata->widgetParent = parent;
-	my_internaldata->id = -1;
-	my_internaldata->transparency = 0;
-	my_internaldata->quitModalLoop = false;
-	my_internaldata->visible = false;
-	my_internaldata->hidden = false;
-	my_internaldata->firstredraw = true;
-	my_internaldata->childList = NULL;
-	my_internaldata->haveTooltip = false;
-	my_internaldata->fadeSteps = 10;
-	my_internaldata->mouseInside = false;
-	my_internaldata->userdata = NULL;
-	my_internaldata->userdatasize = 0;
-	my_internaldata->widthText = TXT_HEIGHT_UNDEF;
-	my_internaldata->heightText = TXT_HEIGHT_UNDEF;
-
-	my_internaldata->havesurface = bObjectSurface;
+	_mid->widgetParent = NULL;
+	_mid->havesurface = bObjectSurface;
 
 	//Set default font
 	if(PG_Application::DefaultFont != NULL) {
-		my_internaldata->font = new PG_Font(
+		_mid->font = new PG_Font(
 					PG_Application::DefaultFont->GetName(),
 					PG_Application::DefaultFont->GetSize());
 	}
@@ -138,16 +104,16 @@ void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
 		PG_LogWRN("Unable to get default font! Did you load a theme ?");
 	}
 
-	my_srfScreen = PG_Application::GetScreen();
+	//my_srfScreen = PG_Application::GetScreen();
 
-	if(my_internaldata->havesurface) {
+	if(_mid->havesurface) {
 		my_srfObject = PG_Draw::CreateRGBSurface(w, h);
 	}
 
 	// ??? - How can i do this better - ???
 	char buffer[15];
 	sprintf(buffer, "Object%d", ++my_ObjectCounter);
-	my_internaldata->name = buffer;
+	_mid->name = buffer;
 
 	// default border colors
 	my_colorBorder[0][0].r = 255;
@@ -166,42 +132,40 @@ void PG_Widget::InitWidget(PG_Widget* parent, bool bObjectSurface) {
 	my_colorBorder[1][1].g = 134;
 	my_colorBorder[1][1].b = 134;
 
-	my_text = "";
-
-	if (my_internaldata->widgetParent != NULL) {
-		my_xpos = my_internaldata->widgetParent->my_xpos + my_xpos;
-		my_ypos = my_internaldata->widgetParent->my_ypos + my_ypos;
-		my_internaldata->widgetParent->AddChild(this);
+	if (parent) {
+		//my_xpos = _mid->widgetParent->my_xpos + my_xpos;
+		//my_ypos = _mid->widgetParent->my_ypos + my_ypos;
+		parent->AddChild(this);
 	}
-
-	my_internaldata->rectClip = *this;
-
-	AddToWidgetList();
+	else {
+		AddToWidgetList();
+	}
+	//_mid->rectClip = *this;
 }
 
 void PG_Widget::RemoveAllChilds() {
 
 	// remove all child widgets
-	if(my_internaldata->childList != NULL) {
+	if(_mid->childList != NULL) {
 
-		PG_Rect* i = static_cast<PG_Widget*>(my_internaldata->childList->first());
+		PG_Widget* i = _mid->childList->first();
 		while(i != NULL) {
-			PG_Widget* w = static_cast<PG_Widget*>(i);
-			i = i->next;
+			PG_Widget* w = i;
+			i = i->next();
 
 			RemoveChild(w);
 			delete w;
 		}
-		my_internaldata->childList->clear();
+		_mid->childList->clear();
 	}
 
 }
 
 PG_Widget::~PG_Widget() {
 
-	my_internaldata->inDestruct = true;
+	_mid->inDestruct = true;
 
-	if(!my_internaldata->havesurface && my_srfObject) {
+	if(!_mid->havesurface && my_srfObject) {
 		PG_LogWRN("DrawObject declared without a surface has unexpectedly born one ?");
 	}
 	PG_Application::UnloadSurface(my_srfObject);
@@ -220,18 +184,18 @@ PG_Widget::~PG_Widget() {
 	RemoveFromWidgetList();
 
 	// remove childlist
-	delete my_internaldata->childList;
-	my_internaldata->childList = NULL;
+	delete _mid->childList;
+	_mid->childList = NULL;
 
-	if (my_internaldata->userdata != NULL) {
-		delete[] my_internaldata->userdata;
+	if (_mid->userdata != NULL) {
+		delete[] _mid->userdata;
 	}
 	
 	// remove the font
-	delete my_internaldata->font;
+	delete _mid->font;
 	
 	// remove my private data
-	delete my_internaldata;
+	delete _mid;
 
 	//cout << "Removed widget '" << GetName() << "'" << endl;
 }
@@ -256,24 +220,24 @@ bool PG_Widget::AcceptEvent(const SDL_Event * event) {
 
 	switch (event->type) {
 		case SDL_MOUSEMOTION:
-			if ((event->motion.x < my_internaldata->rectClip.my_xpos) ||
-				(event->motion.x > (my_internaldata->rectClip.my_xpos + my_internaldata->rectClip.my_width - 1))) {
-				if (my_internaldata->mouseInside) {
-					my_internaldata->mouseInside = false;
+			if ((event->motion.x < _mid->rectClip.my_xpos) ||
+				(event->motion.x > (_mid->rectClip.my_xpos + _mid->rectClip.my_width - 1))) {
+				if (_mid->mouseInside) {
+					_mid->mouseInside = false;
 					eventMouseLeave();
 				}
 				return false;
 			}
-			if ((event->motion.y < my_internaldata->rectClip.my_ypos) ||
-				(event->motion.y > (my_internaldata->rectClip.my_ypos + my_internaldata->rectClip.my_height - 1))) {
-				if (my_internaldata->mouseInside) {
-					my_internaldata->mouseInside = false;
+			if ((event->motion.y < _mid->rectClip.my_ypos) ||
+				(event->motion.y > (_mid->rectClip.my_ypos + _mid->rectClip.my_height - 1))) {
+				if (_mid->mouseInside) {
+					_mid->mouseInside = false;
 					eventMouseLeave();
 				}
 				return false;
 			}
-			if (!my_internaldata->mouseInside) {
-				my_internaldata->mouseInside = true;
+			if (!_mid->mouseInside) {
+				_mid->mouseInside = true;
 				eventMouseEnter();
 				return true;
 			}
@@ -281,12 +245,12 @@ bool PG_Widget::AcceptEvent(const SDL_Event * event) {
 
 		case SDL_MOUSEBUTTONUP:
 		case SDL_MOUSEBUTTONDOWN:
-			if ((event->button.x < my_internaldata->rectClip.my_xpos) ||
-				(event->button.x > (my_internaldata->rectClip.my_xpos + my_internaldata->rectClip.my_width - 1)))
+			if ((event->button.x < _mid->rectClip.my_xpos) ||
+				(event->button.x > (_mid->rectClip.my_xpos + _mid->rectClip.my_width - 1)))
 				return false;
 
-			if ((event->button.y < my_internaldata->rectClip.my_ypos) ||
-				(event->button.y > (my_internaldata->rectClip.my_ypos + my_internaldata->rectClip.my_height - 1)))
+			if ((event->button.y < _mid->rectClip.my_ypos) ||
+				(event->button.y > (_mid->rectClip.my_ypos + _mid->rectClip.my_height - 1)))
 				return false;
 
 			break;
@@ -302,7 +266,7 @@ void PG_Widget::eventMouseEnter() {}
 
 /**  */
 void PG_Widget::eventMouseLeave() {
-	my_internaldata->mouseInside = false;
+	_mid->mouseInside = false;
 
 	if(GetParent()) {
 		GetParent()->eventMouseLeave();
@@ -337,16 +301,18 @@ void PG_Widget::AddChild(PG_Widget * child) {
 		child->RemoveFromWidgetList();
 	}
 
-	child->my_internaldata->widgetParent = this;
+	child->MoveRect(child->my_xpos + my_xpos, child->my_ypos + my_ypos);
+	child->_mid->widgetParent = this;
 
-	if (my_internaldata->childList == NULL) {
-		my_internaldata->childList = new PG_RectList;
+	if (_mid->childList == NULL) {
+		_mid->childList = new PG_RectList;
 	}
 
-	my_internaldata->childList->Add(child);
+	_mid->childList->Add(child);
 }
 
-bool PG_Widget::MoveWidget(int x, int y) {
+bool PG_Widget::MoveWidget(int x, int y, bool update) {
+	SDL_Surface* screen = PG_Application::GetScreen();
 
 	if (GetParent() != NULL) {
 		x += GetParent()->my_xpos;
@@ -357,7 +323,7 @@ bool PG_Widget::MoveWidget(int x, int y) {
 		return false;
 	}
 
-	if(!IsVisible()) {
+	if(!IsVisible() || IsHidden() || !update) {
 		MoveRect(x, y);
 		return true;
 	}
@@ -393,48 +359,46 @@ bool PG_Widget::MoveWidget(int x, int y) {
 	// move rectangle and store new background
 	MoveRect(x, y);
 
-	if(vertical.my_xpos + vertical.my_width > my_srfScreen->w) {
-		vertical.my_width = my_srfScreen->w - vertical.my_xpos;
+	if(vertical.my_xpos + vertical.my_width > screen->w) {
+		vertical.my_width = screen->w - vertical.my_xpos;
 	}
-	if(vertical.my_ypos + vertical.my_height > my_srfScreen->h) {
-		vertical.my_height = my_srfScreen->h - vertical.my_ypos;
+	if(vertical.my_ypos + vertical.my_height > screen->h) {
+		vertical.my_height = screen->h - vertical.my_ypos;
 	}
 
-	if(horizontal.my_xpos + horizontal.my_width > my_srfScreen->w) {
-		horizontal.my_width = my_srfScreen->w- horizontal.my_xpos;
+	if(horizontal.my_xpos + horizontal.my_width > screen->w) {
+		horizontal.my_width = screen->w- horizontal.my_xpos;
 	}
-	if(horizontal.my_ypos + horizontal.my_height > my_srfScreen->h) {
-		horizontal.my_height = my_srfScreen->h - horizontal.my_ypos;
+	if(horizontal.my_ypos + horizontal.my_height > screen->h) {
+		horizontal.my_height = screen->h - horizontal.my_ypos;
 	}
 
 	if(!PG_Application::GetBulkMode()) {
 		UpdateRect(vertical);
 		UpdateRect(horizontal);
-		UpdateRect(my_internaldata->rectClip);
+		UpdateRect(_mid->rectClip);
 		PG_Application::LockScreen();
-		SDL_Rect rects[3] = {my_internaldata->rectClip, vertical, horizontal};
-		SDL_UpdateRects(my_srfScreen, 3, rects);
+		SDL_Rect rects[3] = {_mid->rectClip, vertical, horizontal};
+		SDL_UpdateRects(screen, 3, rects);
 		PG_Application::UnlockScreen();
 	}
 
 	return true;
 }
 
-bool PG_Widget::MoveWidget(const PG_Rect& r) {
-	MoveWidget(r.x, r.y);
-	SizeWidget(r.w, r.h);
+bool PG_Widget::MoveWidget(const PG_Rect& r, bool update) {
+	SizeWidget(r.w, r.h, update);
+	MoveWidget(r.x, r.y, update);
+
 	return true;
 }
 
-bool PG_Widget::SizeWidget(Uint16 w, Uint16 h) {
-	bool v = IsVisible();
+bool PG_Widget::SizeWidget(Uint16 w, Uint16 h, bool update) {
+	Uint16 old_w = my_width;
+	Uint16 old_h = my_height;
 
-	if (v) {
-		SetVisible(false);
-	}
-
-	if (my_internaldata->firstredraw != true) {
-		RestoreBackground();
+	if(my_width == w && my_height == h) {
+		return false;
 	}
 
 	// create new widget drawsurface
@@ -449,17 +413,36 @@ bool PG_Widget::SizeWidget(Uint16 w, Uint16 h) {
 		}
 	}
 
-	eventSizeWindow(w, h);
 	eventSizeWidget(w, h);
 
 	my_width = w;
 	my_height = h;
 
-	if (v) {
-		SetVisible(true);
+	if(!IsVisible() || IsHidden() || !update) {
+		return true;
 	}
+
+	if(my_srfObject) {
+		Redraw();
+	}
+	else {
+		if(old_w > w || old_h > h) {
+			PG_Rect u(
+					my_xpos,
+					my_ypos,
+					(old_w > w) ? old_w : w,
+					(old_h > h) ? old_h : h);
+			UpdateRect(u);
+			SDL_UpdateRects(PG_Application::GetScreen(), 1, &u);
+		}
+		else {
+			Update();
+		}
+	}
+
 	return true;
 }
+
 /**  */
 bool PG_Widget::ProcessEvent(const SDL_Event * event, bool bModal) {
 
@@ -468,12 +451,12 @@ bool PG_Widget::ProcessEvent(const SDL_Event * event, bool bModal) {
 	if(bModal) {
 		// i will send that event to my children
 
-		if(my_internaldata->childList != NULL) {
-			PG_Widget* list = static_cast<PG_Widget*>(my_internaldata->childList->first());
+		if(_mid->childList != NULL) {
+			PG_Widget* list = _mid->childList->first();
 
 			while (!processed && (list != NULL)) {
 				processed = list->ProcessEvent(event, true);
-				list = static_cast<PG_Widget*>(list->next);
+				list = list->next();
 			}
 		}
 
@@ -504,11 +487,16 @@ bool PG_Widget::ProcessEvent(const SDL_Event * event, bool bModal) {
 }
 
 bool PG_Widget::RemoveChild(PG_Widget * child) {
-	if(my_internaldata->childList == NULL || child == NULL) {
+	if(_mid->childList == NULL || child == NULL) {
 		return false;
 	}
 
-	return my_internaldata->childList->Remove(child);
+	if(_mid->childList->Remove(child)) {
+		child->MoveRect(child->my_xpos - my_xpos, child->my_ypos - my_ypos);
+		return true;
+	}
+
+	return false;
 }
 
 bool PG_Widget::IsMouseInside() {
@@ -518,9 +506,9 @@ bool PG_Widget::IsMouseInside() {
 	SDL_GetMouseState(&x, &y);
 	p.x = static_cast<Sint16>(x);
 	p.y = static_cast<Sint16>(y);
-	my_internaldata->mouseInside = IsInside(p);
+	_mid->mouseInside = IsInside(p);
 
-	return my_internaldata->mouseInside;
+	return _mid->mouseInside;
 }
 
 /**  */
@@ -531,8 +519,8 @@ bool PG_Widget::Redraw(bool update) {
 		eventDraw(my_srfObject, r);
 	}
 
-	if(my_internaldata->childList != NULL) {
-		for(PG_Widget* i = static_cast<PG_Widget*>(my_internaldata->childList->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	if(_mid->childList != NULL) {
+		for(PG_Widget* i = _mid->childList->first(); i != NULL; i = i->next()) {
 			i->Redraw(false);
 		}
 	}
@@ -551,13 +539,13 @@ void PG_Widget::SetVisible(bool visible) {
 	
 	// Attempt to make object visible
 	if(visible) {
-		if(my_internaldata->visible) {			// Object already visible
+		if(_mid->visible) {			// Object already visible
 			return;
 		} else {					// Display object
-			my_internaldata->visible = visible;
-			if(my_internaldata->firstredraw) {
+			_mid->visible = visible;
+			if(_mid->firstredraw) {
 				Redraw(false);
-				my_internaldata->firstredraw = false;
+				_mid->firstredraw = false;
 			}
 		}
 
@@ -565,16 +553,16 @@ void PG_Widget::SetVisible(bool visible) {
 
 	// Attempt to make object invisible
 	if(!visible) {
-		if(!my_internaldata->visible) {			// Object is already invisible
+		if(!_mid->visible) {			// Object is already invisible
 			return;
 		} else {					// Hide object
 			RestoreBackground();
-			my_internaldata->visible = visible;
+			_mid->visible = visible;
 		}
 	}
 
-	if(my_internaldata->childList != NULL) {
-		for(PG_Widget* i = static_cast<PG_Widget*>(my_internaldata->childList->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	if(_mid->childList != NULL) {
+		for(PG_Widget* i = _mid->childList->first(); i != NULL; i = i->next()) {
 			i->SetVisible(visible);
 			if(!i->IsHidden()) {
 				if(visible) {
@@ -615,7 +603,7 @@ void PG_Widget::Show(bool fade) {
 		eventMouseEnter();
 	}
 
-	SDL_SetClipRect(my_srfScreen, NULL);
+	//SDL_SetClipRect(my_srfScreen, NULL);
 	Update();
 
 	return;
@@ -623,6 +611,7 @@ void PG_Widget::Show(bool fade) {
 
 /**  */
 void PG_Widget::Hide(bool fade) {
+	SDL_Surface* screen = PG_Application::GetScreen();
 
 	if(!IsVisible()) {
 		SetHidden(true);
@@ -632,7 +621,7 @@ void PG_Widget::Hide(bool fade) {
 
 	RecalcClipRect();
 
-	if(!my_internaldata->inDestruct) {
+	if(!_mid->inDestruct) {
 		eventMouseLeave();
 	}
 
@@ -646,16 +635,16 @@ void PG_Widget::Hide(bool fade) {
 	ReleaseCapture();
 	ReleaseInputFocus();
 
-	SDL_SetClipRect(my_srfScreen, NULL);
+	SDL_SetClipRect(screen, NULL);
 
 	if(!PG_Application::GetBulkMode()) {
 		//RestoreBackground();
-		UpdateRect(my_internaldata->rectClip);
+		UpdateRect(_mid->rectClip);
 	}
 
 	if(!PG_Application::GetBulkMode()) {
 		PG_Application::LockScreen();
-		SDL_UpdateRects(my_srfScreen, 1, &my_internaldata->rectClip);
+		SDL_UpdateRects(screen, 1, &_mid->rectClip);
 		PG_Application::UnlockScreen();
 	}
 
@@ -674,27 +663,24 @@ void PG_Widget::MoveRect(int x, int y) {
 
 	my_xpos = x;
 	my_ypos = y;
-	my_internaldata->rectClip.my_xpos += dx;
-	my_internaldata->rectClip.my_ypos += dy;
+	_mid->rectClip.my_xpos += dx;
+	_mid->rectClip.my_ypos += dy;
 
 	// recalc cliprect
 	RecalcClipRect();
 
-	if(my_internaldata->childList != NULL) {
-		for(PG_Widget* i = static_cast<PG_Widget*>(my_internaldata->childList->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	if(_mid->childList != NULL) {
+		for(PG_Widget* i = _mid->childList->first(); i != NULL; i = i->next()) {
 			i->MoveRect(i->my_xpos + dx, i->my_ypos + dy);
 		}
 	}
 
-	eventMoveWindow(x, y);
 	eventMoveWidget(x, y);
 }
 
 void PG_Widget::Blit(bool recursive, bool restore) {
-	static PG_Rect src;
-	static PG_Rect dst;
 	
-	if(!my_internaldata->visible || my_internaldata->hidden) {
+	if(!_mid->visible || _mid->hidden) {
 		return;
 	}
 
@@ -702,20 +688,22 @@ void PG_Widget::Blit(bool recursive, bool restore) {
 	RecalcClipRect();
 
 	// don't draw a null rect
-	if(my_internaldata->rectClip.w == 0 || my_internaldata->rectClip.h == 0) {
+	if(_mid->rectClip.w == 0 || _mid->rectClip.h == 0) {
 		return;
 	}
 
+	PG_Rect src;
+	PG_Rect dst;
 	PG_Application::LockScreen();
 
 	// restore the background
 	if(restore) {
-		RestoreBackground(&my_internaldata->rectClip);
+		RestoreBackground(&_mid->rectClip);
 	}
 
 	// get source & destination rectangles
-	src.SetRect(my_internaldata->rectClip.x - my_xpos, my_internaldata->rectClip.y - my_ypos, my_internaldata->rectClip.w, my_internaldata->rectClip.h);
-	dst = my_internaldata->rectClip;
+	src.SetRect(_mid->rectClip.x - my_xpos, _mid->rectClip.y - my_ypos, _mid->rectClip.w, _mid->rectClip.h);
+	dst = _mid->rectClip;
 
 	// call the blit handler
 	eventBlit(my_srfObject, src, dst);
@@ -723,8 +711,8 @@ void PG_Widget::Blit(bool recursive, bool restore) {
 	// should we draw our children
 	if(recursive) {
 		// draw the children-list
-		if(my_internaldata->childList != NULL) {
-			my_internaldata->childList->Blit(my_internaldata->rectClip);
+		if(_mid->childList != NULL) {
+			_mid->childList->Blit(_mid->rectClip);
 		}
 	}
 	
@@ -740,14 +728,14 @@ void PG_Widget::Update(bool doBlit) {
 		return;
 	}
 
-	if(!my_internaldata->visible || my_internaldata->hidden) {
+	if(!_mid->visible || _mid->hidden) {
 		return;
 	}
 
 	// recalc cliprect
 	RecalcClipRect();
 
-	if(my_internaldata->rectClip.w == 0 || my_internaldata->rectClip.h == 0) {
+	if(_mid->rectClip.w == 0 || _mid->rectClip.h == 0) {
 		return;
 	}
 
@@ -756,29 +744,29 @@ void PG_Widget::Update(bool doBlit) {
 	// BLIT
 	if(doBlit) {
 
-		SDL_SetClipRect(my_srfScreen, &my_internaldata->rectClip);
-		RestoreBackground(&my_internaldata->rectClip);
+		SDL_SetClipRect(PG_Application::GetScreen(), &_mid->rectClip);
+		RestoreBackground(&_mid->rectClip);
 
-		src.SetRect(my_internaldata->rectClip.x - my_xpos, my_internaldata->rectClip.y - my_ypos, my_internaldata->rectClip.w, my_internaldata->rectClip.h);
-		dst = my_internaldata->rectClip;
+		src.SetRect(_mid->rectClip.x - my_xpos, _mid->rectClip.y - my_ypos, _mid->rectClip.w, _mid->rectClip.h);
+		dst = _mid->rectClip;
 
 		eventBlit(my_srfObject, src, dst);
 
-		if(my_internaldata->childList != NULL) {
-			my_internaldata->childList->Blit(my_internaldata->rectClip);
+		if(_mid->childList != NULL) {
+			_mid->childList->Blit(_mid->rectClip);
 		}
 
 		// check if other children of my parent overlap myself
 		if(GetParent() != NULL) {
 			PG_RectList* children = GetParent()->GetChildList();
 			if(children) {
-				children->Blit(my_internaldata->rectClip, this->next);
+				children->Blit(_mid->rectClip, this->next());
 			}
 		}
 
 		// find the toplevel widget
 		PG_Widget* obj = GetToplevelWidget();
-		widgetList.Blit(my_internaldata->rectClip, obj->next);
+		widgetList.Blit(_mid->rectClip, obj->next());
 
 	}
 
@@ -787,19 +775,19 @@ void PG_Widget::Update(bool doBlit) {
 	PG_LogDBG("UPD: x:%d y:%d w:%d h:%d",dst.x,dst.y,dst.w,dst.h);
 #endif // DEBUG
 	
-	SDL_UpdateRects(my_srfScreen, 1, &my_internaldata->rectClip);
+	SDL_UpdateRects(PG_Application::GetScreen(), 1, &_mid->rectClip);
 
-	SDL_SetClipRect(my_srfScreen, NULL);
+	SDL_SetClipRect(PG_Application::GetScreen(), NULL);
 	PG_Application::UnlockScreen();
 }
 
 /**  */
 void PG_Widget::SetChildTransparency(Uint8 t) {
-	if(my_internaldata->childList == NULL) {
+	if(_mid->childList == NULL) {
 		return;
 	}
 
-	for(PG_Widget* i = static_cast<PG_Widget*>(my_internaldata->childList->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = _mid->childList->first(); i != NULL; i = i->next()) {
 		i->SetTransparency(t);
 	}
 	Update();
@@ -809,38 +797,38 @@ void PG_Widget::StartWidgetDrag() {
 	int x, y;
 	
 	SDL_GetMouseState(&x, &y);
-	my_internaldata->ptDragStart.x = static_cast<Sint16>(x);
-	my_internaldata->ptDragStart.y = static_cast<Sint16>(y);
+	_mid->ptDragStart.x = static_cast<Sint16>(x);
+	_mid->ptDragStart.y = static_cast<Sint16>(y);
 	
-	my_internaldata->ptDragStart.x -= my_xpos;
-	my_internaldata->ptDragStart.y -= my_ypos;
+	_mid->ptDragStart.x -= my_xpos;
+	_mid->ptDragStart.y -= my_ypos;
 }
 
 void PG_Widget::WidgetDrag(int x, int y) {
 
-	x -= my_internaldata->ptDragStart.x;
-	y -= my_internaldata->ptDragStart.y;
+	x -= _mid->ptDragStart.x;
+	y -= _mid->ptDragStart.y;
 
 	if(x < 0)
 		x=0;
 	if(y < 0)
 		y=0;
-	if(x > (my_srfScreen->w - my_width -1))
-		x = (my_srfScreen->w - my_width -1);
-	if(y > (my_srfScreen->h - my_height -1))
-		y = (my_srfScreen->h - my_height -1);
+	if(x > (PG_Application::GetScreenWidth() - my_width -1))
+		x = (PG_Application::GetScreenWidth() - my_width -1);
+	if(y > (PG_Application::GetScreenHeight() - my_height -1))
+		y = (PG_Application::GetScreenHeight() - my_height -1);
 
 	MoveWidget(x,y);
 }
 
 void PG_Widget::EndWidgetDrag(int x, int y) {
 	WidgetDrag(x,y);
-	my_internaldata->ptDragStart.x = 0;
-	my_internaldata->ptDragStart.y = 0;
+	_mid->ptDragStart.x = 0;
+	_mid->ptDragStart.y = 0;
 }
 
 void PG_Widget::HideAll() {
-	for(PG_Widget* i = static_cast<PG_Widget*>(widgetList.first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = widgetList.first(); i != NULL; i = i->next()) {
 		i->Hide();
 	}
 }
@@ -848,7 +836,7 @@ void PG_Widget::HideAll() {
 void PG_Widget::BulkUpdate() {
 	bBulkUpdate = true;
 
-	for(PG_Widget* i = static_cast<PG_Widget*>(widgetList.first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = widgetList.first(); i != NULL; i = i->next()) {
 		if(i->IsVisible()) {
 			i->Update();
 		}
@@ -899,27 +887,28 @@ void PG_Widget::FadeOut() {
 
 	// create a temp surface
 	SDL_Surface* srfFade = PG_Draw::CreateRGBSurface(my_width, my_height);
+	SDL_Surface* screen = PG_Application::GetScreen();
 
 	// blit the widget to temp surface
-	PG_Draw::BlitSurface(my_srfScreen, *this, srfFade, r);
+	PG_Draw::BlitSurface(screen, *this, srfFade, r);
 
-	int d = (255-my_internaldata->transparency)/ my_internaldata->fadeSteps;
+	int d = (255-_mid->transparency)/ _mid->fadeSteps;
 	if(!d) {
 		d = 1;
 	} // minimum step == 1
 	
 	PG_Application::LockScreen();
 	
-	for(int i=my_internaldata->transparency; i<255; i += d) {
+	for(int i=_mid->transparency; i<255; i += d) {
 		RestoreBackground(NULL, true);
 		SDL_SetAlpha(srfFade, SDL_SRCALPHA, 255-i);
-		SDL_BlitSurface(srfFade, NULL, my_srfScreen, this);
-		SDL_UpdateRects(my_srfScreen, 1, &my_internaldata->rectClip);
+		SDL_BlitSurface(srfFade, NULL, screen, this);
+		SDL_UpdateRects(screen, 1, &_mid->rectClip);
 	}
 
 	RestoreBackground(NULL, true);
 	SDL_SetAlpha(srfFade, SDL_SRCALPHA, 0);
-	SDL_BlitSurface(srfFade, NULL, my_srfScreen, this);
+	SDL_BlitSurface(srfFade, NULL, screen, this);
 	SetVisible(false);
 	PG_Application::UnlockScreen();
 
@@ -929,9 +918,10 @@ void PG_Widget::FadeOut() {
 }
 
 void PG_Widget::FadeIn() {
+	SDL_Surface* screen = PG_Application::GetScreen();
 
 	// blit the widget to screen (invisible)
-	SDL_SetClipRect(my_srfScreen, NULL);
+	SDL_SetClipRect(screen, NULL);
 	Blit();
 
 	PG_Rect src(
@@ -946,18 +936,18 @@ void PG_Widget::FadeIn() {
 	PG_Application::LockScreen();
 	
 	// blit the widget to temp surface
-	PG_Draw::BlitSurface(my_srfScreen, my_internaldata->rectClip, srfFade, src);
+	PG_Draw::BlitSurface(screen, _mid->rectClip, srfFade, src);
 
-	int d = (255-my_internaldata->transparency)/ my_internaldata->fadeSteps;
+	int d = (255-_mid->transparency)/ _mid->fadeSteps;
 
 	if(!d) {
 		d = 1;
 	} // minimum step == 1
-	for(int i=255; i>my_internaldata->transparency; i -= d) {
+	for(int i=255; i>_mid->transparency; i -= d) {
 		RestoreBackground(NULL, true);
 		SDL_SetAlpha(srfFade, SDL_SRCALPHA, 255-i);
-		PG_Draw::BlitSurface(srfFade, src, my_srfScreen, my_internaldata->rectClip);
-		SDL_UpdateRects(my_srfScreen, 1, &my_internaldata->rectClip);
+		PG_Draw::BlitSurface(srfFade, src, screen, _mid->rectClip);
+		SDL_UpdateRects(screen, 1, &_mid->rectClip);
 	}
 
 	PG_Application::UnlockScreen();
@@ -968,7 +958,7 @@ void PG_Widget::FadeIn() {
 }
 
 void PG_Widget::SetFadeSteps(int steps) {
-	my_internaldata->fadeSteps = steps;
+	_mid->fadeSteps = steps;
 }
 
 bool PG_Widget::Action(KeyAction action) {
@@ -1005,7 +995,7 @@ bool PG_Widget::Action(KeyAction action) {
 
 bool PG_Widget::RestoreBackground(PG_Rect* clip, bool force) {
 
-	if(my_internaldata->dirtyUpdate && (my_internaldata->transparency == 0) && !force) {
+	if(_mid->dirtyUpdate && (_mid->transparency == 0) && !force) {
 		return false;
 	}
 	
@@ -1014,21 +1004,21 @@ bool PG_Widget::RestoreBackground(PG_Rect* clip, bool force) {
 	}
 
 	if(clip == NULL) {
-		clip = &my_internaldata->rectClip;
+		clip = &_mid->rectClip;
 	}
 
 	if(GetParent() == NULL) {
 		PG_Application::RedrawBackground(*clip);
 
 		if(widgetList.first() != this) {
-			SDL_SetClipRect(my_srfScreen, clip);
+			SDL_SetClipRect(PG_Application::GetScreen(), clip);
 			widgetList.Blit(*clip, widgetList.first(), this);
 		}
 		return true;
 	}
 
 	GetParent()->RestoreBackground(clip);
-	SDL_SetClipRect(my_srfScreen, clip);
+	SDL_SetClipRect(PG_Application::GetScreen(), clip);
 	GetParent()->Blit(false, false);
 
 	return true;
@@ -1133,10 +1123,10 @@ void PG_Widget::BringToFront() {
 }
 
 void PG_Widget::RecalcClipRect() {
-	static PG_Rect pr;
+	PG_Rect pr;
 
-	if (my_internaldata->widgetParent != NULL) {
-		pr = *(my_internaldata->widgetParent->GetClipRect());
+	if (_mid->widgetParent != NULL) {
+		pr = *(_mid->widgetParent->GetClipRect());
 	} else {
 		pr.SetRect(
 		    0,
@@ -1169,32 +1159,32 @@ bool PG_Widget::LoadLayout(const char *name, void (* WorkCallback)(int now, int 
 }
 
 void PG_Widget::SetUserData(void *userdata, int size) {
-	my_internaldata->userdata = new char[size];
-	memcpy(my_internaldata->userdata, userdata, size);
-	my_internaldata->userdatasize = size;
+	_mid->userdata = new char[size];
+	memcpy(_mid->userdata, userdata, size);
+	_mid->userdatasize = size;
 }
 
 int PG_Widget::GetUserDataSize() {
-	return my_internaldata->userdatasize;
+	return _mid->userdatasize;
 }
 
 void PG_Widget::GetUserData(void *userdata) {
-	if (my_internaldata->userdata == NULL)
+	if (_mid->userdata == NULL)
 		return;
 		
-	memcpy(userdata, my_internaldata->userdata, my_internaldata->userdatasize);
+	memcpy(userdata, _mid->userdata, _mid->userdatasize);
 }
 
 void PG_Widget::ReleaseUserData() {
-	if (my_internaldata->userdata != NULL)
-		delete[] my_internaldata->userdata;
-	my_internaldata->userdatasize = 0;
+	if (_mid->userdata != NULL)
+		delete[] _mid->userdata;
+	_mid->userdatasize = 0;
 }
 
 void PG_Widget::AddText(const char* text, bool update) {
 	my_text += text;
-	my_internaldata->widthText = TXT_HEIGHT_UNDEF;
-	my_internaldata->heightText = TXT_HEIGHT_UNDEF;
+	_mid->widthText = TXT_HEIGHT_UNDEF;
+	_mid->heightText = TXT_HEIGHT_UNDEF;
 
 	//TO-DO : Optimalize this !!! - because of widget functions overloading SetText()
 	if (update) {
@@ -1204,8 +1194,8 @@ void PG_Widget::AddText(const char* text, bool update) {
 
 void PG_Widget::SetText(const char* text) {
 
-	my_internaldata->widthText = TXT_HEIGHT_UNDEF;
-	my_internaldata->heightText = TXT_HEIGHT_UNDEF;
+	_mid->widthText = TXT_HEIGHT_UNDEF;
+	_mid->heightText = TXT_HEIGHT_UNDEF;
 
 	if(text == NULL) {
 		my_text = "";
@@ -1237,62 +1227,62 @@ void PG_Widget::SetTextFormat(const char* text, ...) {
 }
 
 void PG_Widget::SetFontColor(const PG_Color& Color) {
-	my_internaldata->font->SetColor(Color);
+	_mid->font->SetColor(Color);
 }
 
 void PG_Widget::SetFontAlpha(int Alpha, bool bRecursive) {
-	my_internaldata->font->SetAlpha(Alpha);
+	_mid->font->SetAlpha(Alpha);
 
 	if(!bRecursive || (GetChildList() == NULL)) {
 		return;
 	}
 
-	for(PG_Widget* i = static_cast<PG_Widget*>(GetChildList()->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = GetChildList()->first(); i != NULL; i = i->next()) {
 		i->SetFontAlpha(Alpha, true);
 	}
 }
 
 void PG_Widget::SetFontStyle(PG_Font::Style Style, bool bRecursive) {
-	my_internaldata->font->SetStyle(Style);
+	_mid->font->SetStyle(Style);
 
 	if(!bRecursive || (GetChildList() == NULL)) {
 		return;
 	}
 
-	for(PG_Widget* i = static_cast<PG_Widget*>(GetChildList()->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = GetChildList()->first(); i != NULL; i = i->next()) {
 		i->SetFontStyle(Style, true);
 	}
 }
 
 int PG_Widget::GetFontSize() {
-	return my_internaldata->font->GetSize();
+	return _mid->font->GetSize();
 }
 
 void PG_Widget::SetFontSize(int Size, bool bRecursive) {
-	my_internaldata->font->SetSize(Size);
+	_mid->font->SetSize(Size);
 
 	if(!bRecursive || (GetChildList() == NULL)) {
 		return;
 	}
 
-	for(PG_Widget* i = static_cast<PG_Widget*>(GetChildList()->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = GetChildList()->first(); i != NULL; i = i->next()) {
 		i->SetFontSize(Size, true);
 	}
 
 }
 
 void PG_Widget::SetFontIndex(int Index, bool bRecursive) {
-//	my_internaldata->font->SetIndex(Index);
+//	_mid->font->SetIndex(Index);
 }
 
 void PG_Widget::SetFontName(const char *Name, bool bRecursive) {
-	my_internaldata->font->SetName(Name);
+	_mid->font->SetName(Name);
 
 	if(!bRecursive || (GetChildList() == NULL)) {
 		return;
 	}
 
-	for(PG_Widget* i = static_cast<PG_Widget*>(GetChildList()->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = GetChildList()->first(); i != NULL; i = i->next()) {
 		i->SetFontName(Name, true);
 	}
 
@@ -1306,7 +1296,7 @@ void PG_Widget::SetSizeByText(int Width, int Height, const char *Text) {
 		Text = my_text.c_str();
 	}
 
-	if (!PG_FontEngine::GetTextSize(Text, my_internaldata->font, &w, &h, &baselineY)) {
+	if (!PG_FontEngine::GetTextSize(Text, _mid->font, &w, &h, &baselineY)) {
 		return;
 	}
 
@@ -1328,28 +1318,28 @@ void PG_Widget::SetSizeByText(int Width, int Height, const char *Text) {
 }
 
 void PG_Widget::SetFont(PG_Font* font) {
-	if(my_internaldata->font != NULL) {
-		delete my_internaldata->font;
+	if(_mid->font != NULL) {
+		delete _mid->font;
 	}
 	
-	my_internaldata->font = new PG_Font(font->GetName(), font->GetSize());
+	_mid->font = new PG_Font(font->GetName(), font->GetSize());
 }
 
 void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const char* text) {
 	if(text == NULL) {
-		if(my_internaldata->widthText != TXT_HEIGHT_UNDEF) {
-			w = my_internaldata->widthText;
-			h = my_internaldata->heightText;
+		if(_mid->widthText != TXT_HEIGHT_UNDEF) {
+			w = _mid->widthText;
+			h = _mid->heightText;
 			return;
 		}
 		text = my_text.c_str();
 	}
 
-	GetTextSize(w, h, text, my_internaldata->font);
+	GetTextSize(w, h, text, _mid->font);
 
 	if(text == NULL) {
-		my_internaldata->widthText = w;
-		my_internaldata->heightText = h;
+		_mid->widthText = w;
+		_mid->heightText = h;
 	}
 }
 
@@ -1360,25 +1350,25 @@ void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const char* text, PG_Font* fon
 
 int PG_Widget::GetTextWidth() {
 
-	if(my_internaldata->widthText != TXT_HEIGHT_UNDEF) {
-		return my_internaldata->widthText;
+	if(_mid->widthText != TXT_HEIGHT_UNDEF) {
+		return _mid->widthText;
 	}
 		
-	GetTextSize(my_internaldata->widthText, my_internaldata->heightText);
+	GetTextSize(_mid->widthText, _mid->heightText);
 
-	return my_internaldata->widthText;
+	return _mid->widthText;
 }
 
 int PG_Widget::GetTextHeight() {
-	return my_internaldata->font->GetFontAscender();
+	return _mid->font->GetFontAscender();
 }
 
 void PG_Widget::DrawText(const PG_Rect& rect, const char* text) {
 	if(my_srfObject == NULL) {
-		PG_FontEngine::RenderText(my_srfScreen, my_internaldata->rectClip, my_xpos+ rect.x, my_ypos + rect.y + GetFontAscender(), text, my_internaldata->font);
+		PG_FontEngine::RenderText(PG_Application::GetScreen(), _mid->rectClip, my_xpos+ rect.x, my_ypos + rect.y + GetFontAscender(), text, _mid->font);
 	}
 	else {
-		PG_FontEngine::RenderText(my_srfObject, PG_Rect(0,0,Width(),Height()), rect.x, rect.y + GetFontAscender(), text, my_internaldata->font);
+		PG_FontEngine::RenderText(my_srfObject, PG_Rect(0,0,Width(),Height()), rect.x, rect.y + GetFontAscender(), text, _mid->font);
 	}
 }
 
@@ -1392,11 +1382,11 @@ void PG_Widget::DrawText(int x, int y, const char* text, const PG_Rect& cliprect
 		rect.x += my_xpos;
 		rect.y += my_ypos;
 //		PG_Rect r = this->IntersectRect(rect);
-		PG_FontEngine::RenderText(my_srfScreen, rect, my_xpos + x, my_ypos + y + GetFontAscender(), text, my_internaldata->font);
+		PG_FontEngine::RenderText(PG_Application::GetScreen(), rect, my_xpos + x, my_ypos + y + GetFontAscender(), text, _mid->font);
 	}
 	else {
 //		PG_Rect rect = this->IntersectRect(cliprect);
-		PG_FontEngine::RenderText(my_srfObject, cliprect, x, y + GetFontAscender(), text, my_internaldata->font);
+		PG_FontEngine::RenderText(my_srfObject, cliprect, x, y + GetFontAscender(), text, _mid->font);
 	}
 }
 
@@ -1415,19 +1405,19 @@ void PG_Widget::QuitModal() {
 
 bool PG_Widget::WillQuitModal()
 {
-	return my_internaldata->quitModalLoop;
+	return _mid->quitModalLoop;
 }
 
 void PG_Widget::StopQuitModal() {
-	my_internaldata->quitModalLoop = false;
+	_mid->quitModalLoop = false;
 }
 
 void PG_Widget::RunModal() {
 	SDL_Event event;
-	my_internaldata->quitModalLoop = false;
+	_mid->quitModalLoop = false;
 
 	// run while in modal mode
-	while(!my_internaldata->quitModalLoop) {
+	while(!_mid->quitModalLoop) {
 		SDL_WaitEvent(&event);
 		PG_Application::ClearOldMousePosition();
 		ProcessEvent(&event, true);
@@ -1438,7 +1428,7 @@ void PG_Widget::RunModal() {
 }
 
 bool PG_Widget::eventQuitModal(int id, PG_MessageObject* widget, unsigned long data) {
-	my_internaldata->quitModalLoop = true;
+	_mid->quitModalLoop = true;
 	return true;
 }
 
@@ -1455,7 +1445,7 @@ void PG_Widget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	}
 
 	// Set alpha
-	Uint8 a = 255-my_internaldata->transparency;
+	Uint8 a = 255-_mid->transparency;
 	if(a != 0) {
 		SDL_SetAlpha(srf, SDL_SRCALPHA, a);
 
@@ -1465,7 +1455,7 @@ void PG_Widget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 		PG_LogDBG("DST BLIT: x:%d y:%d w:%d h:%d",dst.x,dst.y,dst.w,dst.h);
 #endif // DEBUG
 
-		PG_Draw::BlitSurface(srf, src, my_srfScreen, dst);
+		PG_Draw::BlitSurface(srf, src, PG_Application::GetScreen(), dst);
 	}
 }
 
@@ -1498,24 +1488,24 @@ void PG_Widget::DrawBorder(const PG_Rect& r, int size, bool up) {
 }
 
 void PG_Widget::SetTransparency(Uint8 t, bool bRecursive) {
-	my_internaldata->transparency = t;
+	_mid->transparency = t;
 
 	if(!bRecursive || (GetChildList() == NULL)) {
 		return;
 	}
 
-	for(PG_Widget* i = static_cast<PG_Widget*>(GetChildList()->first()); i != NULL; i = static_cast<PG_Widget*>(i->next)) {
+	for(PG_Widget* i = GetChildList()->first(); i != NULL; i = i->next()) {
 		i->SetTransparency(t, true);
 	}	
 }
 
 void PG_Widget::SetClipRect(PG_Rect& r) {
-	my_internaldata->rectClip = r;
+	_mid->rectClip = r;
 }
 
 void PG_Widget::GetClipRects(PG_Rect& src, PG_Rect& dst, const PG_Rect& rect) {
 
-	dst = IntersectRect(my_internaldata->rectClip, rect);
+	dst = IntersectRect(_mid->rectClip, rect);
 
 	int dx = dst.my_xpos - rect.my_xpos;
 	int dy = dst.my_ypos - rect.my_ypos;
@@ -1540,8 +1530,8 @@ void PG_Widget::SetPixel(int x, int y, const PG_Color& c) {
 	if(my_srfObject == NULL) {
 		p.x = my_xpos + x;
 		p.y = my_ypos + y;
-		if(my_internaldata->rectClip.IsInside(p)) {
-			PG_Draw::SetPixel(p.x, p.y, c, my_srfScreen);
+		if(_mid->rectClip.IsInside(p)) {
+			PG_Draw::SetPixel(p.x, p.y, c, PG_Application::GetScreen());
 		}
 	} else {
 		PG_Draw::SetPixel(x, y, c, my_srfObject);
@@ -1553,19 +1543,19 @@ void PG_Widget::DrawHLine(int x, int y, int w, const PG_Color& color) {
 	SDL_Surface* surface = my_srfObject;
 	
 	if(my_srfObject == NULL) {
-		surface = my_srfScreen;
+		surface = PG_Application::GetScreen();
 	}
 	
 	x += my_xpos;
 	y += my_ypos;
 
-	if((y < my_internaldata->rectClip.y) || (y >= (my_internaldata->rectClip.y+my_internaldata->rectClip.h))) {
+	if((y < _mid->rectClip.y) || (y >= (_mid->rectClip.y+_mid->rectClip.h))) {
 		return;
 	}
 
 	// clip to widget cliprect
-	int x0 = PG_MAX(x, my_internaldata->rectClip.x);
-	int x1 = PG_MIN(x+w, my_internaldata->rectClip.x+my_internaldata->rectClip.w);
+	int x0 = PG_MAX(x, _mid->rectClip.x);
+	int x1 = PG_MIN(x+w, _mid->rectClip.x+_mid->rectClip.w);
 	Uint32 c = color.MapRGB(surface->format);
 
 	int wl = (x1-x0);
@@ -1588,19 +1578,19 @@ void PG_Widget::DrawVLine(int x, int y, int h, const PG_Color& color) {
 	SDL_Surface* surface = my_srfObject;
 	
 	if(my_srfObject == NULL) {
-		surface = my_srfScreen;
+		surface = PG_Application::GetScreen();
 	}
 	
 	x += my_xpos;
 	y += my_ypos;
 
-	if((x < my_internaldata->rectClip.x) || (x >= (my_internaldata->rectClip.x+my_internaldata->rectClip.w))) {
+	if((x < _mid->rectClip.x) || (x >= (_mid->rectClip.x+_mid->rectClip.w))) {
 		return;
 	}
 	
 	// clip to widget cliprect
-	int y0 = PG_MAX(y, my_internaldata->rectClip.y);
-	int y1 = PG_MIN(y+h, my_internaldata->rectClip.y+my_internaldata->rectClip.h);
+	int y0 = PG_MAX(y, _mid->rectClip.y);
+	int y1 = PG_MIN(y+h, _mid->rectClip.y+_mid->rectClip.h);
 	Uint32 c = color.MapRGB(surface->format);
 
 	int hl = (y1-y0);
@@ -1648,11 +1638,11 @@ void PG_Widget::eventDraw(SDL_Surface* surface, const PG_Rect& rect) {
 void PG_Widget::eventMoveWidget(int x, int y) {
 }
 
-void PG_Widget::eventMoveWindow(int x, int y) {
-}
+/*void PG_Widget::eventMoveWindow(int x, int y) {
+}*/
 
-void PG_Widget::eventSizeWindow(Uint16 w, Uint16 h) {
-}
+/*void PG_Widget::eventSizeWindow(Uint16 w, Uint16 h) {
+}*/
 
 void PG_Widget::eventSizeWidget(Uint16 w, Uint16 h) {
 }
@@ -1661,48 +1651,42 @@ SDL_Surface* PG_Widget::GetWidgetSurface() {
 	return my_srfObject;
 }
 
-SDL_Surface* PG_Widget::GetScreenSurface() {
+/*SDL_Surface* PG_Widget::GetScreenSurface() {
 	return my_srfScreen;
-}
+}*/
 
 bool PG_Widget::IsVisible() {
-	return my_internaldata->visible;
+	return _mid->visible;
 }
 
 PG_Widget* PG_Widget::GetParent() {
-	if(my_internaldata == NULL) {
-		return NULL;
-	}
-	return my_internaldata->widgetParent;
+	return _mid->widgetParent;
 }
 
 int PG_Widget::GetID() {
-	if(my_internaldata == NULL) {
-		return -1;
-	}
-	return my_internaldata->id;
+	return _mid->id;
 }
 
 PG_Widget* PG_Widget::FindChild(int id) {
-	if(my_internaldata->childList == NULL) {
+	if(_mid->childList == NULL) {
 		return NULL;
 	}
-	return my_internaldata->childList->Find(id);
+	return _mid->childList->Find(id);
 }
 
 PG_Widget* PG_Widget::FindChild(const char *name) {
-	if(my_internaldata->childList == NULL) {
+	if(_mid->childList == NULL) {
 		return NULL;
 	}
-	return my_internaldata->childList->Find(name);
+	return _mid->childList->Find(name);
 }
 
 PG_RectList* PG_Widget::GetChildList() {
-	return my_internaldata->childList;
+	return _mid->childList;
 }
 
 int PG_Widget::GetChildCount() {
-	return my_internaldata->childList ? my_internaldata->childList->size() : 0;
+	return _mid->childList ? _mid->childList->size() : 0;
 }
 
 PG_RectList* PG_Widget::GetWidgetList() {
@@ -1710,39 +1694,40 @@ PG_RectList* PG_Widget::GetWidgetList() {
 }
 
 void PG_Widget::SetName(const char *name) {
-	my_internaldata->name = name;
+	_mid->name = name;
 }
 
 const char* PG_Widget::GetName() {
-	return my_internaldata->name.c_str();
+	return _mid->name.c_str();
 }
 
 int PG_Widget::GetFontAscender() {
-	return my_internaldata->font->GetFontAscender();
+	return _mid->font->GetFontAscender();
 }
 
 int PG_Widget::GetFontHeight() {
-	return my_internaldata->font->GetFontHeight();
+	return _mid->font->GetFontHeight();
 }
 
 PG_Color PG_Widget::GetFontColor() {
-	return my_internaldata->font->GetColor();
+	return _mid->font->GetColor();
 }
 
 PG_Font* PG_Widget::GetFont() {
-	return my_internaldata->font;
+	return _mid->font;
 }
 
 Uint8 PG_Widget::GetTransparency() {
-	return my_internaldata->transparency;
+	return _mid->transparency;
 }
 
 PG_Rect* PG_Widget::GetClipRect() {
-	return &my_internaldata->rectClip;
+	RecalcClipRect();
+	return &_mid->rectClip;
 }
 
 bool PG_Widget::IsClippingEnabled() {
-	return ((my_internaldata->rectClip.my_width != my_width) || (my_internaldata->rectClip.my_height != my_height));
+	return ((_mid->rectClip.my_width != my_width) || (_mid->rectClip.my_height != my_height));
 }
 
 void PG_Widget::GetClipRects(PG_Rect& src, PG_Rect& dst) {
@@ -1750,27 +1735,31 @@ void PG_Widget::GetClipRects(PG_Rect& src, PG_Rect& dst) {
 }
 
 void PG_Widget::SetID(int id) {
-	my_internaldata->id = id;
+	_mid->id = id;
 }
 
 void PG_Widget::SetDirtyUpdate(bool bDirtyUpdate) {
 	if(PG_Application::GetDirtyUpdatesDisabled()) {
-		my_internaldata->dirtyUpdate = false;
+		_mid->dirtyUpdate = false;
 		return;
 	}
 	
-	my_internaldata->dirtyUpdate = bDirtyUpdate;
+	_mid->dirtyUpdate = bDirtyUpdate;
 }
 
 bool PG_Widget::GetDirtyUpdate() {
-	return my_internaldata->dirtyUpdate;
+	return _mid->dirtyUpdate;
 }
 
 void PG_Widget::SetHidden(bool hidden) {
-	my_internaldata->hidden = hidden;
+	_mid->hidden = hidden;
 }
 
 	
 bool PG_Widget::IsHidden() {
-	return my_internaldata->hidden;
+	return _mid->hidden;
+}
+
+void PG_Widget::SetParent(PG_Widget* parent) {
+	_mid->widgetParent = parent;
 }

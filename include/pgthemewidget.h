@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.8 $
     Status:           $State: Exp $
 */
 
@@ -88,7 +88,7 @@ public:
 	This constructor creates a themed widget without any drawing surface.
 	All drawing operations can be done via the eventBlit() callback handler.
 	*/
-	PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, const char* style="ThemeWidget");	
+	PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="ThemeWidget");	
 
 	/**
 	Create a new PG_ThemeWidget object

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/02/07 10:01:32 $
+   Update Date:      $Date: 2004/02/28 18:49:06 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.4 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.5 $
    Status:           $State: Exp $
  */
 
@@ -466,7 +466,7 @@ void PG_PopupMenu::liberate() {
 }
 
 void PG_PopupMenu::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {
-	SDL_Surface* surface = my_srfScreen;
+	SDL_Surface* surface = PG_Application::GetScreen();
 	PG_ThemeWidget::eventBlit(srf, src, dst);
 
 	if (!myCaption.empty()) {

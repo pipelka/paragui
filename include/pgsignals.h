@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:53 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsignals.h,v $
-    CVS/RCS Revision: $Revision: 1.8.2.1 $
+    CVS/RCS Revision: $Revision: 1.8.2.2 $
     Status:           $State: Exp $
 */
 
@@ -32,8 +32,10 @@
 #include <sigc++/sigc++.h>
 #include "pgsigconvert.h"
 
+#ifndef DOXYGEN_SKIP
 using namespace SigC;
 using namespace SigCX;
+#endif // DOXYGEN_SKIP
 
 typedef void* PG_Pointer;
 

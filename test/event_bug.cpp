@@ -16,7 +16,7 @@ class MyDialog : public PG_Window {
 
 MyDialog::MyDialog() : PG_Window(0, PG_Rect(0, 0, 200, 200), "test", MODAL) {
         e = new PG_LineEdit(this, PG_Rect(0, 25, 200, 20));
-        ok = new PG_Button(this, 0, PG_Rect(10, 100, 180, 20));
+        ok = new PG_Button(this, PG_Rect(10, 100, 180, 20));
 
         ok->sigClick.connect(slot(*this, &MyDialog::ok_clicked));
 }

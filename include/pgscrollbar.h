@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:01:03 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -104,7 +104,7 @@ public:
 	template<class datatype> class SignalScrollTrack : public PG_Signal2<PG_ScrollBar*, datatype> {};
 
 	/**  */
-	PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, ScrollDirection direction = VERTICAL, const char* style="Scrollbar");
+	PG_ScrollBar(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, ScrollDirection direction = VERTICAL, int id = -1, const char* style="Scrollbar");
 
 	/**  */
 	virtual ~PG_ScrollBar();

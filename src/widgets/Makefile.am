@@ -17,7 +17,6 @@ libpgwidgets_la_SOURCES = \
 	pgpopupmenu.cpp \
 	pgprogressbar.cpp \
 	pgradiobutton.cpp \
-	pgrichedit.cpp \
 	pgscrollbar.cpp \
 	pgslider.cpp \
 	pgspinnerbox.cpp \
@@ -27,6 +26,8 @@ libpgwidgets_la_SOURCES = \
 	pgwidgetlist.cpp \
 	pgwidgetlistex.cpp \
 	pgwindow.cpp \
+	pgrichedit.cpp \
+	pgscrollarea.cpp \
 	pgmenubar.cpp
 
 libpgwidgets_la_LIBADD = \

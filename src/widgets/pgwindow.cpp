@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/19 16:50:11 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.7 $
     Status:           $State: Exp $
 */
 
@@ -38,18 +38,18 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext
 	my_showCloseButton = flags & PG_Window::SHOW_CLOSE;
 	my_showMinimizeButton = flags & PG_Window::SHOW_MINIMIZE;
 
-	PG_Rect rb;
-
 	my_titlebar = new PG_ThemeWidget(this, PG_Rect(0, 0, my_width, my_heightTitlebar), style);
 	my_titlebar->EnableReceiver(false);
 
-	my_labelTitle = new PG_Label(my_titlebar, PG_Rect(0, 0, my_width, my_heightTitlebar), windowtext, style);
+	my_labelTitle = new PG_Label(my_titlebar, PG_Rect(my_heightTitlebar, 0, my_width - my_heightTitlebar*2, my_heightTitlebar), windowtext, style);
 	my_labelTitle->SetAlignment(PG_Label::CENTER);
 
-	my_buttonClose = new PG_Button(my_titlebar, IDWINDOW_CLOSE, rb, NULL);
+	my_buttonClose = new PG_Button(my_titlebar);
+	my_buttonClose->SetID(IDWINDOW_CLOSE);
 	my_buttonClose->sigClick.connect(slot(*this, &PG_Window::handleButtonClick));
 	
-	my_buttonMinimize = new PG_Button(my_titlebar, IDWINDOW_MINIMIZE, rb, NULL);
+	my_buttonMinimize = new PG_Button(my_titlebar);
+	my_buttonMinimize->SetID(IDWINDOW_MINIMIZE);
 	my_buttonMinimize->sigClick.connect(slot(*this, &PG_Window::handleButtonClick));
 
 	LoadThemeStyle(style);
@@ -68,12 +68,6 @@ PG_Window::~PG_Window() {
 void PG_Window::SetTitle(const char* title, PG_Label::TextAlign alignment) {
 	my_labelTitle->SetAlignment(alignment);
 	my_labelTitle->SetText(title);
-
-	/*if (my_showCloseButton)
-		my_buttonClose->Update();
-
-	if (my_showMinimizeButton)
-		my_buttonMinimize->Update();*/
 }
 
 const char* PG_Window::GetTitle() {
@@ -89,7 +83,7 @@ void PG_Window::LoadThemeStyle(const char* widgettype) {
 
 	t->GetProperty(widgettype, "Titlebar", "height", my_heightTitlebar);
 	my_titlebar->SizeWidget(my_width, my_heightTitlebar);
-	my_labelTitle->SizeWidget(my_width, my_heightTitlebar);
+	my_labelTitle->MoveWidget(PG_Rect(my_heightTitlebar, 0, my_width - my_heightTitlebar*2, my_heightTitlebar));
 
 	PG_Color c = my_labelTitle->GetFontColor();
 	t->GetColor(widgettype, "Titlebar", "textcolor", c);
@@ -97,37 +91,31 @@ void PG_Window::LoadThemeStyle(const char* widgettype) {
 	
 	t->GetProperty(widgettype, "Titlebar", "showclosebutton", my_showCloseButton);
 	my_buttonClose->LoadThemeStyle(widgettype, "CloseButton");
+	my_buttonClose->MoveWidget(PG_Rect(my_width - my_heightTitlebar, 0, my_heightTitlebar, my_heightTitlebar));
+	if(my_showCloseButton) {
+		my_buttonClose->Show();
+	}
 
 	t->GetProperty(widgettype, "Titlebar", "showminimizebutton", my_showMinimizeButton);
 	my_buttonMinimize->LoadThemeStyle(widgettype, "MinimizeButton");
-
-	my_buttonClose->MoveWidget(PG_Rect(my_width - my_heightTitlebar, 0, my_heightTitlebar, my_heightTitlebar));
 	my_buttonMinimize->MoveWidget(PG_Rect(0, 0, my_heightTitlebar, my_heightTitlebar));
+	if(my_showMinimizeButton) {
+		my_buttonMinimize->Show();
+	}
 }
 
 void PG_Window::eventSizeWidget(Uint16 w, Uint16 h) {
+
+	PG_ThemeWidget::eventSizeWidget(w, h);
+
 	my_titlebar->SizeWidget(w, my_heightTitlebar);
+	my_labelTitle->MoveWidget(PG_Rect(my_heightTitlebar, 0, w - my_heightTitlebar*2, my_heightTitlebar));
 
 	my_buttonClose->MoveWidget(PG_Rect(w - my_heightTitlebar, 0, my_heightTitlebar, my_heightTitlebar));
 	my_buttonMinimize->MoveWidget(PG_Rect(0, 0, my_heightTitlebar, my_heightTitlebar));
-
-	int lw = w;
-	int lx = 0;
-	if(my_showMinimizeButton) {
-		lw -= my_buttonMinimize->w;
-		lx += my_buttonMinimize->w;
-	}
-	if(my_showCloseButton) {
-		lw -= my_buttonMinimize->w;
-	}
-	my_labelTitle->MoveWidget(PG_Rect(lx, 0, lw, my_heightTitlebar));
-
-	PG_ThemeWidget::eventSizeWidget(w, h);
 }
 
 void PG_Window::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {
-	PG_Rect my_src;
-	PG_Rect my_dst;
 
 	PG_ThemeWidget::eventBlit(srf, src, dst);
 
@@ -168,6 +156,7 @@ bool PG_Window::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 }
 
 bool PG_Window::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
+	SDL_Surface* screen = PG_Application::GetScreen();
 	int x,y;
 
 	x = button->x;
@@ -180,10 +169,10 @@ bool PG_Window::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		x=0;
 	if(y < 0)
 		y=0;
-	if(x+my_width > (my_srfScreen->w - my_width))
-		x = (my_srfScreen->w - my_width);
-	if(y+my_height > (my_srfScreen->h - my_height))
-		y = (my_srfScreen->h - my_height);
+	if(x+my_width > (screen->w - my_width))
+		x = (screen->w - my_width);
+	if(y+my_height > (screen->h - my_height))
+		y = (screen->h - my_height);
 
 	if(my_moveMode) {
 		my_moveMode = false;
@@ -199,9 +188,9 @@ bool PG_Window::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 		return PG_Widget::eventMouseMotion(motion);
 	}
 
-	int x,y;
-	x = motion->x;
-	y = motion->y;
+	SDL_Surface* screen = PG_Application::GetScreen();
+	int x = motion->x;
+	int y = motion->y;
 
 	x += my_moveDelta.x;
 	y += my_moveDelta.y;
@@ -216,10 +205,10 @@ bool PG_Window::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 			y = GetParent()->Height() - my_height;
 	}
 
-	if(x+my_width > my_srfScreen->w)
-		x = (my_srfScreen->w - my_width);
-	if(y+my_height > my_srfScreen->h)
-		y = (my_srfScreen->h - my_height);
+	if(x+my_width > screen->w)
+		x = (screen->w - my_width);
+	if(y+my_height > screen->h)
+		y = (screen->h - my_height);
 
 	if(x < 0)
 		x=0;
@@ -267,6 +256,6 @@ void PG_Window::SetIcon(SDL_Surface* icon) {
 
 void PG_Window::eventShow() {
 	// don't ask me why
-	my_buttonClose->Update();
-	my_buttonMinimize->Update();
+	//my_buttonClose->Update();
+	//my_buttonMinimize->Update();
 }

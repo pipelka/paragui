@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/11/21 12:27:56 $
+   Update Date:      $Date: 2004/02/28 18:49:06 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.1 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.2 $
    Status:           $State: Exp $
 */
 
@@ -41,7 +41,7 @@ PG_WidgetListEx(parent, r, style) {
 
 	//EnableScrollBar(true, PG_SB_HORIZONTAL);
 
-	my_listwidth = (linewidth != 0) ? linewidth : r.my_width;
+	my_scrollarea->SetAreaWidth((linewidth != 0) ? linewidth : r.my_width);
 	my_ChildsBorderWidth = childsborderwidth;
 
 	//TO-DO : Value 5 is font size, witch is currently unknown ...
@@ -60,7 +60,7 @@ void PG_RichEdit::SetAutoVerticalResize(bool bResize) {
 }
 
 void PG_RichEdit::UpdateScrollBarsPos() {
-	PG_WidgetList::UpdateScrollBarsPos();
+	//PG_WidgetList::UpdateScrollBarsPos();
 
 	//TO-DO : Value 5 is font size, witch is currently unknown ...
 	my_objVerticalScrollbar->SetLineSize(5);
@@ -85,7 +85,7 @@ void PG_RichEdit::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect&
 					int deltax = (my_objHorizontalScrollbar->IsVisible()) ? my_objHorizontalScrollbar->GetPosition() : 0;
 					int deltay = (my_objVerticalScrollbar->IsVisible()) ? my_objVerticalScrollbar->GetPosition() : 0;
 
-					PG_FontEngine::RenderText(my_srfScreen, dst, my_xpos - deltax + width + linePart->my_Left,  my_ypos + line->my_BaseLine - deltay, my_ParsedWords[*word].my_Word.c_str(), GetFont());
+					PG_FontEngine::RenderText(PG_Application::GetScreen(), dst, my_xpos - deltax + width + linePart->my_Left,  my_ypos + line->my_BaseLine - deltay, my_ParsedWords[*word].my_Word.c_str(), GetFont());
 					width += my_ParsedWords[*word].my_WidthAfterFormating;
 				}
 			}
@@ -258,12 +258,12 @@ Sint32 PG_RichEdit::CompleteLines() {
 
 	} while(searchFrom < my_ParsedWords.size());
 
-	if (top > (Sint32)my_listheight) {
-		my_listheight = top;
+	if (top > my_scrollarea->GetAreaHeight()) {
+		my_scrollarea->SetAreaHeight(top);
 	}
 
 	if (my_AutoVerticalResize) {
-		SizeWidget(my_width, my_listheight);
+		SizeWidget(my_width, my_scrollarea->GetAreaHeight());
 	}
 
 	CheckScrollBars();
@@ -276,7 +276,8 @@ Sint32 PG_RichEdit::CompleteLines() {
 size_t PG_RichEdit::CompleteLine(RichLineArray::iterator actualLine, Sint32 &lineTop, size_t searchFrom, Uint32 &lineSpace, Uint32 &lineAscent, bool changeAlign) {
 	bool breakLine = false;
 
-	Sint32 linePartLeft = 0, linePartWidthMax = my_listwidth;
+	Sint32 linePartLeft = 0;
+	Sint32 linePartWidthMax = my_scrollarea->GetAreaWidth();
 	WidgetMap widgetsOnLine;
 
 	Uint32 align = my_Align;
@@ -316,7 +317,7 @@ size_t PG_RichEdit::CompleteLine(RichLineArray::iterator actualLine, Sint32 &lin
 	}
 
 	do {
-		linePartWidthMax = my_listwidth - linePartLeft;
+		linePartWidthMax = my_scrollarea->GetAreaWidth() - linePartLeft;
 		if (childOnLine != widgetsOnLine.end())
 			linePartWidthMax = childOnLine->first - linePartLeft;
 		RichLinePartArray::iterator actualLinePart = actualLine->my_LineParts.insert(actualLine->my_LineParts.end(), RichLinePart(linePartLeft, linePartWidthMax));
@@ -363,9 +364,9 @@ void PG_RichEdit::AlignLine(RichLineArray::iterator actualLine, WidgetMap &widge
 		}
 
 		if (align == my_Marks[MARK_ALL_CENTER])
-			delta = (my_listwidth / 2) - (lineWidth / 2);
+			delta = (my_scrollarea->GetAreaWidth() / 2) - (lineWidth / 2);
 		else if (align == my_Marks[MARK_ALL_RIGHT])
-			delta = my_listwidth - lineWidth;
+			delta = my_scrollarea->GetAreaWidth() - lineWidth;
 
 		if (align != my_Marks[MARK_ALL_LEFT]) {
 			for (linePart = actualLine->my_LineParts.begin(); linePart < actualLine->my_LineParts.end(); linePart++) {
@@ -503,29 +504,34 @@ void PG_RichEdit::AlignLinePart(RichLinePartArray::iterator actualLinePart, Uint
 }
 
 void PG_RichEdit::GetWidgetsOnLine(Sint32 lineTop, Uint32 lineHeight, WidgetMap &widgetsOnLine, bool clear) {
-	vector<PG_Widget*>::iterator child;
+	PG_Widget* child;
 
 	if (clear)
 		widgetsOnLine.clear();
 
-	for (child = my_widgetList.begin(); child < my_widgetList.end(); child++) {
-		PG_Point coord = ScreenToClient((*child)->my_xpos, (*child)->my_ypos);
+	PG_RectList* list = my_scrollarea->GetChildList();
+	if(list == NULL) {
+		return;
+	}
 
-		if ((lineTop < (coord.y + (*child)->my_height)) && ((lineTop + (Sint32)lineHeight) >= coord.y)) {
+	for (child = list->first(); child != NULL; child = child->next()) {
+		PG_Point coord = ScreenToClient(child->my_xpos, child->my_ypos);
+
+		if ((lineTop < (coord.y + child->my_height)) && ((lineTop + (Sint32)lineHeight) >= coord.y)) {
 			bool insert = true;
 
 			if (!clear) {
 				WidgetMap::iterator header;
 
 				for (header = widgetsOnLine.begin(); header != widgetsOnLine.end(); header++) {
-					if (*child == header->second) {
+					if (child == header->second) {
 						insert = false;
 						break;
 					}
 				}
 			}
 			if (insert) {
-				widgetsOnLine.insert(WidgetMap::value_type(coord.x - my_ChildsBorderWidth, *child));
+				widgetsOnLine.insert(WidgetMap::value_type(coord.x - my_ChildsBorderWidth, child));
 			}
 		}
 	}

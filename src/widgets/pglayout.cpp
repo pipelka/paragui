@@ -674,7 +674,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 			return;
 		}
 
-		PG_DropDown *Widget = new  PG_DropDown (parent, 0, Rect);
+		PG_DropDown *Widget = new PG_DropDown (parent, Rect);
 		XMLParser->ParentObject = Widget;
 
 		XMLParser->InhTagFlags |=SetDropDownAtts(Widget, atts, XMLParser);
@@ -696,7 +696,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 
 		PG_Button	*Widget = new PG_Button(
 		                        parent,
-		                        0,
+		                        //0,
 		                        Rect,
 		                        PG_Layout::GetParamStr(atts, "text"));
 
@@ -936,10 +936,10 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 
 		PG_RadioButton *Widget = new PG_RadioButton(
 		                             parent,
-		                             0,
 		                             Rect,
 		                             (const char*)PG_Layout::GetParamStr(atts, "text"),
-		                             (PG_RadioButton *)PG_Application::GetWidgetByName(PG_Layout::GetParamStr(atts, "group")));
+		                             (PG_RadioButton *)PG_Application::GetWidgetByName(PG_Layout::GetParamStr(atts, "group")),
+									 0);
 
 		XMLParser->ParentObject = Widget;
 
@@ -954,9 +954,9 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 
 		PG_CheckButton *Widget = new PG_CheckButton(
 		                             parent,
-		                             0,
 		                             Rect,
-		                             PG_Layout::GetParamStr(atts, "text"));
+		                             PG_Layout::GetParamStr(atts, "text"),
+									 0);
 
 		XMLParser->ParentObject = Widget;
 
@@ -972,7 +972,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		PG_ScrollBar::ScrollDirection d = PG_Layout::GetParamScrollDirection(atts, "dir");
 		(d <= 0) ? d = PG_ScrollBar::HORIZONTAL : d = PG_ScrollBar::VERTICAL;
 
-		PG_ScrollBar *Widget = new PG_ScrollBar(parent, 0, Rect, d);
+		PG_ScrollBar *Widget = new PG_ScrollBar(parent, Rect, d);
 		XMLParser->ParentObject = Widget;
 
 		XMLParser->InhTagFlags |= SetScrollBarAtts(Widget, atts, XMLParser);
@@ -984,7 +984,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		XMLParser->Section = XML_SECTION_SCROLLBAR | XML_SECTION_BODY | XML_SECTION_COMWIDPARAMS;
 		PG_Layout::GetParamRect(atts, "pos", Rect, parent);
 
-		PG_Slider *Widget = new PG_Slider(parent, 0, Rect, PG_Layout::GetParamScrollDirection(atts, "dir"));
+		PG_Slider *Widget = new PG_Slider(parent, Rect, PG_Layout::GetParamScrollDirection(atts, "dir"));
 		XMLParser->ParentObject = Widget;
 
 		XMLParser->InhTagFlags |=SetScrollBarAtts(Widget, atts, XMLParser);

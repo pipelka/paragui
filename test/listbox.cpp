@@ -16,7 +16,6 @@ bool handleListBoxItem(PG_ListBoxBaseItem* item) {
 		new PG_ListBoxItem(list, 25, text);
 	}
 
-	list->Update();	
 	return true;
 }
 
@@ -33,22 +32,13 @@ int main( int argc, char **argv )
 	listbox.sigSelectItem.connect(slot(handleListBoxItem));
 	listbox.Show();
 
-	PG_ListBoxItem* items[10];
+	PG_ListBoxItem* item;
 	int i;
 	
 	for(i=0; i<10; i++) {
-		items[i] = new PG_ListBoxItem(&listbox, 25, "");
-		items[i]->SetTextFormat("Item %i", i+1);
-		listbox.AddItem(items[i]);
+		item = new PG_ListBoxItem(&listbox, 25, "");
+		item->SetTextFormat("Item %i", i+1);
 	}
-	
-	listbox.RemoveAll();
-	listbox.Update();
-	
-	for(i=0; i<10; i++) {
-		listbox.AddItem(items[i]);
-	}
-	listbox.Update();
 
 	app.Run();
 	

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 10:11:15 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -69,7 +69,7 @@ public:
 	typedef PG_Signal1<PG_Window*> SignalWindowRestore;
 
 	/** */
-	PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext, WindowFlags flags = DEFAULT, const char* style="Window", int heightTitlebar = 25);
+	PG_Window(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* windowtext = NULL, WindowFlags flags = DEFAULT, const char* style="Window", int heightTitlebar = 25);
 
 	/** */
 	~PG_Window();

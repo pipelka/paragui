@@ -15,8 +15,8 @@ int main()
 
    PG_DropDown *dd1, *dd2;
 
-   dd1 = new PG_DropDown( NULL, 1, PG_Rect( 10, 10, 100, 20 ) );
-   dd2 = new PG_DropDown( NULL, 2, PG_Rect( 120, 10,100, 20 ) );
+   dd1 = new PG_DropDown(NULL, PG_Rect( 10, 10, 100, 20 ));
+   dd2 = new PG_DropDown(NULL, PG_Rect( 120, 10,100, 20 ));
 
    for( int i = 0; i < 10; i++ )
    {

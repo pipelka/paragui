@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/02/28 18:49:05 $
     Source File:      $Source: /sources/paragui/paragui/include/pgradiobutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -58,7 +58,7 @@ public:
 	template<class datatype = PG_Pointer> class SignalButtonClick : public PG_Signal2<PG_RadioButton*, datatype> {};
 
 	/** */
-	PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, const char* text, PG_RadioButton* firstOfGroup = NULL, const char* style="RadioButton");
+	PG_RadioButton(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* text = NULL, PG_RadioButton* firstOfGroup = NULL, int id = -1, const char* style="RadioButton");
 
 	/** */
 	~PG_RadioButton();
@@ -84,12 +84,12 @@ public:
 
 	void SetSizeByText(int Width = 0, int Height = 0, const char *Text = NULL);
 
+	/** */
+	void AddToGroup(PG_RadioButton* w);
+
 	SignalButtonClick<bool> sigClick;
 
 protected:
-
-	/** */
-	void AddToGroup(PG_RadioButton* w);
 
 	/** */
 	void ReleaseButton();

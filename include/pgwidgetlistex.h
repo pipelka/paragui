@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlistex.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -45,7 +45,7 @@ public:
 	/**
 	Constructor of the PG_WidgetListEx class
 	*/
-	PG_WidgetListEx(PG_Widget* parent, const PG_Rect& r, const char* style="WidgetList");
+	PG_WidgetListEx(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="WidgetList");
 
 	/**
 	Add a widget to the list

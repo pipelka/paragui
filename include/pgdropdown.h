@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:05 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
     Status:           $State: Exp $
 */
 
@@ -69,7 +69,7 @@ public:
 	@param r position of the widget
 	@param style style of the widget (loaded from the theme)
 	*/
-	PG_DropDown(PG_Widget* parent, int id, const PG_Rect& r, const char* style="DropDown");
+	PG_DropDown(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, int id = -1, const char* style="DropDown");
 
 	/**  */
 	~PG_DropDown();

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:01:03 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -69,7 +69,7 @@ public:
 
 	/**
 	*/
-	PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r, const char* style = "SpinnerBox");
+	PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r = PG_Rect::null, const char* style = "SpinnerBox");
 
 	/**
 	*/

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/21 16:01:03 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgspinnerbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -50,14 +50,16 @@ PG_SpinnerBox::PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r, const char* st
 	up_rect.SetRect( box_rect.my_width, 0, (my_height/2), (my_height/2));
 	down_rect.SetRect( box_rect.my_width, my_height - (my_height/2), (my_height/2), (my_height/2));
 
-	m_pEditBox = new PG_MaskEdit( this, box_rect, style );
+	m_pEditBox = new PG_MaskEdit(this, box_rect, style);
 	m_pEditBox->sigEditEnd.connect(slot(*this, &PG_SpinnerBox::handleEditEnd));
 
-	m_pButtonUp = new PG_Button( this, IDSPINNERBOX_UP, up_rect, "" );
+	m_pButtonUp = new PG_Button(this, up_rect, "");
+	m_pButtonUp->SetID(IDSPINNERBOX_UP);
 	m_pButtonUp->sigClick.connect(slot(*this, &PG_SpinnerBox::handleButtonClick));
 	m_pButtonUp->LoadThemeStyle(style, "ButtonUp");
 
-	m_pButtonDown = new PG_Button( this, IDSPINNERBOX_DOWN, down_rect, "" );
+	m_pButtonDown = new PG_Button( this, down_rect, "" );
+	m_pButtonDown->SetID(IDSPINNERBOX_DOWN);
 	m_pButtonDown->sigClick.connect(slot(*this, &PG_SpinnerBox::handleButtonClick));
 	m_pButtonDown->LoadThemeStyle(style, "ButtonDown");
 

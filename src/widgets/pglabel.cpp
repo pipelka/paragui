@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -37,7 +37,7 @@ PG_Widget(parent, r) {
 	my_alignment = CENTER;
 	my_srfIcon = NULL;
 	// might be set by PG_ListBox::AddChild()!
-	//my_indent = 0;
+	my_indent = 0;
 	my_freeicon = false;
 
 	SetText(text);
@@ -51,7 +51,9 @@ PG_Label::~PG_Label() {
 }
 
 void PG_Label::LoadThemeStyle(const char* style) {
-	PG_Label::LoadThemeStyle("Label", "Label");
+	if(strcmp(style, "Label") != 0) {
+		PG_Label::LoadThemeStyle("Label", "Label");
+	}
 	PG_Label::LoadThemeStyle(style, "Label");
 }
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrectlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -99,7 +99,7 @@ public:
 	*/
 	void Blit(const PG_Rect& rect);
 
-	void Blit(const PG_Rect& rect, PG_Rect* first, PG_Rect* last = NULL);
+	void Blit(const PG_Rect& rect, PG_Widget* first, PG_Widget* last = NULL);
 
 	/**
 		reorder a widget (rectangle) - front
@@ -119,11 +119,11 @@ public:
 	*/
 	bool SendToBack(PG_Widget* rect);
 
-	inline PG_Rect* first() {
+	inline PG_Widget* first() {
 		return my_first;
 	}
 	
-	inline PG_Rect* last() {
+	inline PG_Widget* last() {
 		return my_last;
 	}
 
@@ -133,10 +133,10 @@ public:
 		return my_count;
 	}
 
-private:
+protected:
 
-	PG_Rect* my_first;
-	PG_Rect* my_last;
+	PG_Widget* my_first;
+	PG_Widget* my_last;
 	Uint32 my_count;
 };
 

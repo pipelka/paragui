@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.11 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.12 $
     Status:           $State: Exp $
 */
 
@@ -879,7 +879,7 @@ static PG_Widget *FindInChildObjects(PG_RectList *RectList, const char *Name) {
 	if (!Name)
             return NULL;
     
-	PG_Widget* list = static_cast<PG_Widget*>(RectList->first());
+	PG_Widget* list = RectList->first();
 
 	while(list != NULL) {
 		if (strcmp(list->GetName(), Name) == 0) {
@@ -896,7 +896,7 @@ static PG_Widget *FindInChildObjects(PG_RectList *RectList, const char *Name) {
 			return retWidget;
 		}
 
-		list = static_cast<PG_Widget*>(list->next);
+		list = list->next();
 	}
 
 	return NULL;
@@ -912,7 +912,7 @@ static inline PG_Widget *FindInChildObjects(PG_RectList *RectList, int id) {
 	if (id < 0)
             return 0;
     
-	PG_Widget* list = static_cast<PG_Widget*>(RectList->first());
+	PG_Widget* list = RectList->first();
 
 	while(list != NULL) {
 		if (list->GetID() == id) {
@@ -930,7 +930,7 @@ static inline PG_Widget *FindInChildObjects(PG_RectList *RectList, int id) {
 			return retWidget;
 		}
 
-		list = static_cast<PG_Widget*>(list->next);
+		list = list->next();
 	}
 
 	return NULL;
@@ -968,9 +968,9 @@ void PG_Application::SetFontName(const char *Name) {
 	DefaultFont->SetName(Name);
 }
 
-SDL_Surface* PG_Application::GetScreen() {
+/*SDL_Surface* PG_Application::GetScreen() {
 	return screen;
-}
+}*/
 
 int PG_Application::GetScreenHeight() {
 	return screen->h;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.4 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,7 @@
 #include "pgtheme.h"
 #include "pgbutton.h"
 
-PG_RadioButton::PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, const char* text, PG_RadioButton* firstOfGroup, const char* style) : PG_ThemeWidget(parent, r) {
+PG_RadioButton::PG_RadioButton(PG_Widget* parent, const PG_Rect& r, const char* text, PG_RadioButton* firstOfGroup, int id, const char* style) : PG_ThemeWidget(parent, r) {
 	PG_Rect rectButton;
 	PG_Rect rectLabel;
 
@@ -50,7 +50,7 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, cons
 		rectButton.SetRect(0, 0, r.my_height, r.my_height);
 	}
 
-	my_widgetButton = new PG_Button(this, 1, rectButton);
+	my_widgetButton = new PG_Button(this, rectButton);
 	my_widgetButton->SetToggle(true);
 	my_widgetButton->EnableReceiver(false);
 	my_widgetButton->sigClick.connect(slot(*this, &PG_RadioButton::handleButtonClick));
@@ -60,7 +60,9 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, int id, const PG_Rect& r, cons
 	my_widgetLabel->SetAlignment(PG_Label::LEFT);
 
 	// load default first
-	LoadThemeStyle("RadioButton");
+	if(strcmp(style, "RadioButton") != 0) {
+		LoadThemeStyle("RadioButton");
+	}
 
 	// load inherited style
 	LoadThemeStyle(style);

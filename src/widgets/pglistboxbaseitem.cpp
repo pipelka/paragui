@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/26 15:17:16 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.4 $
     Status:           $State: Exp $
 */
 
@@ -30,7 +30,7 @@
 #include "pglistbox.h"
 #include "pglog.h"
 
-PG_ListBoxBaseItem::PG_ListBoxBaseItem(PG_Widget* parent, Uint16 height, void* userdata) : PG_Label(parent, PG_Rect(0,0,100,height), NULL) {
+PG_ListBoxBaseItem::PG_ListBoxBaseItem(PG_Widget* parent, Uint16 height, void* userdata) : PG_Label(parent, PG_Rect(0,0,0,height), NULL) {
 	my_userdata = userdata;
 	my_selected = false;
 	my_hover = false;
@@ -42,7 +42,7 @@ PG_ListBoxBaseItem::PG_ListBoxBaseItem(PG_Widget* parent, Uint16 height, void* u
 PG_ListBoxBaseItem::~PG_ListBoxBaseItem() {
 	if(GetParent()->GetSelectedItem() == this) {
 		GetParent()->SelectItem(NULL);
-		GetParent()->RemoveWidget(this, true, true);
+		//GetParent()->RemoveWidget(this, true, true);
 	}
 }
 
@@ -107,5 +107,7 @@ bool PG_ListBoxBaseItem::eventMouseButtonUp(const SDL_MouseButtonEvent* button) 
 }
 
 PG_ListBox* PG_ListBoxBaseItem::GetParent() {
-	return (PG_ListBox*)(PG_Label::GetParent());
+	// oh, oh,... close your eyes
+	// hack hack
+	return (PG_ListBox*)(PG_Label::GetParent()->GetParent());
 }

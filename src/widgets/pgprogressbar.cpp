@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgprogressbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -119,7 +119,7 @@ void PG_ProgressBar::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 	                       my_pbBlend);			// background blend
 
 	GetClipRects(my_src, my_dst, pr);
-	PG_Draw::BlitSurface(ind, my_src, my_srfScreen, my_dst);
+	PG_Draw::BlitSurface(ind, my_src, PG_Application::GetScreen(), my_dst);
 
 	PG_ThemeWidget::DeleteThemedSurface(ind);
 
@@ -161,4 +161,3 @@ void PG_ProgressBar::SetProgress(double p) {
  * c-basic-offset: 8
  * End:
  */
-

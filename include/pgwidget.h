@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -95,7 +95,7 @@ public:
 
 	This is the constructor for the PG_Widget class (really!)
 	*/
-	PG_Widget(PG_Widget* parent, const PG_Rect& rect);
+	//PG_Widget(PG_Widget* parent, const PG_Rect& rect);
 
 	/**
 	Creates a PG_Widget with an internal object surface
@@ -104,7 +104,7 @@ public:
 	@param rect		initial position for the widget
 	@param bObjectSurface	flag if a surface for the object should be created
 	*/
-	PG_Widget(PG_Widget* parent, const PG_Rect& rect, bool bObjectSurface);
+	PG_Widget(PG_Widget* parent, const PG_Rect& rect = PG_Rect::null, bool bObjectSurface = false);
 
 	/**
 	Destroys a PG_Widget
@@ -160,11 +160,12 @@ public:
 
 	@param x	new x-position (in parent context)
 	@param y	new y-position (in parent context)
+	@param update true - update screen content / false - no screen update
 	@return		function succeeded
 
 	This function moves the widget
 	*/
-	bool MoveWidget(int x, int y);
+	bool MoveWidget(int x, int y, bool update = true);
 
 	/**
 	Move and resize widget
@@ -174,18 +175,19 @@ public:
 
 	This function moves and resizes the widget to fit the given rectangle.
 	*/
-	bool MoveWidget(const PG_Rect& r);
+	bool MoveWidget(const PG_Rect& r, bool update = true);
 
 	/**
 	Resize a widget
 
 	@param w	new widget-width
 	@param h	new widget-height
+	@param update true - update widget after resizing / false - do not display changes
 	@return		function succeeded
 
 	This function resizes the widget
 	*/
-	virtual bool SizeWidget(Uint16 w, Uint16 h);
+	virtual bool SizeWidget(Uint16 w, Uint16 h, bool update = true);
 
 	/**
 	Convert a client (widget) coordinate to a screen position
@@ -217,7 +219,7 @@ public:
 
 	@return	SDL_Surface pointer to the screen surface
 	*/
-	SDL_Surface* GetScreenSurface();
+	//SDL_Surface* GetScreenSurface();
 
 	/**
 	Check if the object is visible
@@ -485,7 +487,7 @@ public:
 	void ReleaseUserData();
 
 	/**	*/
-	bool RemoveChild(PG_Widget* child);
+	bool virtual RemoveChild(PG_Widget* child);
 
 	/**
 	Sets text
@@ -735,7 +737,7 @@ public:
 	void SetHidden(bool hidden);
 	
 	bool IsHidden();
-	
+
 protected:
 
 	/**
@@ -763,7 +765,7 @@ protected:
 	MoveWidget events.
 	CAUTION: This function will be removed in the final version
 	*/
-	virtual void eventMoveWindow(int x, int y);
+	//virtual void eventMoveWindow(int x, int y);
 
 	/**
 	Callback for the SizeWidget event
@@ -782,7 +784,7 @@ protected:
 	SizeWidget events.
 	CAUTION: This function will be removed in the final version
 	*/
-	virtual void eventSizeWindow(Uint16 w, Uint16 h);
+	//virtual void eventSizeWindow(Uint16 w, Uint16 h);
 
 	/**
 	overridable eventhandler to draw the object surface
@@ -821,6 +823,8 @@ protected:
 	*/
 	virtual bool eventQuitModal(int id, PG_MessageObject* widget, unsigned long data);
 
+	void SetParent(PG_Widget* parent);
+
 	/**  */
 	void FadeOut();
 
@@ -844,7 +848,7 @@ protected:
 	/**
 	pointer to the screen surface
 	*/
-	SDL_Surface* my_srfScreen;
+	//SDL_Surface* my_srfScreen;
 
 	/**
 	text attached to the widget
@@ -858,7 +862,7 @@ protected:
 
 private:
 
-	void InitWidget(PG_Widget* parent, bool bObjectSurface);
+	//void InitWidget(PG_Widget* parent, bool bObjectSurface);
 	//void AddChildToCache(PG_Widget *child, const char *name);
 	//void AddChildToCache(PG_Widget *child, int id);
     
@@ -872,7 +876,7 @@ private:
 	// this is a bit rude but neccessary for future binary compatibility
 	// because adding non-static data members would break the ABI.
 	// For this we put all private data into a dynamically created struct.
-	PG_WidgetDataInternal* my_internaldata;
+	PG_WidgetDataInternal* _mid;
 };
 
 #endif // PG_WIDGET_H

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/19 16:50:11 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -35,10 +35,12 @@
 PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, const PG_Rect& btn2, const char* btn2text, PG_Label::TextAlign textalign, const char* style) :
 PG_Window(parent, r, windowtitle, MODAL) {
 
-	my_btnok = new PG_Button(this, 1, btn1, btn1text);
+	my_btnok = new PG_Button(this, btn1, btn1text);
+	my_btnok->SetID(1);
 	my_btnok->sigClick.connect(slot(*this, &PG_MessageBox::handleButton));
 	
-	my_btncancel = new PG_Button(this, 2, btn2, btn2text);
+	my_btncancel = new PG_Button(this, btn2, btn2text);
+	my_btncancel->SetID(2);
 	my_btncancel->sigClick.connect(slot(*this, &PG_MessageBox::handleButton));
 
 	Init(windowtext, textalign, style);
@@ -47,7 +49,8 @@ PG_Window(parent, r, windowtitle, MODAL) {
 PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, PG_Label::TextAlign textalign, const char* style) :
 PG_Window(parent, r, windowtitle, MODAL) {
 
-	my_btnok = new PG_Button(this, 1, btn1, btn1text);
+	my_btnok = new PG_Button(this, btn1, btn1text);
+	my_btnok->SetID(1);
 	my_btnok->sigClick.connect(slot(*this, &PG_MessageBox::handleButton));
 	my_btncancel = NULL;
 

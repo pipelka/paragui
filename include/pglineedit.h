@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/13 11:54:33 $
+    Update Date:      $Date: 2004/02/28 18:49:05 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -55,7 +55,7 @@ public:
 	template<class datatype = PG_Pointer> class SignalEditReturn : public PG_Signal1<PG_LineEdit*, datatype> {};
 
 	/** */
-	PG_LineEdit(PG_Widget* parent, const PG_Rect& r, const char* style="LineEdit", int maximumLength = 1000000);
+	PG_LineEdit(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="LineEdit", int maximumLength = 1000000);
 
 	/** */
 	~PG_LineEdit();

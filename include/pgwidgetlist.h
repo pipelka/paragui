@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/02/28 18:49:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,7 @@
 
 #include "pgthemewidget.h"
 #include "pgscrollbar.h"
+#include "pgscrollarea.h"
 
 #include <vector>
 
@@ -55,7 +56,7 @@ public:
 	/**
 	Constructor of the PG_Widget class
 	*/
-	PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const char* style="WidgetList");
+	PG_WidgetList(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="WidgetList");
 
 	/**
 	Destructor of the PG_Widget class
@@ -79,7 +80,7 @@ public:
 	@param shiftx	reposition all widgets to the right of the removed widget
 	@param shifty	reposition all widgets below
 	*/
-	virtual bool RemoveWidget(PG_Widget* w, bool shiftx = false, bool shifty = false);
+	//virtual bool RemoveWidget(PG_Widget* w, bool shiftx = false, bool shifty = false);
 
 	/**
 	Remove a widget from the list
@@ -88,7 +89,7 @@ public:
 	@param shiftx	reposition all widgets to the right of the removed widget
 	@param shifty	reposition all widgets below
 	*/
-	bool RemoveWidgetAt(int index, bool shiftx = false, bool shifty = false);
+	bool RemoveWidgetAt(int index);
 
 	/**
 	Remove and delete a widget from the list
@@ -97,7 +98,7 @@ public:
 	@param shiftx	reposition all widgets to the right of the removed widget
 	@param shifty	reposition all widgets below
 	*/
-	bool DeleteWidget(PG_Widget* w, bool shiftx = false, bool shifty = false);
+	//bool DeleteWidget(PG_Widget* w, bool shiftx = false, bool shifty = false);
 
 	/**
 	Remove and delete a widget from the list
@@ -121,21 +122,6 @@ public:
 	@return				index of the widget
 	*/
 	int FindIndex(PG_Widget* widget);
-	
-	/**
-	Remove all widgets from the list (without deletion)
-	*/
-	void RemoveAll();
-
-	/**
-	Delete (destroy) all widgets in the list
-	*/
-	void DeleteAll();
-
-	/**
-	Get the number of widgets in the list
-	*/
-	int GetWidgetCount();
 
 	/**
 	Enable / disable the Scrollbar (override automatic display)
@@ -168,16 +154,13 @@ public:
 	*/
 	void PageDown();
 
-	Uint32 GetListWidth();
-	Uint32 GetListHeight();
+	Uint16 GetListHeight();
+
+	Uint16 GetListWidth();
+
+	Uint16 GetWidgetCount();
 
 protected:
-
-	/** */
-	void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);
-
-	/**  */
-	void eventShow();
 
 	/**  */
 	void eventSizeWidget(Uint16 w, Uint16 h);
@@ -188,11 +171,9 @@ protected:
 	/**  */
 	bool handleScrollTrack(PG_ScrollBar* widget, long data);
 
-	/**  */
-	Sint32 ScrollToY(Sint32 position);
+	bool handleAreaChangedHeight(PG_ScrollArea* area, Uint16 h);
 
-	/**  */
-	Sint32 ScrollToX(Sint32 position);
+	bool handleAreaChangedWidth(PG_ScrollArea* area, Uint16 w);
 
 	void AddChild(PG_Widget* child);
 
@@ -206,6 +187,7 @@ protected:
 
 	PG_ScrollBar* my_objVerticalScrollbar;
 	PG_ScrollBar* my_objHorizontalScrollbar;
+	PG_ScrollArea* my_scrollarea;
 
 	PG_Rect my_rectVerticalScrollbar;
 	PG_Rect my_rectHorizontalScrollbar;
@@ -214,22 +196,18 @@ protected:
 	int my_widthScrollbar;
 	int my_heightHorizontalScrollbar;
 
-	vector < PG_Widget* > my_widgetList; // Hmmm, I know about this: vector :))
-
-	int my_widgetCount;
-	int my_firstWidget;
-	Uint32 my_listheight;
-	Uint32 my_listwidth;
 	bool my_enableVerticalScrollbar;
 	bool my_enableHorizontalScrollbar;
 
-	virtual void UpdateScrollBarsPos();
+	//virtual void UpdateScrollBarsPos();
 	void CheckScrollBars();
 
 private:
 
 	PG_WidgetList(const PG_WidgetList&);
 	PG_WidgetList& operator=(const PG_WidgetList&);
+
+	void RecalcPositions(bool bV, bool bH);
 
 	PG_WidgetListDataInternal* my_internaldata;
 };

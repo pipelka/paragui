@@ -10,6 +10,8 @@ public:
 
 	Sint16 x;
 	Sint16 y;
+
+	static PG_Point null;
 };
 
 #endif // PG_POINT_H

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/17 12:41:16 $
+    Update Date:      $Date: 2004/02/28 18:49:05 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.10 $
     Status:           $State: Exp $
 */
 
@@ -173,7 +173,9 @@ public:
 
 	@return	pointer the screen surface
 	*/
-	static SDL_Surface* GetScreen();
+	static inline SDL_Surface* GetScreen() {
+		return screen;
+	}
 
 	/**
 	Set a lock on the screen surface (to avoid concurrent drawing operations)

@@ -20,17 +20,18 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/19 16:50:10 $
+    Update Date:      $Date: 2004/02/28 18:49:05 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrect.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_RECT_H
 #define PG_RECT_H
 
-#include "SDL.h"
 #include "pgpoint.h"
+
+class PG_Widget;
 
 /**
 	@author Alexander Pipelka
@@ -100,10 +101,13 @@ public:
 	*/
 	PG_Rect operator / (PG_Rect& b);
 
-	/*inline operator SDL_Rect() const {
-		return *this;
-	}*/
+	inline bool operator ==(const PG_Rect& r) const {
+		return (x == r.x) && (y == r.y) && (r.w == w) && (r.h == h);
+	}
 
+	inline bool operator !=(const PG_Rect& r) const {
+		return !((x == r.x) && (y == r.y) && (r.w == w) && (r.h == h));
+	}
 	/**
 	Check if a given point is inside a rectangle (boxtest)
 	 
@@ -195,33 +199,37 @@ public:
 		return OverlapRect(*p, *this);
 	}
 	
-	Sint16& my_xpos;
-	Sint16& my_ypos;
-	Uint16& my_width;
-	Uint16& my_height;
-	
-	PG_Rect* next;
-	PG_Rect* prev;
-	Uint32 index;
-	
-protected:
-	
 	/**
 	Get the next Rectangle from the list
 	Moves to the next rectangle in the list
 	*/
-	inline PG_Rect* operator++() {
-		return next;
+	inline PG_Widget* next() {
+		return my_next;
 	}
 	
 	/**
 	Get the previous Rectangle from the list
 	Moves to the previous rectangle in the list
 	*/
-	inline PG_Rect* operator--() {
-		return prev;
+	inline PG_Widget* prev() {
+		return my_prev;
 	}
 
+	Sint16& my_xpos;
+	Sint16& my_ypos;
+	Uint16& my_width;
+	Uint16& my_height;
+	
+	Uint32 index;
+
+	static PG_Rect null;
+
+protected:
+	
+	PG_Widget* my_next;
+	PG_Widget* my_prev;
+
+	friend class PG_RectList;
 };
 
 #endif	// PG_RECT_H

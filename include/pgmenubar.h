@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/02/28 18:49:05 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmenubar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.4 $
     Status:           $State: Exp $
 */
 
@@ -54,7 +54,7 @@ public:
 		The constructor creates a new MenuBar object without any items.
 		Use the Add member function to insert PG_PopupMenu objects.
 	*/
-	PG_MenuBar(PG_Widget* parent, const PG_Rect& rect, const char* style = "MenuBar");
+	PG_MenuBar(PG_Widget* parent, const PG_Rect& rect = PG_Rect::null, const char* style = "MenuBar");
 
 	/**
 		Destroys the MenuBar object.
