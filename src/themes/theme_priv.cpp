@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2002/07/30 09:21:55 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -219,6 +219,8 @@ THEME_OBJECT::~THEME_OBJECT() {
 		strings[i] = NULL;
 	}
 	strings.clear();
+	
+	delete font;
 }
 
 SDL_Surface* THEME_OBJECT::FindSurface(const char* name) {

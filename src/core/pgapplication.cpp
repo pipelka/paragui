@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/11 08:25:57 $
+    Update Date:      $Date: 2002/07/30 09:21:55 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.10 $
+    CVS/RCS Revision: $Revision: 1.2.4.11 $
     Status:           $State: Exp $
 */
 
@@ -75,12 +75,6 @@ void PARAGUI_ShutDownCode() {
 	// shutdown log
 	PG_LogConsole::Done();
 
-	// remove all archives from PG_FileArchive
-	PG_FileArchive::RemoveAllArchives();
-
-	// shutdown PhysFS
-	PG_FileArchive::Deinit();
-
 	// shutdown SDL
 	SDL_Quit();
 }
@@ -126,6 +120,12 @@ PG_Application::PG_Application() {
 PG_Application::~PG_Application() {
 	pGlobalApp = NULL;
 	Shutdown();
+	
+	// remove all archives from PG_FileArchive
+	PG_FileArchive::RemoveAllArchives();
+
+	// shutdown PhysFS
+	PG_FileArchive::Deinit();
 }
 
 /**  */

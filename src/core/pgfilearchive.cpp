@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/18 07:24:14 $
+    Update Date:      $Date: 2002/07/30 09:21:55 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.6 $
+    CVS/RCS Revision: $Revision: 1.2.4.7 $
     Status:           $State: Exp $
 */
 
@@ -71,7 +71,7 @@ PG_FileArchive::~PG_FileArchive() {
 }
 
 void PG_FileArchive::Deinit() {
-	//PHYSFS_deinit();
+	PHYSFS_deinit();
 }
 
 std::string *PG_FileArchive::PathToPlatform(const char *path) {
@@ -280,7 +280,6 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 
 	if(rw == NULL) {
 		PG_LogWRN("Unable to open '%s' !", filename);
-		PG_LogERR("PhysFS reported: '%s'", PG_FileArchive::GetLastError());
 		return NULL;
 	}
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/28 16:35:30 $
+    Update Date:      $Date: 2002/07/30 09:21:55 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,6 @@
 #include "pgthemewidget.h"
 #include "pglog.h"
 #include "pgdraw.h"
-#include "pgtheme.h"
 
 struct PG_ButtonDataInternal {
 	SDL_Surface* srf_normal;
@@ -91,12 +90,13 @@ PG_Button::PG_Button(PG_Widget* parent, int id, const PG_Rect& r, const char* te
 	}
 
 	LoadThemeStyle(style);
-	eventSizeWidget(r.w, r.h);
 }
 
 PG_Button::~PG_Button() {
 	FreeSurfaces();
 	FreeIcons();
+	
+	delete my_internaldata;
 }
 
 void PG_Button::LoadThemeStyle(const char* widgettype) {
@@ -218,13 +218,11 @@ void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
 	    t->FindProperty(widgettype, objectname, "bordersize2")
 	);
 
-	int t0 = t->FindProperty(widgettype, objectname, "transparency0");
-	int t1 = t->FindProperty(widgettype, objectname, "transparency1");
-	int t2 = t->FindProperty(widgettype, objectname, "transparency2");
-
-	if(t0 != -1 && t1 != -1 && t2 != -1) {
-		SetTransparency((Uint8)t0, (Uint8)t1, (Uint8)t2);
-	}
+	SetTransparency(
+	    t->FindProperty(widgettype, objectname, "transparency0"),
+	    t->FindProperty(widgettype, objectname, "transparency1"),
+	    t->FindProperty(widgettype, objectname, "transparency2")
+	);
 
 	s = t->FindString(widgettype, objectname, "label");
 	if(s != NULL) {
@@ -350,15 +348,6 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		return false;
 	}
 
-	if(!IsMouseInside() && my_internaldata->togglemode) {
-		if(my_state == BTN_STATE_PRESSED && !my_internaldata->isPressed) {
-			my_state = BTN_STATE_NORMAL;
-		}
-		ReleaseCapture();
-		Update();
-		return false;
-	}
-	
 	if(my_internaldata->togglemode) {
 		if(!my_internaldata->isPressed) {
 			my_state = BTN_STATE_PRESSED;
@@ -384,8 +373,7 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 	ReleaseCapture();
 	Update();
 
-	sigButtonClick(this);
-	
+	SendMessage(GetParent(), MSG_BUTTONCLICK, GetID(), 0);
 	return true;
 }
 
@@ -495,14 +483,18 @@ void PG_Button::SetPressed(bool pressed) {
 }
 
 /**  */
-void PG_Button::SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high) {
-	my_transparency[0] = norm;
-	my_transparency[1] = pressed;
-	my_transparency[2] = high;
-}
+void PG_Button::SetTransparency(int norm, int pressed, int high) {
+	if(norm >= 0 && norm <= 255) {
+		my_transparency[0] = norm;
+	}
 
-void PG_Button::SetTransparency(Uint8 t) {
-	SetTransparency(t, t, t);
+	if(pressed >= 0 && pressed <= 255) {
+		my_transparency[1] = pressed;
+	}
+
+	if(high >= 0 && high <= 255) {
+		my_transparency[2] = high;
+	}
 }
 
 /**
@@ -587,11 +579,6 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 			break;
 	}
 
-	if(my_internaldata->isPressed) {
-		t = my_transparency[1];
-		srf = my_internaldata->srf_down;
-	}
-	
 	// blit it
 
 	if(t != 255) {
