@@ -1,5 +1,3 @@
-DIST_SUBDIRS = test
-
 SWIGCOMPILE = $(SWIG) -ruby -c++ -I$(top_srcdir)/include -I$(srcdir)
 
 SWIGINTERFACE=interface.i
@@ -46,4 +44,11 @@ pararuby_DATA = \
 
 EXTRA_DIST = \
 	swigcommon.h \
-	interface.i
+	interface.i \
+	dropdown.rb \
+	layouttest.rb \
+	listbox.rb \
+	windowresize.rb \
+	windowtest.rb \
+	icon.bmp \
+	pokus.xml

@@ -617,7 +617,6 @@ data/Makefile
 bindings/Makefile
 bindings/python/Makefile
 bindings/ruby/Makefile
-bindings/ruby/test/Makefile
 test/Makefile
 test/fireworks/Makefile
 test/colorselector/Makefile
