@@ -19,7 +19,12 @@ EXTRA_DIST = \
 	VisualC.zip \
 	mkdist-beos.sh \
 	CWparagui.txt \
-	CWProject.zip
+	CWProject.zip \
+	depcomp
+
+
+depcomp:
+	touch depcomp
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = paragui.m4
