@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/03/30 16:30:57 $
+   Update Date:      $Date: 2003/04/05 14:48:33 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.17 $
+   CVS/RCS Revision: $Revision: 1.4.4.18 $
    Status:           $State: Exp $
  */
 
@@ -334,10 +334,9 @@ void PG_Widget::AddChild(PG_Widget * child) {
         return;
     
 	// remove our new child from previous lists
+	child->RemoveFromWidgetList();
 	if(child->GetParent()) {
 		child->GetParent()->RemoveChild(child);
-	} else {
-		child->RemoveFromWidgetList();
 	}
 
 	child->my_internaldata->widgetParent = this;
@@ -681,6 +680,7 @@ void PG_Widget::Hide(bool fade) {
 
 	if(!IsVisible()) {
 		SetHidden(true);
+		eventHide();
 		return;
 	}
 
@@ -751,7 +751,7 @@ void PG_Widget::Blit(bool recursive, bool restore) {
 	static PG_Rect src;
 	static PG_Rect dst;
 	
-	if(!my_internaldata->visible) {
+	if(!my_internaldata->visible || my_internaldata->hidden) {
 		return;
 	}
 
@@ -797,7 +797,7 @@ void PG_Widget::Update(bool doBlit) {
 		return;
 	}
 
-	if(!my_internaldata->visible) {
+	if(!my_internaldata->visible || my_internaldata->hidden) {
 		return;
 	}
 
@@ -1407,8 +1407,21 @@ void PG_Widget::SetSizeByText(int Width, int Height, const char *Text) {
 		return;
 	}
 
-	my_width = w + Width;
-	my_height = h + Height + baselineY;
+	if (my_width == 0 && my_height > 0 && Width == 0) {
+ 		my_width = w;
+ 		my_ypos += (my_height - h - baselineY) / 2;
+ 		my_height = h + baselineY;
+ 	}
+ 	else if (my_height == 0 && my_width > 0 && Height == 0) {
+ 		my_xpos += (my_width - w) / 2;
+ 		my_width = w;
+ 		my_height = h + baselineY;
+ 	}
+ 	else {
+		my_width = w + Width;
+		my_height = h + Height + baselineY;
+	}
+
 }
 
 void PG_Widget::SetFont(PG_Font* font) {

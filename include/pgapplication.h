@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/30 16:30:57 $
+    Update Date:      $Date: 2003/04/05 14:48:33 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.7 $
     Status:           $State: Exp $
 */
 
@@ -294,6 +294,8 @@ public:
 	static bool GetGLMode();
 
 	void EnableBackground(bool enable = true);
+
+	void DeleteBackground();
 
 	void EnableAppIdleCalls(bool enable = true);
 

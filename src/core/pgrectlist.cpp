@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/10 12:00:13 $
+    Update Date:      $Date: 2003/04/05 14:48:33 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.2 $
     Status:           $State: Exp $
 */
 
@@ -159,7 +159,7 @@ void PG_RectList::Blit(const PG_Rect& rect) {
 	// blit all objects in the list
 	for(iterator i = begin(); i != end(); i++) {
 
-		if(!(*i)->IsVisible()) {
+		if(!(*i)->IsVisible() || (*i)->IsHidden()) {
 			continue;
 		}
 
@@ -186,7 +186,7 @@ void PG_RectList::Blit(const PG_Rect& rect) {
 void PG_RectList::Blit() {
 	// blit all objects in the list
 	for(iterator i = begin(); i != end(); i++) {
-		if(!(*i)->IsVisible()) {
+		if(!(*i)->IsVisible() || (*i)->IsHidden()) {
 			continue;
 		}
 

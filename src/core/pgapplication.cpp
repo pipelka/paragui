@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/30 16:30:57 $
+    Update Date:      $Date: 2003/04/05 14:48:33 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.17 $
+    CVS/RCS Revision: $Revision: 1.2.4.18 $
     Status:           $State: Exp $
 */
 
@@ -374,6 +374,11 @@ bool PG_Application::SetBackground(const char* filename, int mode) {
         if (!filename)
                 return false;
         
+	if(my_freeBackground && my_background) {
+		UnloadSurface(my_background);
+		my_freeBackground = false;
+	}
+		
 	my_background = LoadSurface(filename);
 
 	if(my_scaled_background) {
@@ -938,6 +943,20 @@ bool PG_Application::GetGLMode() {
 
 void PG_Application::EnableBackground(bool enable) {
 	enableBackground = enable;
+}
+
+void PG_Application::DeleteBackground() {
+ 	enableBackground = false;
+
+ 	if(my_scaled_background) {
+ 		// Destroyed scaled background if present
+ 		SDL_FreeSurface(my_scaled_background);
+ 		my_scaled_background = 0;
+ 	}
+	if(my_freeBackground && my_background) {
+		UnloadSurface(my_background);
+		my_freeBackground = false;
+	}
 }
 
 #ifdef WIN32

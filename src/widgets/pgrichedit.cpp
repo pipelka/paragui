@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/01/04 21:13:41 $
+   Update Date:      $Date: 2003/04/05 14:48:33 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.5 $
+   CVS/RCS Revision: $Revision: 1.3.6.6 $
    Status:           $State: Exp $
 */
 
@@ -49,6 +49,14 @@ PG_WidgetListEx(parent, r, style) {
 	my_TabSize = tabSize;
 	my_Align = my_Marks[PG_RichEdit::PG_TEXT_LEFT];
 	my_AutoVerticalResize = autoVerticalResize;
+}
+
+void PG_RichEdit::SetAlignment(Uint8 align) {
+	my_Align = my_Marks[align];
+}
+
+void PG_RichEdit::SetAutoVerticalResize(bool bResize) {
+	my_AutoVerticalResize = bResize;
 }
 
 void PG_RichEdit::UpdateScrollBarsPos() {

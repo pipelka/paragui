@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/09 20:04:31 $
+    Update Date:      $Date: 2003/04/05 14:48:33 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.5 $
     Status:           $State: Exp $
 */
 
@@ -58,7 +58,11 @@ void PG_Window::SetTitle(const char* title, int alignment) {
 	my_labelTitle->SetAlignment(alignment);
 	my_labelTitle->SetText(title);
 
-	Update(true);
+	if (my_showCloseButton)
+		my_buttonClose->Update();
+
+	if (my_showMinimizeButton)
+		my_buttonMinimize->Update();		
 }
 
 const char* PG_Window::GetTitle() {

@@ -12,6 +12,17 @@ Whats new in ParaGUI 1.0.4 ?
 - added PG_RadioButton::SetFontColor methods (Thanks H.C. <sebh@gmx.de>)
 - fixed PG_WidgetList::Remove(All) methods
   (Thanks Ivan Stankovic <pokemon@fly.srk.fer.hr>)
+- new DevC++ workspaces (DevC++ >= 4.9.7.0)
+- fixed a bug in PG_MessageObject::PumpIntoEventQueue(..)
+  MOUSEMOTIONEVENT don't need to be passed to ALL objects
+- added a method to PG_Application to clear and delete the background 
+  (void DeleteBackground()) (Thanks H.C. <sebh@gmx.de>)
+- fixed a potential memory leak in PG_Application resulting from changing
+  non-scaled backgrounds (Thanks H.C. <sebh@gmx.de>)
+- added a method to PG_RichEdit to set the default alignment (void
+  SetAutoVerticalResize(...)) (Thanks H.C. <sebh@gmx.de>)
+- added a method to PG_RichEdit to activate / deactivate auto vertical
+  resize (void SetAlignment(...)) (Thanks H.C. <sebh@gmx.de>)
 
 ----------------------------
 Whats new in ParaGUI 1.0.3 ?

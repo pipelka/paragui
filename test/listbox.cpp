@@ -47,7 +47,6 @@ int main( int argc, char **argv )
 	
 	for(i=0; i<10; i++) {
 		listbox.AddItem(items[i]);
-		items[i]->Show();
 	}
 
 	listbox.Show();

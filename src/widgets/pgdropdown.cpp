@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/30 16:30:57 $
+    Update Date:      $Date: 2003/04/05 14:48:33 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -151,7 +151,6 @@ PARAGUI_CALLBACK(PG_DropDown::select_handler) {
 }
 
 // 1. try to fix the problems when running PG_DropDown in a modal loop
-// still not working -- Alex
 bool PG_DropDown::ProcessEvent(const SDL_Event * event, bool bModal) {
 
 	if(bModal && my_DropList->IsVisible()) {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:40 $
+    Update Date:      $Date: 2003/04/05 14:48:33 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.5 $
+    CVS/RCS Revision: $Revision: 1.1.6.6 $
     Status:           $State: Exp $
 */
 
@@ -346,7 +346,7 @@ bool PG_MessageObject::PumpIntoEventQueue(const SDL_Event* event) {
 				widget->ProcessEvent(event);
 				return true;
 			}
-			break;
+			return true;
 
 		case SDL_MOUSEBUTTONUP:
 		case SDL_MOUSEBUTTONDOWN:

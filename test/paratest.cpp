@@ -509,11 +509,6 @@ int main(int argc, char* argv[]) {
 	              tmp->GetName());
 
 	
-	// PG_Notebook   pgn(0, PG_Rect(50, 320, 300, 150));
-	// pgn.AddPage("Test", 0x01);
-	// pgn.AddPage("Second", 0x02);
-	// pgn.Show();
-		
 	// Enter main loop 
 	app.Run();
 
