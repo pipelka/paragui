@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 15:00:59 $
+    Update Date:      $Date: 2003/01/04 21:13:38 $
     Source File:      $Source: /sources/paragui/paragui/include/pgnotebook.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -107,7 +107,7 @@ struct PG_NotebookPageCallback {
         };
 };
 
-typedef std::list<PG_NotebookPageCallback> cblist;
+typedef list<PG_NotebookPageCallback> cblist;
 
 class DECLSPEC PG_NotebookPage : public PG_Widget
 {
@@ -217,7 +217,7 @@ class DECLSPEC PG_NotebookPage : public PG_Widget
                 return my_enabled;
         }
 
-        const std::string& GetTitle() {
+        const string& GetTitle() {
                 return my_title;
         }
 
@@ -234,7 +234,7 @@ class DECLSPEC PG_NotebookPage : public PG_Widget
         cblist        apply_callbacks;
         cblist        help_callbacks;
 
-        std::string   my_title;
+        string   my_title;
         Uint32        my_page_id;
         
         SDL_Surface  *srf_icon;
@@ -279,7 +279,7 @@ class DECLSPEC PG_NotebookTabs : public PG_WidgetList, public PG_EventObject
         void RefreshState();
         
       protected:
-        std::vector<PG_NotebookPage*>   my_tab_pages;
+        vector<PG_NotebookPage*>   my_tab_pages;
 
       private:
         STL_MAP<PG_NotebookPage*, PG_NotebookButton*> page2button;
@@ -381,8 +381,8 @@ class DECLSPEC PG_Notebook : public PG_Widget, public PG_EventObject
                 if (!page)
                         return *this;
                 
-                std::vector<PG_NotebookPage*>::iterator it = my_pages.begin();
-                std::vector<PG_NotebookPage*>::iterator end = my_pages.end();
+                vector<PG_NotebookPage*>::iterator it = my_pages.begin();
+                vector<PG_NotebookPage*>::iterator end = my_pages.end();
                 
                 while(it != end) {
                         if (*it == page) {
@@ -575,7 +575,7 @@ class DECLSPEC PG_Notebook : public PG_Widget, public PG_EventObject
         PG_NotebookButtons                 my_activeButtons;
         bool                               widgetValid;
 
-        std::vector<PG_NotebookPage*>      my_pages;
+        vector<PG_NotebookPage*>      my_pages;
         STL_MAP<Uint32, PG_NotebookPage*>  my_page_ids;
 };
 

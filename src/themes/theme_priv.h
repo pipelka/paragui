@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/29 22:11:46 $
+    Update Date:      $Date: 2003/01/04 21:13:41 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -51,8 +51,8 @@ public:
 		index = 0;
 		style = 0;
 	}
-	std::string name;
-	std::string value;
+	string name;
+	string value;
 	int size;
 	int index;
 	int style;
@@ -68,8 +68,8 @@ class THEME_STRING {
 public:
 	virtual ~THEME_STRING() {}
 
-	std::string name;
-	std::string value;
+	string name;
+	string value;
 };
 
 class THEME_FILENAME {
@@ -82,8 +82,8 @@ public:
 		PG_FileArchive::UnloadSurface(surface);
 	}
 
-	std::string name;
-	std::string value;
+	string name;
+	string value;
 	Uint32 colorkey;
 	bool hasColorKey;
 	SDL_Surface* surface;
@@ -91,13 +91,13 @@ public:
 
 class THEME_PROPERTY {
 public:
-	std::string name;
+	string name;
 	long value;
 };
 
 class THEME_GRADIENT {
 public:
-	std::string name;
+	string name;
 	THEME_COLOR color[4];
 	PG_Gradient gradient;
 };
@@ -106,11 +106,11 @@ public:
 // Why go through the extra job of creating strings for comparision instead
 // of using char * directly?
 struct pg_hashstr {
-	size_t operator()(std::string s1) const {
+	size_t operator()(string s1) const {
 #if PG_VERSIONNUM(__GNUC__, __GNUC_MINOR__, 0) >= PG_VERSIONNUM(3, 1, 0)
 		return __gnu_cxx::hash<const char *>()(s1.c_str());
 #else
-		return std::hash<const char *>()(s1.c_str());
+		return hash<const char *>()(s1.c_str());
 #endif
 	}
 };
@@ -128,19 +128,19 @@ public:
 	const char* FindString(const char* name);
 	THEME_FONT* font;
 
-	std::string type;
-	std::string name;
+	string type;
+	string name;
 
-	std::vector<THEME_STRING*> strings;
+	vector<THEME_STRING*> strings;
 
 #ifdef HASH_MAP_INC
-	typedef STL_MAP<std::string, THEME_FILENAME*, pg_hashstr> MAP_FILENAME;
-	typedef STL_MAP<std::string, THEME_GRADIENT*, pg_hashstr> MAP_GRADIENT;
-	typedef STL_MAP<std::string, THEME_PROPERTY*, pg_hashstr> MAP_PROPERTY;
+	typedef STL_MAP<string, THEME_FILENAME*, pg_hashstr> MAP_FILENAME;
+	typedef STL_MAP<string, THEME_GRADIENT*, pg_hashstr> MAP_GRADIENT;
+	typedef STL_MAP<string, THEME_PROPERTY*, pg_hashstr> MAP_PROPERTY;
 #else
-	typedef std::map<std::string, THEME_FILENAME*> MAP_FILENAME;
-	typedef std::map<std::string, THEME_GRADIENT*> MAP_GRADIENT;
-	typedef std::map<std::string, THEME_PROPERTY*> MAP_PROPERTY;
+	typedef map<string, THEME_FILENAME*> MAP_FILENAME;
+	typedef map<string, THEME_GRADIENT*> MAP_GRADIENT;
+	typedef map<string, THEME_PROPERTY*> MAP_PROPERTY;
 #endif
 
 	MAP_FILENAME filename;
@@ -157,12 +157,12 @@ public:
 
 	THEME_OBJECT* FindObject(const char* objectname);
 
-	std::string type;
+	string type;
 
 #ifdef HASH_MAP_INC
-	typedef STL_MAP<std::string, THEME_OBJECT*, pg_hashstr> MAP_OBJECT;
+	typedef STL_MAP<string, THEME_OBJECT*, pg_hashstr> MAP_OBJECT;
 #else
-	typedef std::map<std::string, THEME_OBJECT*> MAP_OBJECT;
+	typedef map<string, THEME_OBJECT*> MAP_OBJECT;
 #endif
 
 	MAP_OBJECT object;
@@ -193,15 +193,15 @@ public:
 
 	THEME_FONT* defaultfont;
 
-	std::string title;
-	std::string description;
-	std::string author;
-	std::string email;
+	string title;
+	string description;
+	string author;
+	string email;
 
 #ifdef HASH_MAP_INC
-	typedef STL_MAP<std::string, THEME_WIDGET*, pg_hashstr> MAP_WIDGET;
+	typedef STL_MAP<string, THEME_WIDGET*, pg_hashstr> MAP_WIDGET;
 #else
-	typedef std::map<std::string, THEME_WIDGET*> MAP_WIDGET;
+	typedef map<string, THEME_WIDGET*> MAP_WIDGET;
 #endif
 
 	MAP_WIDGET widget;

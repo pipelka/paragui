@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 15:00:59 $
+    Update Date:      $Date: 2003/01/04 21:13:37 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -302,7 +302,7 @@ protected:
 	static bool my_quitEventLoop;
 
 #ifndef SWIG
-	static std::vector<PG_MessageObject*> objectList;
+	static vector<PG_MessageObject*> objectList;
 #endif
 
 	static PG_MessageObject* captureObject;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/25 07:27:38 $
+    Update Date:      $Date: 2003/01/04 21:13:41 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.6 $
     Status:           $State: Exp $
 */
 
@@ -450,7 +450,7 @@ void PG_ThemeWidget::SetTransparency(Uint8 t) {
 SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* gradient, SDL_Surface* background, int bkmode, Uint8 blend) {
 	SDL_Surface* cache_surface = NULL;
 	SDL_Surface* screen = PG_Application::GetScreen();
-	std::string key;
+	string key;
 
 	if(r.w == 0 || r.h == 0) {
 		return NULL;

@@ -9,7 +9,7 @@ struct PG_FontDataInternal {
 
 	int size;
 	int index;
-	std::string name;
+	string name;
 
 	Uint32 dummy1;
 	Uint32 dummy2;

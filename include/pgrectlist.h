@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/29 22:11:45 $
+    Update Date:      $Date: 2003/01/04 21:13:38 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrectlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -43,7 +43,7 @@
 	@short A list derived from vector to handle overlapping and child-widgets
 */
 
-class DECLSPEC PG_RectList : public std::vector<PG_Widget*> {
+class DECLSPEC PG_RectList : public vector<PG_Widget*> {
 
 public:
 
@@ -154,7 +154,7 @@ private:
 		}
 	};
 
-	typedef std::map<PG_Rect*, int, rectlist_cmp> PG_RectListMap;
+	typedef map<PG_Rect*, int, rectlist_cmp> PG_RectListMap;
 #endif
 
 	void UpdateIndexMap();

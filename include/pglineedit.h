@@ -20,17 +20,24 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2003/01/04 21:13:37 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_LINEEDIT
 #define PG_LINEEDIT
 
+#ifdef SWIG
+%include "swigcommon.h"
+%module pglineedit
+%{
+#include "pglineedit.h"
+%}
+#endif
+
 #include "pgthemewidget.h"
-#include "pgsignals.h"
 #include <string>
 
 /**
@@ -55,8 +62,10 @@ public:
 
 	void LoadThemeStyle(const char* widgettype);
 
+#ifndef SWIG
 	/** */
 	void LoadThemeStyle(const char* widgettype, const char* objectname);
+#endif
 
 	/** start edit */
 	void EditBegin();
@@ -130,10 +139,6 @@ public:
 	bool Action(PG_ACTION action);
 
 
-	PG_SignalEditBegin sigEditBegin;
-	PG_SignalEditEnd sigEditEnd;
-	PG_SignalEditReturn sigEditReturn;
-	
 protected:
 
 	/** */
@@ -181,9 +186,11 @@ protected:
 	int my_cursorPosition;
 
 private:
+#ifndef SWIG
 
 	PG_LineEdit(const PG_LineEdit&);
 	PG_LineEdit& operator=(PG_LineEdit&);
+#endif
 
 	void DrawText(const PG_Rect& dst);
 	void DrawTextCursor();
@@ -193,13 +200,13 @@ private:
 
 	bool IsValidKey(char c);
 
-	std::string my_buffer;
+	string my_buffer;
 	int my_startMark;
 	int my_endMark;
 
 	bool my_isCursorVisible;
 	int my_offsetX;
-	std::string my_validkeys;
+	string my_validkeys;
 	bool my_isEditable;
 	int my_maximumLength;
 

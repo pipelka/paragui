@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/17 08:18:43 $
+    Update Date:      $Date: 2003/01/04 21:13:41 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -48,19 +48,15 @@
 #define tcscmp strcmp
 #endif
 
-using std::cerr;
-using std::cout;
-using std::endl;
-
 typedef struct _PARSE_INFO {
 	int depth;
 	int mode;
 	THEME_THEME* theme;
-	std::string str_currentWidget;
-	std::string str_currentObject;
+	string str_currentWidget;
+	string str_currentObject;
 	THEME_WIDGET* p_currentWidget;
 	THEME_OBJECT* p_currentObject;
-	std::string themename;
+	string themename;
 }
 PARSE_INFO;
 
@@ -131,7 +127,7 @@ void parseThemeProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** at
 }
 
 void parseWidgetProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** atts) {
-	std::string val=atts[1];
+	string val=atts[1];
 
 	if(tcscmp(T(prop), T("type")) == 0) {
 		info->p_currentWidget->type = val;
@@ -148,7 +144,7 @@ void parseWidgetProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 }
 
 void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** atts) {
-	std::string val=atts[1];
+	string val=atts[1];
 	int i;
 	THEME_OBJECT* object = info->p_currentObject;
 
@@ -288,7 +284,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 	else if(tcscmp(T(prop), T("gradient")) == 0) {
 		THEME_GRADIENT* gradient = new THEME_GRADIENT;
 		Uint32 c;
-		std::string val;
+		string val;
 
 		for(i=0; atts[i]; i += 2) {
 
@@ -396,7 +392,7 @@ void handlerEnd(void* userData, const XML_Char* name) {
 }
 
 PG_Theme* PG_Theme::Load(const char* xmltheme) {
-	std::string filename;
+	string filename;
 
 	// create new parse info
 	PARSE_INFO info;
@@ -411,14 +407,14 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 	filename = xmltheme;
 
 	// check if we have a compressed themefile somewhere
-	filename = (std::string)xmltheme + (std::string)".zip";
+	filename = (string)xmltheme + (string)".zip";
 
 	// and add it to the searchpath
 	if(PG_FileArchive::Exists(filename.c_str())) {
 		const char* path = PG_FileArchive::GetRealDir(filename.c_str());
 		char sep = PG_FileArchive::GetDirSeparator()[0];
 		
-		std::string fullpath = (std::string)path;
+		string fullpath = (string)path;
 		if(fullpath[fullpath.size()-1] != sep) {
 			fullpath += sep;
 		}
@@ -435,7 +431,7 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 
 	// try to open the theme
 
-	filename = (std::string)xmltheme + (std::string)THEME_SUFFIX;
+	filename = (string)xmltheme + (string)THEME_SUFFIX;
 	if(!PG_FileArchive::Exists(filename.c_str())) {
 		PG_LogERR("theme '%s' not found !", filename.c_str());
 		return NULL;

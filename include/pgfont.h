@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/10 13:17:17 $
+    Update Date:      $Date: 2003/01/04 21:13:37 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -224,7 +224,7 @@ private:
 
 #ifndef SWIG
 
-	typedef std::map<FT_F26Dot6, PG_FontFaceCacheItem*> MAP_SUBITEMS;
+	typedef map<FT_F26Dot6, PG_FontFaceCacheItem*> MAP_SUBITEMS;
 
 	class FONT_ITEM {
 	public:
@@ -233,12 +233,12 @@ private:
 
 		virtual ~FONT_ITEM();
 
-		std::string name;
+		string name;
 		PG_DataContainer* memdata;
 		MAP_SUBITEMS subitems;
 	};
 
-	typedef std::map<std::string, FONT_ITEM*> MAP_FONTS;
+	typedef map<string, FONT_ITEM*> MAP_FONTS;
 
 	static MAP_FONTS my_fontcache;
 	static FT_Library my_library;

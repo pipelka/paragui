@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2003/01/04 21:13:38 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsurfacecache.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -34,7 +34,7 @@
 typedef struct {
 	int refcount;
 	SDL_Surface* surface;
-	std::string key;
+	string key;
 }
 pg_surface_cache_t;
 
@@ -44,20 +44,20 @@ public:
 	PG_SurfaceCache();
 	virtual ~PG_SurfaceCache();
 
-	void CreateKey(std::string &key, Uint16 w, Uint16 h,
+	void CreateKey(string &key, Uint16 w, Uint16 h,
 	               PG_Gradient* gradient, SDL_Surface* background,
 	               Sint8 bkmode, Uint8 blend);
-	SDL_Surface* FindSurface(const std::string &key);
-	SDL_Surface* AddSurface(const std::string &key, SDL_Surface* surface);
+	SDL_Surface* FindSurface(const string &key);
+	SDL_Surface* AddSurface(const string &key, SDL_Surface* surface);
 	void DeleteSurface(SDL_Surface* surface, bool bDeleteIfNotExists = true);
 
-	void IncRef(const std::string &key);
+	void IncRef(const string &key);
 
 	void Cleanup();
 
 private:
 
-	pg_surface_cache_t* FindByKey(const std::string &key);
+	pg_surface_cache_t* FindByKey(const string &key);
 	pg_surface_cache_t* FindBySurface(SDL_Surface* surface);
 
 	void* my_surfacemap;

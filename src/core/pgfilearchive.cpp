@@ -19,10 +19,10 @@
     Alexander Pipelka
     pipelka@teleweb.at
  
-    Last Update:      $Author: eross $
-    Update Date:      $Date: 2002/08/18 01:16:04 $
+    Last Update:      $Author: braindead $
+    Update Date:      $Date: 2003/01/04 21:13:40 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.10 $
+    CVS/RCS Revision: $Revision: 1.2.4.11 $
     Status:           $State: Exp $
 */
 
@@ -49,7 +49,7 @@ PG_FileArchive::PG_FileArchive() {
 	// First instance ? -> initialize PhysFS
 	if(my_instance_count == 1) {
 		if(PHYSFS_init("paragui") == 0) {
-			std::cerr << "Unable to initialize PhysicsFS !" << std::endl;
+			cerr << "Unable to initialize PhysicsFS !" << endl;
 			return;
 		}
 	}
@@ -74,19 +74,19 @@ void PG_FileArchive::Deinit() {
 	PHYSFS_deinit();
 }
 
-std::string *PG_FileArchive::PathToPlatform(const char *path) {
-	std::string *newpath;
+string *PG_FileArchive::PathToPlatform(const char *path) {
+	string *newpath;
 	const char* sep = GetDirSeparator();
-	std::string::size_type pos = 0, incr;
-	newpath = new std::string(path);
+	string::size_type pos = 0, incr;
+	newpath = new string(path);
 	incr = strlen(sep);
 	if(incr == 1 && sep[0] == '/')
 		return newpath;
 
 #ifdef __MACOS__
-	while( (pos = newpath->find(":", pos)) != std::string::npos) {
+	while( (pos = newpath->find(":", pos)) != string::npos) {
 #else
-	while( (pos = newpath->find("/", pos)) != std::string::npos) {
+	while( (pos = newpath->find("/", pos)) != string::npos) {
 #endif
 		newpath->replace(pos, 1, sep);
 		pos += incr;
@@ -96,14 +96,14 @@ std::string *PG_FileArchive::PathToPlatform(const char *path) {
 
 
 bool PG_FileArchive::AddArchive(const char* arch, bool append) {
-	std::string *newpath = PathToPlatform(arch);
+	string *newpath = PathToPlatform(arch);
 	bool ret = (PHYSFS_addToSearchPath(newpath->c_str(),  append) != 0);
 	delete newpath;
 	return ret;
 }
 
 bool PG_FileArchive::RemoveArchive(const char* arch) {
-	std::string *newpath = PathToPlatform(arch);
+	string *newpath = PathToPlatform(arch);
 	bool ret = (PHYSFS_removeFromSearchPath(newpath->c_str()) != 0);
 	delete newpath;
 	return ret;
@@ -124,7 +124,7 @@ PG_FileList* PG_FileArchive::GetFileList(const char *dir, const char* wildcard) 
 	
 	for( char** i = tempList; *i != NULL; i++) {
 		if(fnmatch(wildcard, *i, FNM_PATHNAME) == 0) {
-			retVal->push_back(std::string(*i));
+			retVal->push_back(string(*i));
 		}
 	}
 	
@@ -260,7 +260,7 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 		return NULL;
 	}
 
-	std::string fn = filename;
+	string fn = filename;
 
 	if(fn == "none") {
 		return NULL;
@@ -354,10 +354,10 @@ PG_FileList* PG_FileArchive::GetSearchPathList() {
 	for(; tempList[ size ] != NULL; ++size) {}
 	
 	// Now we're ready to initialize everything.
-	retVal = new std::vector< std::string >;
+	retVal = new vector< string >;
 	retVal->reserve( size );
 	for( Uint32 i = 0; i < size; ++i ) {
-		retVal->push_back(std::string(tempList[ i ]));
+		retVal->push_back(string(tempList[ i ]));
 	}
 	
 	// Clean up.

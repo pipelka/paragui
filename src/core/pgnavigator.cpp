@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 10:43:36 $
+    Update Date:      $Date: 2003/01/04 21:13:40 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgnavigator.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.6.2 $
+    CVS/RCS Revision: $Revision: 1.2.6.3 $
     Status:           $State: Exp $
 */
 
@@ -36,7 +36,7 @@ using namespace std;
 PG_Widget* PG_Navigator::my_currentWidget = NULL;
 
 void PG_Navigator::Add(PG_Widget* widget) {
-	iterator i = std::find(begin(), end(), widget);
+	iterator i = find(begin(), end(), widget);
 
 	if(i != end()) {
 		return;
@@ -46,7 +46,7 @@ void PG_Navigator::Add(PG_Widget* widget) {
 }
 
 void PG_Navigator::Remove(PG_Widget* widget) {
-	iterator i = std::find(begin(), end(), widget);
+	iterator i = find(begin(), end(), widget);
 
 	if(i == end()) {
 		return;
@@ -64,7 +64,7 @@ bool PG_Navigator::Action(PG_ACTION action) {
 }
 
 PG_Widget* PG_Navigator::Goto(PG_Widget* widget) {
-	iterator i = std::find(begin(), end(), widget);
+	iterator i = find(begin(), end(), widget);
 
 	if(i == end()) {
 		return NULL;
@@ -103,7 +103,7 @@ PG_Widget* PG_Navigator::GotoLast() {
 }
 
 PG_Widget* PG_Navigator::GotoNext() {
-	iterator i = std::find(begin(), end(), my_currentWidget);
+	iterator i = find(begin(), end(), my_currentWidget);
 
 	if(i == end()) {
 		return NULL;
@@ -114,7 +114,7 @@ PG_Widget* PG_Navigator::GotoNext() {
 }
 
 PG_Widget* PG_Navigator::GotoPrev() {
-	iterator i = std::find(begin(), end(), my_currentWidget);
+	iterator i = find(begin(), end(), my_currentWidget);
 
 	if(i == begin()) {
 		return NULL;

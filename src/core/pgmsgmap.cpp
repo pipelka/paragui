@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 08:10:23 $
+    Update Date:      $Date: 2003/01/04 21:13:40 $
     Source File:      $Source: /sources/paragui/paragui/src/core/Attic/pgmsgmap.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.2 $
     Status:           $State: Exp $
 */
 
@@ -33,7 +33,7 @@
 #include <string>
 #include <iostream>
 
-void PG_DisplayEventMap(std::string message = "");
+void PG_DisplayEventMap(string message = "");
 
 // the PG_MessageObject -> callback function pair definition
 
@@ -43,8 +43,8 @@ struct objcb_cmp {
 	}
 };
 
-typedef std::map<PG_MessageObject*, PG_EVENTHANDLERDATA*, objcb_cmp> OBJCBMAP;
-typedef std::map<PG_MessageObject*, PG_EVENTHANDLERDATA*, objcb_cmp>::iterator OBJCBMAP_ITERATOR;
+typedef map<PG_MessageObject*, PG_EVENTHANDLERDATA*, objcb_cmp> OBJCBMAP;
+typedef map<PG_MessageObject*, PG_EVENTHANDLERDATA*, objcb_cmp>::iterator OBJCBMAP_ITERATOR;
 
 // the messagetype <-> messageobject pair definition
 
@@ -54,8 +54,8 @@ struct msgobj_cmp {
 	}
 };
 
-typedef std::map<PG_MSG_TYPE, OBJCBMAP*, msgobj_cmp> MSGOBJMAP;
-typedef std::map<PG_MSG_TYPE, OBJCBMAP*, msgobj_cmp>::iterator MSGOBJMAP_ITERATOR;
+typedef map<PG_MSG_TYPE, OBJCBMAP*, msgobj_cmp> MSGOBJMAP;
+typedef map<PG_MSG_TYPE, OBJCBMAP*, msgobj_cmp>::iterator MSGOBJMAP_ITERATOR;
 
 // the global eventmap
 static MSGOBJMAP PG_EventMap;
@@ -87,7 +87,7 @@ void PG_DisplayOBJCBMAP(OBJCBMAP* list) {
 	}
 }
 
-void PG_DisplayEventMap(std::string message) {
+void PG_DisplayEventMap(string message) {
 	MSGOBJMAP_ITERATOR i;
 
 	PG_LogDBG("Current Event Map: %s",message.c_str());

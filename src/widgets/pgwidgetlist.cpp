@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/20 14:35:33 $
+    Update Date:      $Date: 2003/01/04 21:13:41 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -230,7 +230,7 @@ void PG_WidgetList::DeleteAll() {
 		return;
 	}
 	
-	std::vector<PG_Widget*>::iterator list = my_widgetList.begin();
+	vector<PG_Widget*>::iterator list = my_widgetList.begin();
 	PG_Widget* w = NULL;
 
 	while(list != my_widgetList.end()) {
@@ -336,8 +336,8 @@ PG_Widget* PG_WidgetList::GetWidgetFromPos(Sint32 y) {
 }
 
 bool PG_WidgetList::RemoveWidget(PG_Widget* w, bool shiftx, bool shifty) {
-	std::vector<PG_Widget*>::iterator wi = my_widgetList.begin();
-	std::vector<PG_Widget*>::iterator ri = my_widgetList.end();
+	vector<PG_Widget*>::iterator wi = my_widgetList.begin();
+	vector<PG_Widget*>::iterator ri = my_widgetList.end();
 
 	PG_Widget* widget = NULL;
 
@@ -370,7 +370,7 @@ bool PG_WidgetList::RemoveWidget(PG_Widget* w, bool shiftx, bool shifty) {
 			my_widgetCount--;
 
 			my_listwidth = 0;
-			std::vector<PG_Widget*>::iterator header;
+			vector<PG_Widget*>::iterator header;
 
 			for (header = my_widgetList.begin(); header < my_widgetList.end(); header++) {
 				PG_Point pos = ScreenToClient((*header)->my_xpos, (*header)->my_ypos);

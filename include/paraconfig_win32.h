@@ -50,6 +50,15 @@
 #define PACKAGE "paragui"
 
 /* Version number of package */
-#define VERSION "1.0.3"
+#define VERSION "1.0.4"
+
+// Some stuff needed for Win32
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#define VC_EXTRALEAN
+#include <windows.h>
+extern int SDL_RegisterApp(char*, Uint32, void*);
+#undef SendMessage
+#endif // WIN32
 
 #endif // WIN32_CONFIG_INCLUDED

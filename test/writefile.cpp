@@ -38,7 +38,7 @@ int main() {
 	wf = Arc->OpenFile("pgtestfile", PG_OPEN_READ);
 
 	// read and check the line of text
-	std::string text = wf->getline();
+	string text = wf->getline();
 	if(text != "test") {
 		PG_LogERR("File corrupted (reading text failed)");
 	}

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/11/01 15:00:59 $
+   Update Date:      $Date: 2003/01/04 21:13:41 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.11 $
+   CVS/RCS Revision: $Revision: 1.4.4.12 $
    Status:           $State: Exp $
  */
 
@@ -40,7 +40,7 @@ PG_RectList PG_Widget::widgetList;
 int PG_Widget::my_ObjectCounter = 0;
 
 typedef STL_MAP<int, PG_Widget*> PG_IdToWidgetMap;
-typedef std::map<std::string, PG_Widget*> PG_NameToWidgetMap;
+typedef map<string, PG_Widget*> PG_NameToWidgetMap;
 
 struct PG_WidgetDataInternal{
 
@@ -74,7 +74,7 @@ struct PG_WidgetDataInternal{
 	Uint16 heightText;
 
 	bool inDestruct;
-	std::string name;
+	string name;
 	
 	bool hidden;
 };
@@ -361,7 +361,7 @@ void PG_Widget::AddChildToCache(PG_Widget *child, const char *name) {
 			PG_LogDBG("Child with name '%s' already exists in the name cache. Ignoring the new child.", name);
 	}
 	else {
-			std::string n = name;
+			string n = name;
 			my_internaldata->childrenNameMap[n] = child;
 	}
 }
@@ -1293,7 +1293,7 @@ void PG_Widget::SetText(const char* text) {
 		return;
 	}
 
-	my_text = std::string(text);
+	my_text = string(text);
 	Update();
 }
 
@@ -1788,7 +1788,7 @@ PG_Widget* PG_Widget::FindChild(int id) {
 }
 
 PG_Widget* PG_Widget::FindChild(const char *name) {
-	std::string n = name;
+	string n = name;
 	PG_NameToWidgetMap::iterator r = my_internaldata->childrenNameMap.find(n);
 
 	if(r == my_internaldata->childrenNameMap.end()) {

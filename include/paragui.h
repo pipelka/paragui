@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 15:00:59 $
+    Update Date:      $Date: 2003/01/04 21:13:37 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4 $
     Status:           $State: Exp $
 */
 
@@ -86,13 +86,13 @@
 #include <cstdlib>
 #include <iostream>
 #include <cstring>
-#endif
-
-#include "paraconfig.h"
-
-#ifndef SWIG
 #include <string>
 #endif
+
+//our default namespace is std
+using namespace std;
+
+#include "paraconfig.h"
 
 // mpatrol
 #ifdef MPATROL_ENABLED

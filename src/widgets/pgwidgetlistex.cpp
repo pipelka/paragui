@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/28 16:35:30 $
+    Update Date:      $Date: 2003/01/04 21:13:41 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlistex.cpp,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -55,7 +55,7 @@ void PG_WidgetListEx::AddWidget(PG_Widget* w) {
 	UpdateScrollBarsPos();
 
 	if(IsVisible()) {
-		CheckScrollBars(my_width, my_height);
+		CheckScrollBars();
 		w->SetVisible(true);
 		Update();
 	}
@@ -65,7 +65,7 @@ void PG_WidgetListEx::AddWidget(PG_Widget* w) {
 }
 
 bool PG_WidgetListEx::RemoveWidget(PG_Widget* w, bool shiftx, bool shifty) {
-	std::vector<PG_Widget*>::iterator wi = my_widgetList.begin();
+	vector<PG_Widget*>::iterator wi = my_widgetList.begin();
 	PG_Widget* widget = NULL;
 
 	while (wi != my_widgetList.end()) {
@@ -81,7 +81,7 @@ bool PG_WidgetListEx::RemoveWidget(PG_Widget* w, bool shiftx, bool shifty) {
 			if(shifty)
 				my_listheight = 0;
 
-			for (std::vector<PG_Widget*>::iterator header = my_widgetList.begin(); header < my_widgetList.end(); header++) {
+			for (vector<PG_Widget*>::iterator header = my_widgetList.begin(); header < my_widgetList.end(); header++) {
 
 				PG_Point pos = ScreenToClient((*header)->
 				                              my_xpos, (*header)->my_ypos);
@@ -119,7 +119,8 @@ bool PG_WidgetListEx::RemoveWidget(PG_Widget* w, bool shiftx, bool shifty) {
 
 			UpdateScrollBarsPos();
 			if(IsVisible()) {
-				CheckScrollBars(my_width, my_height);
+				CheckScrollBars()
+				;
 				Update();
 			}
 

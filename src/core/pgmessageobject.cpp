@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/01 15:00:59 $
+    Update Date:      $Date: 2003/01/04 21:13:40 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.4 $
+    CVS/RCS Revision: $Revision: 1.1.6.5 $
     Status:           $State: Exp $
 */
 
@@ -35,7 +35,7 @@
 #include <algorithm>
 
 // static variables for message processing
-std::vector<PG_MessageObject*> PG_MessageObject::objectList;
+vector<PG_MessageObject*> PG_MessageObject::objectList;
 PG_MessageObject* PG_MessageObject::captureObject = NULL;
 PG_MessageObject* PG_MessageObject::inputFocusObject = NULL;
 PG_Widget* PG_MessageObject::lastwidget = NULL;
@@ -360,7 +360,7 @@ bool PG_MessageObject::PumpIntoEventQueue(const SDL_Event* event) {
 
 	// send to all receivers
 	bool processed = false;
-	std::vector<PG_MessageObject*>::iterator list = objectList.begin();
+	vector<PG_MessageObject*>::iterator list = objectList.begin();
 	while(list != objectList.end()) {
 		if((*list)->ProcessEvent(event)) {
 			processed = true;
@@ -401,10 +401,10 @@ SDL_Event PG_MessageObject::WaitEvent(Uint32 delay) {
 /** Remove an object from the message queue  */
 
 bool PG_MessageObject::RemoveObject(PG_MessageObject* obj) {
-	std::vector<PG_MessageObject*>::iterator list = objectList.begin();
+	vector<PG_MessageObject*>::iterator list = objectList.begin();
 
 	// search the object
-	list = std::find(objectList.begin(), objectList.end(), obj);
+	list = find(objectList.begin(), objectList.end(), obj);
 
 	// check if object was found
 	if(list == objectList.end()) {

@@ -20,15 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2003/01/04 21:13:41 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
 #include "pglineedit.h"
 #include "pgapplication.h"
-#include "pgtheme.h"
 #include <cstring>
 #include <stdarg.h>
 
@@ -154,7 +153,7 @@ int PG_LineEdit::GetCursorPosFromScreen(int x, int y) {
 }
 
 const char* PG_LineEdit::GetDrawText() {
-	static std::string	passtext;
+	static string passtext;
 
 	if (my_passchar == 0)
 		return my_text.c_str()+my_offsetX;
@@ -171,7 +170,7 @@ void PG_LineEdit::EditBegin() {
 	my_isCursorVisible = true;
 	Update();
 
-	sigEditBegin(this);
+	SendMessage(this, MSG_EDITBEGIN, GetID(), 0);
 	eventEditBegin(GetID(), this, 0,0);
 }
 
@@ -182,7 +181,7 @@ void PG_LineEdit::EditEnd() {
 	Update();
 	ReleaseInputFocus();
 
-	sigEditEnd(this);
+	SendMessage(this, MSG_EDITEND, GetID(), 0);
 	eventEditEnd(GetID(), this, 0,0);
 }
 
@@ -297,7 +296,7 @@ bool PG_LineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				return false;
 			}
 			EditEnd();
-			sigEditReturn(this);
+			SendMessage(this, MSG_RETURN, GetID(), 0);
 			return true;
 
 		case SDLK_HOME:
@@ -537,7 +536,7 @@ bool PG_LineEdit::IsValidKey(char c) {
 		return true;
 	}
 
-	return (my_validkeys.find(c) != std::string::npos);
+	return (my_validkeys.find(c) != string::npos);
 }
 
 void PG_LineEdit::eventHide() {

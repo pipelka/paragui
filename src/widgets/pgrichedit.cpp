@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/11/22 17:58:43 $
+   Update Date:      $Date: 2003/01/04 21:13:41 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4 $
+   CVS/RCS Revision: $Revision: 1.3.6.5 $
    Status:           $State: Exp $
 */
 
@@ -99,7 +99,7 @@ bool PG_RichEdit::RemoveWidget(PG_Widget* w, bool shiftx, bool shifty) {
 	return result;
 }
 
-void PG_RichEdit::SetText(const std::string &text) {
+void PG_RichEdit::SetText(const string &text) {
 	SetText(text.c_str());
 }
 
@@ -141,7 +141,7 @@ void PG_RichEdit::ParseWords() {
 		Uint16 w, h, sw = 0;
 		int bl, ls;
 		bool space = false;
-		std::string word;
+		string word;
 
 		searchFrom = GetWord(searchFrom, &word, &wordDescr.my_EndMark);
 
@@ -167,20 +167,20 @@ void PG_RichEdit::ParseWords() {
 
 		my_ParsedWords.push_back(wordDescr);
 
-		if ((searchFrom != std::string::npos) && (searchFrom < my_text.length()))
+		if ((searchFrom != string::npos) && (searchFrom < my_text.length()))
 			searchFrom++;
 		else
 			break;
 	} while (true);
 }
 
-size_t PG_RichEdit::GetWord(size_t searchFrom, std::string *word, Uint32 *endMark) {
-	size_t ik, length = my_text.length(), result = std::string::npos;
+size_t PG_RichEdit::GetWord(size_t searchFrom, string *word, Uint32 *endMark) {
+	size_t ik, length = my_text.length(), result = string::npos;
 
 	*endMark = my_Marks[MARK_SPACE];
 
 	if (searchFrom >= my_text.length()) {
-		return std::string::npos;
+		return string::npos;
 	}
 
 	for (ik = searchFrom; ik < length; ik++) {
@@ -194,7 +194,7 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, std::string *word, Uint32 *endMar
 		}
 	}
 
-	if (result != std::string::npos) {
+	if (result != string::npos) {
 		size_t increment = 1;
 
 		if ((Uint32)my_text[result] != my_Marks[MARK_SPACE])
@@ -202,7 +202,7 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, std::string *word, Uint32 *endMar
 		*word = my_text.substr(searchFrom, result - searchFrom + increment);
 		
 		if ((Uint32)my_text[result] == my_Marks[MARK_NONBREAKABLE_SPACE]) {
-			std::string newword;
+			string newword;
 
 			*word += " ";
 			result = GetWord(result + 1, &newword, endMark);
@@ -495,7 +495,7 @@ void PG_RichEdit::AlignLinePart(RichLinePartArray::iterator actualLinePart, Uint
 }
 
 void PG_RichEdit::GetWidgetsOnLine(Sint32 lineTop, Uint32 lineHeight, WidgetMap &widgetsOnLine, bool clear) {
-	std::vector<PG_Widget*>::iterator child;
+	vector<PG_Widget*>::iterator child;
 
 	if (clear)
 		widgetsOnLine.clear();
@@ -523,7 +523,7 @@ void PG_RichEdit::GetWidgetsOnLine(Sint32 lineTop, Uint32 lineHeight, WidgetMap 
 	}
 }
 
-bool PG_RichEdit::ProcessLongLine(std::string &word, size_t &searchFrom, Uint32 oldFind, Sint32 lineTop, Uint32 &lineSpace, bool normalLine, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, Uint32 &lineAscent) {
+bool PG_RichEdit::ProcessLongLine(string &word, size_t &searchFrom, Uint32 oldFind, Sint32 lineTop, Uint32 &lineSpace, bool normalLine, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, Uint32 &lineAscent) {
 	/*Sint32          w = 0, h = 0, ls = 0, la = 0;
 	PG_FontParam    newFont; 
 	PG_FontParam    CurFont = my_font;
@@ -537,7 +537,7 @@ bool PG_RichEdit::ProcessLongLine(std::string &word, size_t &searchFrom, Uint32 
 	    ik += CurFont.FormatTagProc(&word[ik], 0);
 	    }
 	    
-	    std::string newword = word.substr(0, ((ik == std::string::npos) ? ik : ik + 1));           
+	    string newword = word.substr(0, ((ik == string::npos) ? ik : ik + 1));           
 	    PG_FontEngine::GetTextSize(newword.c_str(), GetFont(), &w, &h, &la, &ls, NULL, NULL, NULL);
 
 	    if (w > (Sint32)my_listwidth)

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/30 09:21:55 $
+    Update Date:      $Date: 2003/01/04 21:13:41 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -42,7 +42,7 @@ THEME_WIDGET* THEME_THEME::FindWidget(const char* widgettype) {
 	if (!widgettype)
 		return NULL;
 
-	std::string n = widgettype;
+	string n = widgettype;
 	MAP_WIDGET::iterator result = widget.find(n);
 
 	if(result == widget.end()) {
@@ -282,7 +282,7 @@ const char* THEME_OBJECT::FindString(const char* name) {
 		return NULL;
 
 	for(Uint32 i=0; i<strings.size(); i++) {
-		if(strings[i]->name == (std::string)name) {
+		if(strings[i]->name == (string)name) {
 			return strings[i]->value.c_str();
 		}
 	}

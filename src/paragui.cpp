@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/31 15:08:46 $
+    Update Date:      $Date: 2003/01/04 21:13:39 $
     Source File:      $Source: /sources/paragui/paragui/src/paragui.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -32,9 +32,9 @@
 
 namespace PG_Info {
 
-	static std::string Version = VERSION;
-	static std::string Homepage = "http://www.paragui.org";
-	static std::string Licence = "LGPL (Lesser General Public Licence)";
+	static string Version = VERSION;
+	static string Homepage = "http://www.paragui.org";
+	static string Licence = "LGPL (Lesser General Public Licence)";
 
 	const char* GetVersion() {
 		return Version.c_str();

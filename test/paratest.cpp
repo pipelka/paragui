@@ -221,8 +221,8 @@ bool TestWindow::eventButtonClick(int id, PG_Widget* widget) {
 }
 
 PARAGUI_CALLBACK_SELECTMENUITEM(handle_menu_click) {
-	std::cout << "menu item '" << id << "' (\""
-		<< item->getCaption() << "\") clicked" << std::endl;
+	cout << "menu item '" << id << "' (\""
+		<< item->getCaption() << "\") clicked" << endl;
 
 	switch (id) {
 		case 5:

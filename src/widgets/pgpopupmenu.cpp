@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/07/03 14:01:43 $
+   Update Date:      $Date: 2003/01/04 21:13:41 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.3 $
+   CVS/RCS Revision: $Revision: 1.3.6.4 $
    Status:           $State: Exp $
  */
 
@@ -329,7 +329,7 @@ PG_PopupMenu& PG_PopupMenu::addSeparator() {
 void PG_PopupMenu::disableItem(int id) {
 	MII mi;
 
-	mi = std::find_if(start, stop, item_with_id(id));
+	mi = find_if(start, stop, item_with_id(id));
 	if (*mi && mi != stop)
 		((MenuItem*)*mi)->disable();
 }
@@ -337,7 +337,7 @@ void PG_PopupMenu::disableItem(int id) {
 void PG_PopupMenu::enableItem(int id) {
 	MII mi;
 
-	mi = std::find_if(start, stop, item_with_id(id));
+	mi = find_if(start, stop, item_with_id(id));
 	if (*mi && mi != stop)
 		((MenuItem*)*mi)->enable();
 }

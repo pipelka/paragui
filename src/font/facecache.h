@@ -30,7 +30,7 @@ public:
 	int Advance_x;
 };
 
-typedef std::map<int, PG_GlyphCacheItem*> PG_GlyphCache;
+typedef map<int, PG_GlyphCacheItem*> PG_GlyphCache;
 
 class PG_FontFaceCacheItem {
 public:

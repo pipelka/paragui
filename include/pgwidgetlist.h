@@ -20,14 +20,22 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/28 16:35:30 $
+    Update Date:      $Date: 2003/01/04 21:13:39 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_WIDGETLIST_H
 #define PG_WIDGETLIST_H
+
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgwidgetlist
+%{
+#include "pgwidgetlist.h"
+%}
+#endif
 
 #include "pgthemewidget.h"
 #include "pgscrollbar.h"
@@ -108,8 +116,6 @@ public:
 	*/
 	PG_Widget* FindWidget(int index);
 
-	int FindIndex(PG_Widget* widget);
-	
 	/**
 	Remove all widgets from the list (without deletion)
 	*/
@@ -140,16 +146,12 @@ public:
 	Scroll the list to a given index
 	@param	index
 	*/
+#ifdef SWIG
+	%name(ScrollToIndex) void ScrollTo(int index, int direction = PG_SB_VERTICAL);
+#else
 	void ScrollTo(int index, int direction = PG_SB_VERTICAL);
+#endif
 
-	inline Uint32 GetListWidth() {
-		return my_listwidth;
-	}
-
-	inline Uint32 GetListHeight() {
-		return my_listheight;
-	}
-	
 protected:
 
 	/** */
@@ -162,10 +164,10 @@ protected:
 	void eventSizeWidget(Uint16 w, Uint16 h);
 
 	/**  */
-	virtual bool handleScrollPos(PG_ScrollBar* widget, long pos);
+	bool eventScrollPos(int id, PG_Widget* widget, unsigned long data);
 
 	/**  */
-	virtual bool handleScrollTrack(PG_ScrollBar* widget, long pos);
+	bool eventScrollTrack(int id, PG_Widget* widget, unsigned long data);
 
 	/**  */
 	Sint32 ScrollToY(Sint32 position);
@@ -191,7 +193,11 @@ protected:
 	int my_widthScrollbar;
 	int my_heightHorizontalScrollbar;
 
-	std::vector < PG_Widget* > my_widgetList; // Hmmm, I know about this: vector :))
+	/** swig doesn't understand vectors... */
+#ifndef SWIG
+
+	vector < PG_Widget* > my_widgetList; // Hmmm, I know about this: vector :))
+#endif
 
 	int my_widgetCount;
 	int my_firstWidget;
@@ -201,12 +207,13 @@ protected:
 	bool my_enableHorizontalScrollbar;
 
 	virtual void UpdateScrollBarsPos();
-	void CheckScrollBars(Uint16 w, Uint16 h);
+	void CheckScrollBars();
 
 private:
-
+#ifndef SWIG
 	PG_WidgetList(const PG_WidgetList&);
 	PG_WidgetList& operator=(const PG_WidgetList&);
+#endif
 
 	PG_WidgetListDataInternal* my_internaldata;
 };

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/11/22 17:58:43 $
+    Update Date:      $Date: 2003/01/04 21:13:40 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14 $
+    CVS/RCS Revision: $Revision: 1.2.4.15 $
     Status:           $State: Exp $
 */
 
@@ -54,7 +54,7 @@ using namespace std;
 SDL_mutex* PG_Application::mutexScreen = NULL;
 PG_Application* PG_Application::pGlobalApp = NULL;
 SDL_Surface* PG_Application::screen = NULL;
-std::string PG_Application::app_path = "";
+string PG_Application::app_path = "";
 PG_Theme* PG_Application::my_Theme = NULL;
 bool PG_Application::bulkMode = false;
 bool PG_Application::glMode = false;
@@ -102,7 +102,7 @@ PG_Application::PG_Application() {
 
 	/* Initialize the SDL library */
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) < 0) {
-		std::cerr << "Could not initialize SDL: " << SDL_GetError() << std::endl;
+		cerr << "Could not initialize SDL: " << SDL_GetError() << endl;
 		exit(-1);
 	}
 
@@ -459,10 +459,10 @@ void PG_Application::SetApplicationPath(const char* path) {
 
 /**  */
 const char* PG_Application::GetRelativePath(const char* file) {
-	static std::string buffer = "";
+	static string buffer = "";
 
 	if(Exists(file)) {
-		buffer = (std::string)GetRealDir(file) + (std::string)file;
+		buffer = (string)GetRealDir(file) + (string)file;
 	}
 
 	return buffer.c_str();
@@ -668,7 +668,7 @@ void PG_Application::Shutdown() {
 		my_scaled_background = 0;
 	}
 	// destroy still existing objects
-	std::vector<PG_MessageObject*>::iterator list = objectList.begin();
+	vector<PG_MessageObject*>::iterator list = objectList.begin();
 
 	while(list != objectList.end()) {
 

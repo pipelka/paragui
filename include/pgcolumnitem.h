@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:54 $
+    Update Date:      $Date: 2003/01/04 21:13:37 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcolumnitem.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -32,6 +32,14 @@
 
 #ifndef PG_COLUMNITEM_H
 #define PG_COLUMNITEM_H
+
+#ifdef SWIG
+%include "swigcommon.h"
+%module pgcolumnitem
+%{
+#include "pgcolumnitem.h"
+%}
+#endif
 
 #include "pglistboxitem.h"
 #include <vector>
@@ -102,8 +110,10 @@ private:
 
 	Uint32 my_columncount;
 
-	std::vector <Uint32> my_columnwidth;
-	std::vector <std::string> my_columntext;
+#ifndef SWIG
+	vector <Uint32> my_columnwidth;
+	vector <string> my_columntext;
+#endif
 };
 
 #endif	// PG_COLUMNITEM_H
