@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/12/14 16:16:00 $
+    Update Date:      $Date: 2003/01/01 20:16:28 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -55,8 +55,10 @@ PG_Window::~PG_Window() {
 }
 
 void PG_Window::SetTitle(const char* title, int alignment) {
-	my_labelTitle->SetText(title);
 	my_labelTitle->SetAlignment(alignment);
+	my_labelTitle->SetText(title);
+
+	Update(true);
 }
 
 const char* PG_Window::GetTitle() {
@@ -244,6 +246,6 @@ void PG_Window::SetColorTitlebar(Uint32 color) {
 }
 
 void PG_Window::eventShow() {
-	my_buttonClose->SetVisible(my_showCloseButton);
-	my_buttonMinimize->SetVisible(my_showMinimizeButton);
+	//my_buttonClose->SetVisible(my_showCloseButton);
+	//my_buttonMinimize->SetVisible(my_showMinimizeButton);
 }

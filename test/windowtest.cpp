@@ -65,6 +65,7 @@ int main(int argc,char *argv[])
 	drop->AddItem("Item 3");
 
 	msgbox->Show();
+	msgbox->SetTitle("New Title");
 	msgbox->WaitForClick();
 	msgbox->Hide();
 	

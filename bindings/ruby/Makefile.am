@@ -1,5 +1,4 @@
-SUBDIRS = test
-DIST_SUBDIRS = $(SUBDIRS)
+DIST_SUBDIRS = test
 
 SWIGCOMPILE = $(SWIG) -ruby -c++ -I$(top_srcdir)/include -I$(srcdir)
 
