@@ -23,6 +23,8 @@
 
 #include <iostream>
 
+using namespace std;
+
 #define RESX 800
 #define RESY 600
 

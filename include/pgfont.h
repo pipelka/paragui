@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/03/12 18:46:39 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
     Status:           $State: Exp $
 */
 
@@ -50,8 +50,6 @@
 #include HASH_MAP_INC
 #endif
 #include <map>
-
-using namespace std;
 
 class PG_FontFaceCacheItem;
 class PG_GlyphCacheItem;
@@ -226,7 +224,7 @@ private:
 	*/
 	static PG_GlyphCacheItem* GetGlyph(PG_Font *Param, int glyph_index);
 
-	typedef map<FT_F26Dot6, PG_FontFaceCacheItem*> MAP_SUBITEMS;
+	typedef std::map<FT_F26Dot6, PG_FontFaceCacheItem*> MAP_SUBITEMS;
 
 	class FONT_ITEM {
 	public:
@@ -240,7 +238,7 @@ private:
 		MAP_SUBITEMS subitems;
 	};
 
-	typedef map<string, FONT_ITEM*> MAP_FONTS;
+	typedef std::map<std::string, FONT_ITEM*> MAP_FONTS;
 
 	static MAP_FONTS my_fontcache;
 	static FT_Library my_library;

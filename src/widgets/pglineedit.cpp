@@ -20,15 +20,17 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:03 $
+    Update Date:      $Date: 2004/03/12 18:46:35 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
 #include "pglineedit.h"
 #include "pgapplication.h"
 #include "pgtheme.h"
+
+using namespace std;
 
 PG_LineEdit::PG_LineEdit(PG_Widget* parent, const PG_Rect& r, const char* style, int _my_maximumLength) : PG_ThemeWidget(parent, r, style) {
 

@@ -9,6 +9,8 @@
 #include "keyboard.h"
 #include "pgapplication.h"
 
+using namespace std;
+
 #define BTN_ID_CLEAR 0x8000000A
 #define BTN_ID_BACKSPACE PG_Button::CANCEL
 #define BTN_ID_CONFIRM PG_Button::YES

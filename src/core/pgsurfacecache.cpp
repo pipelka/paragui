@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/01 18:10:29 $
+    Update Date:      $Date: 2004/03/12 18:46:20 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgsurfacecache.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.4.2.1 $
+    CVS/RCS Revision: $Revision: 1.2.4.4.2.2 $
     Status:           $State: Exp $
 */
 
@@ -41,6 +41,8 @@
 #else
 #include <map>
 #endif
+
+using namespace std;
 
 #define MY_SURFACEMAP ((pg_surfacemap_t*)my_surfacemap)
 #define MY_SURFACEINDEX ((pg_surfacemap_index_t*)my_surfacemap_index)

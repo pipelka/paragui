@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:05 $
+    Update Date:      $Date: 2004/03/12 18:46:38 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -199,13 +199,13 @@ private:
 
 	bool IsValidKey(char c);
 
-	string my_buffer;
+	std::string my_buffer;
 	int my_startMark;
 	int my_endMark;
 
 	bool my_isCursorVisible;
 	int my_offsetX;
-	string my_validkeys;
+	std::string my_validkeys;
 	bool my_isEditable;
 	int my_maximumLength;
 

@@ -19,7 +19,7 @@ class TKey_LineEdit : public PG_LineEdit
  private:
 	unsigned int nReturnValue;
 	bool bFirst;
-	string InitialText;
+	std::string InitialText;
  protected:
  	virtual bool SendKey(PG_Button* pWidget);
  	virtual void eventInputFocusLost(PG_MessageObject*);
@@ -53,7 +53,7 @@ class TKeyAlpha_LineEdit : public TKey_LineEdit
  private:
 	PG_Button* Buttons[43];
 	unsigned int nReturnValue;
-	string InitialText;
+	std::string InitialText;
  public:
 	TKeyAlpha_LineEdit(PG_Widget* pParent,const PG_Rect& r,const char* style="LineEdit",int maximumLength=1000000);
 	// creates the keyboard. This function must be separated because if we

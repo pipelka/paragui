@@ -7,6 +7,8 @@ Roger D. Vargas
 #include <pglog.h>
 #include <string>
 
+using namespace std;
+
 int main() {
 	PG_FileArchive *Arc;
 	PG_File *wf;

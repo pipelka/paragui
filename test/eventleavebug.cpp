@@ -5,6 +5,8 @@
 #include <pgwindow.h>
 #include <iostream>
 
+using namespace std;
+
 class CentralWidget : public PG_ThemeWidget {
 public:
     CentralWidget(PG_Widget *parent, const PG_Rect &rect);

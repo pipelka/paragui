@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/08 11:30:59 $
+   Update Date:      $Date: 2004/03/12 18:46:35 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.6 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.7 $
    Status:           $State: Exp $
 */
 
@@ -31,6 +31,8 @@
 #include "pgrichedit.h"
 #include "pgscrollarea.h"
 #include "pglog.h"
+
+using namespace std;
 
 const Uint32 PG_RichEdit::my_Marks[PG_RichEdit::MARKS_COUNT] = { ' ', 0x01, '\n', '\t', 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0xF
                                                                };

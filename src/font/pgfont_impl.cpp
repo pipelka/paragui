@@ -2,6 +2,8 @@
 #include "facecache.h"
 #include "pgfont.h"
 
+using namespace std;
+
 struct PG_FontDataInternal {
 	PG_Color color;
 	int alpha;

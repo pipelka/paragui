@@ -1,5 +1,7 @@
 #include "pgtimerobject.h"
 
+using namespace std;
+
 Uint32 PG_TimerObject::objectcount = 0;
 PG_TimerID PG_TimerObject::globalTimerID = 0;
 map<PG_TimerID, PG_TimerObject*> PG_TimerObject::timermap;

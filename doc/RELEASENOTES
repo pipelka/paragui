@@ -32,6 +32,7 @@ Whats new in ParaGUI 1.1.8 ?
 - marked PG_MessageBox::WaitForClick obsolete
 - new RunModal() / SetModalStatus(int) methods
 - PG_ScrollArea::ScrollToWidget(..) now honours area-bounds
+- removed "using namespace std;" from header files
 
 
 ----------------------------

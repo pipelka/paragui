@@ -20,14 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/19 16:50:11 $
+    Update Date:      $Date: 2004/03/12 18:46:19 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
     Status:           $State: Exp $
 */
 
 #include "theme_priv.h"
 #include "pgcolor.h"
+
+using namespace std;
 
 THEME_THEME::~THEME_THEME() {
 	// clean up

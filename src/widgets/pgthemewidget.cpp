@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/03/12 18:46:34 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.11 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,8 @@
 #include "pgapplication.h"
 #include "pglog.h"
 #include "pgtheme.h"
+
+using namespace std;
 
 static PG_SurfaceCache my_SurfaceCache;
 

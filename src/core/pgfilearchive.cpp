@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:03 $
+    Update Date:      $Date: 2004/03/12 18:46:33 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14.2.6 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.7 $
     Status:           $State: Exp $
 */
 
@@ -36,6 +36,8 @@
 #include "physfsrwops.h"
 #include <iostream>
 #include "paragui.h"
+
+using namespace std;
 
 Uint32 PG_FileArchive::my_instance_count = 0;
 PG_SurfaceCache PG_FileArchive::my_cache;

@@ -4,6 +4,8 @@
 #include <pgbutton.h>
 #include <iostream>
 
+using namespace std;
+
 class MyDialog : public PG_Window {
     public:
         MyDialog();

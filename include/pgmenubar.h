@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:05 $
+    Update Date:      $Date: 2004/03/12 18:46:37 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmenubar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.5 $
     Status:           $State: Exp $
 */
 
@@ -78,7 +78,7 @@ protected:
 		PG_PopupMenu* popupmenu; //!< pointer to the linked PG_PopupMenu object
 	} MenuBarItem;
 
-	vector<MenuBarItem*> ItemList;
+	std::vector<MenuBarItem*> ItemList;
 
 	Uint16 my_btnOffsetY;
 
@@ -91,7 +91,7 @@ private:
 
 	void Cleanup();
 
-	string my_style;
+	std::string my_style;
 	PG_PopupMenu* my_active;
 
 };

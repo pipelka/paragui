@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:03 $
+    Update Date:      $Date: 2004/03/12 18:46:38 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.13 $
     Status:           $State: Exp $
 */
 
@@ -609,7 +609,7 @@ private:
 	
 	static PG_Theme* my_Theme;
 
-	static string app_path;
+	static std::string app_path;
 
 	static PG_Application* pGlobalApp;
 	static SDL_Surface* screen;

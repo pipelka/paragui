@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/26 15:55:11 $
+    Update Date:      $Date: 2004/03/12 18:46:38 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsurfacecache.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -37,12 +37,10 @@
 #include "pgcolor.h"
 #include <string>
 
-using namespace std;
-
 typedef struct {
 	int refcount;
 	SDL_Surface* surface;
-	string key;
+	std::string key;
 }
 pg_surface_cache_t;
 
@@ -77,7 +75,7 @@ public:
       Therefore, the parameters are not really neccessary. However, to ensure
       that the created keys are unique, you should use the parameters.
       */
-	void CreateKey(string &key, Uint16 w, Uint16 h,
+	void CreateKey(std::string &key, Uint16 w, Uint16 h,
 	               PG_Gradient* gradient, SDL_Surface* background,
 	               Sint8 bkmode, Uint8 blend);
 
@@ -86,7 +84,7 @@ public:
         @param  key the key whose surface is searched
         @return the surface or NULL if no surfac was found
       */
-	SDL_Surface* FindSurface(const string &key);
+	SDL_Surface* FindSurface(const std::string &key);
 
     /** Add a surface to the list.
         
@@ -102,7 +100,7 @@ public:
         This behaviour has a slight drawback if you add a surface the
         second time, because then the surface is not deleted...
       */
-	SDL_Surface* AddSurface(const string &key, SDL_Surface* surface);
+	SDL_Surface* AddSurface(const std::string &key, SDL_Surface* surface);
 
     /** Deletes a surface from the list
 
@@ -119,14 +117,14 @@ public:
         
         @param  key the key of the surface
       */
-	void IncRef(const string &key);
+	void IncRef(const std::string &key);
 
     /** Removes all surfaces from the cache */
 	void Cleanup();
 
 private:
 
-	pg_surface_cache_t* FindByKey(const string &key);
+	pg_surface_cache_t* FindByKey(const std::string &key);
 	pg_surface_cache_t* FindBySurface(SDL_Surface* surface);
 
 	void* my_surfacemap;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/31 16:14:08 $
+    Update Date:      $Date: 2004/03/12 18:46:38 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtimerobject.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.2.6.2.3 $
     Status:           $State: Exp $
 */
 
@@ -32,8 +32,6 @@
 #include "paragui.h"
 #include "pgsignals.h"
 #include <map>
-
-using namespace std;
 
 typedef Uint32 PG_TimerID;
 
@@ -105,11 +103,11 @@ private:
 	static Uint32 callbackSingleTimer(Uint32 interval);
 	
 	static PG_TimerID globalTimerID;
-	static map<PG_TimerID, PG_TimerObject*> timermap;
+	static std::map<PG_TimerID, PG_TimerObject*> timermap;
 	static Uint32 objectcount;
 	static PG_TimerObject* objSingleTimer;
 	
-	map<PG_TimerID, SDL_TimerID> my_timermap;	
+	std::map<PG_TimerID, SDL_TimerID> my_timermap;	
 };
 
 #endif // PG_TIMEROBJECT_H

@@ -20,14 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/31 16:14:08 $
+    Update Date:      $Date: 2004/03/12 18:46:32 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.4.2.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.4.2.2 $
     Status:           $State: Exp $
 */
 
 #include "pgfile.h"
 #include "physfs.h"
+
+using namespace std;
 
 PG_File::PG_File(void* f) :
 file(f) {}

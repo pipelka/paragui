@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 10:11:15 $
+    Update Date:      $Date: 2004/03/12 18:46:38 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.4 $
     Status:           $State: Exp $
 */
 
@@ -43,7 +43,7 @@
 #include <string>
 
 //! PG_FileList type (vector of strings)
-typedef vector< string > PG_FileList;
+typedef std::vector< std::string > PG_FileList;
 
 /**
  * @author Alexander Pipelka
@@ -169,7 +169,7 @@ public:
 	\param path path to convert
 	\return a string with the converted path
 	*/
-	static string *PathToPlatform(const char *path);
+	static std::string *PathToPlatform(const char *path);
 
 	//! Get the application base directory
 	/*! 

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/08 11:30:59 $
+   Update Date:      $Date: 2004/03/12 18:46:37 $
    Source File:      $Source: /sources/paragui/paragui/include/pgrichedit.h,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.5 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.6 $
    Status:           $State: Exp $
 */
 
@@ -57,7 +57,7 @@ public:
 	Sets rich text
 	@param	text			rich text to set
 	*/
-	void SetText(const string &text);
+	void SetText(const std::string &text);
 
 	/**
 	Add a widget to the list
@@ -95,7 +95,7 @@ protected:
 	bool my_AutoVerticalResize;
 
 	struct RichWordDescription {
-		string my_Word;
+		std::string my_Word;
 		Uint32 my_Width;
 		Uint32 my_EndSpaceWidth;
 		Uint32 my_WidthAfterFormating;
@@ -105,11 +105,11 @@ protected:
 		Uint32 my_EndMark;
 	};
 
-	typedef vector<RichWordDescription> RichWordDescriptionArray;
+	typedef std::vector<RichWordDescription> RichWordDescriptionArray;
 
 	RichWordDescriptionArray my_ParsedWords;
 
-	typedef vector<size_t> Size_tArray;
+	typedef std::vector<size_t> Size_tArray;
 
 	struct RichLinePart {
 		Uint32 my_Left;
@@ -133,7 +133,7 @@ protected:
 		}
 	};
 
-	typedef vector<RichLinePart> RichLinePartArray;
+	typedef std::vector<RichLinePart> RichLinePartArray;
 
 	struct RichLine {
 		Uint32 my_BaseLine;
@@ -145,7 +145,7 @@ protected:
 		}
 	};
 
-	typedef vector<RichLine> RichLineArray;
+	typedef std::vector<RichLine> RichLineArray;
 
 	RichLineArray my_RichText;
 
@@ -168,16 +168,16 @@ private:
 
 	Uint32 my_Align;
 
-	string my_ActualFontName;
+	std::string my_ActualFontName;
 
-	typedef map<Sint32, PG_Widget*> WidgetMap;
+	typedef std::map<Sint32, PG_Widget*> WidgetMap;
 
 	Sint32 CompleteLines();
 	size_t CompleteLine(RichLineArray::iterator actualLine, Sint32 &lineTop, size_t searchFrom, Uint32 &lineSpace, Uint32 &lineAscent, bool changeAlign);
 	Sint32 CompleteLinePart(size_t searchFrom, Sint32 lineTop, Uint32 &lineSpace, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, bool &breakLine, Uint32 &lineAscent, bool changeAlign);
 	void GetWidgetsOnLine(Sint32 lineTop, Uint32 lineHeight, WidgetMap &widgetsOnLine, bool clear);
-	bool ProcessLongLine(string &word, size_t &searchFrom, Uint32 oldFind, Sint32 lineTop, Uint32 &lineSpace, bool normalLine, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, Uint32 &lineAscent);
-	size_t GetWord(size_t searchFrom, string *word, Uint32 *endMark);
+	bool ProcessLongLine(std::string &word, size_t &searchFrom, Uint32 oldFind, Sint32 lineTop, Uint32 &lineSpace, bool normalLine, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, Uint32 &lineAscent);
+	size_t GetWord(size_t searchFrom, std::string *word, Uint32 *endMark);
 	void AlignLinePart(RichLinePartArray::iterator actualLinePart, Uint32 align, bool breakLine);
 	void AlignLine(RichLineArray::iterator actualLine, WidgetMap &widgetsOnLine, Uint32 align);
 	void ParseWords();
