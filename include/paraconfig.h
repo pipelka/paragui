@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/31 15:13:17 $
+    Update Date:      $Date: 2002/06/03 08:27:17 $
     Source File:      $Source: /sources/paragui/paragui/include/paraconfig.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.8 $
     Status:           $State: Exp $
 */
 
@@ -60,6 +60,9 @@ using std::strcat;
 using std::strncpy;
 using std::atoi;
 using std::strtok;
+using std::time_t;
+using std::localtime;
+using std::time;
 #endif
 
 #if (defined(WIN32) || defined(__WIN32__)) && (defined(_MSC_VER) || defined(__BCPLUSPLUS__) || defined(__MWERKS__))
