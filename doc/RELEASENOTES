@@ -10,6 +10,8 @@ Whats new in ParaGUI 1.0.4 ?
 - GNU build fixes (test dir), "make distcheck" passes now
 - PG_Widget::SetSizeByText changes (Thanks H.C. <sebh@gmx.de>)
 - added PG_RadioButton::SetFontColor methods (Thanks H.C. <sebh@gmx.de>)
+- fixed PG_WidgetList::Remove(All) methods
+  (Thanks Ivan Stankovic <pokemon@fly.srk.fer.hr>)
 
 ----------------------------
 Whats new in ParaGUI 1.0.3 ?
