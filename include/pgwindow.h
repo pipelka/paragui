@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/04/19 22:34:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
     Status:           $State: Exp $
 */
 
@@ -68,7 +68,15 @@ public:
 	typedef PG_Signal1<PG_Window*> SignalWindowMinimize;
 	typedef PG_Signal1<PG_Window*> SignalWindowRestore;
 
-	/** */
+	/**
+	Constructor for the PG_Window class
+	@param parent	pointer to the parent widget or NULL
+	@param r	screen position of the button
+	@param windowtext window titlebar label
+	@param WindowFlags (DEFAULT = SHOW_CLOSE | SHOW_CLOSE | SHOW_MINIMIZE | MODAL )
+	@param style themestyle of the window
+	@param heightTitlebar	height of the window titlebar
+	*/
 	PG_Window(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* windowtext = NULL, WindowFlags flags = DEFAULT, const char* style="Window", int heightTitlebar = 25);
 
 	/** */
@@ -76,18 +84,34 @@ public:
 
 	void LoadThemeStyle(const char* widgettype);
 
+	/**
+	set window titlebar color
+	@param	c	pointer to a PG_Color
+	*/
 	void SetTitlebarColor(const PG_Color& c);
 
+	/**
+	get window title
+	@return	PG_Color	Giving the height of the titlebar
+	*/
 	PG_Color GetTitlebarColor();
 
+	/**
+	set window titlebar height
+	@return	height	height of the titlebar
+	*/
 	void SetTitlebarHeight(Uint8 height);
-	
+
+	/**
+	get window titlebar height
+	@return	Uint8	height of the titlebar
+	*/
 	Uint8 GetTitlebarHeight();
 
 	/**
 	set window title and alignment
 	@param	title					new window title
-	@param alignment	alignment of the text (PG_TA_LEFT | PG_TA_CENTER | PG_TA_RIGHT)
+	@param	alignment	alignment of the text (PG_TA_LEFT | PG_TA_CENTER | PG_TA_RIGHT)
 	*/
 	void SetTitle(const char* title, PG_Label::TextAlign alignment = PG_Label::CENTER);
 
@@ -101,14 +125,22 @@ public:
 
 	const char* GetText();
 
-/**
+	/**
 	get window icon
 	@return pointer to the window's icon
 	*/
 	SDL_Surface* GetIcon();
-	
+
+	/**
+	set window icon
+	@param filename	image-file to load
+	*/
 	void SetIcon(const char* filename);
-	
+
+	/**
+	set window icon
+	@param icon		pointer to imagedata (SDL_Surface)
+	*/
 	void SetIcon(SDL_Surface* icon);
 	
 	SignalWindowClose sigClose;
