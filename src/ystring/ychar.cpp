@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ychar.cpp,v 1.1.2.2 2004/09/08 15:47:37 braindead Exp $
+ * $Id: ychar.cpp,v 1.1.2.3 2005/02/15 15:28:21 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2004/09/08 15:47:37 $
+ *  $Date: 2005/02/15 15:28:21 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.2 $
+ *  $Revision: 1.1.2.3 $
  *  $Source: /sources/paragui/paragui/src/ystring/Attic/ychar.cpp,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -364,7 +364,7 @@ YChar::operator char()
 }
 */
 
-YChar::operator uint32()
+YChar::operator uint32() const
 {
   return ucs4;
 }

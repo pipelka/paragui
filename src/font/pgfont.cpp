@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2005/02/15 15:28:21 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
     Status:           $State: Exp $
 */
 
@@ -528,7 +528,7 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 		SDL_LockSurface(Surface);
 	}		
 	
-	PG_Char c0;
+	Uint32 c0;
 
 	//Go thu text and draw characters
 	int len = Text.size();
@@ -633,7 +633,7 @@ bool PG_FontEngine::GetTextSize(const PG_String& Text, PG_Font* font, Uint16 *Wi
 
 	//Go thu text and get sizes of the characters
 
-	PG_Char c0;
+	Uint32 c0;
 
 	int len = Text.size();
 	for(int i = 0; i < len; i++) {
@@ -704,7 +704,7 @@ PG_FontFaceCacheItem* PG_FontEngine::LoadFontFace(const std::string&  filename, 
 	if(item == NULL) {
 
 		// open the fontfile
-		PG_DataContainer* data = PG_FileArchive::ReadFile(filename.c_str());
+		PG_DataContainer* data = PG_FileArchive::ReadFile(filename);
 		if(!data) {
 			return NULL;
 		}

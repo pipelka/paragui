@@ -88,7 +88,7 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 				offset = start-pos; 
 			}
 
-			middlepart = my_textdata[i].c_str() + offset;
+			middlepart = my_textdata[i].substr(offset);
 
 			// check if the end part is unhighlighted
 			if (endpos > end) {
@@ -99,16 +99,16 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 			}
 			
 			SetFontColor(inv_color);
-			PG_FontEngine::GetTextSize(middlepart.c_str(), GetFont(), &w);
+			PG_FontEngine::GetTextSize(middlepart, GetFont(), &w);
 			if(_y < my_height) {
 				SDL_Rect rect = {x + x1, y + _y, w, (_y + GetFontHeight() > my_height) ? my_height - _y : GetFontHeight()};
 				SDL_FillRect(screen, &rect, highlightColor);
 			}
-			PG_Widget::DrawText(x1, _y, middlepart.c_str());
+			PG_Widget::DrawText(x1, _y, middlepart);
 			SetFontColor(color); 
 		} 
 		else { 
-			PG_Widget::DrawText(_x, _y, my_textdata[i].c_str());
+			PG_Widget::DrawText(_x, _y, my_textdata[i]);
 		} 
 		_y += GetFontHeight(); 
 		pos += my_textdata[i].size();

@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ychar.h,v 1.1.2.3 2004/12/01 11:28:22 braindead Exp $
+ * $Id: ychar.h,v 1.1.2.4 2005/02/15 15:28:21 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2004/12/01 11:28:22 $
+ *  $Date: 2005/02/15 15:28:21 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.3 $
+ *  $Revision: 1.1.2.4 $
  *  $Source: /sources/paragui/paragui/include/Attic/ychar.h,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -61,7 +61,7 @@ public:
   static YChar fromUtf8(const std::string) throw(std::domain_error);
   
   //operator char();
-  operator uint32();
+  operator uint32() const;
   
   friend bool operator==(const YChar &, const YChar &);
   friend bool operator==(const YChar &, const char &);
