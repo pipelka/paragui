@@ -21,32 +21,65 @@
  
     Last Update:      $Author: braindead $
     Update Date:      $Date: 2004/03/08 11:30:59 $
-    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.14 $
+    Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
+    CVS/RCS Revision: $Revision: 1.1.2.1 $
     Status:           $State: Exp $
 */
 
-#include "pgwidgetlist.h"
-#include "pgapplication.h"
+#include "pgscrollwidget.h"
 #include "pgscrollarea.h"
+#include "pgapplication.h"
 #include "pglog.h"
 
-struct PG_WidgetListDataInternal{
-};
+PG_ScrollWidget::PG_ScrollWidget(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_ThemeWidget(parent, r, style),
+my_objVerticalScrollbar(NULL),
+my_objHorizontalScrollbar(NULL) ,
+my_scrollarea(NULL)
+{
+	my_enableVerticalScrollbar = true;
+	my_enableHorizontalScrollbar = true;
+	my_widthScrollbar = my_heightHorizontalScrollbar = 5;
 
-PG_WidgetList::PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_ScrollWidget(parent, r, style) {
-	my_scrollarea->SetShiftOnRemove(false, true);
+	// It is important to make sure that the substractions below won't
+	// render values < 0 and, eventually,
+	// surface widths such as 32768 or 65535 when cast to an unsigned type.
+	// This can lead to segfaults later on in, for example, DrawGradient...
+	if (my_widthScrollbar > r.my_width)
+		my_widthScrollbar = r.my_width;
+	    
+	if (my_heightHorizontalScrollbar > r.my_height)
+		my_heightHorizontalScrollbar = r.my_height;
 
-	if(strcmp(style, "WidgetList") != 0) {
-		LoadThemeStyle("WidgetList");
+	my_objVerticalScrollbar = new PG_ScrollBar(this, PG_Rect(0,0,my_widthScrollbar,r.h), PG_ScrollBar::VERTICAL, IDWIDGETLIST_SCROLL, style);
+	my_objVerticalScrollbar->SetRange(0,0);
+	my_widthScrollbar = my_objVerticalScrollbar->Width();
+	my_objVerticalScrollbar->Hide();
+	my_objVerticalScrollbar->sigScrollPos.connect(slot(*this, &PG_ScrollWidget::handleScrollPos));
+	my_objVerticalScrollbar->sigScrollTrack.connect(slot(*this, &PG_ScrollWidget::handleScrollTrack));
+	
+	my_objHorizontalScrollbar = new PG_ScrollBar(this, PG_Rect(0,0,r.w, my_heightHorizontalScrollbar), PG_ScrollBar::HORIZONTAL, IDWIDGETLIST_SCROLL, style);
+	my_objHorizontalScrollbar->SetRange(0,0);
+	my_heightHorizontalScrollbar = my_objHorizontalScrollbar->Height();
+	my_objHorizontalScrollbar->Hide();
+	my_objHorizontalScrollbar->sigScrollPos.connect(slot(*this, &PG_ScrollWidget::handleScrollPos));
+	my_objHorizontalScrollbar->sigScrollTrack.connect(slot(*this, &PG_ScrollWidget::handleScrollTrack));
+
+	my_scrollarea = new PG_ScrollArea(this);
+	my_scrollarea->sigAreaChangedHeight.connect(slot(*this, &PG_ScrollWidget::handleAreaChangedHeight));
+	my_scrollarea->sigAreaChangedWidth.connect(slot(*this, &PG_ScrollWidget::handleAreaChangedWidth));
+	my_scrollarea->SetShiftOnRemove(false, false);
+
+	/*if(strcmp(style, "ScrollWidget") != 0) {
+		LoadThemeStyle("ScrollWidget");
 	}
-	LoadThemeStyle(style);
+	LoadThemeStyle(style);*/
 }
 
-PG_WidgetList::~PG_WidgetList() {
+PG_ScrollWidget::~PG_ScrollWidget() {
+	my_scrollarea->DeleteAll();
 }
 
-/*void PG_WidgetList::RecalcPositions(bool bV, bool bH) {
+void PG_ScrollWidget::RecalcPositions(bool bV, bool bH) {
 
 	// only vertical
 	if(bV && !bH) {
@@ -100,19 +133,20 @@ PG_WidgetList::~PG_WidgetList() {
 	if(*my_scrollarea != my_rectList) {
 		my_scrollarea->MoveWidget(my_rectList);
 	}
-}*/
+}
 
-/*void PG_WidgetList::LoadThemeStyle(const char* widgettype) {
+void PG_ScrollWidget::LoadThemeStyle(const char* widgettype) {
 	PG_ThemeWidget::LoadThemeStyle(widgettype);
 	my_objVerticalScrollbar->LoadThemeStyle(widgettype);
 	my_objHorizontalScrollbar->LoadThemeStyle(widgettype);
 
 	my_widthScrollbar = my_objVerticalScrollbar->Width();
 	my_heightHorizontalScrollbar = my_objHorizontalScrollbar->Height();
+	PG_LogDBG("my_heightHorizontalScrollbar(%s) = %i", widgettype, my_heightHorizontalScrollbar);
 	RecalcPositions(my_objVerticalScrollbar->IsVisible(), my_objHorizontalScrollbar->IsVisible());
-}*/
+}
 
-/*void PG_WidgetList::eventSizeWidget(Uint16 w, Uint16 h) {
+void PG_ScrollWidget::eventSizeWidget(Uint16 w, Uint16 h) {
 
 	PG_ThemeWidget::eventSizeWidget(w,h);
 
@@ -125,9 +159,9 @@ PG_WidgetList::~PG_WidgetList() {
 		my_width = w;
 		handleAreaChangedWidth(my_scrollarea, GetListWidth());
 	}
-}*/
+}
 
-/*bool PG_WidgetList::handleScrollPos(PG_ScrollBar* widget, long data) {
+bool PG_ScrollWidget::handleScrollPos(PG_ScrollBar* widget, long data) {
 	if(widget == my_objVerticalScrollbar) {
 		my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), data);
 		return true;
@@ -139,9 +173,9 @@ PG_WidgetList::~PG_WidgetList() {
 	}
 
 	return true;
-}*/
+}
 
-/*bool PG_WidgetList::handleScrollTrack(PG_ScrollBar* widget, long data) {
+bool PG_ScrollWidget::handleScrollTrack(PG_ScrollBar* widget, long data) {
 	if(widget == my_objVerticalScrollbar) {
 		my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), data);
 		return true;
@@ -153,9 +187,9 @@ PG_WidgetList::~PG_WidgetList() {
 	}
 
 	return true;
-}*/
+}
 
-void PG_WidgetList::AddChild(PG_Widget* w) {
+void PG_ScrollWidget::AddChild(PG_Widget* w) {
 	if(w == NULL) {
 		return;
 	}
@@ -165,11 +199,11 @@ void PG_WidgetList::AddChild(PG_Widget* w) {
 		return;
 	}
 
-	w->MoveRect(0, w->my_ypos + my_scrollarea->GetAreaHeight());
+	//w->MoveRect(0, w->my_ypos + my_scrollarea->GetAreaHeight());
 	my_scrollarea->AddChild(w);
 }
 
-PG_Widget* PG_WidgetList::GetWidgetFromPos(Sint32 y) {
+/*PG_Widget* PG_WidgetList::GetWidgetFromPos(Sint32 y) {
 	Uint32 dy = 0;
 	Uint32 min_dy = 100000000;
 
@@ -186,18 +220,18 @@ PG_Widget* PG_WidgetList::GetWidgetFromPos(Sint32 y) {
 	}
 
 	return result;
-}
+}*/
 
-bool PG_WidgetList::RemoveWidgetAt(int index) {
+/*bool PG_WidgetList::RemoveWidgetAt(int index) {
 	return RemoveChild(FindWidget(index));
-}
+}*/
 
-bool PG_WidgetList::DeleteWidgetAt(int index) {
+/*bool PG_WidgetList::DeleteWidgetAt(int index) {
 	delete FindWidget(index);
 	return true;
-}
+}*/
 
-PG_Widget* PG_WidgetList::FindWidget(int index) {
+/*PG_Widget* PG_WidgetList::FindWidget(int index) {
 
 	if((index < 0) || (index >= GetWidgetCount())) {
 		return NULL;
@@ -213,9 +247,9 @@ PG_Widget* PG_WidgetList::FindWidget(int index) {
 	}
 
 	return NULL;
-}
+}*/
 
-int PG_WidgetList::FindIndex(PG_Widget* w) {
+/*int PG_WidgetList::FindIndex(PG_Widget* w) {
 	int index = 0;
 
 	PG_Widget* list = GetChildList()->first();
@@ -227,9 +261,9 @@ int PG_WidgetList::FindIndex(PG_Widget* w) {
 	}
 
 	return -1;
-}
+}*/
 
-/*void PG_WidgetList::CheckScrollBars() {
+void PG_ScrollWidget::CheckScrollBars() {
 	int ls = 0, i;
 	PG_ScrollBar *scrollBars[] = { my_objVerticalScrollbar, my_objHorizontalScrollbar };
 	Uint32 listsizes[] = { GetListHeight(), GetListWidth() };
@@ -252,9 +286,9 @@ int PG_WidgetList::FindIndex(PG_Widget* w) {
 		scrollBars[i]->SetPosition(pos[i]);
 	}
 
-}*/
+}
 
-/*void PG_WidgetList::EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection direction) {
+void PG_ScrollWidget::EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection direction) {
 	if (direction == PG_ScrollBar::VERTICAL) {
 		my_enableVerticalScrollbar = enable;
 	} else if (direction == PG_ScrollBar::HORIZONTAL) {
@@ -262,50 +296,50 @@ int PG_WidgetList::FindIndex(PG_Widget* w) {
 	}
 	RecalcPositions(my_objVerticalScrollbar->IsVisible(), my_objHorizontalScrollbar->IsVisible());
 	CheckScrollBars();
-}*/
+}
 
-/*void PG_WidgetList::ScrollToWidget(PG_Widget* widget, bool bVertical) {
+void PG_ScrollWidget::ScrollToWidget(PG_Widget* widget, bool bVertical) {
 	my_scrollarea->ScrollToWidget(widget, bVertical);
-}*/
+}
 
-void PG_WidgetList::ScrollToWidget(int index, bool bVertical) {
+/*void PG_WidgetList::ScrollToWidget(int index, bool bVertical) {
 	PG_Widget* w = FindWidget(index);
 
 	if(w == NULL) {
 		return;
 	}
 
-	PG_ScrollWidget::ScrollToWidget(w, bVertical);
-}
+	ScrollToWidget(w, bVertical);
+}*/
 
-void PG_WidgetList::ScrollTo(Uint16 ypos) {
+/*void PG_WidgetList::ScrollTo(Uint16 ypos) {
 	my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), ypos);
 	CheckScrollBars();
-}
+}*/
 
-void PG_WidgetList::PageUp() {
+/*void PG_WidgetList::PageUp() {
 	my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), my_scrollarea->GetScrollPosY() - my_height );
 	CheckScrollBars();
-}
+}*/
 
-void PG_WidgetList::PageDown() {
+/*void PG_WidgetList::PageDown() {
 	my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), my_scrollarea->GetScrollPosY() + my_height );
 	CheckScrollBars();
+}*/
+
+Uint16 PG_ScrollWidget::GetListHeight() {
+	return my_scrollarea->GetAreaHeight();
 }
 
-/*Uint16 PG_WidgetList::GetListHeight() {
-	return my_scrollarea->GetAreaHeight();
-}*/
-
-/*Uint16 PG_WidgetList::GetListWidth() {
+Uint16 PG_ScrollWidget::GetListWidth() {
 	return my_scrollarea->GetAreaWidth();
-}*/
+}
 
-/*Uint16 PG_WidgetList::GetWidgetCount() {
+Uint16 PG_ScrollWidget::GetWidgetCount() {
 	return my_scrollarea->GetWidgetCount();
-}*/
+}
 
-/*bool PG_WidgetList::handleAreaChangedHeight(PG_ScrollArea* area, Uint16 h) {
+bool PG_ScrollWidget::handleAreaChangedHeight(PG_ScrollArea* area, Uint16 h) {
 	if(h > my_scrollarea->h && my_enableVerticalScrollbar) {
 		RecalcPositions(true, my_objHorizontalScrollbar->IsVisible());
 		my_objVerticalScrollbar->Show();
@@ -326,12 +360,15 @@ void PG_WidgetList::PageDown() {
 
 	CheckScrollBars();
 	return true;
-}*/
+}
 
-/*bool PG_WidgetList::handleAreaChangedWidth(PG_ScrollArea* area, Uint16 w) {
+bool PG_ScrollWidget::handleAreaChangedWidth(PG_ScrollArea* area, Uint16 w) {
+	PG_LogDBG("PG_ScrollWidget::handleAreaChangedWidth(%i)", w);
+	PG_LogDBG("PG_ScrollArea::my_width = %i", my_scrollarea->w);
 	if(w > my_scrollarea->w && my_enableHorizontalScrollbar) {
 		RecalcPositions(my_objVerticalScrollbar->IsVisible(), true);
 		my_objHorizontalScrollbar->Show();
+		PG_LogDBG("my_objHorizontalScrollbar->Show()");
 	}
 	else {
 		my_objHorizontalScrollbar->Hide();
@@ -349,8 +386,8 @@ void PG_WidgetList::PageDown() {
 
 	CheckScrollBars();
 	return true;
-}*/
+}
 
-/*PG_Widget* PG_WidgetList::GetFirstInList() {
+PG_Widget* PG_ScrollWidget::GetFirstInList() {
 	return my_scrollarea->GetFirstInList();
-}*/
+}

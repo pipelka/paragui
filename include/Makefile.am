@@ -6,6 +6,7 @@ libparaguiinclude_HEADERS = \
 	pgpoint.h \
 	pgrect.h \
 	pgrectlist.h \
+	pgscrollwidget.h \
 	pgwidgetlist.h \
 	pglabel.h \
 	pgwidgetdnd.h \

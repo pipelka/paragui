@@ -24,6 +24,7 @@
 #include "pglog.h"
 #include "pgpopupmenu.h"
 #include "pgmenubar.h"
+#include "pgscrollwidget.h"
 
 #include <cstring>
 #include <stdarg.h>
@@ -574,6 +575,14 @@ static int SetWidgetListAtts(PG_WidgetList *Widget, const char **atts, ParseUser
 	return (INHTAGFLAG_ADDWIDGET | SetThemeWidgetAtts(Widget, atts, XMLParser));
 }
 
+static int SetScrollWidgetAtts(PG_ScrollWidget*Widget, const char **atts, ParseUserData_t *XMLParser) {
+	if (PG_Layout::GetParamInt(atts, "scrollbar") == 1)
+		Widget->EnableScrollBar(1);
+
+	XMLParser->EndTagFlags |= ENDTAGFLAG_WIDGETLIST;
+	return (INHTAGFLAG_ADDWIDGET | SetThemeWidgetAtts(Widget, atts, XMLParser));
+}
+
 static int SetListBoxAtts(PG_ListBox *Widget, const char **atts, ParseUserData_t *XMLParser) {
 	Widget->SetMultiSelect(PG_Layout::GetParamInt(atts, "multisel") == 1);
 
@@ -1007,7 +1016,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		PG_RichEdit *Widget = new PG_RichEdit(parent, Rect, PG_Layout::GetParamInt(atts, "vresize") == 1 , PG_Layout::GetParamInt(atts, "linewidth"));
 		XMLParser->ParentObject = Widget;
 
-		XMLParser->InhTagFlags |= SetWidgetListAtts(Widget, atts, XMLParser);
+		XMLParser->InhTagFlags |= SetScrollWidgetAtts(Widget, atts, XMLParser);
 		return;
 	}
 

@@ -21,63 +21,59 @@
  
     Last Update:      $Author: braindead $
     Update Date:      $Date: 2004/03/08 11:30:59 $
-    Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
+    Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
+    CVS/RCS Revision: $Revision: 1.1.2.1 $
     Status:           $State: Exp $
 */
 
-#ifndef PG_WIDGETLIST_H
-#define PG_WIDGETLIST_H
+#ifndef PG_SCROLLWIDGET_H
+#define PG_SCROLLWIDGET_H
 
-#include "pgscrollwidget.h"
+#include "pgthemewidget.h"
+#include "pgscrollbar.h"
+
+class PG_ScrollArea;
 
 /**
 	@author Alexander Pipelka
  
-	@short A group of widgets arranged in a list.
+	@short Encapsulation of the PG_ScrollArea widget providing scrollbars.
+ 
 	Generally used to make a large 'pane' of widgets that can be scrolled
 	through in a smaller 'portal' with scrollbars.
 */
 
-class DECLSPEC PG_WidgetList : public PG_ScrollWidget  {
+class DECLSPEC PG_ScrollWidget : public PG_ThemeWidget  {
 public:
+
+	enum {
+		IDWIDGETLIST_SCROLL = PG_WIDGETID_INTERNAL + 10
+	};
 
 	/**
 	Constructor of the PG_Widget class
 	*/
-	PG_WidgetList(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="WidgetList");
+	PG_ScrollWidget(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="ScrollWidget");
 
 	/**
 	Destructor of the PG_Widget class
 	*/
-	~PG_WidgetList();
+	~PG_ScrollWidget();
 
 	/**  */
-	//void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const char* widgettype);
 
 	/**
-	Add a widget to the list
-	OBSOLETE - Please specify the WidgetList in the constructor of
-	the child widget
-	@param	w			pointer to a widget
-	*/
-	//virtual void AddWidget(PG_Widget* w);
-
-	/**
-	Remove a widget from the list
-
+	Remove a widget from the list.
 	@param index	index of the widget
-	@param shiftx	reposition all widgets to the right of the removed widget
-	@param shifty	reposition all widgets below
 	*/
-	bool RemoveWidgetAt(int index);
+	//bool RemoveWidgetAt(int index);
 
 	/**
-	Remove and delete a widget from the list
-
+	Remove and delete a widget from the list.
 	@param	index		index of the widget
 	*/
-	bool DeleteWidgetAt(int index);
+	//bool DeleteWidgetAt(int index);
 
 	/**
 	Find a widget by a given index
@@ -85,7 +81,7 @@ public:
 	@param	index		index of the widget to find
 	@return					pointer to the widget
 	*/
-	PG_Widget* FindWidget(int index);
+	//PG_Widget* FindWidget(int index);
 
 	/**
 	Find the index of a given widget
@@ -93,70 +89,70 @@ public:
 	@param	widget		pointer to the widget
 	@return				index of the widget
 	*/
-	int FindIndex(PG_Widget* widget);
+	//int FindIndex(PG_Widget* widget);
 
 	/**
 	Enable / disable the Scrollbar (override automatic display)
 	@param enable true - enable scrollbar / false - disable scrollbar
 	@param direction modified scrollbar (PG_ScrollBar::VERTICAL | PG_ScrollBar::HORIZONTAL)
 	*/
-	//void EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
+	void EnableScrollBar(bool enable, PG_ScrollBar::ScrollDirection direction = PG_ScrollBar::VERTICAL);
 
 	/**
 	Scroll to a widget
 	@param widget the target widget
 	@param bVertical scroll direction
 	*/
-	//void ScrollToWidget(PG_Widget* widget, bool bVertical = true);
+	void ScrollToWidget(PG_Widget* widget, bool bVertical = true);
 
 	/**
 	Scroll the list to a given index
 	@param index index of the widget to scroll to
 	@param bVertical scroll direction
 	*/
-	void ScrollToWidget(int index, bool bVertical = true);
+	//void ScrollToWidget(int index, bool bVertical = true);
 
 	/**
 	Scroll to the specified Y-Position
 	@param ypos new Y-Position
 	Will scroll to the new position and update the scrollbars.
 	*/
-	void ScrollTo(Uint16 ypos);
+	//void ScrollTo(Uint16 ypos);
 	
 	/**
 	Scroll one page up
 	*/
-	void PageUp();
+	//void PageUp();
 	
 	/**
 	Scroll one page down
 	*/
-	void PageDown();
+	//void PageDown();
 
-	//Uint16 GetListHeight();
+	Uint16 GetListHeight();
 
-	//Uint16 GetListWidth();
+	Uint16 GetListWidth();
 
-	//Uint16 GetWidgetCount();
+	Uint16 GetWidgetCount();
 
-	//PG_Widget* GetFirstInList();
+	PG_Widget* GetFirstInList();
 
 	void AddChild(PG_Widget* child);
 
 protected:
 
 	/**  */
-	//void eventSizeWidget(Uint16 w, Uint16 h);
+	void eventSizeWidget(Uint16 w, Uint16 h);
 
 	/**  */
-	//bool handleScrollPos(PG_ScrollBar* widget, long data);
+	bool handleScrollPos(PG_ScrollBar* widget, long data);
 
 	/**  */
-	//bool handleScrollTrack(PG_ScrollBar* widget, long data);
+	bool handleScrollTrack(PG_ScrollBar* widget, long data);
 
-	//bool handleAreaChangedHeight(PG_ScrollArea* area, Uint16 h);
+	bool handleAreaChangedHeight(PG_ScrollArea* area, Uint16 h);
 
-	//bool handleAreaChangedWidth(PG_ScrollArea* area, Uint16 w);
+	bool handleAreaChangedWidth(PG_ScrollArea* area, Uint16 w);
 
 	/**
 	Search for a widget at a given y-position
@@ -164,32 +160,30 @@ protected:
 	@param	y			the position
 	@return				pointer to the widget or NULL
 	*/
-	PG_Widget* GetWidgetFromPos(Sint32 y);
+	//PG_Widget* GetWidgetFromPos(Sint32 y);
 
-	//PG_ScrollBar* my_objVerticalScrollbar;
-	//PG_ScrollBar* my_objHorizontalScrollbar;
-	//PG_ScrollArea* my_scrollarea;
+	PG_ScrollBar* my_objVerticalScrollbar;
+	PG_ScrollBar* my_objHorizontalScrollbar;
+	PG_ScrollArea* my_scrollarea;
 
-	//PG_Rect my_rectVerticalScrollbar;
-	//PG_Rect my_rectHorizontalScrollbar;
-	//PG_Rect my_rectList;
+	PG_Rect my_rectVerticalScrollbar;
+	PG_Rect my_rectHorizontalScrollbar;
+	PG_Rect my_rectList;
 
-	//int my_widthScrollbar;
-	//int my_heightHorizontalScrollbar;
+	int my_widthScrollbar;
+	int my_heightHorizontalScrollbar;
 
-	//bool my_enableVerticalScrollbar;
-	//bool my_enableHorizontalScrollbar;
+	bool my_enableVerticalScrollbar;
+	bool my_enableHorizontalScrollbar;
 
-	//void CheckScrollBars();
+	void CheckScrollBars();
 
 private:
 
-	PG_WidgetList(const PG_WidgetList&);
-	PG_WidgetList& operator=(const PG_WidgetList&);
+	PG_ScrollWidget(const PG_ScrollWidget&);
+	PG_ScrollWidget& operator=(const PG_ScrollWidget&);
 
-	//void RecalcPositions(bool bV, bool bH);
-
-	//PG_WidgetListDataInternal* my_internaldata;
+	void RecalcPositions(bool bV, bool bH);
 };
 
-#endif // PG_WIDGETLIST_H
+#endif // PG_SCROLLWIDGET_H

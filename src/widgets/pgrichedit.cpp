@@ -20,15 +20,16 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/03 14:52:34 $
+   Update Date:      $Date: 2004/03/08 11:30:59 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.5 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.6 $
    Status:           $State: Exp $
 */
 
 
 #include "pgapplication.h"
 #include "pgrichedit.h"
+#include "pgscrollarea.h"
 #include "pglog.h"
 
 const Uint32 PG_RichEdit::my_Marks[PG_RichEdit::MARKS_COUNT] = { ' ', 0x01, '\n', '\t', 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0xF
@@ -37,7 +38,7 @@ const Uint32 PG_RichEdit::my_FontBeginMark = 010;
 
 
 PG_RichEdit::PG_RichEdit(PG_Widget* parent, const PG_Rect& r, bool autoVerticalResize, Uint32 linewidth, Uint32 tabSize, Uint32 childsborderwidth, const char* style) :
-PG_WidgetList(parent, r, style) {
+PG_ScrollWidget(parent, r, style) {
 
 	EnableScrollBar(true, PG_ScrollBar::HORIZONTAL);
 
@@ -74,7 +75,7 @@ void PG_RichEdit::SetAutoVerticalResize(bool bResize) {
 
 void PG_RichEdit::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {
 
-	PG_WidgetList::eventBlit(srf, src, dst);
+	PG_ScrollWidget::eventBlit(srf, src, dst);
 
 	RichLineArray::iterator line;
 	int deltax = (my_objHorizontalScrollbar->IsVisible()) ? my_scrollarea->GetScrollPosX() : 0;
@@ -104,12 +105,12 @@ void PG_RichEdit::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect&
 }
 
 void PG_RichEdit::AddChild(PG_Widget* child) {
-	PG_WidgetList::AddChild(child);
+	PG_ScrollWidget::AddChild(child);
 	CompleteLines();
 }
 
 bool PG_RichEdit::RemoveChild(PG_Widget* child) {
-	bool result = PG_WidgetList::RemoveChild(child);
+	bool result = PG_ScrollWidget::RemoveChild(child);
 	CompleteLines();
 	return result;
 }

@@ -24,6 +24,7 @@ libpgwidgets_la_SOURCES = \
 	pgwidget.cpp \
 	pgwidgetdnd.cpp \
 	pgwidgetlist.cpp \
+	pgscrollwidget.cpp \
 	pgwindow.cpp \
 	pgrichedit.cpp \
 	pgscrollarea.cpp \
