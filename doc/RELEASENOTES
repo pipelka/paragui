@@ -35,6 +35,7 @@ Whats new in ParaGUI 1.0.4 ?
 - convert theme images automatically to screen format (may break things)
 - added new PG_FileArchive::LoadSurface method with an option to
   specify the surface colorkey (Thanks Keith)
+- added PG_Application::FlushEventQueue method
 
 ----------------------------
 Whats new in ParaGUI 1.0.3 ?
