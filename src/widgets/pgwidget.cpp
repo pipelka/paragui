@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/04/16 14:02:49 $
+   Update Date:      $Date: 2003/05/23 12:40:20 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.20 $
+   CVS/RCS Revision: $Revision: 1.4.4.21 $
    Status:           $State: Exp $
  */
 
@@ -663,6 +663,11 @@ void PG_Widget::Show(bool fade) {
 	
 	eventShow();
 
+	PG_Widget* parent = GetParent();
+	if(parent != NULL && !parent->IsVisible()) {
+		return;
+	}
+	
 	if (fade) {
 		FadeIn();
 	}
