@@ -18,13 +18,9 @@ public:
 
 	void ScrollTo(Uint16 x, Uint16 y);
 
-	inline void SetAreaWidth(Uint16 w) {
-		my_area.w = w;
-	}
+	void SetAreaWidth(Uint16 w);
 
-	inline void SetAreaHeight(Uint16 h) {
-		my_area.h = h;
-	}
+	void SetAreaHeight(Uint16 h);
 
 	inline Uint16 GetAreaWidth() {
 		return my_area.w;

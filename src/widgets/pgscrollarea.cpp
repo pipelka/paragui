@@ -143,3 +143,19 @@ void PG_ScrollArea::SetShiftOnRemove(bool shiftx, bool shifty) {
 	my_shiftx = shiftx;
 	my_shifty = shifty;
 }
+
+void PG_ScrollArea::SetAreaWidth(Uint16 w) {
+	if(my_area.w == w) {
+		return;
+	}
+	my_area.w = w;
+	sigAreaChangedWidth(this, my_area.w);
+}
+
+void PG_ScrollArea::SetAreaHeight(Uint16 h) {
+	if(my_area.h == h) {
+		return;
+	}
+	my_area.h = h;
+	sigAreaChangedHeight(this, my_area.w);
+}
