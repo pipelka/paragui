@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/04 09:48:14 $
+    Update Date:      $Date: 2002/07/11 08:25:57 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.9 $
+    CVS/RCS Revision: $Revision: 1.2.4.10 $
     Status:           $State: Exp $
 */
 
@@ -255,8 +255,13 @@ void PG_Application::Quit() {
 
 /**  */
 bool PG_Application::eventKeyDown(const SDL_KeyboardEvent* key) {
-
-	if (key->keysym.sym == PG_LOGCONSOLE_KEY) {
+	SDLKey ckey = PG_LogConsole::GetConsoleKey();
+	
+	if(ckey == 0) {
+		return false;
+	}
+	
+	if (key->keysym.sym == ckey) {
 		PG_LogConsole::Update();
 		PG_LogConsole::Toggle();
 		return true;

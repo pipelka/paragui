@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/07/11 08:25:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pglog.h,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State 
 */
 
@@ -80,6 +80,8 @@ namespace PG_LogConsole {
 	DECLSPEC void Toggle();
 	DECLSPEC void SetMethod(int method);
 	DECLSPEC int GetMethod();
+	DECLSPEC void SetConsoleKey(SDLKey key);
+	DECLSPEC SDLKey GetConsoleKey();
 };
 
 #endif
@@ -97,8 +99,6 @@ DECLSPEC void PG_LogDBG(const char *fmt, ...);
 #ifdef __cplusplus
 }
 #endif
-
-#define PG_LOGCONSOLE_KEY	SDLK_F12
 
 #endif // PGLOG_H
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 08:10:23 $
+    Update Date:      $Date: 2002/07/11 08:25:57 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.3 $
+    CVS/RCS Revision: $Revision: 1.1.6.4 $
     Status:           $State  
 */
 
@@ -41,6 +41,7 @@
 Uint32 PG_LogMaxMessages = 200;
 int PG_LogMethod = PG_LOGMTH_STDOUT;
 static PG_LOG_LEVEL PG_LogLevel = PG_LOG_DBG;
+static SDLKey PG_LogConsoleKey = SDLK_F12;
 
 struct PG_LogMessage_t {
 	PG_LOG_LEVEL	Id;
@@ -243,6 +244,14 @@ void PG_LogConsole::SetMethod(int method) {
 
 int PG_LogConsole::GetMethod() {
 	return PG_LogMethod;
+}
+
+void PG_LogConsole::SetConsoleKey(SDLKey key) {
+	PG_LogConsoleKey = key;
+}
+
+SDLKey PG_LogConsole::GetConsoleKey() {
+	return PG_LogConsoleKey;
 }
 
 void PG_Log(PG_LOG_LEVEL id, const char *Text, ...) {
