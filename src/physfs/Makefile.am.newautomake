@@ -1,8 +1,8 @@
 noinst_LTLIBRARIES = libphysfs.la
 
-libphysfsincludedir = $(includedir)
-libphysfsinclude_HEADERS =	\
-	physfs.h
+#libphysfsincludedir = $(includedir)
+#libphysfsinclude_HEADERS =	\
+#	physfs.h
 
 if BUILD_MACOSX
 
@@ -133,7 +133,8 @@ EXTRA_DIST =	\
 	physfs.spec \
 	physfs.dsp \
 	test_physfs.dsp \
-	makeos2.cmd
+	makeos2.cmd \
+	physfs.h
 
 
 endif

@@ -2,9 +2,9 @@ noinst_LTLIBRARIES = libphysfs.la
 
 SUBDIRS = platform archivers zlib114 . test extras
 
-libphysfsincludedir = $(includedir)
-libphysfsinclude_HEADERS =	\
-	physfs.h
+#libphysfsincludedir = $(includedir)
+#libphysfsinclude_HEADERS =	\
+#	physfs.h
 
 libphysfs_la_SOURCES =	\
 	physfs.c	\
@@ -37,7 +37,8 @@ EXTRA_DIST =	\
 	physfs.spec \
 	physfs.dsp \
 	test_physfs.dsp \
-	makeos2.cmd
+	makeos2.cmd \
+	physfs.h
 
 dist-hook:
 	mkdir $(distdir)/docs
