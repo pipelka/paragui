@@ -16,7 +16,9 @@ EXTRA_DIST = \
 	INSTALL \
 	TODO \
 	VisualC.zip \
-	mkdist-beos.sh
+	mkdist-beos.sh \
+	CWparagui.txt \
+	CWProject.zip
 
 m4datadir = $(datadir)/aclocal
 m4data_DATA = paragui.m4

@@ -53,6 +53,7 @@ libparaguiinclude_HEADERS = \
 
 EXTRA_DIST = \
 	paraconfig_win32.h \
+	paraconfig_macos.h \
 	paraconfig_gnu.h.in
 
 style_cvs:
