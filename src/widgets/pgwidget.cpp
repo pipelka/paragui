@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/11/26 10:59:33 $
+   Update Date:      $Date: 2004/11/29 09:22:34 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.22 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.23 $
    Status:           $State: Exp $
  */
 
@@ -1456,7 +1456,7 @@ bool PG_Widget::eventQuitModal(int id, PG_MessageObject* widget, unsigned long d
 	return true;
 }
 
-const PG_String& PG_Widget::GetText() const {
+const PG_String& PG_Widget::GetText() {
 	return my_text;
 }
 
