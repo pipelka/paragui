@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/01 15:18:52 $
+   Update Date:      $Date: 2004/03/03 14:52:34 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.4 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.5 $
    Status:           $State: Exp $
 */
 
@@ -77,8 +77,8 @@ void PG_RichEdit::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect&
 	PG_WidgetList::eventBlit(srf, src, dst);
 
 	RichLineArray::iterator line;
-	int deltax = (my_objHorizontalScrollbar->IsVisible()) ? my_objHorizontalScrollbar->GetPosition() : 0;
-	int deltay = (my_objVerticalScrollbar->IsVisible()) ? my_objVerticalScrollbar->GetPosition() : 0;
+	int deltax = (my_objHorizontalScrollbar->IsVisible()) ? my_scrollarea->GetScrollPosX() : 0;
+	int deltay = (my_objVerticalScrollbar->IsVisible()) ? my_scrollarea->GetScrollPosY() : 0;
 
 	for (line = my_RichText.begin(); line != my_RichText.end(); line++) {
 		if ((Sint32)(line->my_BaseLine - deltay) < 0) {

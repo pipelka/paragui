@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/02/28 18:49:06 $
+   Update Date:      $Date: 2004/03/03 14:52:35 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.9 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.10 $
    Status:           $State: Exp $
  */
 
@@ -55,12 +55,13 @@ int PG_Widget::my_ObjectCounter = 0;
 
 class PG_WidgetDataInternal {
 public:
-	PG_WidgetDataInternal() : inDestruct(false), font(NULL), dirtyUpdate(false), id(-1),
+	PG_WidgetDataInternal() : inDestruct(false), inMouseLeave(false), font(NULL), dirtyUpdate(false), id(-1),
 	transparency(0), quitModalLoop(false), visible(false), hidden(false), firstredraw(true),
 	childList(NULL), haveTooltip(false), fadeSteps(10), mouseInside(false), userdata(NULL),
 	userdatasize(0), widthText(TXT_HEIGHT_UNDEF), heightText(TXT_HEIGHT_UNDEF) {};
 
 	bool inDestruct;
+	bool inMouseLeave;
 	PG_Font* font;
 	bool dirtyUpdate;
 	int id;
@@ -621,8 +622,10 @@ void PG_Widget::Hide(bool fade) {
 
 	RecalcClipRect();
 
-	if(!_mid->inDestruct) {
+	if(!_mid->inDestruct && !_mid->inMouseLeave) {
+		_mid->inMouseLeave = true;
 		eventMouseLeave();
+		_mid->inMouseLeave = false;
 	}
 
 	if (fade) {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/03 13:12:17 $
+    Update Date:      $Date: 2004/03/03 14:52:34 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollarea.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -39,16 +39,17 @@ void PG_ScrollArea::ScrollTo(Uint16 x, Uint16 y) {
 	Sint32 dx = my_area.x - x;
 	Sint32 dy = my_area.y - y;
 
+	my_area.x = x;
+	my_area.y = y;
+
 	if(GetChildList() == NULL) {
+		Update();
 		return;
 	}
 
 	for(PG_Widget* i = GetChildList()->first(); i != NULL; i = i->next()) {
 		i->MoveRect(i->x + dx, i->y + dy);
 	}
-
-	my_area.x = x;
-	my_area.y = y;
 
 	Update();
 }

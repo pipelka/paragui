@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/03 13:12:17 $
+    Update Date:      $Date: 2004/03/03 14:52:35 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.13 $
     Status:           $State: Exp $
 */
 
@@ -272,6 +272,7 @@ void PG_WidgetList::CheckScrollBars() {
 	PG_ScrollBar *scrollBars[] = { my_objVerticalScrollbar, my_objHorizontalScrollbar };
 	Uint32 listsizes[] = { GetListHeight(), GetListWidth() };
 	Uint16 sizes[] = { my_scrollarea->Height(), my_scrollarea->Width() };
+	Uint16 pos[] = { my_scrollarea->GetScrollPosY(), my_scrollarea->GetScrollPosX() };
 	for (i = 0; i < 2; i++) {
 		if(GetWidgetCount() != 0) {
 			ls = listsizes[i] / GetWidgetCount();
@@ -286,7 +287,7 @@ void PG_WidgetList::CheckScrollBars() {
 		}
 		scrollBars[i]->SetRange(0, listsizes[i] - sizes[i]);
 		scrollBars[i]->SetPageSize(sizes[i]);
-		scrollBars[i]->SetPosition(scrollBars[i]->GetPosition());
+		scrollBars[i]->SetPosition(pos[i]);
 	}
 
 }
@@ -315,12 +316,19 @@ void PG_WidgetList::ScrollToWidget(int index, bool bVertical) {
 	ScrollToWidget(w, bVertical);
 }
 
+void PG_WidgetList::ScrollTo(Uint16 ypos) {
+	my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), ypos);
+	CheckScrollBars();
+}
+
 void PG_WidgetList::PageUp() {
 	my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), my_scrollarea->GetScrollPosY() - my_height );
+	CheckScrollBars();
 }
 
 void PG_WidgetList::PageDown() {
 	my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), my_scrollarea->GetScrollPosY() + my_height );
+	CheckScrollBars();
 }
 
 Uint16 PG_WidgetList::GetListHeight() {

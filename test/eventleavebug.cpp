@@ -45,6 +45,6 @@ int main(int argc, char* argv[]) {
    centralWidget.Show(false);
    window.Show(false);
    SDL_WarpMouse(centralWidget.my_xpos + 20, centralWidget.my_ypos + 20);
-   app.Run();
+   window.RunModal();
    return EXIT_SUCCESS;
 }
