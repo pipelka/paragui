@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/30 18:40:44 $
+    Update Date:      $Date: 2002/05/31 09:09:55 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtimerobject.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -42,7 +42,7 @@ typedef Uint32 PG_TimerID;
 	This class encapsulates the SDL_AddTimer, SDL_RemoveTimer functions.
 */
 
-class PG_TimerObject {
+class DECLSPEC PG_TimerObject {
 	
 public:
 	
