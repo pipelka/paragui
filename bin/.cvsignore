@@ -4,3 +4,6 @@
 *.exe
 *.txt
 *.dll
+make_colors
+pgcolors.cpp
+pgcolors.h

@@ -20,9 +20,9 @@
     pipelka@teleweb.at 
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2004/04/17 20:39:07 $ 
+    Update Date:      $Date: 2004/04/25 20:30:25 $ 
     Source File:      $Source: /sources/paragui/paragui/include/pgimage.h,v $ 
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $ 
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $ 
     Status:           $State: Exp $ 
 */
 
@@ -44,17 +44,23 @@
 class DECLSPEC PG_Image : public PG_ThemeWidget  {
 public:
 	/**
-	Contructor of the PG_Image class (loading from file)
+	@short Contructor of the PG_Image class (loading from file)
+
+	Creates the widget and loads the image from a file
+
 	@param parent	pointer to the parent widget or NULL
 	@param p			position of the PG_Image widget
 	@param filename	image-file to load
 	@param style		widgetstyle to use
-	This constructor creates the widget and loads the image from a file
+
 	*/
 	PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, const char* style = "ThemeWidget");
 
 	/**
-	Contructor of the PG_Image class (image from surface)
+	@short Contructor of the PG_Image class (image from surface)
+
+	Creates the widget and loads the image from an SDL_Surface	
+
 	@param parent		pointer to the parent widget or NULL
 	@param p				position of the PG_Image widget
 	@param image		pointer to imagedata (SDL_Surface)
@@ -64,18 +70,22 @@ public:
 	PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, const char* style = "ThemeWidget");
 
 	/**
-	Contructor of the PG_Image class (loading from file)
+	@short Contructor of the PG_Image class (loading from file)
+
+	Creates the widget and loads the image from a file using a colorkey
+
 	@param parent	pointer to the parent widget or NULL
 	@param p		position of the PG_Image widget
 	@param filename	image-file to load
 	@param	colorkey	colorkey (0xRRGGBB)
 	@param style		widgetstyle to use
-	This constructor creates the widget and loads the image from a file using a colorkey.
+
 	*/
 	PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, Uint32 colorkey, const char* style);
 
 	/**
-	Set the colorkey of the image
+	@short Set the colorkey of the image
+
 	@param key		colorkey (0xRRGGBB);
 	*/
 	void SetColorKey(Uint32 key);
