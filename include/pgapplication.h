@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/23 08:45:44 $
+    Update Date:      $Date: 2003/05/26 14:09:47 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.9 $
     Status:           $State: Exp $
 */
 
@@ -378,7 +378,7 @@ public:
 
 	template<class T>
 	static T* GetWidget(int id) {
-		return static_cast<T*>(GetWidgetById(Name));
+		return static_cast<T*>(GetWidgetById(id));
 	}
 
 	/**
