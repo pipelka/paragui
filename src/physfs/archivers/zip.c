@@ -141,9 +141,16 @@ static int ZIP_isSymLink(DirHandle *h, const char *name);
 static PHYSFS_sint64 ZIP_getLastModTime(DirHandle *h, const char *name);
 static FileHandle *ZIP_openRead(DirHandle *h, const char *filename);
 static void ZIP_dirClose(DirHandle *h);
-
 static int zip_resolve(void *in, ZIPinfo *info, ZIPentry *entry);
 
+
+const PHYSFS_ArchiveInfo __PHYSFS_ArchiveInfo_ZIP =
+{
+    "ZIP",
+    ZIP_ARCHIVE_DESCRIPTION,
+    "Ryan C. Gordon <icculus@clutteredmind.org>",
+    "http://icculus.org/physfs/",
+};
 
 static const FileFunctions __PHYSFS_FileFunctions_ZIP =
 {
@@ -159,6 +166,7 @@ static const FileFunctions __PHYSFS_FileFunctions_ZIP =
 
 const DirFunctions __PHYSFS_DirFunctions_ZIP =
 {
+    &__PHYSFS_ArchiveInfo_ZIP,
     ZIP_isArchive,          /* isArchive() method      */
     ZIP_openArchive,        /* openArchive() method    */
     ZIP_enumerateFiles,     /* enumerateFiles() method */
@@ -174,14 +182,24 @@ const DirFunctions __PHYSFS_DirFunctions_ZIP =
     ZIP_dirClose            /* dirClose() method       */
 };
 
-const PHYSFS_ArchiveInfo __PHYSFS_ArchiveInfo_ZIP =
-{
-    "ZIP",
-    "PkZip/WinZip/Info-Zip compatible",
-    "Ryan C. Gordon <icculus@clutteredmind.org>",
-    "http://www.icculus.org/physfs/",
-};
 
+static const char *zlib_error_string(int rc)
+{
+    switch (rc)
+    {
+        case Z_OK: return(NULL);  /* not an error. */
+        case Z_STREAM_END: return(NULL); /* not an error. */
+        case Z_ERRNO: return(strerror(errno));
+        case Z_NEED_DICT: return(ERR_ZLIB_NEED_DICT);
+        case Z_DATA_ERROR: return(ERR_ZLIB_DATA_ERROR);
+        case Z_MEM_ERROR: return(ERR_ZLIB_MEMORY_ERROR);
+        case Z_BUF_ERROR: return(ERR_ZLIB_BUFFER_ERROR);
+        case Z_VERSION_ERROR: return(ERR_ZLIB_VERSION_ERROR);
+        default: return(ERR_ZLIB_UNKNOWN_ERROR);
+    } /* switch */
+
+    return(NULL);
+} /* zlib_error_string */
 
 
 /*
@@ -189,41 +207,9 @@ const PHYSFS_ArchiveInfo __PHYSFS_ArchiveInfo_ZIP =
  */
 static int zlib_err(int rc)
 {
-    const char *err = NULL;
-
-    switch (rc)
-    {
-        case Z_OK:
-        case Z_STREAM_END:
-            break;   /* not errors. */
-
-        case Z_ERRNO:
-            err = strerror(errno);
-            break;
-
-        case Z_NEED_DICT:
-            err = "zlib: need dictionary";
-            break;
-        case Z_DATA_ERROR:
-            err = "zlib: need dictionary";
-            break;
-        case Z_MEM_ERROR:
-            err = "zlib: memory error";
-            break;
-        case Z_BUF_ERROR:
-            err = "zlib: buffer error";
-            break;
-        case Z_VERSION_ERROR:
-            err = "zlib: version error";
-            break;
-        default:
-            err = "unknown zlib error";
-            break;
-    } /* switch */
-
-    if (err != NULL)
-        __PHYSFS_setError(err);
-
+    const char *str = zlib_error_string(rc);
+    if (str != NULL)
+        __PHYSFS_setError(str);
     return(rc);
 } /* zlib_err */
 
@@ -413,6 +399,7 @@ static int ZIP_fileClose(FileHandle *handle)
         free(finfo->buffer);
 
     free(finfo);
+    free(handle);
     return(1);
 } /* ZIP_fileClose */
 
@@ -420,13 +407,13 @@ static int ZIP_fileClose(FileHandle *handle)
 static PHYSFS_sint64 zip_find_end_of_central_dir(void *in, PHYSFS_sint64 *len)
 {
     PHYSFS_uint8 buf[256];
-    PHYSFS_sint32 i;
+    PHYSFS_sint32 i = 0;
     PHYSFS_sint64 filelen;
     PHYSFS_sint64 filepos;
     PHYSFS_sint32 maxread;
     PHYSFS_sint32 totalread = 0;
     int found = 0;
-    PHYSFS_uint32 extra;
+    PHYSFS_uint32 extra = 0;
 
     filelen = __PHYSFS_platformFileLength(in);
     BAIL_IF_MACRO(filelen == -1, NULL, 0);
@@ -515,7 +502,11 @@ static int ZIP_isArchive(const char *filename, int forWriting)
      * The first thing in a zip file might be the signature of the
      *  first local file record, so it makes for a quick determination.
      */
-    BAIL_IF_MACRO(!readui32(in, &sig), NULL, 0);
+    if(!readui32(in, &sig))
+    {
+	__PHYSFS_platformClose(in);
+	BAIL_IF_MACRO(1, NULL, 0);
+    }
     retval = (sig == ZIP_LOCAL_FILE_SIG);
     if (!retval)
     {
@@ -1290,9 +1281,8 @@ static LinkedStringList *ZIP_enumerateFiles(DirHandle *h,
             while ((++i < max) && (ptr != NULL))
             {
                 char *e_new = info->entries[i].name;
-                if ((strncmp(e, e_new, ln) == 0) && (e_new[ln] == '/'))
-                    continue;
-                ptr = NULL;
+                if ((strncmp(e, e_new, ln) != 0) || (e_new[ln] != '/'))
+                    break;
             } /* while */
         } /* else */
     } /* while */

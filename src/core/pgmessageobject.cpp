@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 08:10:23 $
+    Update Date:      $Date: 2002/07/30 20:50:26 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2 $
+    CVS/RCS Revision: $Revision: 1.1.6.3 $
     Status:           $State: Exp $
 */
 
@@ -314,7 +314,7 @@ bool PG_MessageObject::PumpIntoEventQueue(const SDL_Event* event) {
 	PG_Widget* widget = NULL;
 
 	// do we have a capture hook?
-	if((event->type != SDL_USEREVENT) && (event->type != SDL_VIDEORESIZE) /*&& (event->type != SDL_VIDEOEXPOSE)*/) {
+	if((event->type != SDL_USEREVENT) && (event->type != SDL_VIDEORESIZE)) {
 		if(captureObject) {
 			return captureObject->ProcessEvent(event);
 		}
@@ -356,11 +356,6 @@ bool PG_MessageObject::PumpIntoEventQueue(const SDL_Event* event) {
 				return true;
 			}
 			break;
-			/*
-					case SDL_VIDEOEXPOSE:
-						PG_Widget::UpdateScreen();
-						return 0;
-			*/
 	}
 
 	// send to all receivers

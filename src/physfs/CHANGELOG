@@ -2,6 +2,31 @@
  * CHANGELOG.
  */
 
+07292002 - Found some memory leaks, thanks to Valgrind (which rules, btw).
+           Added Russian translations (koi8-r, cp1251, cp866, and iso-8859-5)
+           by Ed Sinjiashvili. Added Spanish translation by Pedro J. Pérez.
+           Debian package support in CVS, thanks to Colin Bayer. French
+           translation by Stéphane Peter.
+07282002 - macclassic.c now returns human readable error messages instead of
+           ERR_OS_ERROR. Closing files on MacOS no longer fails if the volume
+           info can't be flushed. Minor error message tweak in os2.c. All
+           possible human-readable literal strings (including all those OS/2
+           and MacOS error messages) have moved to constants in
+           physfs_internal.h...this allows the library to be translated to
+           other spoken languages fairly easily.
+07272002 - Patched the OS/2 code to be useful...works pretty well, now. Added
+           makeos2.cmd for building (not an ideal solution, but oh well).
+           Initialized some variables in zip.c to prevent compiler whining.
+07262002 - Fixed a typo in documentation. Archivers with matching file
+           extensions are now given first shot at opening an archive, but if
+           they fail, the other archivers are tried. More fixes to zip.c's
+           ZIP_enumerateFiles(). Wrote an OS/2 platform driver based on API
+           specs and a heavy pounding of Google Groups...as I don't have an
+           OS/2 compiler at the moment, it probably doesn't even compile.  :)
+07252002 - configure.in and unix.c now deal with platforms that lack a
+           functional pthread library. Edward Rudd sent in a patch to the RPM
+           specfile to have the build system set the correct version.
+           Clean ups in grp.c, beos.cpp and macclassic.c.
 07242002 - Rewrote ZIP_enumerate(). Hopefully it sucks less this time.
            unix.c and configure.in now have the infrastructure to disable
            the CD-ROM detection code, and use a stub that successfully (and

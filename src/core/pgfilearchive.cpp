@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/30 09:21:55 $
+    Update Date:      $Date: 2002/07/30 20:50:26 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.7 $
+    CVS/RCS Revision: $Revision: 1.2.4.8 $
     Status:           $State: Exp $
 */
 
@@ -288,6 +288,11 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
 #else
 	surface = SDL_LoadBMP_RW(rw, 1);
 #endif
+
+	if(surface == NULL) {
+		PG_LogWRN("Failed to load imagedata from '%s' !", filename);
+		return NULL;
+	}
 	
 	if(surface == NULL) {
 		PG_LogERR("Unable to load imagedata from '%s'", filename);

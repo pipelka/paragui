@@ -32,7 +32,8 @@ EXTRA_DIST =	\
 	CWProjects.sit \
 	physfs.dsp \
 	test_physfs.dsp \
-	physfs.h
+	physfs.h \
+	physfs.spec.in
 
 dist-hook:
 	mkdir $(distdir)/docs

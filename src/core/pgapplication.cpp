@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/30 09:21:55 $
+    Update Date:      $Date: 2002/07/30 20:50:26 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.11 $
+    CVS/RCS Revision: $Revision: 1.2.4.12 $
     Status:           $State: Exp $
 */
 
@@ -123,9 +123,6 @@ PG_Application::~PG_Application() {
 	
 	// remove all archives from PG_FileArchive
 	PG_FileArchive::RemoveAllArchives();
-
-	// shutdown PhysFS
-	PG_FileArchive::Deinit();
 }
 
 /**  */
@@ -417,12 +414,10 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 	}
 
 	PG_Rect fillrect = rect;
-	//PG_Application::LockScreen();
 
 	if(!my_background) {
 		SDL_Color c = my_backcolor;
 		SDL_FillRect(screen, (SDL_Rect*)&fillrect, SDL_MapRGB(screen->format, c.r, c.g, c.b));
-		PG_Application::UnlockScreen();
 		return;
 	}
 	if(my_backmode == BKMODE_STRETCH &&
@@ -447,8 +442,6 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 	} else {
 		PG_Draw::DrawTile(screen, screenrect, rect, my_background);
 	}
-	
-	//PG_Application::UnlockScreen();
 }
 
 /**  */

@@ -20,13 +20,12 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/06/17 14:25:42 $
+   Update Date:      $Date: 2002/07/30 20:50:27 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.8 $
+   CVS/RCS Revision: $Revision: 1.4.4.9 $
    Status:           $State: Exp $
  */
 
-//#include <iostream>
 #include <cstring>
 #include <stdarg.h>
 
@@ -1500,15 +1499,24 @@ int PG_Widget::RunModal() {
 	SDL_Event event;
 	my_internaldata->quitModalLoop = false;
 
-	// unlock the mutex
-	//SDL_mutexV(my_mutexReceiveMessage);
-
+	// run while in modal mode
 	while(!my_internaldata->quitModalLoop) {
 		SDL_WaitEvent(&event);
-		ProcessEvent(&event, true);
+		if(event.type == SDL_USEREVENT) {
+			PumpIntoEventQueue(&event);
+		}
+		else {
+			ProcessEvent(&event, true);
+		}
 		PG_Application::DrawCursor();
 	}
 
+	// poll all remaining events out of the eventloop
+	// there might be callback messages still in there
+	
+	while(SDL_PollEvent(&event)) {
+		ProcessEvent(&event, true);
+	}
 	return 0;
 }
 

@@ -195,6 +195,17 @@ if test x$have_llseek = xyes; then
 fi
 
 
+dnl determine if we should use the stubbed pthread code.
+AC_ARG_ENABLE(pthreads,
+[  --enable-pthreads          include POSIX threads support [default=yes]],
+              , enable_pthreads=yes)
+if test x$enable_pthreads = xyes; then
+  AC_CHECK_HEADER(pthread.h, have_pthread_hdr=yes)
+  if test x$have_pthread_hdr != xyes; then
+    enable_pthreads=no
+  fi
+fi
+
 dnl determine if we should use the stubbed CD-ROM detection code.
 AC_ARG_ENABLE(cdrom,
 [  --enable-cdrom             include CD-ROM support [default=yes]],
@@ -218,10 +229,83 @@ if test x$enable_cdrom = xyes; then
   fi
 fi
 
-dnl AC_CHECK_HEADER(be/kernel/OS.h, this_is_beos=yes)
+dnl determine language.
+physfslang=english
+AC_ARG_ENABLE(language,
+[  --enable-language=lang     Select natural language. [default=english]],
+              physfslang=`echo $enable_language |tr A-Z a-z`)
+
+AC_MSG_CHECKING([if language choice is supported])
+physfs_valid_lang=no
+
+if test x$physfslang = xenglish; then
+  physfs_valid_lang=yes
+  AC_DEFINE([PHYSFS_LANG], PHYSFS_LANG_ENGLISH, [define desired natural language])
+fi
+
+if test x$physfslang = xrussian-koi8-r; then
+  physfs_valid_lang=yes
+  AC_DEFINE([PHYSFS_LANG], PHYSFS_LANG_RUSSIAN_KOI8_R, [define desired natural language])
+fi
+
+if test x$physfslang = xrussian-cp1251; then
+  physfs_valid_lang=yes
+  AC_DEFINE([PHYSFS_LANG], PHYSFS_LANG_RUSSIAN_CP866, [define desired natural language])
+fi
+
+if test x$physfslang = xrussian-cp866; then
+  physfs_valid_lang=yes
+  AC_DEFINE([PHYSFS_LANG], PHYSFS_LANG_RUSSIAN_CP866, [define desired natural language])
+fi
+
+if test x$physfslang = xrussian-iso-8859-5; then
+  physfs_valid_lang=yes
+  AC_DEFINE([PHYSFS_LANG], PHYSFS_LANG_RUSSIAN_ISO_8859_5, [define desired natural language])
+fi
+
+if test x$physfslang = xspanish; then
+  physfs_valid_lang=yes
+  AC_DEFINE([PHYSFS_LANG], PHYSFS_LANG_SPANISH, [define desired natural language])
+fi
+
+if test x$physfslang = xfrench; then
+  physfs_valid_lang=yes
+  AC_DEFINE([PHYSFS_LANG], PHYSFS_LANG_FRENCH, [define desired natural language])
+fi
+
+
+dnl Add other language checks here...
+
+
+AC_MSG_RESULT([$physfs_valid_lang])
+if test x$physfs_valid_lang = xno; then
+  AC_MSG_WARN([***])
+  AC_MSG_WARN([*** You've asked for "$physfslang" language support...])
+  AC_MSG_WARN([***  ...but we don't support that.])
+  AC_MSG_WARN([*** You could choose another language,])
+  AC_MSG_WARN([***   but is this what you REALLY wanted?])
+  AC_MSG_WARN([*** Please see the LANG section of physfs_internal.h])
+  AC_MSG_WARN([***  for info on writing a translation.])
+  AC_MSG_WARN([***])
+  AC_MSG_WARN([*** Currently known languages:])
+  AC_MSG_WARN([***   --enable-language=english])
+  AC_MSG_WARN([***   --enable-language=spanish])
+  AC_MSG_WARN([***   --enable-language=russian-koi8-r])
+  AC_MSG_WARN([***   --enable-language=russian-cp1251])
+  AC_MSG_WARN([***   --enable-language=russian-cp866])
+  AC_MSG_WARN([***   --enable-language=russian-iso-8859-5])
+  AC_MSG_WARN([***   --enable-language=french])
+  AC_MSG_WARN([***])
+  AC_MSG_ERROR([*** unsupported language. stop.])
+fi
+
+have_non_posix_threads=no
+
 AC_MSG_CHECKING([if this is BeOS])
 if test x$build_os = xbeos; then
   this_is_beos=yes
+  enable_pthreads=no
+  have_non_posix_threads=yes
   LIBS="$LIBS -lroot -lbe"
 else
   this_is_beos=no
@@ -233,6 +317,8 @@ AC_MSG_CHECKING([if this is Cygwin])
 if test x$build_os = xcygwin; then
   this_is_cygwin=yes
   CFLAGS="$CFLAGS -DWIN32"
+  enable_pthreads=no
+  have_non_posix_threads=yes
 else
   this_is_cygwin=no
 fi
@@ -281,7 +367,7 @@ if test x$we_have_sed = xyes; then
   if test x$x = xatheos; then
     this_is_atheos=yes
     enable_cdrom=no
-    LDFLAGS="$LDFLAGS -lpthread"
+    enable_pthreads=no
   fi
 
   AC_MSG_RESULT([$this_is_atheos])
@@ -292,9 +378,24 @@ if test x$enable_cdrom != xyes; then
   AC_DEFINE([PHYSFS_NO_CDROM_SUPPORT], 1, [define if we have no CD support])
   AC_MSG_WARN([***])
   AC_MSG_WARN([*** There is no CD-ROM support in this build!])
-  AC_MSG_WARN([*** PhysicsFS will just pretend there are no discs!])
-  AC_MSG_WARN([*** Is this what you really wanted?])
+  AC_MSG_WARN([*** PhysicsFS will just pretend there are no discs.])
+  AC_MSG_WARN([*** This may be fine, depending on how PhysicsFS is used,])
+  AC_MSG_WARN([***   but is this what you REALLY wanted?])
+  AC_MSG_WARN([*** (Maybe fix configure.in, or write a platform driver?)])
   AC_MSG_WARN([***])
+fi
+
+if test x$enable_pthreads != xyes; then
+  AC_DEFINE([PHYSFS_NO_PTHREADS_SUPPORT], 1, [define if we have no POSIX threads support])
+  if test x$have_non_posix_threads != xyes; then
+    AC_MSG_WARN([***])
+    AC_MSG_WARN([*** There is no thread support in this build!])
+    AC_MSG_WARN([*** PhysicsFS will NOT be reentrant!])
+    AC_MSG_WARN([*** This may be fine, depending on how PhysicsFS is used,])
+    AC_MSG_WARN([***   but is this what you REALLY wanted?])
+    AC_MSG_WARN([*** (Maybe fix configure.in, or write a platform driver?)])
+    AC_MSG_WARN([***])
+  fi
 fi
 
 
@@ -331,6 +432,7 @@ platform/Makefile
 zlib114/Makefile
 test/Makefile
 extras/Makefile
+physfs.spec
 ])
 
 dnl end of configure.in ...

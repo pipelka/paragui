@@ -5,6 +5,7 @@ Unix support,
 Win32 support,
 BeOS support,
 POSIX support,
+OS/2 support,
 ZIP driver,
 MacOS Classic support:
     Ryan C. Gordon
@@ -33,6 +34,18 @@ other stuff,
 
 Various support, fixes and suggestions,
     Alexander Pipelka
+
+Russian translation:
+    Ed Sinjiashvili
+
+Spanish translation:
+    Pedro J. Pérez
+
+French translation:
+    Stéphane Peter
+
+Debian package support:
+    Colin Bayer
 
 Other stuff:
     Your name here! Patches go to icculus@clutteredmind.org ...
