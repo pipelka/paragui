@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/18 10:40:37 $
+    Update Date:      $Date: 2003/04/23 08:45:44 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.21 $
+    CVS/RCS Revision: $Revision: 1.2.4.22 $
     Status:           $State: Exp $
 */
 
@@ -196,9 +196,8 @@ int PG_Application::RunEventLoop(void* data) {
 
 	assert(data);
 
-	// Flush queue
-	while(SDL_PollEvent(&event));
-
+	FlushEventQueue();
+	
 	while(!my_quitEventLoop) {
 		
 		// pull motion events (may flood the eventqueue)
@@ -983,6 +982,16 @@ bool PG_Application::GetDirtyUpdatesDisabled() {
 
 PG_Application* PG_Application::GetApp() {
 	return pGlobalApp;
+}
+
+void PG_Application::FlushEventQueue() {
+	SDL_Event event;
+
+	while(SDL_PollEvent(&event)) {
+		if(event.type == SDL_USEREVENT) {
+			delete (MSG_MESSAGE*)(event.user.data1);
+		}
+	}
 }
 
 /*

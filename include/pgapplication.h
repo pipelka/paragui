@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/05 14:48:33 $
+    Update Date:      $Date: 2003/04/23 08:45:44 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.8 $
     Status:           $State: Exp $
 */
 
@@ -519,6 +519,15 @@ public:
 
 	static bool GetAppIdleCallsEnabled();
 
+	//! Flush the event queue
+	/*
+	This function savely discards all events in the eventqueue.
+	All pending messages will be deleted and the memory freed.
+	\note Your memory will leak if you just do a SDL_PollEvent
+	because this won't delete pending usermessages.
+	*/
+	static void FlushEventQueue();
+	
 protected:
 
 	/**
