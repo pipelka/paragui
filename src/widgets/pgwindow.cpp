@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/12/13 21:06:52 $
+    Update Date:      $Date: 2002/12/14 16:16:00 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -57,6 +57,10 @@ PG_Window::~PG_Window() {
 void PG_Window::SetTitle(const char* title, int alignment) {
 	my_labelTitle->SetText(title);
 	my_labelTitle->SetAlignment(alignment);
+}
+
+const char* PG_Window::GetTitle() {
+	return my_labelTitle->GetText();
 }
 
 void PG_Window::LoadThemeStyle(const char* widgettype) {
