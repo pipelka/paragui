@@ -96,13 +96,6 @@ dnl ---------------------------------------------------------------------
 dnl Checks for libraries.
 dnl ---------------------------------------------------------------------
 
-dnl !!! FIXME: Not sure how to detect this...
-dnl check for 64-bit llseek()...
-dnl AC_CHECK_LIB(c, llseek, have_llseek=yes)
-if test x$have_llseek = xyes; then
-  AC_DEFINE([PHYSFS_HAVE_LLSEEK], 1, [define if we have llseek])
-fi
-
 require_zlib="no"
 
 dnl Check for zip archiver inclusion...
@@ -194,6 +187,37 @@ if test x$enable_readline = xyes; then
   fi
 fi
 
+dnl !!! FIXME: Not sure how to detect this...
+dnl check for 64-bit llseek()...
+dnl AC_CHECK_LIB(c, llseek, have_llseek=yes)
+if test x$have_llseek = xyes; then
+  AC_DEFINE([PHYSFS_HAVE_LLSEEK], 1, [define if we have llseek])
+fi
+
+
+dnl determine if we should use the stubbed CD-ROM detection code.
+AC_ARG_ENABLE(cdrom,
+[  --enable-cdrom             include CD-ROM support [default=yes]],
+              , enable_cdrom=yes)
+if test x$enable_cdrom = xyes; then
+  dnl reset this and let header detection reenable...
+  enable_cdrom=no
+
+  dnl BSD systems use sys/ucred.h for getting mounted volumes.
+  dnl Linux and others use mntent.h.
+  AC_CHECK_HEADER(sys/ucred.h, have_ucred_hdr=yes)
+  if test x$have_ucred_hdr = xyes; then
+    AC_DEFINE([PHYSFS_HAVE_SYS_UCRED_H], 1, [define if we have sys/ucred.h])
+    enable_cdrom=yes
+  fi
+
+  AC_CHECK_HEADER(mntent.h, have_mntent_hdr=yes)
+  if test x$have_mntent_hdr = xyes; then
+    AC_DEFINE([PHYSFS_HAVE_MNTENT_H], 1, [define if we have mntent.h])
+    enable_cdrom=yes
+  fi
+fi
+
 dnl AC_CHECK_HEADER(be/kernel/OS.h, this_is_beos=yes)
 AC_MSG_CHECKING([if this is BeOS])
 if test x$build_os = xbeos; then
@@ -232,10 +256,47 @@ if test x$we_have_sed = xyes; then
   x=`echo $build_os |tr A-Z a-z |sed "s/.*freebsd.*/freebsd/"`
   if test x$x = xfreebsd; then
     this_is_freebsd=yes
+    LDFLAGS="$LDFLAGS -pthread"
   fi
 
   AC_MSG_RESULT([$this_is_freebsd])
 fi
+
+this_is_openbsd=no
+if test x$we_have_sed = xyes; then
+  AC_MSG_CHECKING([if this is OpenBSD])
+  x=`echo $build_os |tr A-Z a-z |sed "s/.*openbsd.*/openbsd/"`
+  if test x$x = xopenbsd; then
+    this_is_openbsd=yes
+    LDFLAGS="$LDFLAGS -pthread"
+  fi
+
+  AC_MSG_RESULT([$this_is_openbsd])
+fi
+
+this_is_atheos=no
+if test x$we_have_sed = xyes; then
+  AC_MSG_CHECKING([if this is AtheOS])
+  x=`echo $build_os |tr A-Z a-z |sed "s/.*atheos.*/atheos/"`
+  if test x$x = xatheos; then
+    this_is_atheos=yes
+    enable_cdrom=no
+    LDFLAGS="$LDFLAGS -lpthread"
+  fi
+
+  AC_MSG_RESULT([$this_is_atheos])
+fi
+
+dnl Some platform might disable this, so check this down here...
+if test x$enable_cdrom != xyes; then
+  AC_DEFINE([PHYSFS_NO_CDROM_SUPPORT], 1, [define if we have no CD support])
+  AC_MSG_WARN([***])
+  AC_MSG_WARN([*** There is no CD-ROM support in this build!])
+  AC_MSG_WARN([*** PhysicsFS will just pretend there are no discs!])
+  AC_MSG_WARN([*** Is this what you really wanted?])
+  AC_MSG_WARN([***])
+fi
+
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -255,10 +316,6 @@ AC_CHECK_FUNCS([memset strrchr])
 
 CFLAGS="$CFLAGS -D_REENTRANT -D_THREAD_SAFE"
 LDFLAGS="$LDFLAGS -no-undefined"
-
-if test x$this_is_freebsd = x$yes; then
-  LDFLAGS="$LDFLAGS -pthread"
-fi
 
 dnl Add Makefile conditionals
 AM_CONDITIONAL(BUILD_ZLIB, test x$enable_internal_zlib = xyes)

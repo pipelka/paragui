@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/07/12 10:12:14 $
+    Update Date:      $Date: 2002/07/25 07:27:38 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.5 $
     Status:           $State: Exp $
 */
 
@@ -107,7 +107,10 @@ void PG_ThemeWidget::LoadThemeStyle(const char* widgettype, const char* objectna
 		}
 
 		b = t->FindProperty(widgettype, objectname, "simplebackground");
-		my_internaldata->simplebackground = (b != -1) ? b : my_internaldata->simplebackground;
+		if(b != -1) {
+			SetSimpleBackground(b);
+		}
+		//my_internaldata->simplebackground = (b != -1) ? b : my_internaldata->simplebackground;
 
 		b = t->FindProperty(widgettype, objectname, "nocache");
 		my_internaldata->nocache = (b != -1) ? b : my_internaldata->nocache;
@@ -152,7 +155,7 @@ void PG_ThemeWidget::LoadThemeStyle(const char* widgettype, const char* objectna
 	PG_Gradient* g = t->FindGradient(widgettype, objectname, "gradient");
 
 	if(g) {
-		my_gradient = *g;
+		SetGradient(*g);
 		my_has_gradient = true;
 	}
 	
@@ -517,6 +520,9 @@ void PG_ThemeWidget::DeleteThemedSurface(SDL_Surface* surface) {
 
 void PG_ThemeWidget::SetSimpleBackground(bool simple) {
 	my_internaldata->simplebackground = simple;
+	DeleteThemedSurface(my_internaldata->cachesurface);
+	my_internaldata->cachesurface = NULL;
+	Redraw();
 }
 
 void PG_ThemeWidget::SetBackgroundColor(const SDL_Color& c) {

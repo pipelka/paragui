@@ -31,7 +31,7 @@
 
 #define TEST_VERSION_MAJOR  0
 #define TEST_VERSION_MINOR  1
-#define TEST_VERSION_PATCH  6
+#define TEST_VERSION_PATCH  7
 
 static FILE *history_file = NULL;
 
@@ -626,6 +626,7 @@ static const command_info commands[] =
     { "addarchive",     cmd_addarchive,     2, "<archiveLocation> <append>" },
     { "removearchive",  cmd_removearchive,  1, "<archiveLocation>"          },
     { "enumerate",      cmd_enumerate,      1, "<dirToEnumerate>"           },
+    { "ls",             cmd_enumerate,      1, "<dirToEnumerate>"           },
     { "getlasterror",   cmd_getlasterror,   0, NULL                         },
     { "getdirsep",      cmd_getdirsep,      0, NULL                         },
     { "getcdromdirs",   cmd_getcdromdirs,   0, NULL                         },
