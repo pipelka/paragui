@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/30 18:11:55 $
+    Update Date:      $Date: 2004/01/31 09:15:53 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.7 $
     Status:           $State: Exp $
 */
 
@@ -222,6 +222,8 @@ public:
 
 	/**
 	Redraw the application background
+
+	@param rect the part of the screen to be redrawn
 	*/
 	static void RedrawBackground(const PG_Rect& rect);
 
@@ -274,7 +276,10 @@ public:
 	*/
 	static void FlipPage();
 
-	/**  */
+	/** 
+	Outputs some information about the current video target (only with
+	DEBUG enabled)
+	*/
 	void PrintVideoTest();
 
 	/**
@@ -430,7 +435,7 @@ public:
 
 	/**
 	Set default font index
-	@param	Index	Index of the desired font face in the font file (usualy 0)
+	@param	Index	Index of the desired font face in the font file (usually 0)
 	@return   0 when OK
 	*/
 	static void SetFontIndex(int Index);

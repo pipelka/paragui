@@ -40,6 +40,10 @@ Whats new in ParaGUI 1.1.6 ?
 - applied patches from Ulf Lorenz:
   added a few comments to pgapplication.h
   removed obsolete function calls from pgapplication.cpp
+  added param comment for PG_Application::RedrawBackground()
+  documented PG_Application::PrintVideoTest()
+  in PG_Application::Shutdown calling DeleteBackground() for freeing
+  PG_Application::DeleteBackground(): setting my_background to 0
 - more coming up
 
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/30 18:11:55 $
+    Update Date:      $Date: 2004/01/31 09:15:53 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.5 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.6 $
     Status:           $State: Exp $
 */
 
@@ -680,11 +680,8 @@ void PG_Application::SetBulkMode(bool bulk) {
 }
 
 void PG_Application::Shutdown() {
-	if(my_scaled_background) {
-		// Destroyed scaled background if present
-		SDL_FreeSurface(my_scaled_background);
-		my_scaled_background = 0;
-	}
+	DeleteBackground();
+	
 	// destroy still existing objects
 	vector<PG_MessageObject*>::iterator list = objectList.begin();
 
@@ -945,6 +942,8 @@ void PG_Application::DeleteBackground() {
 		UnloadSurface(my_background);
 		my_freeBackground = false;
 	}
+
+	my_background = 0;
 }
 
 #ifdef WIN32
