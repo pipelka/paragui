@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/01/21 16:01:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -82,11 +82,20 @@ class ScrollButton : public PG_Button {
 
 public:
 
-	// ScrollbarType
+	//! ScrollbarType
 	typedef enum {
-		VERTICAL,
-		HORIZONTAL
+		VERTICAL,	//!< vertical scrollbar
+		HORIZONTAL	//!< horizontal scrollbar
 	} ScrollDirection;
+
+	//! Widget ID's
+	enum {
+		IDSCROLLBAR_UP = PG_WIDGETID_INTERNAL + 1,		//!<ID Scrollbar Button "up"
+		IDSCROLLBAR_DOWN = PG_WIDGETID_INTERNAL + 2,	//!< ID Scrollbar Button "down"
+		IDSCROLLBAR_LEFT = PG_WIDGETID_INTERNAL + 3,		//!< ID Scrollbar Button "left"
+		IDSCROLLBAR_RIGHT = PG_WIDGETID_INTERNAL + 4,	//!< ID Scrollbar Button "right"
+		IDSCROLLBAR_DRAG = PG_WIDGETID_INTERNAL + 5		//!< ID Scrollbar Button "drag"
+	};
 
 	/**
 	Signal type declaration

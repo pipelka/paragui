@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/01/21 16:01:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -47,6 +47,10 @@ struct PG_WidgetListDataInternal;
 	
 class DECLSPEC PG_WidgetList : public PG_ThemeWidget  {
 public:
+
+	enum {
+		IDWIDGETLIST_SCROLL = PG_WIDGETID_INTERNAL + 10
+	};
 
 	/**
 	Constructor of the PG_Widget class

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/01/21 16:01:03 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgscrollbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -90,17 +90,17 @@ PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, int id, const PG_Rect& r, ScrollDi
 
 	scrollbutton[0] = new PG_Button(
 	                      this,
-	                      (direction == VERTICAL) ? PG_IDSCROLLBAR_UP : PG_IDSCROLLBAR_LEFT,
+	                      (direction == VERTICAL) ? IDSCROLLBAR_UP : IDSCROLLBAR_LEFT,
 	                      position[0]);
 	scrollbutton[0]->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 	
 	scrollbutton[1] = new PG_Button(
 	                      this,
-	                      (direction == VERTICAL) ? PG_IDSCROLLBAR_DOWN : PG_IDSCROLLBAR_RIGHT,
+	                      (direction == VERTICAL) ? IDSCROLLBAR_DOWN : IDSCROLLBAR_RIGHT,
 	                      position[1]);
 	scrollbutton[1]->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 
-	dragbutton = new ScrollButton(this, PG_IDSCROLLBAR_DRAG, position[3]);
+	dragbutton = new ScrollButton(this, IDSCROLLBAR_DRAG, position[3]);
 	dragbutton->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 
 	LoadThemeStyle("Scrollbar");

@@ -1,0 +1,37 @@
+Things anyone could adopt:
+
+CONSTRUCTOR CLEANUP
+-------------------
+
+I would like to make ParaGUI "object factory" compliant. To achieve this
+any class *must* have an identical constructor:
+
+AnyPG_Class(PG_Widget* parent, const PG_Rect& r)
+
+or even better:
+
+AnyPG_Class(PG_Widget* parent, const PG_Rect& r = PG_Rect(0,0,0,0))
+
+it's allowed to have more params in the constructor but these also must
+have default values.
+
+To make the change not to radical the current constructors can coexist
+with the *new* constructors.
+
+
+ADDING ITEMS TO (WIDGET)LISTS WITHOUT ADDWIDGET/ADDITEM
+-------------------------------------------------------
+
+The current WidgetList/ListBox implementation isn't very clean.
+It should work this way:
+
+PG_ListBox mylist(NULL, PG_Rect(...));
+PG_ListBoxItem item1(&mylist, ...);
+PG_ListBoxItem item2(&mylist, ...);
+PG_ListBoxItem item3(&mylist, ...);
+PG_ListBoxItem item4(&mylist, ...);
+mylist.Show();
+
+Currently you need to call mylist.AddItem(..) for any item to be
+added.
+PG_WidgetList should (must) work the same way.

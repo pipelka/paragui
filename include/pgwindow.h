@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/01/21 16:01:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -54,6 +54,12 @@ public:
 		SHOW_MINIMIZE = 0x04,
 		DEFAULT = SHOW_CLOSE
 	} WindowFlags;
+
+	enum {
+		IDWINDOW_CLOSE	 = PG_WIDGETID_INTERNAL + 14,
+		IDWINDOW_MINIMIZE = PG_WIDGETID_INTERNAL + 15,
+		IDWINDOW_RESTORE = PG_WIDGETID_INTERNAL + 15
+	};
 
 	/**
 	Signal type declaration

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:57 $
+    Update Date:      $Date: 2004/01/21 16:01:02 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.4 $
     Status:           $State: Exp $
 */
 
@@ -60,7 +60,7 @@ using namespace std;
 	default display depth.
 	this is the default  display depth used for PG_Application::InitScreen.
 */
-#define DISPLAY_DEPTH 16
+//#define DISPLAY_DEPTH 16
 
 /**
 	suffix for theme (xml) files.
@@ -82,74 +82,74 @@ using namespace std;
 	ID Scrollbar Button "up".
 	This is the widget ID of the "up" button.
 */
-#define PG_IDSCROLLBAR_UP		PG_WIDGETID_INTERNAL + 1
+//#define PG_IDSCROLLBAR_UP		PG_WIDGETID_INTERNAL + 1
 /**
 	ID Scrollbar Button "down".
 	This is the widget ID of the "down" button.
 */
-#define PG_IDSCROLLBAR_DOWN	PG_WIDGETID_INTERNAL + 2
+//#define PG_IDSCROLLBAR_DOWN	PG_WIDGETID_INTERNAL + 2
 /**
 	ID Scrollbar Button "left".
 	This is the widget ID of the "left" button.
 */
-#define PG_IDSCROLLBAR_LEFT		PG_WIDGETID_INTERNAL + 3
+//#define PG_IDSCROLLBAR_LEFT		PG_WIDGETID_INTERNAL + 3
 /**
 	ID Scrollbar Button "right".
 	This is the widget ID of the "right" button.
 */
-#define PG_IDSCROLLBAR_RIGHT	PG_WIDGETID_INTERNAL + 4
+//#define PG_IDSCROLLBAR_RIGHT	PG_WIDGETID_INTERNAL + 4
 /**
 	ID Scrollbar Button "drag".
 	This is the widget ID of the scrollbar slider in the middle.
 */
-#define PG_IDSCROLLBAR_DRAG	PG_WIDGETID_INTERNAL + 5
+//#define PG_IDSCROLLBAR_DRAG	PG_WIDGETID_INTERNAL + 5
 
 // WidgetList scrollbar
 /**
 	ID WidgetList Scrollbar.
 	This is the widget ID of the scrollbar inside a widgetlist.
 */
-#define PG_IDWIDGETLIST_SCROLL	PG_WIDGETID_INTERNAL + 10
+//#define PG_IDWIDGETLIST_SCROLL	PG_WIDGETID_INTERNAL + 10
 
 // Dropdown box
 /**
 	ID DropDown button.
 	This is the widget ID of the button inside a dropdown widget.
 */
-#define PG_IDDROPDOWN_BOX	PG_WIDGETID_INTERNAL + 11
+//#define PG_IDDROPDOWN_BOX	PG_WIDGETID_INTERNAL + 11
 
 // SpinnerBox
 /**
 	ID SpinnerBox up.
 	This is the widget ID of the "up" button inside a spinnerbox widget.
 */
-#define PG_IDSPINNERBOX_UP		PG_WIDGETID_INTERNAL + 12
+//#define PG_IDSPINNERBOX_UP		PG_WIDGETID_INTERNAL + 12
 /**
 	ID SpinnerBox down.
 	This is the widget ID of the "down" button inside a spinnerbox widget.
 */
-#define PG_IDSPINNERBOX_DOWN	PG_WIDGETID_INTERNAL + 13
+//#define PG_IDSPINNERBOX_DOWN	PG_WIDGETID_INTERNAL + 13
 
 // Window
 /**
 	ID Window clode.
 	This is the widget ID of the "close" button inside a window widget.
 */
-#define PG_WINDOW_CLOSE		PG_WIDGETID_INTERNAL + 14
-#define PG_WINDOW_MINIMIZE	PG_WIDGETID_INTERNAL + 15
-#define PG_WINDOW_RESTORE		PG_WIDGETID_INTERNAL + 15
+//#define PG_WINDOW_CLOSE		PG_WIDGETID_INTERNAL + 14
+//#define PG_WINDOW_MINIMIZE	PG_WIDGETID_INTERNAL + 15
+//#define PG_WINDOW_RESTORE		PG_WIDGETID_INTERNAL + 15
 
 // Application object
 /**
 	ID Application.
 	This is the MessageObject ID of the main application object.
 */
-#define PG_IDAPPLICATION		PG_WIDGETID_INTERNAL + 100
+//#define PG_IDAPPLICATION		PG_WIDGETID_INTERNAL + 100
 
 // Font styles
-#define PG_FSTYLE_NORMAL	0x00
-#define PG_FSTYLE_BOLD		0x01
-#define PG_FSTYLE_ITALIC	0x02
-#define PG_FSTYLE_UNDERLINE	0x04
+//#define PG_FSTYLE_NORMAL	0x00
+//#define PG_FSTYLE_BOLD		0x01
+//#define PG_FSTYLE_ITALIC	0x02
+//#define PG_FSTYLE_UNDERLINE	0x04
 
 #endif // PARAGUI_H

@@ -20,13 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/01/21 16:01:03 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.3 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.4 $
     Status:           $State: Exp $
 */
 
 #include "pgmessageobject.h"
+#include "pgapplication.h"
 #include "pgwidget.h"
 #include "pglog.h"
 
@@ -133,7 +134,7 @@ bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 			break;
 
 		case SDL_QUIT:
-			rc = eventQuit(PG_IDAPPLICATION, NULL, (unsigned long)&event->quit);
+			rc = eventQuit(PG_Application::IDAPPLICATION, NULL, (unsigned long)&event->quit);
 			break;
 
 		case SDL_SYSWMEVENT:

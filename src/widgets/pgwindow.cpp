@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/01/21 16:01:04 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.4 $
     Status:           $State: Exp $
 */
 
@@ -46,10 +46,10 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext
 	my_labelTitle = new PG_Label(my_titlebar, PG_Rect(0, 0, my_width, my_heightTitlebar), windowtext, style);
 	my_labelTitle->SetAlignment(PG_Label::CENTER);
 
-	my_buttonClose = new PG_Button(my_titlebar, PG_WINDOW_CLOSE, rb, NULL);
+	my_buttonClose = new PG_Button(my_titlebar, IDWINDOW_CLOSE, rb, NULL);
 	my_buttonClose->sigClick.connect(slot(*this, &PG_Window::handleButtonClick));
 	
-	my_buttonMinimize = new PG_Button(my_titlebar, PG_WINDOW_MINIMIZE, rb, NULL);
+	my_buttonMinimize = new PG_Button(my_titlebar, IDWINDOW_MINIMIZE, rb, NULL);
 	my_buttonMinimize->sigClick.connect(slot(*this, &PG_Window::handleButtonClick));
 
 	LoadThemeStyle(style);
@@ -232,12 +232,12 @@ bool PG_Window::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 bool PG_Window::handleButtonClick(PG_Button* button) {
 	switch(button->GetID()) {
 		// close window
-		case PG_WINDOW_CLOSE:
+		case IDWINDOW_CLOSE:
 			Hide();
 			sigClose(this);
 
 		// minimize window
-		case PG_WINDOW_MINIMIZE:
+		case IDWINDOW_MINIMIZE:
 			Hide();
 			sigMinimize(this);
 	}

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:22 $
+    Update Date:      $Date: 2004/01/21 16:01:03 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -528,13 +528,13 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 		}
 
 		BaseLineX += Glyph->Advance_x;
-		if (font->GetStyle() & PG_FSTYLE_BOLD) {
+		if (font->GetStyle() & PG_Font::BOLD) {
 			BaseLineX += FaceCache->Bold_Offset;
 		}
 
 		//UNDERLINE
 		//TO-DO : Underline is not transparent !!!! (Fill must be replaced by Blit)
-		if (font->GetStyle() & PG_FSTYLE_UNDERLINE) {
+		if (font->GetStyle() & PG_Font::UNDERLINE) {
 			SDL_Rect	und_rect;
 
 			und_rect.x = OldBaseLineX;
@@ -551,7 +551,7 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 	}
 
 	//BOLD
-	if (font->GetStyle() & PG_FSTYLE_BOLD && !bRecursion) {
+	if (font->GetStyle() & PG_Font::BOLD && !bRecursion) {
 		bRecursion = true;
 		RenderText(Surface, ClipRect, OriBaseX+1, BaseLineY, Text, font);
 		bRecursion = false;
@@ -632,7 +632,7 @@ bool PG_FontEngine::GetTextSize(const char *Text, PG_Font* font, Uint16 *Width, 
 		}
 
 		BaseLineX += Glyph->Advance_x;
-		if (font->GetStyle() & PG_FSTYLE_BOLD) {
+		if (font->GetStyle() & PG_Font::BOLD) {
 			BaseLineX += FaceCache->Bold_Offset;
 		}
 

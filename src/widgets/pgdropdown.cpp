@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/01/21 16:01:03 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -40,7 +40,7 @@ PG_DropDown::PG_DropDown(PG_Widget* parent, int id, const PG_Rect& r, const char
 	my_EditBox = new PG_LineEdit(this, rect, style);
 
 	PG_Rect rbutton(abs(r.my_width - r.my_height), 0, r.my_height, r.my_height);
-	my_DropButton = new PG_Button(this, PG_IDDROPDOWN_BOX, rbutton, NULL, style);
+	my_DropButton = new PG_Button(this, IDDROPDOWN_BOX, rbutton, NULL, style);
 	my_DropButton->sigClick.connect(slot(*this, &PG_DropDown::handleButtonClick));
 
 	PG_Rect rlist(r.my_xpos, r.my_ypos + r.my_height +1, r.my_width, r.my_height * 5);
@@ -86,7 +86,7 @@ void PG_DropDown::eventHide() {
 }
 
 bool PG_DropDown::handleButtonClick(PG_Button* button) {
-	if(button->GetID() != PG_IDDROPDOWN_BOX) {
+	if(button->GetID() != IDDROPDOWN_BOX) {
 		return false;
 	}
 

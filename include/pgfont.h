@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/14 15:11:11 $
+    Update Date:      $Date: 2004/01/21 16:01:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.4 $
     Status:           $State: Exp $
 */
 
@@ -62,7 +62,15 @@ struct PG_FontDataInternal;
 */
 class DECLSPEC PG_Font {
 public:
-	
+
+	//! Font styles
+	enum {
+		NORMAL = 0x00,
+		BOLD = 0x01,
+		ITALIC = 0x02,
+		UNDERLINE = 0x04
+	};
+
 	/**
 	Construct a PG_Font object
 	@param fontfile name of the fontfile to load

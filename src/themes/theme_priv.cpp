@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:59 $
+    Update Date:      $Date: 2004/01/21 16:01:03 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
     Status:           $State: Exp $
 */
 
@@ -182,7 +182,7 @@ int THEME_THEME::FindDefaultFontSize() {
 
 int THEME_THEME::FindDefaultFontStyle() {
 	if(!defaultfont) {
-		return PG_FSTYLE_NORMAL;
+		return PG_Font::NORMAL;
 	}
 
 	return defaultfont->style;
@@ -224,11 +224,11 @@ int THEME_THEME::FindFontStyle(const char* widgettype, const char* objectname) {
 	THEME_OBJECT* o = FindObject(widgettype, objectname);
 
 	if(o == NULL) {
-		return PG_FSTYLE_NORMAL;
+		return PG_Font::NORMAL;
 	}
 
 	if(!o->font) {
-		return PG_FSTYLE_NORMAL;
+		return PG_Font::NORMAL;
 	}
 
 	return o->font->style;
