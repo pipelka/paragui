@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/09/07 14:38:51 $
+   Update Date:      $Date: 2004/11/12 18:49:35 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.19 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.20 $
    Status:           $State: Exp $
  */
 
@@ -780,12 +780,13 @@ void PG_Widget::Update(bool doBlit) {
 		}
 
 		// check if other children of my parent overlap myself
-		if(GetParent() != NULL) {
+		// DISABLED FOR TESTING -- ALEX
+		/*if(GetParent() != NULL) {
 			PG_RectList* children = GetParent()->GetChildList();
 			if(children) {
 				children->Blit(_mid->rectClip, this->next());
 			}
-		}
+		}*/
 
 		// find the toplevel widget
 		PG_Widget* obj = GetToplevelWidget();
