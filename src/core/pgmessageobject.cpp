@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/16 14:02:49 $
+    Update Date:      $Date: 2003/04/18 10:40:37 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.7 $
+    CVS/RCS Revision: $Revision: 1.1.6.8 $
     Status:           $State: Exp $
 */
 
@@ -404,8 +404,6 @@ bool PG_MessageObject::RemoveObject(PG_MessageObject* obj) {
 
 	// check if object was found
 	if(list == objectList.end()) {
-		PG_LogWRN("PG_MessageObject::RemoveObject(..)");
-		PG_LogWRN("Trying to remove non-existent object from the list !!");
 		return false;
 	}
 

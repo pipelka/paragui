@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:41 $
+    Update Date:      $Date: 2003/04/18 10:40:38 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.5 $
     Status:           $State: Exp $
 */
 
@@ -187,7 +187,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 		}
 
 		// load the image file
-		filename->surface = PG_FileArchive::LoadSurface(filename->value.c_str());
+		filename->surface = PG_FileArchive::LoadSurface(filename->value.c_str(), true);
 
 		if(filename->surface == NULL) {
 			delete filename;
