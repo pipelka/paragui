@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/04/18 15:34:06 $
+    Update Date:      $Date: 2004/04/20 06:20:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.10 $
     Status:           $State: Exp $
 */
 
@@ -216,9 +216,7 @@ public:
 
 	/**
 	Returns an image for a given button state
-	@param norm	icon for unpressed state
-	@param pressed icon for pressed state
-	@param high	icon for highlighted state
+	@param num	(NORM = icon for unpressed state | PRESSED = icon for pressed state | HIGH = icon for highlighted state)
 	@return a pointer to an SDL_Surface for the given icon
 	*/
 
@@ -262,7 +260,6 @@ public:
 	or that the button is toggled in the case of a toggle button. For programs 
 	using the event handler, this function is not necessary. 
 	In this case, see SetEventCallback instead.
-	@param bool whether the button is pressed or not
 	@return bool is the button pressed
 	*/
 	bool GetPressed();
