@@ -26,7 +26,6 @@ take a look into "TODO".
 Whats new in ParaGUI 1.1.9 ?
 ----------------------------
 
-- removed SigC namespace usage in pgsingals.h (Thanks Martin Bickel <mbickel@asc-hq.org>)
 - removed mostly all const char* types, now using const std::string&
   This is a major change and will have a massive impact on code passing NULL pointers
 - performance improvements (avoiding type conversions between std::string and char*,
@@ -59,6 +58,11 @@ Whats new in ParaGUI 1.1.9 ?
 - defined HAVE_STRDUP macro for VC++
 - PG_PopupMenu: added DLL interface for nested class MenuItem
 - replaced BKMODE_X macros with enum PG_Draw::BkMode to avoid some ambiguities (and to make it more C++ like ;))
+
+- applied patches from Martin Bickel <mbickel@asc-hq.org>)
+- removed SigC namespace usage in pgsingals.h
+- non-const Width- and Height methods of PG_Rect are redundant
+- fixed PG_LineEdit::InsertChar (insert method)
 
 
 ----------------------------

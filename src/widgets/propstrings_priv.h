@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 16:05:50 $
+    Update Date:      $Date: 2004/12/08 21:28:48 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/propstrings_priv.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -36,6 +36,7 @@ class PG_PropStr {
 public:
 	static const std::string Button;
 	static const std::string Label;
+	static const std::string ListBox;
 	static const std::string ListBoxItem;
 	static const std::string RadioButton;
 	static const std::string Scrollbar;

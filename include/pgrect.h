@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/12/08 21:28:48 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrect.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
     Status:           $State: Exp $
 */
 
@@ -142,10 +142,6 @@ public:
 	Return the width of the rectangle
 	@return			width
 	*/
-	inline Uint16 Width() {
-		return w;
-	}
-
 	inline Uint16 Width() const {
 		return w;
 	}
@@ -154,10 +150,6 @@ public:
 	Return the height of the rectangle
 	@return			height
 	*/
-	inline Uint16 Height() {
-		return h;
-	}
-
 	inline Uint16 Height() const {
 		return h;
 	}
