@@ -37,6 +37,7 @@ Whats new in ParaGUI 1.1.8 ?
 - removed Get / SetApplicationPath from PG_Application
 - only fade-in invisible widgets 
 - bumped version to 1.1.8
+- fixed "flickering" of hidden widgets
 
 - applied patches from Sebastian:
 - made PG_Application::RunEventLoop() virtual to make subclassing easier

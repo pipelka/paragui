@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/09/05 10:51:41 $
+   Update Date:      $Date: 2004/09/07 14:38:51 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.18 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.19 $
    Status:           $State: Exp $
  */
 
@@ -599,23 +599,23 @@ void PG_Widget::Show(bool fade) {
 		fade = false;
 	}
 
-	if(GetParent() == NULL) {
+	PG_Widget* parent = GetParent();
+	if(parent == NULL) {
 		widgetList.BringToFront(this);
 	}
 	else {
-		GetParent()->GetChildList()->BringToFront(this);
+		parent->GetChildList()->BringToFront(this);
 	}
 
 	SetHidden(false);
-	SetVisible(true);
 	
-	eventShow();
-
-	PG_Widget* parent = GetParent();
-	if(parent != NULL && !parent->IsVisible()) {
+	if(parent != NULL && (!parent->IsVisible() || parent->IsHidden())) {
 		return;
 	}
 	
+	SetVisible(true);
+	eventShow();
+
 	if (fade) {
 		FadeIn();
 	}
