@@ -4,7 +4,6 @@ INCLUDES = -I$(top_srcdir)
 
 if BUILD_BEOS
 libplatform_la_SOURCES =	\
-	unix.c                  \
 	posix.c                 \
 	beos.cpp
 else
