@@ -23,9 +23,13 @@ noinst_PROGRAMS = \
 	navtest \
 	windowtest \
 	layouttest \
-	windowresize
+	windowresize \
+	unicodetest
 
 LFLAGS=-L../src ../src/libparagui.la $(FREETYPE_LIBS)
+
+unicodetest_SOURCES = unicodetest.cpp
+unicodetest_LDADD = $(LFLAGS)
 
 factory_SOURCES = factory.cpp
 factory_LDADD = $(LFLAGS) 
