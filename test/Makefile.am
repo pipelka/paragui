@@ -6,6 +6,7 @@ SUBDIRS = \
 	colorselector
 
 noinst_PROGRAMS = \
+	eventleavebug \
 	sigc \
 	widgetlistbug \
 	eventbug \
@@ -24,6 +25,9 @@ noinst_PROGRAMS = \
 	windowresize
 
 LFLAGS=-L../src ../src/libparagui.la $(FREETYPE_LIBS)
+
+eventleavebug_SOURCES = eventleavebug.cpp
+eventleavebug_LDADD = $(LFLAGS) 
 
 sigc_SOURCES = sigc.cpp
 sigc_LDADD = $(LFLAGS) 
