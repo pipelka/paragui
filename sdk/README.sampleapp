@@ -1,0 +1,35 @@
+SampleApp autoconf / automake framework
+
+This framework will help you to start a new project
+using ParaGUI.
+
+How to use:
+-----------
+
+- Copy the sampleapp.tar.gz tarball to a new dir.
+
+- Unpack the tarball
+  tar -zxvf sampleapp.tar.gz
+
+- Rename the created directory
+  mv sampleapp MyProject
+
+- Edit configure.in, Makefile.am to fit your needs
+
+- run ./autogen.sh to create the framework
+
+- run ./configure to configure your sources
+
+- run "make dist" to create a distribution tarball
+
+
+That's only a rough introduction. Please visit
+"http://www.gnu.org/manual" for further information
+concerning autoconf / automake, ...
+
+
+Have fun
+
+Alexander Pipelka
+<pipelka@teleweb.at>
+

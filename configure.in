@@ -591,6 +591,7 @@ data/Makefile
 bindings/Makefile
 bindings/python/Makefile
 test/Makefile
+sdk/Makefile
 paragui.spec
 paragui-config
 paragui.pc

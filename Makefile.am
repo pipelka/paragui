@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS = foreign
 
 SUBDIRS = include src data bindings
 
-DIST_SUBDIRS = $(SUBDIRS) doc test
+DIST_SUBDIRS = $(SUBDIRS) doc test sdk
 
 bin_SCRIPTS = paragui-config
 
