@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/17 12:41:17 $
+    Update Date:      $Date: 2004/02/17 16:02:07 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.8 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.9 $
     Status:           $State: Exp $
 */
 
@@ -473,10 +473,12 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 		}
 		SDL_GetClipRect(screen, (SDL_Rect*)&fillrect);
 		SDL_SetClipRect(screen, (SDL_Rect*)&rect);
+		SDL_SetAlpha(my_scaled_background, 0, 0);
 		SDL_BlitSurface(my_scaled_background, (SDL_Rect*)&rect, screen, (SDL_Rect*)&rect);
 		SDL_SetClipRect(screen, (SDL_Rect*)&fillrect);
 
 	} else {
+		SDL_SetAlpha(my_background, 0, 0);
 		PG_Draw::DrawTile(screen, PG_Rect(0,0,screen->w,screen->h), rect, my_background);
 	}
 }
