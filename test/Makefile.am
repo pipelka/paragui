@@ -2,7 +2,10 @@ SUBDIRS = fireworks colorselector
 
 AUTOMAKE_OPTIONS = foreign
 
-bin_PROGRAMS = stress1 stress2 listbox animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
+bin_PROGRAMS = writefile stress1 stress2 listbox animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
+
+writefile_SOURCES = writefile.cpp
+writefile_LDADD = -L../src $(PARAGUI_LIBS)
 
 stress1_SOURCES = stress1.cpp
 stress1_LDADD = -L../src $(PARAGUI_LIBS)
