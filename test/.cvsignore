@@ -24,3 +24,11 @@ widgetlistbug
 eventbug
 array
 sigc
+animation
+dblbuffer
+dropdown
+eventleavebug
+factory
+layouttest
+navtest
+windowtest

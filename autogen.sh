@@ -7,7 +7,7 @@ echo
 echo "Bootstrapping physfs ..."
 
 cd ./src/physfs
-./bootstrap
+sh bootstrap
 cd $TOPDIR
 
 echo "Generating build information ..."
