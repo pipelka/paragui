@@ -591,6 +591,7 @@ bindings/python/Makefile
 test/Makefile
 test/fireworks/Makefile
 test/colorselector/Makefile
+test/keyboard/Makefile
 sdk/Makefile
 paragui.spec
 paragui-config

@@ -1,4 +1,4 @@
-SUBDIRS = fireworks colorselector
+SUBDIRS = keyboard fireworks colorselector
 
 AUTOMAKE_OPTIONS = foreign
 
