@@ -8,10 +8,12 @@ PG_TabBar::PG_TabBar(PG_Widget* parent, const PG_Rect r, const char* style) : PG
 	my_tabList->EnableScrollBar(false, PG_SB_HORIZONTAL);
 
 	my_btnPrev = new PG_Button(this, -1, PG_Rect(0,r.w-50,25,h), "<");
+	my_btnPrev->LoadThemeStyle(style, "ButtonPrev");
 	my_btnPrev->sigButtonClick.connect(slot(this, &PG_TabBar::handleTabNav));
 	my_btnPrev->Hide();
 	
 	my_btnNext = new PG_Button(this, -1, PG_Rect(0,r.w-25,25,h), ">");
+	my_btnNext->LoadThemeStyle(style, "ButtonNext");
 	my_btnNext->sigButtonClick.connect(slot(this, &PG_TabBar::handleTabNav));
 	my_btnNext->Hide();
 	
@@ -46,6 +48,7 @@ PG_Button* PG_TabBar::AddTab(const char* text) {
 	if(c == 1) {
 		b->SetPressed(true);
 		my_selectedTab = b;
+		sigTabSelect(this, b);
 	}
 	return b;
 }

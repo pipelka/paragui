@@ -50,7 +50,8 @@ libparaguiinclude_HEADERS = \
 	pgdatacontainer.h \
 	pgpoint.h \
 	pgsignals.h \
-	pgtabbar.h
+	pgtabbar.h \
+	pgnotebook.h
 
 EXTRA_DIST = \
 	paraconfig_win32.h \

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 19:08:11 $
+    Update Date:      $Date: 2002/04/28 09:28:03 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5 $
+    CVS/RCS Revision: $Revision: 1.6 $
     Status:           $State: Exp $
 */
 
@@ -226,6 +226,7 @@ void PG_WidgetList::AddWidget(PG_Widget* w) {
 		CheckScrollBars();
 		w->SetVisible(true);
 		Update();
+		w->Update();
 	}
 }
 

@@ -15,6 +15,10 @@ public:
 
 	PG_Button* AddTab(const char* text, PG_TabSelectSlot slot);
 	
+	inline int GetChildCount() {
+		return my_tabList->GetChildCount();
+	}
+	
 	PG_SignalTabSelect sigTabSelect;
 	
 protected:
