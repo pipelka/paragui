@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:36 $
+    Update Date:      $Date: 2003/02/11 14:14:10 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcolumnitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
@@ -77,7 +77,11 @@ void PG_ColumnItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rec
 		Uint16 w, h;
 		GetTextSize(w, h, my_columntext[i].c_str());
 
-		DrawText(xshift, (my_itemheight - h)/2, my_columntext[i].c_str(), PG_Rect(xshift, 0, my_columnwidth[i]-5, my_itemheight));
+		int cw = my_columnwidth[i];
+		if(xshift + cw > my_width) {
+			cw -=  ((xshift + cw) - my_width);
+		}
+		DrawText(xshift, (my_itemheight - h)/2, my_columntext[i].c_str(), PG_Rect(xshift, 0, cw-5, my_itemheight));
 		//DrawText(xshift, (my_itemheight - h) >> 1, my_columntext[i].c_str());
 
 		xshift += my_columnwidth[i];

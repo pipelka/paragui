@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/01/22 13:36:40 $
+   Update Date:      $Date: 2003/02/11 14:14:10 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.13 $
+   CVS/RCS Revision: $Revision: 1.4.4.14 $
    Status:           $State: Exp $
  */
 
@@ -1467,7 +1467,7 @@ void PG_Widget::DrawText(const PG_Rect& rect, const char* text) {
 }
 
 void PG_Widget::DrawText(int x, int y, const char* text) {
-	DrawText(PG_Rect(x,y,w,h), text);
+	DrawText(PG_Rect(x,y,w-x,h-y), text);
 }
 
 void PG_Widget::DrawText(int x, int y, const char* text, const PG_Rect& cliprect) {
@@ -1475,9 +1475,11 @@ void PG_Widget::DrawText(int x, int y, const char* text, const PG_Rect& cliprect
 		PG_Rect rect = cliprect;
 		rect.x += my_xpos;
 		rect.y += my_ypos;
+//		PG_Rect r = this->IntersectRect(rect);
 		PG_FontEngine::RenderText(my_srfScreen, rect, my_xpos + x, my_ypos + y + GetFontAscender(), text, my_internaldata->font);
 	}
 	else {
+//		PG_Rect rect = this->IntersectRect(cliprect);
 		PG_FontEngine::RenderText(my_srfObject, cliprect, x, y + GetFontAscender(), text, my_internaldata->font);
 	}
 }
