@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/22 16:52:42 $
+    Update Date:      $Date: 2004/01/30 18:11:55 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.4 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.5 $
     Status:           $State: Exp $
 */
 
@@ -230,10 +230,14 @@ void PG_Application::ClearOldMousePosition() {
 	PG_RectList *widgetList = PG_Widget::GetWidgetList();
 	PG_Application::RedrawBackground(my_mouse_position);
 
-	SDL_SetClipRect(screen, &my_mouse_position);
-	PG_RectList backlist = widgetList->Intersect(&my_mouse_position);
-	backlist.Blit(my_mouse_position);
-	SDL_SetClipRect(screen, 0);
+//widgetlist::Blit() already performs all the other operations done here,
+//so one can safely remove the rest of the function calls
+//	SDL_SetClipRect(screen, &my_mouse_position);
+//	PG_RectList backlist = widgetList->Intersect(&my_mouse_position);
+//	backlist.Blit(my_mouse_position);
+//	SDL_SetClipRect(screen, 0);
+    widgetList->Blit(my_mouse_position);
+    
 	return;
 }
 

@@ -14,7 +14,8 @@ ROADMAP LEADING TO 1.2
 1.1.9 - merge and rework XML layoutloader
 1.1.? - i'll consult my magic orb
 
-If you want to take part in the development process - drop me a few lines.
+If you want to take part in the development process - drop me a few lines or
+take a look into "TODO".
 
 
 ----------------------------
@@ -36,6 +37,9 @@ Whats new in ParaGUI 1.1.6 ?
   (inspired by Ulf)
 - moved constant widget id's into the corresponding classes
 - moved PG_OPEN_MODE into PG_FileArchive (now Mode)
+- applied patches from Ulf Lorenz:
+  added a few comments to pgapplication.h
+  removed obsolete function calls from pgapplication.cpp
 - more coming up
 
 

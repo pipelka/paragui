@@ -281,6 +281,7 @@ bool handle_list() {
 
 int main(int argc, char* argv[]) {
 	char theme[20];
+	bool bTestMode = false;
 
 	strcpy(theme, "default");
 	
@@ -292,7 +293,7 @@ int main(int argc, char* argv[]) {
 	
 	// construct the application object
 	PG_Application app;
-	app.DisableDirtyUpdates(true);
+	//app.DisableDirtyUpdates(true);
 		
 	for(int c=1; c<argc; c++) {
 
@@ -302,6 +303,10 @@ int main(int argc, char* argv[]) {
 
 		if(strcmp(argv[c], "-f") == 0) {
 			flags |= SDL_FULLSCREEN;
+		}
+
+		if(strcmp(argv[c], "-t") == 0) {
+			bTestMode = true;
 		}
 
 		if(strcmp(argv[c], "-hw") == 0) {
@@ -506,9 +511,23 @@ int main(int argc, char* argv[]) {
 	    PG_LogMSG("sought for '1001' and found it (name '%s')",
 	              tmp->GetName());
 
+	if(!bTestMode) {
+		// Enter main loop
+		app.Run();
+		return EXIT_SUCCESS;
+	}
 	
-	// Enter main loop 
-	app.Run();
+	PG_LogMSG("Starting benchmark ... Wait");
+	start_ticks = SDL_GetTicks();
+	int iter = 500;
+	
+	for(int i=0; i<iter; i++) {
+		PG_Widget::UpdateScreen();
+	}
 
-	return EXIT_SUCCESS;
+	int ticks = SDL_GetTicks() - start_ticks;
+	PG_LogMSG("did %i iterations in %i ms", iter, ticks);
+	PG_LogMSG("~%2.2fms per iteration", (float)ticks/(float)iter);
+	
+	return EXIT_SUCCESS;	
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/22 16:52:42 $
+    Update Date:      $Date: 2004/01/30 18:11:55 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.6 $
     Status:           $State: Exp $
 */
 
@@ -251,7 +251,7 @@ public:
 	Tries to find a specifies file
 
 	@param	file	file to look for
-	@return		path where the file was found (of NULL if nor found)
+	@return		path where the file was found (or NULL if not found)
 	*/
 	static const char* GetRelativePath(const char* file);
 
@@ -300,6 +300,17 @@ public:
 
 	void DeleteBackground();
 
+    /**
+    Set AppIdleCalls
+
+    @param enable whether to enable or disable AppIdleCalls
+    If you enable AppIdleCalls, the PGApplication object will emit
+    a sigAppIdle signal whenever no events are in the queue and sleep
+    for a short interval (this is the behaviour inherited from
+    PG_MessageObject). However, if you disable it, the object will just
+    call SDL_WaitEvent(). Enable this if you know something to do in
+    idle periods and don't forget to connect the sigAppIdle signal then.
+    */
 	void EnableAppIdleCalls(bool enable = true);
 
 	/**
@@ -492,6 +503,11 @@ public:
 	
 	static PG_Font* DefaultFont;
 
+    /**
+    Get the behaviour concerning empty queues (see EnableAppIdleCalls())
+    
+    @return the current behaviour of the application object
+    */
 	static bool GetAppIdleCallsEnabled();
 
 	//! Flush the event queue
@@ -514,6 +530,13 @@ protected:
 	*/
 	void Shutdown();
 
+    //!Reblit the old mouse position
+    /**
+    If software cursors are enabled and you move the mouse, the old
+    location has to be refreshed somehow with the underlying graphics.
+    This is done by this function. Note that bulkmode has to be
+    disabled for this function to be called.
+    */
 	static void ClearOldMousePosition();
 
 	/**  */
