@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/04/18 15:34:06 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
     Status:           $State: Exp $
 */
 
@@ -71,7 +71,7 @@
  
 	<h3>Theme sample:</h3>
  
-	\code
+	\verbatim
 	<widget>
 		<type value="Button"/>
 		<object>
@@ -111,7 +111,7 @@
 			<filename name="icondown" value="none"/>
 		</object>
 	</widget>
-	\endcode
+	\endverbatim
 	<p>
 	<h2>Code:</h2><p>
 */
@@ -214,6 +214,14 @@ public:
 
 	bool SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down = NULL, SDL_Surface* icon_over = NULL);
 
+	/**
+	Returns an image for a given button state
+	@param norm	icon for unpressed state
+	@param pressed icon for pressed state
+	@param high	icon for highlighted state
+	@return a pointer to an SDL_Surface for the given icon
+	*/
+
 	SDL_Surface* GetIcon(STATE num);
 	
 	/**
@@ -221,10 +229,16 @@ public:
 	@param norm	bordersize for unpressed state
 	@param pressed	bordersize for pressed state
 	@param high	bordersize for highlighted state
+	@return a pointer to an SDL_Surface for the given icon
 	*/
 	void SetBorderSize(int norm, int pressed, int high);
 
 	/**
+	Make the button a toggle button.
+	A normal (push) button will return to an unpressed state when the user
+	stops clicking it (releases the mouse button).
+	A toggle button will stay pressed once it is pressed. The user
+	must click the button a second time in order to unpress it.
 	*/
 	void SetToggle(bool bToggle);
 
@@ -237,11 +251,20 @@ public:
 	void SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high);
 
 	/**
-	 * Set the moving distance of the image when we press on it
+	Set the moving distance of the image when we press on it
+	@param int number of pixels to shift
 	 */
 	void SetShift(int pixelshift);
 
-	/**  */
+	/**  
+	Determine whether a given button is pressed. This can either mean
+	that the user is clicking the button in the case of a push button, 
+	or that the button is toggled in the case of a toggle button. For programs 
+	using the event handler, this function is not necessary. 
+	In this case, see SetEventCallback instead.
+	@param bool whether the button is pressed or not
+	@return bool is the button pressed
+	*/
 	bool GetPressed();
 
 	/**
