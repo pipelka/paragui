@@ -8,3 +8,5 @@ libarchivers_la_SOURCES = \
 
 EXTRA_DIST = \
 	unzip.h
+
+INCLUDES = -I$(top_srcdir)

@@ -17,3 +17,5 @@ EXTRA_DIST = \
 	win32.c \
 	macclassic.c \
 	beos.cpp
+
+INCLUDES = -I$(top_srcdir)
