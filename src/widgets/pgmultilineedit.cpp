@@ -117,20 +117,20 @@ void PG_MultiLineEdit::DrawTextCursor() {
 	int x = my_xpos + 1; 
 	int y = my_ypos + 1; 
 	int xpos, ypos;
-	GetCursorPos(&xpos, &ypos); 
+	GetCursorPos(xpos, ypos); 
 
 	// check for a hidden cursor 
 	if(!my_allowHiddenCursor) { 
 		// scroll up for cursor 
 		while (ypos < 0 && my_firstLine > 0) { 
 			SetVPosition(--my_firstLine); 
-			GetCursorPos(&xpos, &ypos); 
+			GetCursorPos(xpos, ypos); 
 		} 
 
 		// scroll down for cursor 
 		while (ypos + GetFontHeight() > my_height && my_firstLine < my_vscroll->GetMaxRange()) { 
 			SetVPosition(++my_firstLine); 
-			GetCursorPos(&xpos, &ypos); 
+			GetCursorPos(xpos, ypos); 
 		} 
 	} 
 
@@ -183,15 +183,11 @@ void PG_MultiLineEdit::FindWordLeft() {
 	SetCursorPos(currentPos); 
 }
 
-void PG_MultiLineEdit::GetCursorTextPosFromScreen(int x, int y, unsigned int *horzOffset, unsigned int *lineOffset) { 
+void PG_MultiLineEdit::GetCursorTextPosFromScreen(int x, int y, unsigned int& horzOffset, unsigned int& lineOffset) { 
 	// check for an empty text box 
 	if (my_textdata.size() == 0) { 
-		if (horzOffset != NULL) {
-			*horzOffset = 0;
-		}
-		if (lineOffset != NULL) {
-			*lineOffset = 0;
-		}
+		horzOffset = 0;
+		lineOffset = 0;
 		return; 
 	}
 
@@ -211,12 +207,9 @@ void PG_MultiLineEdit::GetCursorTextPosFromScreen(int x, int y, unsigned int *ho
 	unsigned int min_xpos = 0; 
 	
 	// loop through to find the closest x position 
-	/*char* temp = new char[my_textdata[ypos].size()+1];	
-	temp[my_textdata[ypos].size()] = '\0';*/
 	string temp;
 	for (Uint16 i = 0; i <= my_textdata[ypos].size(); ++i) {  
 		// get the string up to that point 		
-		//strncpy(temp, my_textdata[ypos].c_str(), i);
 		temp = my_textdata[ypos].substr(0, i);
 	
 		// get the distance for that section 
@@ -230,27 +223,17 @@ void PG_MultiLineEdit::GetCursorTextPosFromScreen(int x, int y, unsigned int *ho
 			min_xpos = i; 
 		} 
 	}
-	//delete[] temp;
 
 	// set return data 
-	if (horzOffset != NULL) {
-		*horzOffset = min_xpos;
-	}
-  
-	if (lineOffset != NULL) {
-		*lineOffset = (unsigned int)ypos; 
-	}
+	horzOffset = min_xpos;
+	lineOffset = (unsigned int)ypos; 
 }
 
-void PG_MultiLineEdit::GetCursorTextPos(unsigned int *horzOffset, unsigned int *lineOffset) { 
+void PG_MultiLineEdit::GetCursorTextPos(unsigned int& horzOffset, unsigned int& lineOffset) { 
 	// check for an empty text box 
 	if (my_textdata.size() == 0) { 
-		if (horzOffset != NULL) {
-			*horzOffset = 0;
-		}
-		if (lineOffset != NULL) {
-			*lineOffset = 0;
-		}
+		horzOffset = 0;
+		lineOffset = 0;
 		return; 
 	}
 
@@ -277,48 +260,30 @@ void PG_MultiLineEdit::GetCursorTextPos(unsigned int *horzOffset, unsigned int *
 		currentPos = my_textdata[line].size(); 
 	} 
 
-	if (horzOffset != NULL) {
-		*horzOffset = currentPos;
-	}
-  
-	if (lineOffset != NULL) {
-		*lineOffset = line; 
-	}
+	horzOffset = currentPos;
+	lineOffset = line; 
 } 
 
-void PG_MultiLineEdit::GetCursorPos(int *x, int *y) { 
+void PG_MultiLineEdit::GetCursorPos(int& x, int& y) { 
 	// check for an empty text box 
 	if (my_textdata.size() == 0) { 
-		if (x != NULL) {
-			*x = 0;
-		}
-		if (y != NULL) {
-			*y = 0;
-		}
+		x = 0;
+		y = 0;
 		return; 
 	} 
 
 	// get the cursor text position 
 	unsigned int currentPos, line; 
-	GetCursorTextPos(&currentPos, &line); 
+	GetCursorTextPos(currentPos, line); 
 
 	// now get the x,y position 
-	//char* temp = new char[currentPos+1];
-	/*strncpy(temp, my_textdata[line].c_str(), currentPos); 
-	temp[currentPos] = '\0';*/
 	string temp = my_textdata[line].substr(0, currentPos);
 
 	Uint16 w; 
 	PG_FontEngine::GetTextSize(temp.c_str(), GetFont(), &w); 
-	//delete[] temp;
 	
-	if (x != NULL) {
-		*x = w; 
-	}
-  
-	if (y != NULL) {
-		*y = (line - my_firstLine)*GetFontHeight(); 
-	}
+	x = w; 
+	y = (line - my_firstLine)*GetFontHeight(); 
 } 
 
 void PG_MultiLineEdit::CreateTextVector(bool bSetupVScroll) { 
@@ -466,8 +431,8 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				if (!(key_copy.keysym.mod & KMOD_SHIFT)) {
 				my_mark = -1; 
 				}
-				GetCursorPos(&x, &y); 
-				GetCursorTextPosFromScreen(my_xpos + x + 3, my_ypos + y + 3 - GetFontHeight(), &currentPos, &line); 
+				GetCursorPos(x, y); 
+				GetCursorTextPosFromScreen(my_xpos + x + 3, my_ypos + y + 3 - GetFontHeight(), currentPos, line);
 				SetCursorTextPos(currentPos, line); 
 				return true; 
       
@@ -475,8 +440,8 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				if (!(key_copy.keysym.mod & KMOD_SHIFT)) {
 					my_mark = -1; 
 				}
-				GetCursorPos(&x, &y); 
-				GetCursorTextPosFromScreen(my_xpos + x + 3, my_ypos + y + 3 + GetFontHeight(), &currentPos, &line); 
+				GetCursorPos(x, y);
+				GetCursorTextPosFromScreen(my_xpos + x + 3, my_ypos + y + 3 + GetFontHeight(), currentPos, line);
 				SetCursorTextPos(currentPos, line); 
 				return true; 
 			
@@ -484,8 +449,8 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				if (!(key_copy.keysym.mod & KMOD_SHIFT)) {
 					my_mark = -1; 
 				}				
-				GetCursorPos(&x, &y); 
-				GetCursorTextPosFromScreen(my_xpos + x + 3, my_ypos + y + 3 - (my_height - GetFontHeight()), &currentPos, &line); 
+				GetCursorPos(x, y); 
+				GetCursorTextPosFromScreen(my_xpos + x + 3, my_ypos + y + 3 - (my_height - GetFontHeight()), currentPos, line); 
 				SetCursorTextPos(currentPos, line); 
 				return true; 
 		
@@ -494,8 +459,8 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 					my_mark = -1; 
 				}
         
-				GetCursorPos(&x, &y); 
-				GetCursorTextPosFromScreen(my_xpos + x + 3, my_ypos + y + 3 + (my_height - GetFontHeight()), &currentPos, &line); 
+				GetCursorPos(x, y); 
+				GetCursorTextPosFromScreen(my_xpos + x + 3, my_ypos + y + 3 + (my_height - GetFontHeight()), currentPos, line); 
 				SetCursorTextPos(currentPos, line); 
 				return true; 
 			
@@ -503,7 +468,7 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				if (!(key_copy.keysym.mod & KMOD_SHIFT)) {
 					my_mark = -1; 
 				}
-				GetCursorTextPos(&currentPos, &line); 
+				GetCursorTextPos(currentPos, line); 
 				SetCursorTextPos(0, line); 
 				return true; 
 		
@@ -511,7 +476,7 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				if (!(key_copy.keysym.mod & KMOD_SHIFT)) {
 					my_mark = -1; 
 				}
-				GetCursorTextPos(&currentPos, &line); 
+				GetCursorTextPos(currentPos, line); 
 				int cursorPos = my_textdata[line].size() - (my_textdata[line][my_textdata[line].size()-1] == '\n' ? 1 : 0); 
 				SetCursorTextPos(cursorPos, line);
 			}
@@ -566,7 +531,7 @@ bool PG_MultiLineEdit::eventMouseButtonDown(const SDL_MouseButtonEvent* button) 
 		}
 		
 		unsigned int currentPos, line; 
-		GetCursorTextPosFromScreen(button->x, button->y, &currentPos, &line); 
+		GetCursorTextPosFromScreen(button->x, button->y, currentPos, line); 
 		SetCursorTextPos(currentPos, line); 
 		if (!(keys[SDLK_LSHIFT] || keys[SDLK_RSHIFT])) {
 			my_mark = my_cursorPosition;
@@ -579,7 +544,7 @@ bool PG_MultiLineEdit::eventMouseButtonDown(const SDL_MouseButtonEvent* button) 
 bool PG_MultiLineEdit::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 	if (motion->state & SDL_BUTTON(1)) { 
 	    unsigned int currentPos, line; 
-		GetCursorTextPosFromScreen(motion->x, motion->y, &currentPos, &line); 
+		GetCursorTextPosFromScreen(motion->x, motion->y, currentPos, line); 
 		SetCursorTextPos(currentPos, line); 
 	}
 	

@@ -28,11 +28,11 @@ private:
     void FindWordRight();
     void FindWordLeft();
     void DeleteSelection();
-    void GetCursorTextPosFromScreen(int x, int y, unsigned int *horzOffset, unsigned int *lineOffset);
-    void GetCursorTextPos(unsigned int *horzOffset, unsigned int *lineOffset);
+    void GetCursorTextPosFromScreen(int x, int y, unsigned int& horzOffset, unsigned int& lineOffset);
+    void GetCursorTextPos(unsigned int& horzOffset, unsigned int& lineOffset);
     void SetCursorTextPos(unsigned int offset, unsigned int line);
     int ConvertCursorPos(unsigned int offset, unsigned int line);
-    void GetCursorPos(int *x, int *y);
+    void GetCursorPos(int& x, int& y);
     void SetCursorPos(int p);
     void DrawText(const PG_Rect& dst);
     void DrawTextCursor();
