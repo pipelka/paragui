@@ -99,8 +99,7 @@ static int physfsrwops_seek(SDL_RWops *rw, int offset, int whence)
 static int physfsrwops_read(SDL_RWops *rw, void *ptr, int size, int maxnum)
 {
     PHYSFS_file *handle = (PHYSFS_file *) rw->hidden.unknown.data1;
-//    PHYSFS_sint64 rc = PHYSFS_read(handle, ptr, size, maxnum);
-    PHYSFS_sint64 rc = PHYSFS_read(handle, ptr, maxnum, size);
+    PHYSFS_sint64 rc = PHYSFS_read(handle, ptr, size, maxnum);
     if (rc != maxnum)
     {
         if (!PHYSFS_eof(handle)) /* not EOF? Must be an error. */
