@@ -3,9 +3,9 @@ ParaGUI unstable development tree
 BEWARE! MAY CONTAIN NUTS
 ---------------------------------
 
--------
-ROADMAP
--------
+----------------------
+ROADMAP LEADING TO 1.2
+----------------------
 
 1.1.5 - signals handled by libsigc++
 1.1.6 - API cleanup (all binary incompatible changes allowed)
