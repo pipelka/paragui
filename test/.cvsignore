@@ -32,3 +32,4 @@ factory
 layouttest
 navtest
 windowtest
+unicodetest
