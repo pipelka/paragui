@@ -20,9 +20,9 @@ dnl Set various version strings - taken gratefully from the GTk sources
 
 PARAGUI_MAJOR_VERSION=1
 PARAGUI_MINOR_VERSION=0
-PARAGUI_MICRO_VERSION=0
+PARAGUI_MICRO_VERSION=1
 PARAGUI_INTERFACE_AGE=0
-PARAGUI_BINARY_AGE=0
+PARAGUI_BINARY_AGE=1
 PARAGUI_VERSION=$PARAGUI_MAJOR_VERSION.$PARAGUI_MINOR_VERSION.$PARAGUI_MICRO_VERSION
 
 AC_SUBST(PARAGUI_MAJOR_VERSION)
@@ -145,7 +145,7 @@ case "$target" in
             ac_default_prefix=$BUILD_PREFIX
         fi
 	CROSSCOMPILE=YES
-	PHYSFS_PLATFORMFILE=platform/unix.c
+	PHYSFS_PLATFORMFILE=platform/win32.c
 	;;
     *-*-darwin*)
 	PHYSFS_PLATFORMFILE=platform/darwin.c
@@ -233,8 +233,8 @@ AM_PATH_SDL($SDL_VERSION,
 	    AC_MSG_ERROR([*** SDL version $SDL_VERSION not found!])
 )
 
-SDL_LIBS=`sdl-config --libs`
-AC_SUBST(SDL_LIBS)
+dnl SDL_LIBS=`sdl-config --libs`
+dnl AC_SUBST(SDL_LIBS)
 
 dnl set default prefix to `sdl-config --prefix`
 
@@ -242,8 +242,6 @@ ac_default_prefix=`sdl-config --prefix`
 SDL_PREFIX=`sdl-config --prefix`
 
 AC_SUBST(SDL_PREFIX)
-
-LIBS="$SDL_LIBS $LIBS"
 
 ft2test=yes
 AC_ARG_ENABLE(ft2test,
@@ -261,14 +259,14 @@ if test "$ft2test" = "yes"; then
     if test "$ac_cv_path_freetype_config" != "no"; then
     	have_freetype=yes
 	FREETYPE_CFLAGS="`$ac_cv_path_freetype_config --cflags`"
-	LIBS="$LIBS `$ac_cv_path_freetype_config --libs`"
+	FREETYPE_LIBS="`$ac_cv_path_freetype_config --libs`"
     else
 	AC_CHECK_LIB(freetype,FT_Init_FreeType,have_freetype=yes)
 	AC_CHECK_HEADER(ft2build.h,have_ft2build=yes)
 	if test "$have_ft2build" != "yes"; then
 	    have_freetype="no"
 	elif test "$have_freetype" = "yes"; then
-	    LIBS="$LIBS -lfreetype"
+	    FREETYPE_LIBS="-lfreetype"
 	    ft2inc="no"
 	    AC_MSG_CHECKING(freetype2 include directory)
 	    if test -d /usr/local/include/freetype2; then
@@ -291,20 +289,52 @@ CFLAGS="$CFLAGS $FREETYPE_CFLAGS"
 
 dnl Check for expat
 
-have_expat_lib=no
-have_expat_include=no
+EXPAT_INCLUDE=""
+EXPAT_LIB="-lexpat"
+EXPAT_SUBDIR=""
+LIBEXPAT="-lexpat"
 
-AC_CHECK_LIB(expat, XML_ParserCreate, have_expat_lib=yes)
+internalexpat=no
+AC_ARG_ENABLE(internalexpat,
+	[  --enable-internalexpat  enable internal expat version],
+	internalexpat=yes
+)
 
-if test x$have_expat_lib = xno; then
-    AC_MSG_ERROR([*** Unable to find expat xml library! (http://expat.sourceforge.net)])
+if test x$internalexpat = xno; then
+
+    have_expat_lib=no
+    have_expat_include=no
+
+    AC_CHECK_HEADER(expat.h, [have_expat_include=yes])
+
+    if test x$have_expat_include = xno; then
+    	    AC_MSG_ERROR(
+		[*** Unable to find expat header file! (http://expat.sourceforge.net)]
+		[Please install the library and header files if you want to link to the shared library,]
+		[or run './configure --enable-internalexpat' to compile an internal version of expat.] 
+		)
+    fi
+
+    AC_CHECK_LIB(expat, XML_ParserCreate, have_expat_lib=yes)
+
+    if test x$have_expat_lib = xno; then
+	AC_MSG_ERROR(
+	    [*** Unable to find expat xml library! (http://expat.sourceforge.net)]
+	    [Please install the library and header files if you want to link to the shared library,]
+	    [or run './configure --enable-internalexpat' to compile an internal version of expat.] 
+	    )
+    fi
+else
+    EXPAT_INCLUDE="-I\$(srcdir)/../expat"
+    EXPAT_LIB="./expat/libexpat.la"
+    EXPAT_SUBDIR="expat"
+    LIBEXPAT=""
 fi
 
-AC_CHECK_HEADER(expat.h, [have_expat_include=yes])
-
-if test x$have_expat_include = xno; then
-	AC_MSG_ERROR([*** Unable to find expat header! (http://expat.sourceforge.net)])
-fi
+AC_SUBST(EXPAT_INCLUDE)
+AC_SUBST(EXPAT_LIB)
+AC_SUBST(EXPAT_SUBDIR)
+AC_SUBST(LIBEXPAT)
 
 
 dnl Check for zlib 
@@ -387,10 +417,9 @@ AC_DEFINE_UNQUOTED(PARAGUI_THEMEDIR, "$PARAGUI_THEMEDIR")
 
 
 dnl Check for SDL_image
-SDL_IMAGE_LIBS="`sdl-config --libs`"
 
 have_SDL_image=no
-AC_CHECK_LIB(SDL_image, IMG_Load, have_SDL_image=yes, have_SDL_image=no, $SDL_IMAGE_LIBS)
+AC_CHECK_LIB(SDL_image, IMG_Load, have_SDL_image=yes, have_SDL_image=no)
 if test x$have_SDL_image = xno; then
     AC_MSG_RESULT([disable SDL_image support])
 else
@@ -484,20 +513,20 @@ LIBS=""
 # Grab all extra libs from SDL_CONFIG to build the static lib list.
 # Unfortunately libs like jpeg and png will be missing still so we check
 # for those manually.
-if test "$SDL_CONFIG" != ""; then
-   SYSTEM_LIBS=`$SDL_CONFIG --static-libs | sed s:"$($SDL_CONFIG --libs)"::`
-fi
+dnl if test "$SDL_CONFIG" != ""; then
+dnl    SYSTEM_LIBS=`$SDL_CONFIG --static-libs | sed s:"$($SDL_CONFIG --libs)"::`
+dnl fi
 AC_CHECK_LIB(jpeg,jpeg_read_header)
 AC_CHECK_LIB(tiff,TIFFClose)
 AC_CHECK_LIB(png,png_create_read_struct)
-SYSTEM_LIBS="$SYSTEM_LIBS $LIBS -lz"
-LIBS="$OLDLIBS"
+dnl SYSTEM_LIBS="$SYSTEM_LIBS $LIBS -lz"
+dnl LIBS="$OLDLIBS"
 
 AC_CHECK_FUNCS(vsnprintf)
 AC_CHECK_FUNCS(strsep)
 
 PARAGUI_CFLAGS="$STL_CFLAGS $FREETYPE_CFLAGS $SDL_CFLAGS $RTTI_FLAGS $EXTRA_FLAGS"
-PARAGUI_LIBS="-lparagui $LIBS $IMAGE_LIBS $SDL_LIBS -lexpat  -lz $LIBSTDCPP $EXTRA_LIBS"
+PARAGUI_LIBS="-lparagui $SDL_LIBS -lz $IMAGE_LIBS $LIBEXPAT $FREETYPE_LIBS $EXTRA_LIBS $LIBSTDCPP"
 
 CXXFLAGS="$STLPORT_FLAGS $CFLAGS $IMAGE_INCLUDE $RTTI_FLAGS $EXCEPTIONS_FLAGS -I$prefix/include"
 
@@ -526,6 +555,7 @@ src/Makefile
 src/physfs/Makefile
 src/physfs/archivers/Makefile
 src/physfs/platform/Makefile
+src/expat/Makefile
 src/draw/Makefile
 src/font/Makefile
 src/themes/Makefile

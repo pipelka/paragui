@@ -1,6 +1,15 @@
 AUTOMAKE_OPTIONS = foreign
 
-bin_PROGRAMS = paratest dblbuffer navtest windowtest layouttest
+bin_PROGRAMS = animation dropdown paratest dblbuffer navtest windowtest layouttest windowresize
+
+windowresize_SOURCES = windowresize.cpp
+windowresize_LDADD = $(PARAGUI_LIBS)
+
+dropdown_SOURCES = dropdown.cpp
+dropdown_LDADD = $(PARAGUI_LIBS)
+
+animation_SOURCES = animation.cpp
+animation_LDADD = $(PARAGUI_LIBS)
 
 dblbuffer_SOURCES = dblbuffer.cpp
 dblbuffer_LDADD = $(PARAGUI_LIBS)
@@ -20,6 +29,10 @@ layouttest_LDADD = $(PARAGUI_LIBS)
 INCLUDES = $(PARAGUI_CFLAGS)
 
 $(PACKAGE)-$(VERSION).tar.gz: dist
+
+EXTRA_DIST = \
+	pokus.xml \
+	icon.bmp
 
 dist-hook:
 	rm -rf `find $(distdir) -type d -name CVS -print`

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:30 $
+    Update Date:      $Date: 2002/04/15 13:31:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -116,7 +116,6 @@ public:
 	Load a style from the theme definition
 
 	@param widgettype	name of the widgettype
-	@param objectname	name of the object
 
 	Loads the defined style for a given widgettype
 	*/
@@ -131,7 +130,7 @@ public:
 
 	Loads the defined style of a given widgettype and objectname.
 	*/
-	virtual void LoadThemeStyle(const char* widgettype, const char* objectname);
+	virtual void LoadThemeStyle(const char* widgettype, const char* objectnmae);
 #endif
 
 	/**
@@ -795,6 +794,11 @@ public:
 	Enter modal mode
 	*/
 	virtual int RunModal();
+
+	/**
+	Quit modal mode
+	*/
+	void QuitModal();
 
 	/**
 	Set the dirty update mode

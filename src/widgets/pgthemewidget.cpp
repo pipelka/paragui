@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:16 $
+    Update Date:      $Date: 2002/04/15 13:31:31 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -33,7 +33,7 @@
 
 static PG_SurfaceCache my_SurfaceCache;
 
-typedef struct PG_WidgetDataInternal{
+struct PG_WidgetDataInternal{
 	SDL_Surface* cachesurface;
 	SDL_Color backgroundcolor;
 
@@ -194,6 +194,42 @@ void PG_ThemeWidget::eventDraw(SDL_Surface* surface, const PG_Rect& rect) {
 	if(my_bordersize > 0) {
 		DrawBorder(rect, my_bordersize);
 	}
+}
+
+bool PG_ThemeWidget::SetBackground(const char* filename, int mode, Uint32 colorkey) {
+	// try to load the file
+	SDL_Surface* temp = PG_Application::LoadSurface(filename, true);
+
+	// success ?
+	if(!temp) {
+		return false;
+	}
+
+	// free previous surface
+	FreeSurface();
+
+	// mark my_background to be freed on destruction
+	my_backgroundFree = true;
+	my_backgroundMode = mode;
+	my_background = temp;
+
+	if(my_background == NULL) {
+		return false;
+	}
+
+	Uint32 c = SDL_MapRGB(
+		my_background->format, 
+		(colorkey>>16) & 0xFF,
+		(colorkey>>8) & 0xFF,
+		colorkey & 0xFF);
+		
+	SDL_SetColorKey(my_background, SDL_SRCCOLORKEY, c);
+	 
+	if(my_srfObject == NULL) {
+		CreateSurface();
+	}
+
+	return (my_background != NULL);
 }
 
 bool PG_ThemeWidget::SetBackground(const char* filename, int mode) {
@@ -430,7 +466,7 @@ SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* 
 	Uint32 Amask = 0;
 
 	if(background != NULL) {
-		if(background->format->BitsPerPixel > 8) {
+		if((background->format->Amask != 0) || ((bpp < background->format->BitsPerPixel) && (bpp <= 8))) {
 			bpp = background->format->BitsPerPixel;
 			Rmask = background->format->Rmask;
 			Gmask = background->format->Gmask;
@@ -449,6 +485,9 @@ SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* 
 	                           Bmask,
 	                           Amask
 	                       );
+			       
+	if ( bpp == 8 )
+		SDL_SetPalette ( surface, SDL_LOGPAL, screen->format->palette->colors, 0, 256 );
 
 	if(surface) {
 		if(background || gradient) {

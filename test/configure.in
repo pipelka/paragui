@@ -13,7 +13,6 @@ AM_INIT_AUTOMAKE(paratest, $PARAGUI_VERSION)
 
 dnl Check for tools
 
-dnl AM_PROG_LIBTOOL
 AC_PROG_MAKE_SET
 AC_PROG_CC
 AC_PROG_CXX
@@ -23,23 +22,17 @@ AC_PROG_INSTALL
 dnl Check for compiler environment
 
 AC_C_CONST
-EXEEXT=""
 
 case "$target" in
     *-*-cygwin | *-*-mingw32*)
 	ac_default_prefix=/usr/local/cross-tools/i386-mingw32msvc
 	AC_MINGW32
 	AC_EXEEXT
-	EXEEXT=".exe"
-        SYS_GL_LIBS="-lopengl32"
         ;;
     *-*-beos*)
 	ac_default_prefix=/boot/develop/tools/gnupro
-	SYS_GL_LIBS="-lGL"
 	;;
 esac
-
-AC_SUBST(EXEEXT)
 
 dnl Check for PARAGUI
 

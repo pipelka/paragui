@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/04/15 13:22:31 $
+   Update Date:      $Date: 2002/04/15 13:31:30 $
    Source File:      $Source: /sources/paragui/paragui/include/pgrichedit.h,v $
-   CVS/RCS Revision: $Revision: 1.1 $
+   CVS/RCS Revision: $Revision: 1.2 $
    Status:           $State: Exp $
 */
 
@@ -31,7 +31,7 @@
 
 #include "paragui.h"
 #include "pgwidgetlistex.h"
-#include "map"
+#include <map>
 
 /**
 	@author Jaroslav Vozab
@@ -82,7 +82,7 @@ protected:
 
 	bool my_AutoVerticalResize;
 
-	typedef struct RichWordDescription {
+	struct RichWordDescription {
 		std::string my_Word;
 		Uint32 my_Width;
 		Uint32 my_EndSpaceWidth;
@@ -99,7 +99,7 @@ protected:
 
 	typedef std::vector<size_t> Size_tArray;
 
-	typedef struct RichLinePart {
+	struct RichLinePart {
 		Uint32 my_Left;
 		Size_tArray my_WordIndexes;
 		Sint32 my_WidthMax;
@@ -123,7 +123,7 @@ protected:
 
 	typedef std::vector<RichLinePart> RichLinePartArray;
 
-	typedef struct RichLine {
+	struct RichLine {
 		Uint32 my_BaseLine;
 		Uint32 my_LineSpace;
 		RichLinePartArray my_LineParts;

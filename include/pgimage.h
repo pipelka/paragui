@@ -20,9 +20,9 @@
     pipelka@teleweb.at 
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2002/04/15 13:22:31 $ 
+    Update Date:      $Date: 2002/04/15 13:31:30 $ 
     Source File:      $Source: /sources/paragui/paragui/include/pgimage.h,v $ 
-    CVS/RCS Revision: $Revision: 1.1 $ 
+    CVS/RCS Revision: $Revision: 1.2 $ 
     Status:           $State: Exp $ 
 */
 
@@ -56,6 +56,7 @@ public:
 	@param parent	pointer to the parent widget or NULL
 	@param p			position of the PG_Image widget
 	@param filename	image-file to load
+	@param style		widgetstyle to use
 	This constructor creates the widget and loads the image from a file
 	*/
 	PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, const char* style = "ThemeWidget");
@@ -66,6 +67,7 @@ public:
 	@param p				position of the PG_Image widget
 	@param image		pointer to imagedata (SDL_Surface)
 	@param freeimage	if true the imagedata is handled by the widget
+	@param style		widgetstyle to use
 	*/
 #ifdef SWIG
 	%name(PG_ImageSurface) PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, const char* style = "ThemeWidget");

@@ -20,14 +20,20 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:16 $
+    Update Date:      $Date: 2002/04/15 13:31:31 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
 #include "pgwidgetlist.h"
 #include "pgapplication.h"
+#include "pglog.h"
+
+struct PG_WidgetListDataInternal{
+	int my_scrolldeltax;
+	int my_scrolldeltay;
+};
 
 PG_WidgetList::PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_ThemeWidget(parent, r, style) {
 	my_widgetCount = 0;
@@ -37,15 +43,19 @@ PG_WidgetList::PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const char* st
 	my_enableHorizontalScrollbar = false;
 	my_widthScrollbar = my_heightHorizontalScrollbar = 5;
 
-        // It is important to make sure that the substractions below won't
+	my_internaldata = new PG_WidgetListDataInternal;
+	my_internaldata->my_scrolldeltax = 0;
+	my_internaldata->my_scrolldeltay = 0;
+
+	// It is important to make sure that the substractions below won't
 	// render values < 0 and, eventually,
 	// surface widths such as 32768 or 65535 when cast to an unsigned type.
 	// This can lead to segfaults later on in, for example, DrawGradient...
-        if (my_widthScrollbar > r.my_width)
-	    my_widthScrollbar = r.my_width;
+	if (my_widthScrollbar > r.my_width)
+		my_widthScrollbar = r.my_width;
 	    
 	if (my_heightHorizontalScrollbar > r.my_height)
-	    my_heightHorizontalScrollbar = r.my_height;
+		my_heightHorizontalScrollbar = r.my_height;
 
 	my_rectVerticalScrollbar.SetRect(
 	    r.my_width - my_widthScrollbar,
@@ -82,7 +92,7 @@ PG_WidgetList::PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const char* st
 
 PG_WidgetList::~PG_WidgetList() {
 	DeleteAll();
-	//delete my_objScrollbar;
+	delete my_internaldata;
 }
 
 void PG_WidgetList::LoadThemeStyle(const char* widgettype) {
@@ -154,7 +164,7 @@ bool PG_WidgetList::eventScrollPos(int id, PG_Widget* widget, unsigned long data
 		return true;
 	}
 
-	return PG_ThemeWidget::eventScrollPos(id, widget, data);
+	return true; //PG_ThemeWidget::eventScrollPos(id, widget, data);
 }
 
 bool PG_WidgetList::eventScrollTrack(int id, PG_Widget* widget, unsigned long data) {
@@ -168,7 +178,7 @@ bool PG_WidgetList::eventScrollTrack(int id, PG_Widget* widget, unsigned long da
 		return true;
 	}
 
-	return PG_ThemeWidget::eventScrollTrack(id, widget, data);
+	return true; // PG_ThemeWidget::eventScrollTrack(id, widget, data);
 }
 
 void PG_WidgetList::eventShow() {
@@ -216,6 +226,10 @@ void PG_WidgetList::AddWidget(PG_Widget* w) {
 }
 
 void PG_WidgetList::DeleteAll() {
+	if(my_widgetList.size() == 0) {
+		return;
+	}
+	
 	std::vector<PG_Widget*>::iterator list = my_widgetList.begin();
 	PG_Widget* w = NULL;
 
@@ -240,7 +254,6 @@ void PG_WidgetList::RemoveAll() {
 
 
 Sint32 PG_WidgetList::ScrollToY(Sint32 position) {
-	static int delta = 0;
 
 	PG_Rect r;
 	int addheight = ((my_objHorizontalScrollbar->IsVisible()) ? my_heightHorizontalScrollbar : 0);
@@ -252,12 +265,12 @@ Sint32 PG_WidgetList::ScrollToY(Sint32 position) {
 	if(position < 0)
 		position = 0;
 
-	delta -= position;
+	my_internaldata->my_scrolldeltay -= position;
 
 	for(int i=0; i<my_widgetCount; i++) {
 		r = *(my_widgetList[i]);
 
-		r.my_ypos += delta;
+		r.my_ypos += my_internaldata->my_scrolldeltay;
 		if(r.my_ypos < -32000) {
 			r.my_ypos = -32000;
 		} else if (r.my_ypos > 32000) {
@@ -268,12 +281,11 @@ Sint32 PG_WidgetList::ScrollToY(Sint32 position) {
 	}
 
 	Update();
-	delta = position;
+	my_internaldata->my_scrolldeltay = position;
 	return position;
 }
 
 Sint32 PG_WidgetList::ScrollToX(Sint32 position) {
-	static int delta = 0;
 
 	PG_Rect r;
 	int addwidth = ((my_objVerticalScrollbar->IsVisible()) ? my_widthScrollbar : 0);
@@ -285,12 +297,12 @@ Sint32 PG_WidgetList::ScrollToX(Sint32 position) {
 	if(position < 0)
 		position = 0;
 
-	delta -= position;
+	my_internaldata->my_scrolldeltax -= position;
 
 	for(int i=0; i<my_widgetCount; i++) {
 		r = *(my_widgetList[i]);
 
-		r.my_xpos += delta;
+		r.my_xpos += my_internaldata->my_scrolldeltax;
 		if(r.my_xpos < -32000) {
 			r.my_xpos = -32000;
 		} else if (r.my_xpos > 32000) {
@@ -301,7 +313,7 @@ Sint32 PG_WidgetList::ScrollToX(Sint32 position) {
 	}
 
 	Update();
-	delta = position;
+	my_internaldata->my_scrolldeltax = position;
 	return position;
 }
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:31 $
+    Update Date:      $Date: 2002/04/15 13:31:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pglabel.h,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -94,8 +94,8 @@ public:
 protected:
 
 	/** Draw event handler
-	@param SDL_Surface	Surface to draw to.
-	@param rect			Rectangle to draw in, relative to surface.
+	@param surface	Surface to draw to.
+	@param rect		Rectangle to draw in, relative to surface.
 	*/
 	void eventDraw(SDL_Surface* surface, const PG_Rect& rect);
 

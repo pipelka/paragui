@@ -34,6 +34,7 @@ pgmenubar.cpp
 EXTRA_DIST =
 
 INCLUDES = \
+	$(EXPAT_INCLUDE) \
 	$(SDL_CFLAGS) \
 	-I$(top_srcdir)/include
 

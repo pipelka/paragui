@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:31 $
+    Update Date:      $Date: 2002/04/15 13:31:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -233,7 +233,9 @@ protected:
 	Overridable Eventhandler for a SDL_QuitEvent message.
 	The default implementation returns 'false' which indicates that this message is not processed by this object.
 
-	@param quit SDL_QuitEvent message
+	@param id		id of the sending widget
+	@param widget	pointer to the widget
+	@param data	event specific data
 
 	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
 	*/
@@ -243,7 +245,9 @@ protected:
 	Overridable Eventhandler for a MSG_QUITMODAL message.
 	The default implementation returns 'false' which indicates that this message is not processed by this object.
 
-	@param quit SDL_QuitEvent message
+	@param id		id of the sending widget
+	@param widget	pointer to the widget
+	@param data	event specific data
 
 	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
 	*/

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:32 $
+    Update Date:      $Date: 2002/04/15 13:31:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -51,6 +51,8 @@
 	through in a smaller 'portal' with scrollbars.
 */
 
+struct PG_WidgetListDataInternal;
+	
 class DECLSPEC PG_WidgetList : public PG_ThemeWidget  {
 public:
 
@@ -213,7 +215,7 @@ private:
 	PG_WidgetList& operator=(const PG_WidgetList&);
 #endif
 
-	void* my_internaldata;
+	PG_WidgetListDataInternal* my_internaldata;
 };
 
 #endif // PG_WIDGETLIST_H

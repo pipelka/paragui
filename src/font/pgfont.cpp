@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:11 $
+    Update Date:      $Date: 2002/04/15 13:31:31 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -181,53 +181,77 @@ inline void BlitTemplate(DT pixels, SDL_Surface* Surface, FT_Bitmap *Bitmap, int
 
 			// Get the pixel
 			color = *((DT) (dst_pixels));
+			if ( Surface->format->BytesPerPixel > 1 ) {
 
-			// get the RGBA values
-			rv = (color & Rmask) >> Rshift;
-			r = (rv << Rloss) + (rv >> Rloss8);
-			gv = (color & Gmask) >> Gshift;
-			g = (gv << Gloss) + (gv >> Gloss8);
-			bv = (color & Bmask) >> Bshift;
-			b = (bv << Bloss) + (bv >> Bloss8);
-			if(Amask) {
-				av = (color & Amask) >> Ashift;
-				a = (av << Aloss) + (av >> Aloss8);
-			} else
-				a = SDL_ALPHA_OPAQUE;
+				// get the RGBA values
+				rv = (color & Rmask) >> Rshift;
+				r = (rv << Rloss) + (rv >> Rloss8);
+				gv = (color & Gmask) >> Gshift;
+				g = (gv << Gloss) + (gv >> Gloss8);
+				bv = (color & Bmask) >> Bshift;
+				b = (bv << Bloss) + (bv >> Bloss8);
+				if(Amask) {
+					av = (color & Amask) >> Ashift;
+					a = (av << Aloss) + (av >> Aloss8);
+				} else
+					a = SDL_ALPHA_OPAQUE;
 
-			//SDL_GetRGBA(color, format, &r, &g, &b, &a);
+				//SDL_GetRGBA(color, format, &r, &g, &b, &a);
 
-			// calculate new RGBA values
-			if(v == 255) {
-				r = cr;
-				g = cg;
-				b = cb;
+				// calculate new RGBA values
+				if(v == 255) {
+					r = cr;
+					g = cg;
+					b = cb;
+				}
+				else {
+					//r += ((cr - r) * v) / 255;
+					//g += ((cg - g) * v) / 255;
+					//b += ((cb - b) * v) / 255;
+					r += ((cr - r) * v) >> 8;
+					g += ((cg - g) * v) >> 8;
+					b += ((cb - b) * v) >> 8;
+				}
+
+				// if the destination pixel is full transparent
+				// use the pixel shading as alpha
+				if(a == 0) {
+					a = v;
+				}
+
+				// get the destination color
+				color = (r >> Rloss) << Rshift
+        		    | (g >> Gloss) << Gshift
+                	    | (b >> Bloss) << Bshift
+	        	    | ((a >> Aloss) << Ashift & Amask);
+				// Set the pixel
+			} else {
+				SDL_GetRGBA(color, format, &r, &g, &b, &a);
+
+				// calculate new RGBA values
+				if(v == 255) {
+					r = cr;
+					g = cg;
+					b = cb;
+				}
+				else {
+					//r += ((cr - r) * v) / 255;
+					//g += ((cg - g) * v) / 255;
+					//b += ((cb - b) * v) / 255;
+					r += ((cr - r) * v) >> 8;
+					g += ((cg - g) * v) >> 8;
+					b += ((cb - b) * v) >> 8;
+				}
+
+				// if the destination pixel is full transparent
+				// use the pixel shading as alpha
+				if(a == 0) {
+					a = v;
+				}
+ 				color = SDL_MapRGBA(format, r,g,b, a);
 			}
-			else {
-				//r += ((cr - r) * v) / 255;
-				//g += ((cg - g) * v) / 255;
-				//b += ((cb - b) * v) / 255;
-				r += ((cr - r) * v) >> 8;
-				g += ((cg - g) * v) >> 8;
-				b += ((cb - b) * v) >> 8;
-			}
-
-			// if the destination pixel is full transparent
-			// use the pixel shading as alpha
-			if(a == 0) {
-				a = v;
-			}
-
-			// get the destination color
-			color = (r >> Rloss) << Rshift
-                    | (g >> Gloss) << Gshift
-                    | (b >> Bloss) << Bshift
-                    | ((a >> Aloss) << Ashift & Amask);
-
-			//color = SDL_MapRGBA(format, r,g,b, a);
-
-			// Set the pixel
 			*((DT) (dst_pixels)) = color;
+
 		}
 		src_pixels -= xw;
 		line += pitch;

@@ -5,6 +5,7 @@ libtheme_la_SOURCES = \
 	theme_priv.cpp
 
 INCLUDES = \
+	$(EXPAT_INCLUDE) \
 	$(SDL_CFLAGS) \
 	-I$(top_srcdir)/include
 

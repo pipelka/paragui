@@ -107,7 +107,11 @@ TestWindow::TestWindow(PG_Widget* parent, const PG_Rect& r, char* windowtext) :
 PG_Window(parent, r, windowtext, WF_SHOW_CLOSE | WF_SHOW_MINIMIZE)
 {
 	WidgetList = new PG_WidgetList(this, PG_Rect(30, 40, 220, 250));
-	WidgetList->SetTransparency(255);
+	WidgetList->SetDirtyUpdate(false);
+	WidgetList->SetTransparency(0);
+	WidgetList->SetBackground("default/wnd_close.bmp", BKMODE_TILE, 0xFF);
+	WidgetList->SetBackgroundBlend(0);
+			
 	WidgetList->EnableScrollBar(true, PG_SB_VERTICAL);
 	WidgetList->EnableScrollBar(true, PG_SB_HORIZONTAL);
 		

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:31 $
+    Update Date:      $Date: 2002/04/15 13:31:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -158,7 +158,7 @@ public:
 	void SetGradient(int state, PG_Gradient& gradient);
 
 	/**
-		Set the gbackground.
+		Set the background.
 		@param state buttonstate to set
 		@param background pointer to background surface
 		@param mode background tiling mode
@@ -228,6 +228,24 @@ public:
 	/**  */
 	bool GetPressed();
 
+	/**
+	Set the blend-level of gradient and background image
+	@param blend blend-level
+	@param mode one of BTN_STATE_NORMAL, BTN_STATE_PRESSED, BTN_STATE_HIGH
+	This function sets the blend level of gradient and background image.
+	
+	If the blend-level is 0 only the background image is visible.
+	At a level of 255 only the gradient is visible.
+	*/
+	void SetBlendLevel(int mode, Uint8 blend);
+
+	/**
+	Get the current blend level.
+	@param mode button mode
+	@return the current blend level
+	*/
+	Uint8 GetBlendLevel(int mode);
+	
 protected:
 
 	/**  */

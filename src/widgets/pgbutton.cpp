@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:16 $
+    Update Date:      $Date: 2002/04/15 13:31:31 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -32,7 +32,7 @@
 #include "pglog.h"
 #include "pgdraw.h"
 
-typedef struct PG_ButtonDataInternal {
+struct PG_ButtonDataInternal {
 	SDL_Surface* srf_normal;
 	SDL_Surface* srf_high;
 	SDL_Surface* srf_down;
@@ -603,4 +603,12 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	}
 
 	DrawBorder(PG_Rect(0, 0, Width(), Height()), my_bordersize[my_state], i1);
+}
+
+void PG_Button::SetBlendLevel(int mode, Uint8 blend) {
+	my_internaldata->backBlend[mode] = blend;
+}
+
+Uint8 PG_Button::GetBlendLevel(int mode) {
+	return my_internaldata->backBlend[mode];
 }

@@ -2,7 +2,7 @@
 #include "facecache.h"
 #include "pgfont.h"
 
-typedef struct PG_FontDataInternal {
+struct PG_FontDataInternal {
 	SDL_Color color;
 	int alpha;
 	int style;

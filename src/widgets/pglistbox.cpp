@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:16 $
+    Update Date:      $Date: 2002/04/15 13:31:31 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -68,9 +68,11 @@ bool PG_ListBox::GetMultiSelect() {
 void PG_ListBox::SelectItem(PG_ListBoxBaseItem* item, bool select) {
 
 	if(item == NULL) {
-		my_selectedItem->Select(false);
-		my_selectedItem->Update();
-		my_selectedItem = NULL;
+		if(my_selectedItem != NULL) {
+			my_selectedItem->Select(false);
+			my_selectedItem->Update();
+			my_selectedItem = NULL;
+		}
 		return;
 	}
 

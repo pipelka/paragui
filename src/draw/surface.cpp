@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:10 $
+    Update Date:      $Date: 2002/04/15 13:31:31 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/surface.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -48,14 +48,17 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 	static PG_Rect srcrect;
 	static PG_Rect dstrect;
 	int x,y,i;
-
+	bool bColorKey = false;
+	Uint32 uColorKey;
+	Uint32 c;
+		
 	// check if we have anything to do
 	if(!gradient && !background) {
 		return;
 	}
 
-    if (!r.h || !r.w)
-            return;
+	if (!r.h || !r.w)
+        	return;
 
 	// draw the gradient first
 	if((background == NULL) || (background && (blend > 0))) {
@@ -67,7 +70,7 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 	if(!background)
 		return;
 	
-    if (!background->w || !background->h)
+	if (!background->w || !background->h)
             return;
 
 	int yc;
@@ -75,6 +78,16 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 	SDL_Surface* temp;
 	int w,h;
 
+	bColorKey = (background->flags & SDL_SRCCOLORKEY);
+	Uint8 rc,gc,bc;
+	
+	SDL_GetRGB(background->format->colorkey, background->format, &rc, &gc, &bc);
+	uColorKey = (rc << 16) | (gc << 8) | bc;
+	
+	if(((gradient == NULL) || (blend == 0)) && bColorKey) {
+		SDL_SetColorKey(background, 0, 0);
+	}
+	
 	switch(bkmode) {
 
 		//
@@ -276,5 +289,21 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 
 			break;
 
+	}
+
+	if(((gradient == NULL) || (blend == 0)) && bColorKey) {
+    		c = SDL_MapRGB(
+			background->format,
+			(uColorKey>>16) & 0xFF,
+			(uColorKey>>8) & 0xFF,
+			uColorKey & 0xFF);
+		SDL_SetColorKey(background, SDL_SRCCOLORKEY, c);
+		
+    		c = SDL_MapRGB(
+			surface->format,
+			(uColorKey>>16) & 0xFF,
+			(uColorKey>>8) & 0xFF,
+			uColorKey & 0xFF);
+		SDL_SetColorKey(surface, SDL_SRCCOLORKEY, c);
 	}
 }

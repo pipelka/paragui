@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:10 $
+    Update Date:      $Date: 2002/04/15 13:31:30 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/gradient.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -163,10 +163,13 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL
 
 		for (register Sint32 y = 0; y < drawrect.h; y++) {
 
-			pixel =  (r>>Rloss) << Rshift
-                       | (g>>Gloss) << Gshift
-                       | (b>>Bloss) << Bshift;
-                       //| Amask;
+			if ( bpp == 1 )
+				pixel = SDL_MapRGB ( surface->format, r>>8, g>>8, b>>8 );
+			else
+				pixel =  (r>>Rloss) << Rshift
+        	               | (g>>Gloss) << Gshift
+                	       | (b>>Bloss) << Bshift;
+	                       //| Amask;
 
 			/* Set the pixel */
 			switch (bpp) {

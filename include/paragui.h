@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:32 $
+    Update Date:      $Date: 2002/04/15 13:31:30 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -95,6 +95,16 @@
 #include "paragui_types.h"
 
 #include "pgrect.h"
+
+/**
+	calculate the minimum of 2 values
+*/
+#define PG_MAX(a, b)	((a<b) ? b : a)
+
+/**
+	calculate the maximum of 2 values
+*/
+#define PG_MIN(a, b)	((a<b) ? a : b)
 
 /**
 	default display depth.

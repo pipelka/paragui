@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:31 $
+    Update Date:      $Date: 2002/04/15 13:31:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -250,6 +250,17 @@ public:
 	@return pointer to the SDL_Surface to remove
 	*/
 	static bool UnloadSurface(SDL_Surface* surface, bool bDeleteIfNotExists = true);
+
+	/**
+	Enable / disable the use of symlinks.
+	By default, the file I/O routines will check if a file is really a symlink during open
+		calls and fail if it is. Otherwise, the link could take you outside the
+		write and search paths, and compromise security.
+
+		Symbolic link permission can be enabled or disabled at any time, and is
+		disabled by default
+	*/
+	static void EnableSymlinks(bool followSymlinks);
 
 private:
 

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/04/15 13:22:15 $
+   Update Date:      $Date: 2002/04/15 13:31:31 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.1 $
+   CVS/RCS Revision: $Revision: 1.2 $
    Status:           $State: Exp $
  */
 
@@ -43,7 +43,7 @@ int PG_Widget::my_ObjectCounter = 0;
 typedef STL_MAP<int, PG_Widget*> PG_IdToWidgetMap;
 typedef std::map<std::string, PG_Widget*> PG_NameToWidgetMap;
 
-typedef struct PG_WidgetDataInternal{
+struct PG_WidgetDataInternal{
 
 	PG_Font* font;
 
@@ -747,7 +747,9 @@ void PG_Widget::MoveRect(int x, int y) {
 }
 
 void PG_Widget::Blit(bool recursive, bool restore) {
-
+	static PG_Rect src;
+	static PG_Rect dst;
+	
 	if(!my_internaldata->visible) {
 		return;
 	}
@@ -768,8 +770,8 @@ void PG_Widget::Blit(bool recursive, bool restore) {
 	}
 
 	// get source & destination rectangles
-	PG_Rect src(my_internaldata->rectClip.x - my_xpos, my_internaldata->rectClip.y - my_ypos, my_internaldata->rectClip.w, my_internaldata->rectClip.h);
-	PG_Rect dst = my_internaldata->rectClip;
+	src.SetRect(my_internaldata->rectClip.x - my_xpos, my_internaldata->rectClip.y - my_ypos, my_internaldata->rectClip.w, my_internaldata->rectClip.h);
+	dst = my_internaldata->rectClip;
 
 	// call the blit handler
 	eventBlit(my_srfObject, src, dst);
@@ -787,7 +789,9 @@ void PG_Widget::Blit(bool recursive, bool restore) {
 
 /**  */
 void PG_Widget::Update(bool doBlit) {
-
+	static PG_Rect src;
+	static PG_Rect dst;
+	
 	if(PG_Application::GetBulkMode()) {
 		return;
 	}
@@ -810,8 +814,8 @@ void PG_Widget::Update(bool doBlit) {
 
 		RestoreBackground(&my_internaldata->rectClip);
 
-		PG_Rect src(my_internaldata->rectClip.x - my_xpos, my_internaldata->rectClip.y - my_ypos, my_internaldata->rectClip.w, my_internaldata->rectClip.h);
-		PG_Rect dst = my_internaldata->rectClip;
+		src.SetRect(my_internaldata->rectClip.x - my_xpos, my_internaldata->rectClip.y - my_ypos, my_internaldata->rectClip.w, my_internaldata->rectClip.h);
+		dst = my_internaldata->rectClip;
 
 		eventBlit(my_srfObject, src, dst);
 
@@ -827,10 +831,8 @@ void PG_Widget::Update(bool doBlit) {
 			if(children) {
 				index = children->FindIndexOf(this);
 				if(index != -1) {
-					//PG_RectList frontlist = children->Intersect(&my_internaldata->rectClip, index+1, -1);
 					SDL_SetClipRect(my_srfScreen, &my_internaldata->rectClip);
 					children->Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
-					//frontlist.Blit(my_internaldata->rectClip);
 				}
 			}
 		}
@@ -842,10 +844,8 @@ void PG_Widget::Update(bool doBlit) {
 		index = widgetList.FindIndexOf(obj);
 
 		if(index != -1) {
-			//PG_RectList frontlist = widgetList.Intersect(&my_internaldata->rectClip, index+1, -1);
 			SDL_SetClipRect(my_srfScreen, &my_internaldata->rectClip);
 			widgetList.Intersect(&my_internaldata->rectClip, index+1, -1).Blit(my_internaldata->rectClip);
-			//frontlist.Blit(my_internaldata->rectClip);
 		}
 
 		PG_Application::DrawCursor();
@@ -877,7 +877,7 @@ void PG_Widget::SetChildTransparency(Uint8 t) {
 }
 
 void PG_Widget::StartWidgetDrag() {
-        int x, y;
+	int x, y;
 	
 	SDL_GetMouseState(&x, &y);
 	my_internaldata->ptDragStart.x = static_cast<Sint16>(x);
@@ -1093,8 +1093,6 @@ bool PG_Widget::RestoreBackground(PG_Rect* clip, bool force) {
 
 		if(index != -1) {
 			SDL_SetClipRect(my_srfScreen, clip);
-			//PG_RectList backlist = widgetList.Intersect(clip, 0, index);
-			//backlist.Blit(*clip);
 			widgetList.Intersect(clip, 0, index).Blit(*clip);
 		}
 		return true;
@@ -1148,10 +1146,8 @@ void PG_Widget::UpdateRect(const PG_Rect& r) {
 	SDL_Surface* screen = PG_Application::GetScreen();
 
 	PG_Application::RedrawBackground(r);
-	//PG_RectList list = widgetList.Intersect((PG_Rect*)&r);
 	SDL_SetClipRect(screen, (PG_Rect*)&r);
 	widgetList.Intersect((PG_Rect*)&r).Blit(r);
-	//list.Blit(r);
 	SDL_SetClipRect(screen, NULL);
 }
 
@@ -1483,6 +1479,10 @@ void PG_Widget::DrawText(int x, int y, const char* text, const SDL_Color& c) {
 	DrawText(PG_Rect(x,y,0,0), text, c);
 }
 
+void PG_Widget::QuitModal() {
+		SendMessage(this, MSG_MODALQUIT, 0, 0);
+}
+
 int PG_Widget::RunModal() {
 	SDL_Event event;
 	my_internaldata->quitModalLoop = false;
@@ -1602,19 +1602,93 @@ void PG_Widget::SetPixel(int x, int y, Uint8 r, Uint8 g, Uint8 b) {
 }
 
 void PG_Widget::DrawHLine(int x, int y, int w, Uint8 r, Uint8 g, Uint8 b) {
-	int x1 = x + w;
-
-	for (int x0 = x; x0 < x1; x0++) {
-		SetPixel(x0, y, r, g, b/*, surface*/);
+	static PG_Rect rect;
+	SDL_Surface* surface = my_srfObject;
+	
+	if(my_srfObject == NULL) {
+		surface = my_srfScreen;
 	}
+	
+	x += my_xpos;
+	y += my_ypos;
+
+	if((y < my_internaldata->rectClip.y) || (y >= (my_internaldata->rectClip.y+my_internaldata->rectClip.h))) {
+		return;
+	}
+	
+	SDL_GetClipRect(surface, &rect);
+
+	if((y < rect.y) || (y >= (rect.y+rect.h))) {
+		return;
+	}
+
+	// clip to widget cliprect
+	int x0 = PG_MAX(x, my_internaldata->rectClip.x);
+	int x1 = PG_MIN(x+w, my_internaldata->rectClip.x+my_internaldata->rectClip.w);
+	Uint32 c = SDL_MapRGB(surface->format, r, g, b);
+
+	// clip to surface cliprect
+	x0 = PG_MAX(x0, rect.x);
+	x1 = PG_MIN(x1, rect.x+rect.w);
+
+	int wl = (x1-x0);
+	
+	if(wl <= 0) {
+		return;
+	}
+	
+	if(my_srfObject != NULL) {
+		x0 -= my_xpos;
+		y -= my_ypos;
+	}
+
+	rect.SetRect(x0, y, wl, 1);
+	SDL_FillRect(surface, &rect, c);
 }
 
 void PG_Widget::DrawVLine(int x, int y, int h, Uint8 r, Uint8 g, Uint8 b) {
-	int y1 = y + h;
-
-	for (int y0 = y; y0 < y1; y0++) {
-		SetPixel(x, y0, r, g, b/*, surface*/);
+	static PG_Rect rect;
+	SDL_Surface* surface = my_srfObject;
+	
+	if(my_srfObject == NULL) {
+		surface = my_srfScreen;
 	}
+	
+	x += my_xpos;
+	y += my_ypos;
+
+	if((x < my_internaldata->rectClip.x) || (x >= (my_internaldata->rectClip.x+my_internaldata->rectClip.w))) {
+		return;
+	}
+	
+	SDL_GetClipRect(surface, &rect);
+
+	if((x < rect.x) || (x >= (rect.x+rect.w))) {
+		return;
+	}
+
+	// clip to widget cliprect
+	int y0 = PG_MAX(y, my_internaldata->rectClip.y);
+	int y1 = PG_MIN(y+h, my_internaldata->rectClip.y+my_internaldata->rectClip.h);
+	Uint32 c = SDL_MapRGB(surface->format, r, g, b);
+
+	// clip to surface cliprect
+	y0 = PG_MAX(y0, rect.y);
+	y1 = PG_MIN(y1, rect.y+rect.h);
+
+	int hl = (y1-y0);
+	
+	if(hl <= 0) {
+		return;
+	}
+	
+	if(my_srfObject != NULL) {
+		y0 -= my_ypos;
+		x -= my_xpos;
+	}
+
+	rect.SetRect(x, y0, 1, hl);
+	SDL_FillRect(surface, &rect, c);
 }
 
 /**  */

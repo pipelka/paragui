@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:15 $
+    Update Date:      $Date: 2002/04/15 13:31:31 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -30,7 +30,7 @@
 #include "pglistbox.h"
 
 PG_ListBoxItem::PG_ListBoxItem(int height, const char* text, SDL_Surface* icon, void* userdata, const char* style) : PG_ListBoxBaseItem(height, userdata) {
-
+	
 	for(int i=0; i<3; i++) {
 		my_background[i] = NULL;
 		my_bkmode[i] = BKMODE_TILE;
@@ -53,6 +53,8 @@ PG_ListBoxItem::PG_ListBoxItem(int height, const char* text, SDL_Surface* icon, 
 	                     my_background[1],
 	                     my_bkmode[1],
 	                     my_blend[1]);
+			     
+	my_srfIcon = icon;
 }
 
 PG_ListBoxItem::~PG_ListBoxItem() {

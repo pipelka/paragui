@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:32 $
+    Update Date:      $Date: 2002/04/15 13:31:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -139,15 +139,22 @@ public:
 #ifdef SWIG
 	%name(SetBackgroundFile) bool SetBackground(const char* filename, int mode=BKMODE_TILE);
 #else
-	/**
-	Set the background of the widget
-	@param filename	name of the image file to load
-	@param mode background drawing mode
-	@return true  on success
-	*/
 	bool SetBackground(const char* filename, int mode=BKMODE_TILE);
 #endif
 
+
+	/**
+	Load the background image from a file and set the colorkey
+	@param	filename		path to background image file
+	@param	colorkey		colorkey (0x00RRGGBB)
+	@param	mode			BKMODE_TILE | BKMODE_STRETCH
+	*/
+	/**  */
+#ifdef SWIG
+	%name(SetBackgroundColorKey) bool SetBackground(const char* filename, int mode, Uint32 colorkey);
+#else
+	bool SetBackground(const char* filename, int mode, Uint32 colorkey);
+#endif
 
 	/**
 	Define a surface as background image (will not be freed)

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:22:31 $
+    Update Date:      $Date: 2002/04/15 13:31:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.2 $
     Status:           $State: Exp $
 */
 
@@ -228,9 +228,10 @@ public:
 	void SetEmergencyQuit(bool esc);
 
 	/**
-	Set the application search patch
+	Add an application search path
 
-	@param	path	the application will search for file (images,...) in this patch
+	@param	path	the application will search for file (images,...) in this path,
+								as well as in all pathes previously added.
 	*/
 	static void SetApplicationPath(const char* path);
 
@@ -354,7 +355,7 @@ public:
 	Load layout from the XML file
 	@param name name of the xml file
 	@param WorkCallback address of the progress callback function
-	@param UserSace address of user data with are returned by Processing instruction etc.
+	@param UserSpace address of user data with are returned by Processing instruction etc.
 	@return   returns non-zero on success or 0 if not succes
 	*/
 #ifndef SWIG
@@ -363,7 +364,7 @@ public:
 
 	/**
 	Get widget by name
-	@param name name of the widget
+	@param Name name of the widget
 	@return   pointer to the requested widget or null if failed
 	*/
 	static PG_Widget *GetWidgetByName(const char *Name);
