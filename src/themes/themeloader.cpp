@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2004/12/17 12:15:30 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.9 $
     Status:           $State: Exp $
 */
 
@@ -70,9 +70,9 @@ PARSE_INFO;
 
 #define THEME_SUFFIX ".theme"
 
-#define BUFFSIZE	512
+#define BUFFSIZE	8192
 
-char buff[BUFFSIZE];
+static char* buff;
 
 void parseGlobProps(PARSE_INFO* info, const XML_Char* name, const XML_Char** atts) {
 
@@ -388,6 +388,7 @@ void handlerEnd(void* userData, const XML_Char* name) {
 
 PG_Theme* PG_Theme::Load(const std::string& xmltheme) {
 	std::string filename;
+	buff = new char[BUFFSIZE];
 
 	// create new parse info
 	PARSE_INFO info;
@@ -447,6 +448,7 @@ PG_Theme* PG_Theme::Load(const std::string& xmltheme) {
 
 	if(!file) {
 		XML_ParserFree(p);
+		delete[] buff;
 		return NULL;
 	}
 
@@ -461,6 +463,7 @@ PG_Theme* PG_Theme::Load(const std::string& xmltheme) {
 			PG_LogERR("Parse error at line %i:", XML_GetCurrentLineNumber(p));
 			PG_LogERR("%s", XML_ErrorString(XML_GetErrorCode(p)));
 			XML_ParserFree(p);
+			delete[] buff;
 			return NULL;
 		}
 
@@ -474,6 +477,7 @@ PG_Theme* PG_Theme::Load(const std::string& xmltheme) {
 
 	// close the file
 	delete file;
+	delete[] buff;
 
 	PG_LogMSG("theme '%s' loaded sucessfully", filename.c_str());
 
