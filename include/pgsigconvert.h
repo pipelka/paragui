@@ -15,6 +15,7 @@ Contact info:
 #ifndef   SIGC_CONVERT_H
 #define   SIGC_CONVERT_H
 #include <sigc++/adaptor.h>
+#include "SDL.h"
 
 /*
   SigC::convert
@@ -42,7 +43,7 @@ namespace SigCX
 #endif
 
 // (internal)
-struct AdaptorConvertSlotNode : public SigC::AdaptorSlotNode
+struct DECLSPEC AdaptorConvertSlotNode : public SigC::AdaptorSlotNode
 {
     SigC::FuncPtr convert_func_;
 

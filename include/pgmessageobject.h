@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/22 16:52:42 $
+    Update Date:      $Date: 2004/01/31 16:14:08 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -32,6 +32,8 @@
 #include "paragui.h"
 #include "pgsignals.h"
 #include <vector>
+
+using namespace std;
 
 class PG_Widget;
 

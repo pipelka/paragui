@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/22 16:52:42 $
+    Update Date:      $Date: 2004/01/31 16:14:08 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.6 $
     Status:           $State: Exp $
 */
 
@@ -132,11 +132,6 @@ int fnmatch(const char *, const char *, int);
 #else
 #include <fnmatch.h>
 #endif
-
-//
-//our default namespace is std
-//
-using namespace std;
 
 /**
 	Internal widget ID.

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/24 09:17:21 $
+    Update Date:      $Date: 2004/01/31 16:14:08 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtimerobject.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6.2.1 $
+    CVS/RCS Revision: $Revision: 1.1.2.6.2.2 $
     Status:           $State: Exp $
 */
 
@@ -32,6 +32,8 @@
 #include "paragui.h"
 #include "pgsignals.h"
 #include <map>
+
+using namespace std;
 
 typedef Uint32 PG_TimerID;
 

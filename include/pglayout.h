@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:57 $
+    Update Date:      $Date: 2004/01/31 16:14:08 $
     Source File:      $Source: /sources/paragui/paragui/include/pglayout.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.2 $
     Status:           $State: Exp $
 */
 
@@ -65,7 +65,7 @@ namespace PG_Layout {
 DECLSPEC bool Load(PG_Widget* parent, const char *filename, void (* WorkCallback)(int now, int max), void *UserSpace);
 
 DECLSPEC int GetParamInt(const char **Source, char *What);
-DECLSPEC PG_ScrollBar::ScrollDirection PG_Layout::GetParamScrollDirection(const char **Source, char *What);
+DECLSPEC PG_ScrollBar::ScrollDirection GetParamScrollDirection(const char **Source, char *What);
 DECLSPEC char* GetParamStr(const char **Source, char *What);
 DECLSPEC void GetParamRect(const char **Source, char *What, PG_Rect& Rect, PG_Widget* parent = NULL);
 DECLSPEC PG_Label::TextAlign GetParamAlign(const char **Source, char *What);

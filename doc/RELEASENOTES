@@ -44,6 +44,8 @@ Whats new in ParaGUI 1.1.6 ?
   documented PG_Application::PrintVideoTest()
   in PG_Application::Shutdown calling DeleteBackground() for freeing
   PG_Application::DeleteBackground(): setting my_background to 0
+- applied patches from "H. C." :))
+  Win32 support. Requires VisualC.NET or GCC
 - more coming up
 
 

@@ -15,7 +15,7 @@
 
 #include "SDL.h"
 
-class PG_Color : public SDL_Color {
+class DECLSPEC PG_Color : public SDL_Color {
 public:
 	PG_Color();
 	PG_Color(const SDL_Color& c);

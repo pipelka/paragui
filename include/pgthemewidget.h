@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/01/31 16:14:08 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.3 $
     Status:           $State: Exp $
 */
 
@@ -32,7 +32,7 @@
 #include "pgwidget.h"
 #include "pgdraw.h"
 
-class PG_WidgetDataInternal;
+class PG_ThemeWidgetDataInternal;
 
 /**
 	@author Alexander Pipelka
@@ -267,7 +267,7 @@ private:
 	// this is a bit rude but neccessary for future binary compatibility
 	// because adding non-static data members would break the ABI.
 	// For this we put all private data into a dynamically created struct.
-	PG_WidgetDataInternal* _mid;
+	PG_ThemeWidgetDataInternal* _mid;
 };
 
 #endif // PG_THEMEWIDGET_H

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/22 16:52:43 $
+    Update Date:      $Date: 2004/01/31 16:14:08 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.5 $
     Status:           $State: Exp $
 */
 
@@ -34,9 +34,9 @@
 
 static PG_SurfaceCache my_SurfaceCache;
 
-class PG_WidgetDataInternal {
+class PG_ThemeWidgetDataInternal {
 public:
-	PG_WidgetDataInternal() : 
+	PG_ThemeWidgetDataInternal() : 
 	cachesurface(NULL),
 	backgroundcolor(128,128,128),
 	freeimage(false),
@@ -63,7 +63,7 @@ PG_ThemeWidget::PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, bool bCreate
 void PG_ThemeWidget::Init(const char* style) {
 	SetDirtyUpdate(true);
 	
-	_mid = new PG_WidgetDataInternal;
+	_mid = new PG_ThemeWidgetDataInternal;
 	
 	my_backgroundFree = false;
 	my_background = NULL;

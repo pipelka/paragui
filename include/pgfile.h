@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:57 $
+    Update Date:      $Date: 2004/01/31 16:14:08 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfile.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.2 $
     Status:           $State: Exp $
 */
 
@@ -40,6 +40,8 @@
 #ifdef getc
 #undef getc
 #endif
+
+using namespace std;
 
 /**
  * @author Alexander Pipelka

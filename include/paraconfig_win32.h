@@ -49,7 +49,7 @@
 #define HAVE_LIBTIFF 1
 
 /* SDL_image shared library */
-#define SDLIMAGE_IB "sdlimage.dll"
+#define SDLIMAGE_LIB "sdl_image.dll"
 
 /* Name of package */
 #define PACKAGE "paragui"

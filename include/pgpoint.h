@@ -3,7 +3,7 @@
 
 #include "SDL.h"
 
-class PG_Point {
+class DECLSPEC PG_Point {
 public:
 	PG_Point();
 	PG_Point(Sint16 _x, Sint16 _y);

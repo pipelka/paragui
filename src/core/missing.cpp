@@ -1,4 +1,5 @@
 #include "paragui.h"
+#include <stdlib.h>
 
 #ifndef HAVE_STRDUP
 char *strdup(const char *s) {

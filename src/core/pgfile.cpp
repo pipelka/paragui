@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:40 $
+    Update Date:      $Date: 2004/01/31 16:14:08 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.4 $
+    CVS/RCS Revision: $Revision: 1.1.6.4.2.1 $
     Status:           $State: Exp $
 */
 
@@ -55,11 +55,11 @@ int PG_File::write(const char *buffer) {
 }
 
 int PG_File::read(void *buffer, unsigned int objSize, unsigned int objCount) {
-	return PHYSFS_read((PHYSFS_file*)file, buffer, objSize, objCount);
+	return static_cast<int>(PHYSFS_read((PHYSFS_file*)file, buffer, objSize, objCount));
 }
 
 int PG_File::write(void *buffer, unsigned int objSize, unsigned int objCount) {
-	return PHYSFS_write((PHYSFS_file*)file, buffer, objSize, objCount);
+	return static_cast<int>(PHYSFS_write((PHYSFS_file*)file, buffer, objSize, objCount));
 }
 
 bool PG_File::eof() {
@@ -67,7 +67,7 @@ bool PG_File::eof() {
 }
 
 int PG_File::tell() {
-	return PHYSFS_tell((PHYSFS_file*)file);
+	return static_cast<int>(PHYSFS_tell((PHYSFS_file*)file));
 }
 
 bool PG_File::seek(int pos) {
@@ -75,7 +75,7 @@ bool PG_File::seek(int pos) {
 }
 
 int PG_File::fileLength() {
-	return PHYSFS_fileLength((PHYSFS_file*)file);
+	return static_cast<int>(PHYSFS_fileLength((PHYSFS_file*)file));
 }
 
 char PG_File::getc() {
