@@ -17,10 +17,6 @@ SUBDIRS = archivers platform $(ZLIB_DIR) $(TEST_DIR)
 
 DIST_SUBDIRS = $(SUBDIRS) extras zlib114 test
 
-libphysfsincludedir = $(includedir)
-libphysfsinclude_HEADERS =	\
-	physfs.h
-
 libphysfs_la_SOURCES =	\
 	physfs.c \
 	physfs_internal.h \
@@ -46,4 +42,5 @@ EXTRA_DIST = \
 	Doxyfile \
 	CWProjects.sit \
 	physfs.dsp \
-	test_physfs.dsp
+	test_physfs.dsp \
+	physfs.h
