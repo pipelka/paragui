@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/18 08:51:47 $
+    Update Date:      $Date: 2004/06/28 11:27:07 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.13 $
     Status:           $State: Exp $
 */
 
@@ -548,7 +548,7 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 
 	if(iconsrf) {
 
-		int dx = my_text.empty() ? (rect.my_width - iconsrf->w) >> 1 : 3;
+		int dx = my_text.empty() ? (rect.my_width - iconsrf->w) / 2 : 3;
 		int dy = (rect.my_height - iconsrf->h) >> 1;
 
 		r.my_xpos = rect.my_xpos + dx + shift;

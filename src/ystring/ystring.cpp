@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ystring.cpp,v 1.1.2.1 2004/06/26 08:05:22 braindead Exp $
+ * $Id: ystring.cpp,v 1.1.2.2 2004/06/28 11:27:06 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2004/06/26 08:05:22 $
+ *  $Date: 2004/06/28 11:27:06 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.1 $
+ *  $Revision: 1.1.2.2 $
  *  $Source: /sources/paragui/paragui/src/ystring/Attic/ystring.cpp,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -148,7 +148,7 @@ YString::size_type YString::capacity() const
 
 bool YString::empty() const
 {
-  return unicode.empty();
+  return (unicode.size() == 0);
 }
 
 YString::reference YString::operator[](YString::size_type n)
@@ -396,6 +396,11 @@ YString YString::fromUtf8(const char * utf8) throw(std::domain_error)
 YString YString::fromUtf8(std::string utf8) throw(std::domain_error)
 {
   YString buff;
+  
+  if(utf8.empty()) {
+  	return buff;
+  }
+
   YString::size_type currentOctet = 0;
   do {
     YString::size_type noOctets = 1 + YChar::getNumberOfContinuingOctents(utf8[currentOctet]);
