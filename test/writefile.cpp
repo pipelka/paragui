@@ -7,7 +7,7 @@ Roger D. Vargas
 #include <pglog.h>
 #include <string>
 
-int main() {
+int main(int argc, char* argv[]) {
 	PG_FileArchive *Arc;
 	PG_File *wf;
 

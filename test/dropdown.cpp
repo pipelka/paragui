@@ -7,7 +7,7 @@ Submitted by: Andrew Ford <andrewhford@yahoo.com>
 #include "pgdropdown.h"
 #include "pgapplication.h"
 
-int main()
+int main( int argc, char **argv )
 {
    PG_Application app;
    app.LoadTheme( "default" );

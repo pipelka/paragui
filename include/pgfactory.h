@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:38:29 $
+    Update Date:      $Date: 2004/06/27 06:32:59 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfactory.h,v $
-    CVS/RCS Revision: $Revision: 1.8.2.2 $
+    CVS/RCS Revision: $Revision: 1.8.2.3 $
     Status:           $State: Exp $
 */
 
@@ -50,15 +50,15 @@ public:
 	typedef PG_Widget* (*CREATEFN)(PG_Widget* parent);
 	
 	template< class T, class PT > static void RegisterClass(const H& classname) {
-		GetInstance().RegisterCreateFn(classname, (CREATEFN)&PG_FactoryObject<T, PT>::CreateObject);
+		PG_Singleton< PG_FactoryHolder<H> >::GetInstance().RegisterCreateFn(classname, (CREATEFN)&PG_FactoryObject<T, PT>::CreateObject);
 	}
 		
 	template< class T > static void RegisterClass(const H& classname) {
-		GetInstance().RegisterCreateFn(classname, (CREATEFN)&PG_FactoryObject<T>::CreateObject);
+		PG_Singleton< PG_FactoryHolder<H> >::GetInstance().RegisterCreateFn(classname, (CREATEFN)&PG_FactoryObject<T>::CreateObject);
 	}
 
 	static PG_Widget* CreateObject(const H& classname, PG_Widget* parent = NULL) {
-		CREATEFN create = GetInstance().creator_map[classname];
+		CREATEFN create = PG_Singleton< PG_FactoryHolder<H> >::GetInstance().creator_map[classname];
 		
 		if(create == NULL) {
 			return NULL;
@@ -73,7 +73,7 @@ protected:
 		creator_map[classname] = fn;
 	}
 	
-	std::map< H, PG_FactoryHolder<H>::CREATEFN > creator_map;
+	std::map< H, CREATEFN > creator_map;
 	
 	friend class PG_Singleton< PG_FactoryHolder<H> >;
 	

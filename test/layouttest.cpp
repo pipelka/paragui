@@ -2,7 +2,7 @@
 #include "pgapplication.h"
 #include "pgwindow.h"
 
-int main() {
+int main( int argc, char **argv ) {
 
 	// construct the application object
 	PG_Application app;
