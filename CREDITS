@@ -1,0 +1,65 @@
+CREDITS:
+
+Special thanks go to Sam Lantinga <slouken@libsdl.org>
+for the great SDL library <http://www.libsdl.org>.
+
+David Hedbor <david@hedbor.org>:
+GCC 3.0/Win32 testing
+VisualC++ workspaces
+bug fixes
+C++ standards checking
+SDL_rotozoom integration
+
+Marek Habersack <grendel@vip.net.pl>:
+PG_PopupMenu
+STLport integration
+
+Ales Teska <ales.teska@dbinvest.cz>:
+new freetype font rendering
+XML layout loader
+various small changes
+
+Jaroslav Vozab <vozab@dbsystem.cz>:
+PG_RichEdit, PG_WidgetListEx
+new text rendering
+
+Antonin Hildebrand <woid@centrum.cz>:
+Win32 testing
+
+Mike Dunstion <atani@atani-software.net>:
+PG_SpinnerBox
+first version of zipped themes
+
+Michael Moerz <aon.912411198@aon.at>:
+Debian packaging
+
+Jacek Poplawski - OpenGL ideas
+Donald Molaro - bug fixes
+
+rotozoom.cpp is based on the LGPL package
+SDL_rotozoom by A. Schiffler <aschiffler@home.com>. Reworked to fit
+into the ParaGUI framework by David Hedbor <david@hedbor.org>.
+
+PhysicsFS <http://icculus.org/physfs/> is copyrighted by
+Ryan C. Gordon <icculus@clutteredmind.org> under the LGPL.
+
+ 
+Thanks to the many people providing patches, fixes & ideas:
+
+Brian T. Crowder
+Oliver Lietz
+Henrik Edwards
+Paolo Ciccone
+David Hunt
+Jens Rieks
+Dave Robillard
+Ray Kelm
+Francis Irving
+Pete Shinners
+Franck Guillaud
+
+
+Sorry, if I forgot anyone.
+
+Alex
+

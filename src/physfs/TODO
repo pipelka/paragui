@@ -1,0 +1,13 @@
+
+- update the Makefile so that Cygwin can generate a DLL. The entire codebase
+  compiles under Cygwin otherwise.
+- Hmm...we can determine the actual CD-ROM drives under Win32, but how do you
+  decide that there's no disc in the drive?
+- MacOS support.
+- Move the integer types to something abstract. uint32, etc.
+- Ditch the "standard" i/o routines (fopen() and friends) and move this into
+  the platform drivers.
+
+// end of TODO ...
+
+

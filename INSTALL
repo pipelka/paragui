@@ -1,0 +1,70 @@
+Requirements for building the sources:
+
+SDL >= 1.2.0
+http://www.libsdl.org/download-1.2.html
+
+freetype >= 2.0
+http://www.freetype.org/download.html
+
+SDL_image >= 1.2.0 (if enabled)
+http://www.libsdl.org/projects/SDL_image
+
+zlib
+http://www.gzip.org/zlib
+
+expat
+http://expat.sourceforge.net
+
+Depending on the image fileformats you
+want to use you may also find handy:
+
+libpng:
+http://www.libpng.org/pub/png
+
+libjpeg:
+http://www.ijg.org
+
+
+You will also need the correponding development packages
+(if you are using rpm packages).
+
+
+
+Installation for distributions:
+
+./configure [options]
+make
+make install (as root)
+
+Installation for CVS:
+
+sh autogen.sh
+./configure [options]
+make
+make install (as root)
+
+
+Useful configure options:
+
+--disable-sdlimage :
+Compile the sources without SDL_image support.
+Will produce smaller code but only bmp's can be loaded.
+
+--enable-debug :
+Will produce debug messages during execution (slow).
+
+--with-themedir=DIR :
+ParaGUI themefiles will be placed in DIR.
+Default location is PREFIX/share/paragui
+
+
+Hint:
+Several people had troubles compiling CVS snapshots on
+SuSE and Slackware.
+If you get error messages running the autogen.sh script
+please try the following:
+
+Change this line in autogen.sh
+aclocal
+to:
+aclocal -I/usr/local/share/aclocal

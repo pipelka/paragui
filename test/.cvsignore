@@ -1,0 +1,15 @@
+Makefile
+Makefile.in
+configure
+libtool
+config.log
+config.cache
+config.status
+*.lo
+paratest
+paratest.spec
+aclocal.m4
+.deps
+.libs
+navtest dblbuffer
+layouttest windowtest

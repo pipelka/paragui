@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+#  Install script for ParaGUI
+#  Builds and installs the shared library components and the config
+#   files of the library
+
+ml_check_for_package SDL
+ml_check_for_package SDLimage
+ml_check_for_package expat
+ml_check_for_package freetype
+
+
+CONFIGOPTIONS="--prefix=$TOOLS --with-sdl-prefix=$TOOLS --with-themedir=/usr/share/paragui --disable-sdltest --disable-static --target=$TARGETARCH"
+COMPILEOPTIONS=
+
+function ml_installlocal() {
+        $JMAKE -C $PACKAGE/$PACKAGE prefix="$TOOLS" install
+}
+
+function ml_installroot() {
+        for i in paragui-1.0 ; do
+            cp -af $TOOLS/lib/lib${i}.so.* $ROOT/usr/lib
+        done
+
+	mkdir -p $ROOT/usr/share/paragui/
+	cp -af $TOOLS/share/paragui/*.zip $ROOT/usr/share/paragui/
+}

@@ -1,0 +1,439 @@
+<?xml version="1.0"?>
+
+<theme>
+    <title value="default"/>
+    <description value="ParaGUI default theme"/>
+    <author value="Alexander Pipelka"/>
+    <email value="pipelka@teleweb.at"/>
+
+    <font name="default" value="default/font.ttf" size="20"/>
+
+    <widget>
+	<type value="Background"/>
+	<object>
+	    <name value="Background"/>
+	    <filename name="background" value="default/background.png"/>
+	</object>
+    </widget>
+    
+    <widget>
+	<type value="Pointer"/>
+	<object>
+		<name value="Pointer"/>
+		<filename name="normal" value="default/pointer.png"/>
+	</object>
+    </widget>
+    <widget>
+	<type value="ThemeWidget"/>
+	<object>
+	    <name value="ThemeWidget"/>
+	    <filename name="background" value="default/back.bmp"/>
+	    <property name="backmode" value="TILE"/>
+	    <gradient name="gradient" color0="0x00B0B1B6" color1="0x0083838D" color2="0x007B7B83" color3="0x00585765"/>
+	    <property name="blend" value="200"/>
+	</object>
+    </widget>
+
+    <widget>
+	<type value="Button"/>
+	<object>
+	    <name value="Button"/>
+	    <filename name="background0" value="none"/>
+	    <filename name="background1" value="none"/>
+	    <filename name="background2" value="none"/>
+	    <property name="backmode0" value="TILE"/>
+	    <property name="backmode1" value="TILE"/>
+	    <property name="backmode2" value="TILE"/>
+	    <gradient name="gradient0" color0="0x00E7E7E7" color1="0x00C9C9C9" color2="0x00CCCCCC" color3="0x00AEAEAE"/>
+	    <gradient name="gradient1" color0="0x00F5E1FF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00C3AFFF"/>
+	    <gradient name="gradient2" color0="0x00CFAFFF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00F5E1FF"/>
+	    <property name="blend0" value="0"/>
+	    <property name="blend1" value="0"/>
+	    <property name="blend2" value="0"/>
+	    <color name="bordercolor0" value="0x00E0E0E0"/>
+	    <color name="bordercolor1" value="0x00404040"/>
+	    <property name="bordersize0" value="1"/>
+	    <property name="bordersize1" value="1"/>
+	    <property name="bordersize2" value="1"/>
+	    <property name="transparency0" value="0"/>
+	    <property name="transparency1" value="0"/>
+	    <property name="transparency2" value="0"/>
+	    <filename name="iconup" value="none"/>
+  		<filename name="icondown" value="none"/>
+
+      <filename name="apply_icon" value="default/button_apply_icon.png"/>
+      <filename name="cancel_icon" value="default/button_cancel_icon.png"/>
+      <filename name="close_icon" value="default/button_close_icon.png"/>
+      <filename name="no_icon" value="default/button_no_icon.png"/>
+      <filename name="ok_icon" value="default/button_ok_icon.png"/>
+      <filename name="yes_icon" value="default/button_yes_icon.png"/>
+      <filename name="help_icon" value="default/button_help_icon.png"/>
+    </object>
+  </widget>
+    
+    <widget>
+	<type value="Scrollbar"/>
+	<object>
+	    <name value="Scrollbar"/>
+	    <gradient name="gradient" color0="0x00B0B1B6" color1="0x0083838D" color2="0x007B7B83" color3="0x00585765"/>
+	    <property name="blend" value="0"/>
+	</object>
+	<object>
+	    <name value="ScrollbarV"/>
+	    <property name="width" value="16"/>
+	    <filename name="background" value="default/sb_backv.png"/>
+	    <property name="backmode" value="3TILEV"/>
+	    <property name="blend" value="0"/>
+	</object>
+	<object>
+	    <name value="ScrollbarH"/>
+	    <property name="height" value="16"/>
+	    <filename name="background" value="default/sb_backh.png"/>
+	    <property name="backmode" value="3TILEH"/>
+	    <property name="blend" value="0"/>
+	</object>
+	<object>
+	    <name value="ScrollbarLeft"/>
+	    <filename name="background0" value="none"/>
+	    <filename name="background1" value="none"/>
+	    <filename name="background2" value="none"/>
+	    <property name="backmode0" value="TILE"/>
+	    <property name="backmode1" value="TILE"/>
+	    <property name="backmode2" value="TILE"/>
+	    <gradient name="gradient0" color0="0x00E7E7E7" color1="0x00C9C9C9" color2="0x00CCCCCC" color3="0x00AEAEAE"/>
+	    <gradient name="gradient1" color0="0x00F5E1FF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00C3AFFF"/>
+	    <gradient name="gradient2" color0="0x00CFAFFF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00F5E1FF"/>
+	    <property name="blend0" value="0"/>
+	    <property name="blend1" value="0"/>
+	    <property name="blend2" value="0"/>
+	    <property name="bordersize0" value="1"/>
+	    <property name="bordersize1" value="1"/>
+	    <property name="bordersize2" value="1"/>
+	    <property name="transparency0" value="0"/>
+	    <property name="transparency1" value="0"/>
+	    <property name="transparency2" value="0"/>
+	    <filename name="iconup" value="default/sb_left.bmp" colorkey="0x000000FF"/>
+	    <filename name="icondown" value="default/sb_left.bmp" colorkey="0x000000FF"/>
+	</object>
+	<object>
+	    <name value="ScrollbarRight"/>
+	    <filename name="background0" value="none"/>
+	    <filename name="background1" value="none"/>
+	    <filename name="background2" value="none"/>
+	    <property name="backmode0" value="TILE"/>
+	    <property name="backmode1" value="TILE"/>
+	    <property name="backmode2" value="TILE"/>
+	    <gradient name="gradient0" color0="0x00E7E7E7" color1="0x00C9C9C9" color2="0x00CCCCCC" color3="0x00AEAEAE"/>
+	    <gradient name="gradient1" color0="0x00F5E1FF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00C3AFFF"/>
+	    <gradient name="gradient2" color0="0x00CFAFFF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00F5E1FF"/>
+	    <property name="blend0" value="0"/>
+	    <property name="blend1" value="0"/>
+	    <property name="blend2" value="0"/>
+	    <property name="bordersize0" value="1"/>
+	    <property name="bordersize1" value="1"/>
+	    <property name="bordersize2" value="1"/>
+	    <property name="transparency0" value="0"/>
+	    <property name="transparency1" value="0"/>
+	    <property name="transparency2" value="0"/>
+	    <filename name="iconup" value="default/sb_right.bmp" colorkey="0x000000FF"/>
+	    <filename name="icondown" value="default/sb_right.bmp" colorkey="0x000000FF"/>
+	</object>
+	<object>
+	    <name value="ScrollbarUp"/>
+	    <filename name="background0" value="none"/>
+	    <filename name="background1" value="none"/>
+	    <filename name="background2" value="none"/>
+	    <property name="backmode0" value="TILE"/>
+	    <property name="backmode1" value="TILE"/>
+	    <property name="backmode2" value="TILE"/>
+	    <gradient name="gradient0" color0="0x00E7E7E7" color1="0x00C9C9C9" color2="0x00CCCCCC" color3="0x00AEAEAE"/>
+	    <gradient name="gradient1" color0="0x00F5E1FF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00C3AFFF"/>
+	    <gradient name="gradient2" color0="0x00CFAFFF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00F5E1FF"/>
+	    <property name="blend0" value="0"/>
+	    <property name="blend1" value="0"/>
+	    <property name="blend2" value="0"/>
+	    <property name="bordersize0" value="1"/>
+	    <property name="bordersize1" value="1"/>
+	    <property name="bordersize2" value="1"/>
+	    <property name="transparency0" value="0"/>
+	    <property name="transparency1" value="0"/>
+	    <property name="transparency2" value="0"/>
+	    <filename name="iconup" value="default/sb_up.bmp" colorkey="0x000000FF"/>
+	    <filename name="icondown" value="default/sb_up.bmp" colorkey="0x000000FF"/>
+	</object>
+	<object>
+	    <name value="ScrollbarDown"/>
+	    <filename name="background0" value="none"/>
+	    <filename name="background1" value="none"/>
+	    <filename name="background2" value="none"/>
+	    <property name="backmode0" value="TILE"/>
+	    <property name="backmode1" value="TILE"/>
+	    <property name="backmode2" value="TILE"/>
+	    <gradient name="gradient0" color0="0x00E7E7E7" color1="0x00C9C9C9" color2="0x00CCCCCC" color3="0x00AEAEAE"/>
+	    <gradient name="gradient1" color0="0x00F5E1FF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00C3AFFF"/>
+	    <gradient name="gradient2" color0="0x00CFAFFF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00F5E1FF"/>
+	    <property name="blend0" value="0"/>
+	    <property name="blend1" value="0"/>
+	    <property name="blend2" value="0"/>
+	    <property name="bordersize0" value="1"/>
+	    <property name="bordersize1" value="1"/>
+	    <property name="bordersize2" value="1"/>
+	    <property name="transparency0" value="0"/>
+	    <property name="transparency1" value="0"/>
+	    <property name="transparency2" value="0"/>
+	    <filename name="iconup" value="default/sb_down.bmp" colorkey="0x000000FF"/>
+	    <filename name="icondown" value="default/sb_down.bmp" colorkey="0x000000FF"/>
+	</object>
+	<object>
+	    <name value="ScrollbarDrag"/>
+	    <property name="blend0" value="0"/>
+	    <property name="blend1" value="0"/>
+	    <property name="blend2" value="0"/>
+	    <property name="bordersize0" value="0"/>
+	    <property name="bordersize1" value="0"/>
+	    <property name="bordersize2" value="0"/>
+	    <property name="transparency0" value="0"/>
+	    <property name="transparency1" value="0"/>
+	    <property name="transparency2" value="0"/>
+	    <filename name="iconup" value="default/sb_drag.bmp" colorkey="0x000000FF"/>
+	    <filename name="icondown" value="default/sb_drag.bmp" colorkey="0x000000FF"/>
+	</object>
+	<object>
+	    <name value="ScrollbarDragV"/>
+	    <filename name="background0" value="default/sb_dragv.png"/>
+	    <filename name="background1" value="default/sb_dragv.png"/>
+	    <filename name="background2" value="default/sb_dragv.png"/>
+	    <property name="backmode0" value="3TILEV"/>
+	    <property name="backmode1" value="3TILEV"/>
+	    <property name="backmode2" value="3TILEV"/>
+	</object>
+	<object>
+	    <name value="ScrollbarDragH"/>
+	    <filename name="background0" value="default/sb_dragh.png"/>
+	    <filename name="background1" value="default/sb_dragh.png"/>
+	    <filename name="background2" value="default/sb_dragh.png"/>
+	    <property name="backmode0" value="3TILEH"/>
+	    <property name="backmode1" value="3TILEH"/>
+	    <property name="backmode2" value="3TILEH"/>
+	</object>
+    </widget>
+
+    <widget>
+	<type value="RadioButton"/>
+	<object>
+	    <name value="CheckButton"/>
+	    <filename name="background0" value="none"/>
+	    <filename name="background1" value="none"/>
+	    <filename name="background2" value="none"/>
+	    <property name="backmode0" value="TILE"/>
+	    <property name="backmode1" value="TILE"/>
+	    <property name="backmode2" value="TILE"/>
+	    <gradient name="gradient0" color0="0x00E7E7E7" color1="0x00C9C9C9" color2="0x00CCCCCC" color3="0x00AEAEAE"/>
+	    <gradient name="gradient1" color0="0x00F5E1FF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00C3AFFF"/>
+	    <gradient name="gradient2" color0="0x00CFAFFF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00F5E1FF"/>
+	    <property name="blend0" value="0"/>
+	    <property name="blend1" value="0"/>
+	    <property name="blend2" value="0"/>
+	    <property name="bordersize0" value="0"/>
+	    <property name="bordersize1" value="0"/>
+	    <property name="bordersize2" value="0"/>
+	    <property name="transparency0" value="255"/>
+	    <property name="transparency1" value="255"/>
+	    <property name="transparency2" value="255"/>
+	    <property name="shift" value="0"/>
+	    <filename name="iconup" value="default/rb_off.bmp" colorkey="0x000000FF"/>
+	    <filename name="icondown" value="default/rb_on.bmp" colorkey="0x000000FF"/>
+	</object>
+	<object>
+	    <name value="RadioButton"/>
+	    <filename name="background" value="none"/>
+	    <property name="backmode" value="TILE"/>
+	    <gradient name="gradient" color0="0x00B0B1B6" color1="0x0083838D" color2="0x007B7B83" color3="0x00585765"/>
+	    <property name="transparency" value="128"/>
+	    <property name="blend" value="0"/>
+	</object>
+    </widget>
+
+    <widget>
+	<type value="Window"/>
+	<object>
+	    <name value="Window"/>
+	    <filename name="background" value="default/back.bmp"/>
+	    <property name="backmode" value="TILE"/>
+	    <property name="blend" value="100"/>
+	    <property name="bordersize" value="1"/>
+	</object>
+	<object>
+	    <name value="Titlebar"/>
+	    <filename name="background" value="default/back.bmp"/>
+	    <gradient name="gradient" color0="0x00CFAFFF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00F5E1FF"/>
+	    <property name="backmode" value="STRETCH"/>
+	    <property name="blend" value="120"/>
+	    <property name="bordersize" value="1"/>
+	</object>
+	<object>
+	    <name value="CloseButton"/>
+	    <property name="shift" value="0"/>
+	    <gradient name="gradient0" color0="0x00E7E7E7" color1="0x00C9C9C9" color2="0x00CCCCCC" color3="0x00AEAEAE"/>
+	    <gradient name="gradient1" color0="0x00F5E1FF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00C3AFFF"/>
+	    <gradient name="gradient2" color0="0x00CFAFFF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00F5E1FF"/>
+	    <property name="blend0" value="255"/>
+	    <property name="blend1" value="255"/>
+	    <property name="blend2" value="255"/>
+	    <filename name="iconup" value="default/wnd_close.bmp" colorkey="0x000000FF"/>
+	    <filename name="icondown" value="default/wnd_close.bmp" colorkey="0x000000FF"/>
+	</object>
+	<object>
+	    <name value="MinimizeButton"/>
+	    <property name="shift" value="1"/>
+	    <filename name="iconup" value="default/drop_down.bmp" colorkey="0x000000FF"/>
+	    <filename name="icondown" value="default/drop_down.bmp" colorkey="0x000000FF"/>
+	</object>
+    </widget>    
+
+	<widget>
+		<type value="CheckButton"/>
+		<object>
+			<name value="CheckWidget"/>
+			<property name="shift" value="0"/>
+			<filename name="iconup" value="default/rb_off.bmp" colorkey="0x000000FF"/>
+			<filename name="icondown" value="default/rb_on.bmp" colorkey="0x000000FF"/>
+		</object>
+	</widget>
+
+	<widget>
+		<type value="LineEdit"/>
+		<object>
+			<name value="LineEdit"/>
+			<property name="bordersize" value="1"/>
+			<filename name="textcursor" value="default/editcurs.bmp" colorkey="0x000000FF"/>
+		</object>
+	</widget>
+    
+	<widget>
+		<type value="ListBox"/>
+		<object>
+			<name value="ThemeWidget"/>
+			<property name="bordersize" value="1"/>
+		</object>
+		<object>
+			<name value="ListBoxItem"/>
+			<filename name="background0" value="none"/>
+			<filename name="background1" value="none"/>
+			<filename name="background2" value="none"/>
+			<property name="backmode0" value="TILE"/>
+			<property name="backmode1" value="TILE"/>
+			<property name="backmode2" value="TILE"/>
+			<gradient name="gradient0" color0="0x00E7E7E7" color1="0x00C9C9C9" color2="0x00CCCCCC" color3="0x00AEAEAE"/>
+			<gradient name="gradient1" color0="0x00F5E1FF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00C3AFFF"/>
+			<gradient name="gradient2" color0="0x00CFAFFF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00F5E1FF"/>
+			<property name="blend0" value="0"/>
+			<property name="blend1" value="0"/>
+			<property name="blend2" value="0"/>
+		</object>
+		<object>
+			<name value="ScrollbarV"/>
+			<property name="width" value="16"/>
+		</object>
+	</widget>
+
+	<widget>
+		<type value="Slider"/>
+		<object>
+			<name value="SliderH"/>
+			<property name="height" value="16"/>
+			<filename name="background" value="default/slider_back.png"/>
+			<property name="backmode" value="3TILEH"/>
+			<property name="blend" value="0"/>
+		</object>
+		<object>
+			<name value="SliderDragH"/>
+			<property name="width" value="30"/>
+		</object>
+	</widget>
+
+	<widget>
+		<type value="WidgetList"/>
+		<object>
+			<name value="ScrollbarV"/>
+			<property name="width" value="16"/>
+		</object>
+	</widget>
+
+	<widget>
+		<type value="DropDown"/>
+		<object>
+			<name value="Button"/>
+			<filename name="iconup" value="default/drop_down.bmp" colorkey="0x000000FF"/>
+		</object>
+	</widget>
+
+	<widget>
+		<type value="Label"/>
+		<object>
+			<name value="Label"/>
+			<property name="alignment" value="0"/>
+		</object>
+	</widget>
+
+    <widget>
+	<type value="PopupMenu"/>
+	<object>
+	    <type value="ThemeWidget"/>
+	    <name value="PopupMenu"/>
+	    <filename name="background" value="default/back.bmp"/>
+	    <property name="backmode" value="TILE"/>
+	    <property name="blend" value="100"/>
+	    <property name="bordersize" value="0"/>
+		<property name="xPadding" value="6"/>
+		<property name="yPadding" value="6"/>
+	</object>
+	<object>
+	    <type value="ThemeWidget"/>
+	    <name value="Caption"/>
+	    <filename name="background" value="none"/>
+	    <property name="backmode" value="TILE"/>
+	    <property name="blend" value="50"/>
+	    <property name="bordersize" value="0"/>
+		<color name="Active" value="0x00FFFACD"/>
+		<color name="Inactive" value="0x00A0A0A0"/>
+	</object>
+	<object>
+	    <type value="MenuItem"/>
+	    <name value="MenuItem"/>
+	    <filename name="backNormal" value="none"/>
+	    <filename name="backSelected" value="none"/>
+	    <filename name="backDisabled" value="none"/>
+	    <property name="backmodeNormal" value="STRETCH"/>
+	    <property name="backmodeSelected" value="STRETCH"/>
+	    <property name="backmodeDisabled" value="STRETCH"/>
+	    <gradient name="gradientNormal" color0="0x00E7E7E7" color1="0x00C9C9C9" color2="0x00CCCCCC" color3="0x00AEAEAE"/>
+	    <gradient name="gradientSelected" color0="0x00191970" color1="0x006495ED" color2="0x001E90FF" color3="0x0087CEEB"/>
+	    <gradient name="gradientDisabled" color0="0x00CFAFFF" color1="0x00DCC8FF" color2="0x00DCC8FF" color3="0x00F5E1FF"/>
+	    <property name="blendNormal" value="0"/>
+	    <property name="blendSelected" value="0"/>
+	    <property name="blendDisabled" value="0"/>
+	    <color name="Normal" value="0x00B22222"/>
+	    <color name="Selected" value="0x00FFD700"/>
+	    <color name="Disabled" value="0x00E0E0E0"/>
+	    <color name="SepNormal" value="0x00FFFF00"/>
+	    <color name="SepShadow" value="0x00666666"/>
+	</object>
+    </widget>
+
+	<widget>
+		<type value="SpinnerBox"/>
+		<object>
+			<name value="ButtonUp"/>
+			<filename name="iconup" value="default/spin_up.bmp" colorkey="0x000000FF"/>
+			<filename name="icondown" value="default/spin_up.bmp" colorkey="0x000000FF"/>
+		</object>
+		<object>
+			<name value="ButtonDown"/>
+			<filename name="iconup" value="default/spin_down.bmp" colorkey="0x000000FF"/>
+			<filename name="icondown" value="default/spin_down.bmp" colorkey="0x000000FF"/>
+		</object>
+	</widget>
+
+</theme>
+

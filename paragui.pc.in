@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: ParaGUI
+Description: cross-platform widget library
+Version: @VERSION@
+Libs: @PARAGUI_LIBS@
+Cflags: @PARAGUI_CFLAGS@

@@ -1,0 +1,10 @@
+ParaGUI sample apps
+
+paratest:	Simple test application
+navtest:	Keyboard navigation
+layouttest:	Loading of XML layouts
+
+Compilation:
+
+./configure
+make

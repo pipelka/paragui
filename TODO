@@ -1,0 +1,52 @@
+Update me :))
+
+
+ROADMAP:
+
+- 0.6.x
+integrate the surface cache -- DONE
+implement new callback storage (hash table) -- DONE
+make all widget attributes configurable in xml -- DONE
+add a cursor bitmap for SDLLineEdit -- DONE
+make the SDLWidgetList fool proof -- DONE
+API documentation - IN PROGRESS (50%) -- CONTINUED IN 0.7.x
+review and cleanup current code -- DONE
+use ParaGUI in a production environment -- DONE
+redesign the backing store -- DONE
+add some kind of propdown button/list -- DONE
+fix broken QNX theme (SDLListBox) - DONE
+include SDL_Image support -- DONE
+fix rectstretch for images with alpha channel -- DONE
+add colorkey option to theme description -- DONE
+add a popup menu -- DONE
+
+- 0.7.x (~ Mar/Apr 2001)
+a simpler callback mechanism (to call member functions of objects) -- DONE
+merge PG_MaskEdit -- DONE
+merge PG_MessageBox -- DONE
+change class and filenames -- DONE
+move documentation and tutorials to a separate module -- DONE
+integrate a new themeloader (single file) -- DONE (thanks Mike)
+seek and destroy any lurking mem leaks -- DONE (thanks Don)
+handle overlapping widgets (zdepth) -- DONE
+integrate menu system -- IN PROGRESS
+implement missing widgets -- IN PROGRESS
+implement keyboard navigation -- IN PROGRESS
+write C++ samples / tutorials -- IN PROGRESS
+API documentation -- IN PROGRESS (50%)
+api freeze
+finish OpenGL support -- WILL BE MOVED TO A LIB (MAINTAINER?)
+finish Python support -- WILL BE A SEPARATE MODULE (MAINTAINER?)
+write documentation
+write theme tutorial
+write OpenGL samples / tutorials -- WILL BE MOVED TO A LIB (MAINTAINER?)
+write Python samples / tutorials -- WILL BE A SEPARATE MODULE (MAINTAINER?)
+api consistency review -- IN PROGRESS (90%)
+
+- 0.9.0 - BETA1 (~ ???)
+run a heavy beta-test on the lib
+feature freeze (new features will go into 1.1.x)
+bug fixes
+
+- 1.0.0 - RELEASE (Jan/Feb 2002)
+lets party!

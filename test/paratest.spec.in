@@ -1,0 +1,39 @@
+%define name @PACKAGE@
+%define version @VERSION@
+%define release 1
+
+Summary: ParaGUI Demoapplication
+Name: %{name}
+Version: %{version}
+Release: %{release}
+Source0: %{name}-%{version}.tar.gz
+Copyright: LGPL
+Group: System Environment/Libraries
+BuildRoot: /var/tmp/%{name}-buildroot
+Prefix: %{_prefix}
+Packager: Alexander Pipelka <pipelka@bms-austria.com>
+
+%description
+Demoapplication for the ParaGUI Windowing system
+
+%prep
+rm -rf ${RPM_BUILD_ROOT}
+
+%setup
+
+%build
+CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix}
+make
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make install prefix=$RPM_BUILD_ROOT/%{prefix}
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root)
+%{prefix}/bin
+
+%changelog

@@ -1,0 +1,176 @@
+<!doctype refentry PUBLIC "-//Davenport//DTD DocBook V3.0//EN" [
+
+  <!-- Fill in your name for FIRSTNAME and SURNAME. -->
+  <!ENTITY dhfirstname "<firstname>Michael</firstname>">
+  <!ENTITY dhsurname   "<surname>Moerz</surname>">
+  <!-- Please adjust the date whenever revising the manpage. -->
+  <!ENTITY dhdate      "<date>May  14, 2001</date>">
+  <!-- SECTION should be 1-8, maybe w/ subsection other parameters are
+       allowed: see man(7), man(1). -->
+  <!ENTITY dhsection   "<manvolnum>1</manvolnum>">
+  <!ENTITY dhemail     "<email>e9625136@stud3.tuwien.ac.at</email>">
+  <!ENTITY dhusername  "Michael Moerz">
+  <!ENTITY dhucpackage "<refentrytitle>PARAGUI</refentrytitle>">
+  <!ENTITY dhpackage   "paragui-config">
+
+  <!ENTITY debian      "<productname>Debian GNU/Linux</productname>">
+  <!ENTITY gnu         "<acronym>GNU</acronym>">
+]>
+
+<refentry>
+  <docinfo>
+    <address>
+      &dhemail;
+    </address>
+    <author>
+      &dhfirstname;
+      &dhsurname;
+    </author>
+    <copyright>
+      <year>2000-2001</year>
+      <holder>&dhusername;</holder>
+    </copyright>
+    &dhdate;
+  </docinfo>
+  <refmeta>
+    &dhucpackage;
+
+    &dhsection;
+  </refmeta>
+  <refnamediv>
+    <refname>&dhpackage;</refname>
+
+    <refpurpose>script to get information about the installed version of 
+ParaGui
+    </refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>&dhpackage;</command>
+
+      <arg><option>--prefix= </option><replaceable>DIR</replaceable>
+      </arg>
+      <arg><option>--exec-prefix= </option><replaceable>DIR</replaceable>
+      </arg>
+      <arg><option>--version </option>
+      </arg>
+      <arg><option>--libs </option>
+      </arg>
+      <arg><option>--cflags</option>
+      </arg>
+
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  <refsect1>
+    <title>DESCRIPTION</title>
+
+    <para>This manual page documents briefly the
+      <command>&dhpackage;</command> command.</para>
+
+    <para>This manual page was written for the &debian; distribution
+      because the original program does not have a manual page.
+    </para>
+
+    <para><command>&dhpackage;</command> is a tool that is used to configure
+      and determine the compiler and linker flags that should be used to
+      compile and link progams and libraries that use ParaGui. It is also used
+      internally by the m4 macros that are included with ParaGui.
+    </para>
+
+  </refsect1>
+  <refsect1>
+    <title>OPTIONS</title>
+
+    <para>These programs do follow the usual GNU command line syntax,
+      with long options starting with two dashes (`-').  A summary of
+      options is included below.
+    </para>
+
+    <variablelist>
+      <varlistentry>
+        <term><option>--cflags</option>
+        </term>
+        <listitem>
+          <para>Print the compiler flags that are necessary to compile a 
+	    program or library that uses ParaGui.
+</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--exec-prefix=</option><replaceable>DIR</replaceable>
+        </term>
+        <listitem>
+          <para>If specified, use <replaceable>DIR</replaceable> instead of
+	    the installation exec prefix that ParaGui was build with when
+	    computing the output for the --cflags, and --libs options. This
+	    option must be specified before any of the --cflags, and --libs
+	    options.
+</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--libs</option>
+        </term>
+        <listitem>
+          <para>Print the linker flags that are necessary to link a
+	    program that uses ParaGui.
+</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--prefix=</option><replaceable>DIR</replaceable>
+        </term>
+        <listitem>
+          <para>If specified, use PREFIX instead of the installation prefix
+	    that ParaGui was built with when computing the output for the
+	    --cflags, and --libs options. This option is also used for the
+	    exec prefix if --exec-prefix was not specified. This option must
+	    be specified before any of the --cflags, and --libs options.
+</para>
+        </listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>--version</option>
+        </term>
+        <listitem>
+          <para>Prints the currently installed version of ParaGui on standard
+	    output.
+</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsect1>
+  <refsect1>
+    <title>AUTHOR</title>
+
+    <para>This manual page was copied from the sdl-config manpage and modified
+by &dhusername; &dhemail; for the &debian; system (but may be used by others).
+</para>
+
+    <!-- <para>Permission is granted to copy, distribute and/or modify
+      this document under the terms of the <acronym>GNU</acronym> Free
+      Documentation License, Version 1.1 or any later version
+      published by the Free Software Foundation; with no Invariant
+      Sections, no Front-Cover Texts and no Back-Cover Texts.  A copy
+      of the license can be found under
+      <filename>/usr/share/common-licenses/FDL</filename>.</para> -->
+
+  </refsect1>
+</refentry>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-default-dtd-file:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

@@ -1,0 +1,3 @@
+stamp-h stamp-h.in Makefile Makefile.in
+paraconfig_gnu.h
+stamp-h*

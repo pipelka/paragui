@@ -1,0 +1,94 @@
+
+                                  ParaGUI
+
+                       Crossplatform widgetset for SDL
+		 Version 1.0.0 (Beta3 / Release Candidate 1)
+
+
+http://www.paragui.org
+
+
+This library is a high-level crossplatform application framework and GUI
+library. It is completely based on the Simple DirectMedia Layer (SDL).
+It can be compiled on various platforms (Linux, Win32, BeOS, MacOS, ...)
+ParaGUI is targeted on crossplatform multimedia applications and
+embedded devices operating on framebuffer displays.
+
+
+Highlights of the library:
+
+  * published under LGPL 
+
+  * straight forward C++ class-design (see the API documentation) 
+
+  * XML configuration of the new style engine 
+  
+  * XML widget layout loader
+  
+  * transparent useage of compressed file archives (with PhysicsFS)
+
+  * asynchronous messagehandling (messageposts between objects) 
+
+  * multithreaded 
+
+  * support for non-modal overlapping widgets
+    (windows inside of ParaGUI)
+
+  * highly customizable widgets
+    (background gradients, background images, transparency, colors, fonts) 
+
+  * many standard widgets already implemented
+    (buttons, labels, scrollbars, progressbars, windows ...) 
+
+  * create your own widgets
+    (subclass an existing widget) 
+
+  * Python support
+
+  * you can help us to make the library even better
+
+
+This library is distributed under GNU LGPL version 2, which can be
+found in the file "COPYING". 
+
+To learn more about ParaGUI checkout the homepage, see the API
+documentation and subscribe to the mailing list.
+
+Here some rules that are a *must follow* for all contributors:
+
+
+1. code in C++ - if there are standard C++ mechanisms that implement
+   something (a list, a container, a buffer, a string etc.) then they 
+   MUST be used unless some other interfaced code requires other techniques. 
+   After all it's a C++ project
+
+2. major changes that may break the functionality of ParaGUI and 
+   the applications must be discussed on the devel list and _planned_
+   before comitting them. The author of such changes should take every care 
+   to implement the changes so that after commit the library is functional 
+   in all its basic functionality.
+
+3. If some changes require long-term development _and_ they break the
+   functionality of the library, the developer should request for a 
+   development branch of the current tree.
+
+
+If you want to find out more on the right way of bug/issue reporting,
+point your browser to the following URL:
+
+http://www.bms-austria.com/projects/paragui/doc/issuezilla.html
+
+Please note:
+Bugreporting via issuezilla is the one and ONLY way i will accept
+bug reports.
+
+
+Have fun 
+
+
+Alexander Pipelka
+pipelka@teleweb.at
+
+
+PS: People out there think that i'm completely nuts,...
+    You're right ;o)

@@ -1,0 +1,129 @@
+--------------------------------------
+Whats new in ParaGUI 1.0 RC1 (Beta3) ?
+--------------------------------------
+
+Bug fixes, bug fixes, ... :))
+Cleaned up the font interface.
+Some performance tweaks (see PG_Widget::SetDirtyUpdate()).
+added PG_DataContainer to hold binary data.
+added Python support (./configure --enable-python, refer to
+the docs for a detailed description of the configuration
+options )
+
+
+--------------------------------------
+Whats new in ParaGUI 1.0 RC0 (Beta2) ?
+--------------------------------------
+
+The really last thing i had to change was the internal
+structure of the library.
+The whole arrangement was also quite a mess.
+
+Now the lib is separated into these main parts:
+
+draw - all drawing and surface stuff
+fonts - font handling and rendering
+core - basic things like message handling, app class, ...
+themes - the theme loader
+widgets - all widget classes
+
+I also cleaned up the header files.
+Now there are only headers in the include dir that are
+needed by client applications.
+
+pgdrawobject.h has been removed - use pgdraw.h
+
+There are also some compatiblity macros in pgdraw.h that
+allow usage of some old style functions. e.g.:
+
+#define PG_DrawLine PG_Draw::DrawLine
+
+
+
+--------------------------------
+Whats new in ParaGUI 1.0 Beta1 ?
+--------------------------------
+
+The widget system in the prior versions was quite a mess.
+Now i decided to clean up the whole system and make it
+more *defined*.
+
+Due to this there are some changes in widget creation.
+The following rules apply:
+
+Now there are 2 basic widget types:
+
+PG_Widget:
+An unthemed widget that can have an internal drawing surface
+or not.
+
+PG_ThemeWidget:
+A themed widget (loads it's style from the theme definition)
+that can have an internal drawing surface or not.
+
+
+Widgets with drawing surfaces:
+-----------------------------
+
+The  content is drawn into the surface and blitted to the
+screen.
+
+Construction with internal surface:
+PG_Widget(PG_Widget* parent, const PG_Rect& rect, true);
+PG_ThemeWidget(PG_Widget* parent, const PG_Rect& rect, true);
+
+The param "true" indicates the creation of the drawing surfaces.
+
+Redrawing & Blitting:
+
+Redraw(bool doUpdate);
+This function redraws the widget (by calling eventDraw()).
+And calls Update(true) if doUpdate = true.
+
+Update(bool doBlit);
+This calls Blit() and updates the screen.
+
+Blit();
+This function blits the widget surface to the screen and
+calls eventBlit() that can be used for custom blit behaviour.
+
+
+
+Widget without drawing surfaces:
+--------------------------------
+
+The content of the widget is directly blitted to the screen.
+
+Construction:
+PG_Widget(PG_Widget* parent, const PG_Rect& rect);
+PG_ThemeWidget(PG_Widget* parent, const PG_Rect& rect);
+
+Blitting:
+
+Update(bool doBlit);
+This calls Blit() and updates the screen.
+
+Blit();
+This function blits the widget content directly to the
+screen by calling eventBlit().
+
+
+I hope this clarifies the widget behaviour stuff.
+Please contact me if you have further suggestions and
+additions.
+
+For backward compatibility the *old* widgettypes
+(PG_GradientWidget, PG_StaticFrame) still can be used but
+I definitely wouldn't suggest this. Please try to port your
+application to the new widgetclasses.
+
+Porting should be quite easy by replacing PG_GradientWidget,
+PG_StaticFrame with PG_ThemeWidget.
+
+
+I hope this clarifies the widget behaviour stuff.
+Please contact me if you have further suggestions and
+additions.
+
+Alexander Pipelka
+pipelka@teleweb.at

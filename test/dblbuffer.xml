@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<layout>
+	<head>
+	</head>
+	<body>
+
+		<label pos="200,0,240,40" align="center" text="30.5 FPS" name="fps">
+		</label>
+		
+		<dropdown pos="490,50,100,20" indent="10" edit="1" text="pretext">
+			<dropdownitem text="First"/>
+			<dropdownitem text="Second"/>
+			<dropdownitem text="Third"/>
+		</dropdown>
+
+		<checkbutton pos="200,60,240,40" text="Foreground" name="toggle">
+		</checkbutton>
+		
+		<button pos="0,450,100,30" text="Quit" name="quit">
+		</button>
+		
+		<staticframe pos="250,300,100,100" bimage="icon.bmp" transparency="128"/>
+
+		<window pos="200,100,300,300" title="Experimental window" titlecolor="0,0,255" transparency="128" flags="2">
+			<label pos="0,200,400,30" text="Close this window !!!" align="center" textcolor="255,0,0"/>
+		</window>
+		
+	</body>
+</layout>

@@ -1,0 +1,44 @@
+#ifndef WIN32_CONFIG_INCLUDED
+#define WIN32_CONFIG_INCLUDED
+
+// disable win32 warnings on exporting STL objects
+#pragma warning(disable: 4275)
+#pragma warning(disable: 4251)
+#pragma warning(disable: 4786)
+#pragma warning(disable: 4800)
+#pragma warning(disable: 4091)
+
+// strange thing but it works
+#define PATH_MAX MAX_PATH
+
+/* Define if you the the SDL_image library */
+#define HAVE_SDLIMAGE 1
+
+/* Define the default path to the theme files */
+#define PARAGUI_THEMEDIR "./data"
+
+/* Define if you have the vsnprintf function.  */
+/* #undef HAVE_VSNPRINTF */
+
+/* Define if you have the <ext/hash_map> header file.  */
+/* #undef HAVE_EXT_HASH_MAP */
+
+/* Define if you have the <hash_map> header file.  */
+/* #undef HAVE_HASH_MAP */
+
+/* Define if you have the jpeg library (-ljpeg).  */
+#define HAVE_LIBJPEG 1
+
+/* Define if you have the png library (-lpng).  */
+#define HAVE_LIBPNG 1
+
+/* Define if you have the tiff library (-ltiff).  */
+#define HAVE_LIBTIFF 1
+
+/* Name of package */
+#define PACKAGE "paragui"
+
+/* Version number of package */
+#define VERSION "1.0.0"
+
+#endif // WIN32_CONFIG_INCLUDED

@@ -1,0 +1,342 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title></title>
+    
+</head>
+ <body>
+<font size="4" face="Helvetica, Arial, sans-serif"><b><font color="#000000">
+    PARGUI project files for Microsoft Visual C++ 6.0</font></b></font>
+<hr size="1" noshade="">
+<p><font size="4" face="Helvetica, Arial, sans-serif"><font size="2">You
+can either use the precompiled libraries from <a href="http://www.bms-austria.com/projects/paragui">
+     the ParaGUI web site</a>, or you can build ParaGUI yourself.</font></font></p>
+<h3><font size="4" face="Helvetica, Arial, sans-serif">Directory structure</font></h3>
+<p><font face="Helvetica, Arial, sans-serif" size="2">The following directories 
+  should be created in the ParaGUI root directory:</font></p>
+<ul>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">bin =&gt; place 
+  for binary files (.dll, .exe), paragui examples, paragui dlls</font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">lib =&gt; library 
+  files (.lib)</font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">src =&gt; ParaGUI 
+  source files</font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">include =&gt;
+  directory for common headers</font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">expat =&gt; expat 
+  source files (ParaGUI module)</font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">themes =&gt;
+themes source files (ParaGUI module)</font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">test =&gt; example 
+  sources</font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">VisualC =&gt;
+  MSVC++ project files &amp; workspaces (created after unzipping from VisualC.zip) 
+      </font></div>
+  </li>
+</ul>
+<h3><font face="Helvetica, Arial, sans-serif" size="2">Library files</font></h3>
+<p><font face="Helvetica, Arial, sans-serif" size="2">First you have to choose 
+  if you want to link your application  dynamically or statically against 
+ParaGUI. For dynamic linkage you need the dynamic link library (DLL) and the
+import library (LIB). For static linkage you only need the static  library 
+(LIB). If your application should be compiled multi-threaded use the multi-threaded
+  static library.</font></p>
+<ul>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">paragui.dll +
+  paragui.lib =&gt; release mode dynamic link library and import library</font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">paraguid.dll
++ paraguid.lib =&gt; debug mode dynamic link library and import library</font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">paraguis.lib
+=&gt; release mode static link library (single threaded)</font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">paraguisd.lib
+  =&gt; debug mode static link library (single threaded)</font></div>
+  </li>
+  <li>
+    <div>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">paraguimts.lib 
+  =&gt; release mode static link library (multi threaded)</font></div>
+    </div>
+  </li>
+  <li>
+    <div>
+    <div>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">paraguimtsd.lib 
+  =&gt; debug mode static link library (multi threaded)</font></div>
+    </div>
+    </div>
+  </li>
+</ul>
+<p><font face="Helvetica, Arial, sans-serif" size="2">Note: The ParaGUI library 
+ is under LGPL licence. See <a href="COPYING">licence</a> for terms of linking 
+ with ParaGUI. </font></p>
+<h3><font face="Helvetica, Arial, sans-serif" size="2">Building ParaGUI</font></h3>
+<ol>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">Unzip the <u>
+    VisualC.zip</u>  file in the root ParaGUI directory.<br>
+     Be certain that you unzip it into this directory and not any other directory. 
+  If you are using WinZip, be careful to make sure that it extracts into this
+  folder, because it's convenient feature of unzipping to a folder with the
+  name of the file currently being unzipped will get you in trouble if you
+ use it right now.<br>
+    <br>
+    </font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">Go into the <u>
+     VisualC</u> directory that is created, and open the workspace file "<u>
+   paragui_all.dsw</u>  " with MSVC++. <br>
+     You may be prompted at this point to upgrade the workspace, if you are 
+ using a more recent version of MSVC++. If so, allow the workspace to be 
+upgraded.<br>
+    <br>
+    </font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">Choose dynamic 
+  or static paragui project.<br>
+     This is done by right clicking on each project in turn (Projects are 
+listed   in the Workspace panel in the FileView tab), and selecting "Set as
+active  project".<br>
+    <br>
+    </font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">ParaGUI depends 
+  on sdl.lib, sdl_ttf.lib, sdl_image.lib (when HAVE_SDLIMAGE is defined) and
+ freetype.lib<br>
+    <br>
+      You need to supply these libraries to the linker. There are three ways
+  how to do this:<br>
+    </font></div>
+    <div>
+    <ol>
+      <li><font face="Helvetica, Arial, sans-serif" size="2">Go to "Tools|Options|Directories|Library 
+  files", and add proper      paths to all listed .lib files     </font></li>
+      <li><font face="Helvetica, Arial, sans-serif" size="2">Go to "Project|Settings|Link|Category: 
+  Input|Additional Library Path", add      here path to libs (relative or 
+absolute)     </font></li>
+      <li><font face="Helvetica, Arial, sans-serif" size="2">Find .lib files
+  and copy them into /lib directory in your ParaGUI root. This dir is preset
+  to be on the library path.<br>
+        <br>
+        </font></li>
+    </ol>
+    <font face="Helvetica, Arial, sans-serif" size="2">You also need set 
+paths to header files of these libraries. There are also several ways how
+  to do    this:</font></div>
+    <div>
+    <ol>
+      <li><font face="Helvetica, Arial, sans-serif" size="2">Go to "Tools|Options|Directories|Include 
+  files", and add proper      paths to all listed .lib files     </font></li>
+      <li><font face="Helvetica, Arial, sans-serif" size="2">Go to "Project|Settings|C/C++|Category: 
+  Preprocessor|Additional Include directories",      add here paths to headers 
+  (relative or absolute)     </font></li>
+      <li><font face="Helvetica, Arial, sans-serif" size="2">Find .h files 
+  and copy them into /include directory in your      ParaGUI root. This dir 
+  is preset to be on the include path.<br>
+        <br>
+        </font></li>
+    </ol>
+    </div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">Choose the proper 
+  configuration from    "Build|Configurations...": <br>
+    <br>
+     For <strong>paragui_dynamic</strong> there are<br>
+    <br>
+    </font>
+    <ul>
+      <li>
+        <div><font face="Helvetica, Arial, sans-serif" size="2">  Release 
+   =&gt; produces release mode dynamic link library and import    library 
+[bin/paragui.dll, lib/paragui.lib]</font></div>
+      </li>
+      <li>
+        <div><font face="Helvetica, Arial, sans-serif" size="2">Debug = &gt;
+  produces debug mode dynamic link library and import library    [bin/paraguid.dll, 
+  lib/paraguid.lib]<br>
+        <br>
+        </font></div>
+      </li>
+    </ul>
+    <font face="Helvetica, Arial, sans-serif" size="2">For <strong>paragui_static</strong>
+     there are<br>
+    <br>
+    </font>
+    <ul>
+      <li>
+        <div><font face="Helvetica, Arial, sans-serif" size="2">  Release 
+   =  &gt;  produces release mode static link library    (single theraded) 
+ [lib/paraguis.lib]</font></div>
+      </li>
+      <li>
+        <div><font face="Helvetica, Arial, sans-serif" size="2">Debug = &gt;
+  produces debug mode static link library (single theraded)      [lib/paraguisd.lib]</font></div>
+      </li>
+      <li>
+        <div>
+        <div><font face="Helvetica, Arial, sans-serif" size="2"> Release MT
+ = &gt; produces release mode static link library      (multi theraded) [lib/paraguimts.lib]</font></div>
+        </div>
+      </li>
+      <li>
+        <div>
+        <div>
+        <div><font face="Helvetica, Arial, sans-serif" size="2">Debug MT =
+&gt;  produces debug mode static link library (multi theraded)      [lib/paraguimtsd.lib]<br>
+        <br>
+        </font></div>
+        </div>
+        </div>
+      </li>
+    </ul>
+    </div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">Build the project 
+  with the "Project|Build" command.<br>
+         You may get a few warnings, but you should not get any errors. If
+ yes  check    again step 4. If you did it all correctly, check types of
+libraries   sdl.lib,    sdl_ttf.lib, sdl_image.lib, freetype.lib. They must
+be compiled   in mode    Multithreaded DLL. Anyway check troubleshoting section.<br>
+    <br>
+    </font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">Your library
+files are created. Check if you find them in /lib and /bin directories. </font></div>
+  </li>
+</ol>
+<h3><font face="Helvetica, Arial, sans-serif" size="2">Building example files 
+for ParaGUI</font></h3>
+<ol>
+  <li><font face="Helvetica, Arial, sans-serif" size="2">Build paragui_dynamic 
+project library files as described in <strong>Building ParaGUI library</strong>
+ .</font><br>
+    <br>
+  </li>
+  <li><font face="Helvetica, Arial, sans-serif" size="2">Choose the example 
+project you want build "As active project".</font><br>
+    <br>
+  </li>
+  <li><font face="Helvetica, Arial, sans-serif" size="2">Example projects 
+  are dependent on sdlmain.lib (lib file which comes with SDL library). Add 
+  it to paths in similar way as is described in step 4. of <strong>Building 
+ParaGUI library</strong>.</font><br>
+    <br>
+  </li>
+  <li><font face="Helvetica, Arial, sans-serif" size="2">Choose the configuration 
+Debug or Release same way as step 5. of <strong>Building ParaGUI library</strong>
+ .</font><br>
+    <br>
+  </li>
+  <li><font face="Helvetica, Arial, sans-serif" size="2">Build the project 
+with "Project|Build" command. File [/bin/&lt;examplename&gt;.exe] should be
+created in the "bin" directory.<br>
+    <br>
+    </font></li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2">Test your ParaGUI
+ example. It will need some dlls to run (sdl.dll, sdl_image.dll). Just copy
+ them to bin directory or move them into system searching paths for dlls.</font></div>
+  </li>
+</ol>
+<h3><font face="Helvetica, Arial, sans-serif" size="2">Troubleshooting</font></h3>
+<ul>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2"><font color="darkblue">
+     I don't want to use SDL_Image library. I just want to load BMP files.</font><br>
+    <strong>Answer</strong>: remove HAVE_SDLIMAGE define from project settings.
+  "Project|Settings|C/C++|Category: Preprocessor|Preprocessor definitions".
+  Now you don't have to supply sdl_image.lib and SDL_Image header files.<br>
+    <br>
+    </font></div>
+  </li>
+  <li>
+    <div>
+    <div align="Left"><font face="Helvetica, Arial, sans-serif" size="2"><font color="darkblue">
+     I want to link example files statically with ParaGUI.    </font></font><br>
+    <font face="Helvetica, Arial, sans-serif" size="2"><strong>Answer</strong>
+    : specify another ParaGUI library to link with in project setting: "Project|Settings|Link|Category:
+  General|Object/library modules", change paragui.lib to paraguis.lib (or
+paraguid.lib  to paraguisd.lib), or use multithreaded versions of static
+library. Don't  forget to set proper code generation for example project:
+   "Project|Settings|C/C++|Category:  Code generation|Use runtime library.</font><br>
+    </div>
+    <font face="Helvetica, Arial, sans-serif" size="2"><br>
+    </font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2"><font color="darkblue">
+     I get compiler errors like: "fatal error    C1083: Cannot open include 
+ file:  'SDL_image.h': No such file or    directory"</font><br>
+    <strong>Answer</strong>: header files of library were not found by the
+  compiler. You did step 4b wrong.<br>
+    <br>
+    </font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2"><font color="darkblue">
+     I get linker errors like: "fatal error LNK1104: cannot open file "sdl.lib""</font><br>
+    <strong>Answer</strong>: lib file was not found by the linker. You did
+  step 4a wrong.<br>
+    <br>
+    </font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2"><font color="darkblue">
+     I get linker errors like: "error LNK2005:    __alloc_osfhnd already
+defined   in    LIBC.lib(osfinfo.obj)"</font><br>
+    <strong>Answer</strong>: you are mixing libraries of different types 
+(static vs. dynamic, multithreaded vs. singlethreaded, etc.)<br>
+    <br>
+    </font></div>
+  </li>
+  <li>
+    <div><font face="Helvetica, Arial, sans-serif" size="2"><font color="darkblue">
+     I get linker warnings like: "warning LNK4098: defaultlib    "msvcrt.lib" 
+  conflicts with use of other libs; use    /NODEFAULTLIB:library"</font><br>
+    <strong>Answer</strong>: you are mixing libraries of different types (static
+vs. dynamic, multithreaded vs. singlethreaded, etc.), but it was only a warning
+- the project got compiled.</font></div>
+  </li>
+</ul>
+<hr size="1" noshade="">
+<div align="Right"><font face="Helvetica, Arial, sans-serif" size="2"><font size="-2">
+     Last modified 24.4.2001</font><br>
+</font></div>
+<font face="Tahoma, Verdana, Helvetica" size="2"><font size="-2" face="Helvetica, Arial, sans-serif">
+    &copy; 2001 Documentation written by <a href="mailto:woid@centrum.cz">
+Antonin   Hildebrand</a></font><font face="Helvetica, Arial, sans-serif"><br>
+</font><font size="-2" face="Helvetica, Arial, sans-serif">&copy; 2001 ParaGUI
+  library by <a href="mailto:pipelka@teleweb.at"> Alexander Pipelka</a></font><br>
+</font><br>
+<br>
+<br>
+<br>
+</body>
+</html>
