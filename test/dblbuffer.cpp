@@ -8,15 +8,6 @@
 #include "pglabel.h"
 #include "pgcheckbutton.h"
 
-/*
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-
-#include "SDL.h"
-*/
-
 #include <ctime>
 
 #define NUM_SPRITES	100
@@ -44,7 +35,7 @@ PARAGUI_CALLBACK(handle_toggle) {
 int LoadSprite(SDL_Surface *screen, char *file)
 {
 	/* Load the sprite image */
-	sprite = PG_FileArchive::LoadSurface(file, true);
+	sprite = PG_FileArchive::LoadSurface(file, false);
 	if ( sprite == NULL ) {
 		PG_LogMSG( "Couldn't load %s: %s", file, SDL_GetError());
 		return(-1);
@@ -204,19 +195,8 @@ int main(int argc, char *argv[])
 
 	// get the label
 	PG_Label* fps = static_cast<PG_Label*>(app.GetWidgetByName("fps"));
-	/*
-	if ( ! screen ) {
-		fprintf( "Couldn't set %dx%d video mode: %s",
-					width, height, SDL_GetError());
-		exit(2);
-	}
-	*/
 
 	screen = app.GetScreen();
-
-	/*
-	screen = SDL_SetVideoMode(width, height, video_bpp, videoflags);
-	*/
 
 	/* Load the sprite */
 	if ( LoadSprite(screen, "icon.bmp") < 0 ) {
@@ -286,28 +266,19 @@ int main(int argc, char *argv[])
 	then = SDL_GetTicks();
 	done = 0;
 	sprites_visible = 0;
+
 	while ( !done ) {
 		/* Check for events */
 		++frames;
+
 		while ( SDL_PollEvent(&event) ) {
-			/*
-			switch (event.type) {
-				case SDL_KEYDOWN:
-					// Any keypress quits the app...
-				case SDL_QUIT:
-					done = 1;
-					break;
-				default:
-					break;
-			}
-			*/
 			app.PumpIntoEventQueue(&event);
 		}
 		now = SDL_GetTicks();
-		if ( now > then ) {
+		if ( now > then+1000 ) {
 				fps->SetTextFormat("%2.2f FPS",  ((double)frames*1000)/(now-then));
 
-				if((now-then) > 2000) {
+				if((now-then) > 1000) {
 					then = now;
 					frames=0;
 				}
@@ -326,13 +297,9 @@ int main(int argc, char *argv[])
 			MoveSprites(screen, background);
 			PG_Widget::BulkBlit();
 		}
+
 		/* Update the screen! */
-		if ( (screen->flags & SDL_DOUBLEBUF) == SDL_DOUBLEBUF ) {
-			SDL_Flip(screen);
-		} else {
-			SDL_UpdateRect(screen, 0,0,0,0);
-			//SDL_UpdateRects(screen, nupdates, sprite_rects);
-		}
+		SDL_Flip(screen);
 	}
 	free(mem);
 
