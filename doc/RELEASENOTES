@@ -23,6 +23,12 @@ Whats new in ParaGUI 1.0.4 ?
   SetAutoVerticalResize(...)) (Thanks H.C. <sebh@gmx.de>)
 - added a method to PG_RichEdit to activate / deactivate auto vertical
   resize (void SetAlignment(...)) (Thanks H.C. <sebh@gmx.de>)
+- SetIcon(const char* filename), SetIcon(SDL_Surface* icon) for 
+  PG_Window's title bar (H.C. <sebh@gmx.de>)
+- another wrapper function for PG_Widget::my_internaldata->quitmodal
+  which allows one to set it to false (H.C. <sebh@gmx.de>)
+- removed unnecessary Redraw() call in PG_RadioButton::SetText(...)
+  (H.C. <sebh@gmx.de>)
 
 ----------------------------
 Whats new in ParaGUI 1.0.3 ?

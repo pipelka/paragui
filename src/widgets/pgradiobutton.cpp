@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/28 19:59:42 $
+    Update Date:      $Date: 2003/04/07 22:28:18 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -166,7 +166,6 @@ void PG_RadioButton::AddToGroup(PG_RadioButton* w) {
 
 void PG_RadioButton::SetText(const char* text) {
 	my_widgetLabel->SetText(text);
-	my_widgetLabel->Redraw();
 }
 
 const char* PG_RadioButton::GetText() {
