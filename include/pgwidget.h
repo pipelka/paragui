@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/04/20 21:32:28 $
+    Update Date:      $Date: 2004/05/18 08:51:47 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.14 $
     Status:           $State: Exp $
 */
 
@@ -216,13 +216,6 @@ public:
 	SDL_Surface* GetWidgetSurface();
 
 	/**
-	Return the pointer to the screen surface
-
-	@return	SDL_Surface pointer to the screen surface
-	*/
-	//SDL_Surface* GetScreenSurface();
-
-	/**
 	Check if the object is visible
 	@return							true if object is visible
 	*/
@@ -249,7 +242,8 @@ public:
 	@param bModal set to true if processing takes place in a modal loop
 	@return	true if the event was sucessfully processed
 
-	ProcessEvent asks the widget to process a given event.
+	ProcessEvent asks the widget to process a given event. It also asks its
+    parent and, if bModal is true, its children.
 	*/
 	virtual bool ProcessEvent(const SDL_Event* event, bool bModal = false);
 

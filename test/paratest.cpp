@@ -52,6 +52,18 @@ bool handle_exit(PG_Pointer clientdata) {
 	return true;
 }
 
+bool handle_toggle(PG_Pointer clientdata) {
+	PG_Button* b = (PG_Button*)clientdata;
+	if (b->GetPressed()) {
+		PG_LogMSG("Button pressed");
+	}
+	else {
+		PG_LogMSG("Button released");
+	}
+	return true;
+}
+	
+
 bool hande_slideIndent(PG_ScrollBar* s, long pos, PG_Pointer data)  {
 	PG_DropDown* drop = static_cast<PG_DropDown*>(data);
 	drop->SetIndent(pos);
@@ -481,6 +493,11 @@ int main(int argc, char* argv[]) {
 	slider.sigSlideEnd.connect(slot(hande_slideIndent), (PG_Pointer)&drop);
 	drop.Show();
 
+	PG_Button toggle(NULL, PG_Rect(200, 350, 100, 30), "Toggle me");
+	toggle.sigClick.connect(slot(handle_toggle), (PG_Pointer)&toggle);
+	toggle.SetToggle(true);
+	toggle.Show();
+	
 	PG_Button list(NULL, PG_Rect(400,450,100,30), "List", PG_Button::OK);
 	list.sigClick.connect(slot(handle_list));
 	list.Show();

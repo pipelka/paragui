@@ -35,6 +35,7 @@ Whats new in ParaGUI 1.1.8 ?
 - removed "using namespace std;" from header files
 - removed "using namespace std;" from all sources
 - removed Get / SetApplicationPath from PG_Application
+
 - applied patches from Sebastian:
 - made PG_Application::RunEventLoop() virtual to make subclassing easier
 - made PG_Application::my_quitEventLoop protected to make subclassing easier
@@ -59,14 +60,29 @@ Whats new in ParaGUI 1.1.8 ?
 - reset PG_RichEdit's scrollarea height to 0 when adding new text
 - added SetSizeByText() example to paratest.cpp
 - a bit of cleanup
+- PG_Widget::FadeOut: lock screen-surface before blitting
+- PG_Widget::RestoreBackground: properly restore screen-cliprect
+- PG_Widget::eventBlit: proper screen locking
+- PG_Widget::Draw[H|V]Line: proper screen locking
+- PG_Widget: some small comments, removed an obsolete function
+- PG_Button::eventMouseLeave: fixed a critical bug where you could untoggle a button by clicking
+  on it, moving the mouse away and releasing the mouse which would
+  untoggle the button but not release a click event.
+- PG_Button::SetBorderSize: fixed a small bug where one bordersize would be set for all three cases
+- PG_Button::eventBlit: screen is now locked
+  removed some obsolete lines of code, added comments
+
 - applied patches from Ulf Lorenz:
 - commented PG_Draw::DrawTile
 - commented PG_Draw::DrawGradient
 - PG_Rect: simplified some if-clauses
 - surface.cpp: tiny check added, another one removed
 - surface.cpp: preserved clip rect
+
 - applied patches from Fred Ollinger:
 - many many documentation updates
+- added widget-screenshots
+- new beginners-tutorial
 
 
 ----------------------------

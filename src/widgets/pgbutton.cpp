@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/05/18 08:51:47 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
     Status:           $State: Exp $
 */
 
@@ -285,6 +285,16 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		return false;
 	}
 
+	//if the user moved the cursor out of the button, ignore the click
+	if (!IsMouseInside()) {
+		if (!_mid->togglemode || !_mid->isPressed) {
+			_mid->state = UNPRESSED;
+		}
+		ReleaseCapture();
+		Update();
+		return false;
+	}
+	
 	if(_mid->togglemode) {
 		if(!_mid->isPressed) {
 			_mid->state = PRESSED;
@@ -294,19 +304,8 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 			_mid->isPressed = false;
 		}
 	} else {
-		_mid->state = UNPRESSED;
+		_mid->state = HIGHLITED;
 		_mid->isPressed = false;
-	}
-
-	if(!IsMouseInside()) {
-		_mid->state = UNPRESSED;
-		ReleaseCapture();
-		Update();
-		return false;
-	} else {
-		if(!_mid->togglemode) {
-			_mid->state = HIGHLITED;
-		}
 	}
 
 	ReleaseCapture();
@@ -388,11 +387,11 @@ void PG_Button::SetBorderSize(int norm, int pressed, int high) {
 	}
 
 	if(pressed >= 0) {
-		(*_mid)[PRESSED].bordersize = norm;
+		(*_mid)[PRESSED].bordersize = pressed;
 	}
 
 	if(high >= 0) {
-		(*_mid)[HIGHLITED].bordersize = norm;
+		(*_mid)[HIGHLITED].bordersize = high;
 	}
 }
 
@@ -519,17 +518,12 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	srf = (*_mid)[_mid->state].srf;
 
 	// blit it
-
+	PG_Application::LockScreen();
+	
 	if(t != 255) {
 		SDL_SetAlpha(srf, SDL_SRCALPHA, 255-t);
 		PG_Draw::BlitSurface(srf, src, PG_Application::GetScreen(), dst);
 	}
-
-	int shift = (((_mid->state == PRESSED) || (_mid->togglemode && _mid->isPressed)) ? 1 : 0) * _mid->pressShift;
-
-	r.my_xpos = rect.my_xpos + (rect.my_width >> 1) + shift;
-	r.my_ypos = rect.my_ypos + (rect.my_height >> 1) + shift;
-	r.my_height = 0;
 
 	// check for icon srf
 	SDL_Surface* iconsrf;
@@ -550,6 +544,7 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	}
 
 	int tw = my_width;
+	int shift = (((_mid->state == PRESSED) || (_mid->togglemode && _mid->isPressed)) ? 1 : 0) * _mid->pressShift;
 
 	if(iconsrf) {
 
@@ -595,6 +590,8 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	}
 
 	DrawBorder(PG_Rect(0, 0, Width(), Height()), (*_mid)[_mid->state].bordersize, i1);
+
+	PG_Application::UnlockScreen();
 }
 
 void PG_Button::SetBlendLevel(STATE mode, Uint8 blend) {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/08 17:35:40 $
+    Update Date:      $Date: 2004/05/18 08:51:47 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.14 $
     Status:           $State: Exp $
 */
 
@@ -59,7 +59,7 @@ class PG_ButtonDataInternal;
 
 	@image html button_yes_icon.png "PG_Button::YES"
 	@image html button_no_icon.png "PG_Button::NO"
-	@image html button_apply_icon.png "PG_Button::APPY"
+	@image html button_apply_icon.png "PG_Button::APPLY"
 	@image html button_cancel_icon.png "PG_Button::CANCEL"
 	@image html button_close_icon.png "PG_Button::CLOSE"
 	@image html button_help_icon.png "PG_Button::HELP"
@@ -211,11 +211,20 @@ public:
 	@param filenameup icon for unpressed state
 	@param filenamedown icon for pressed state
 	@param filenameover icon for highlited state
-	@param colorkey
+	@param colorkey the colorkey assigned to the icons
 	@return true on success
 	*/
 	bool SetIcon(const char* filenameup, const char* filenamedown, const char* filenameover, const PG_Color& colorkey);
 
+	/**
+	Set icons for the buttons
+	@param icon_up the icon surface for the unpressed state
+	@param icon_down the icon for the pressed state
+	@param icon_over the icon for the highlited state
+	@return true on success
+
+	@note The user has to care for freeing the surfaces after the button is deleted!
+	*/
 	bool SetIcon(SDL_Surface* icon_up, SDL_Surface* icon_down = NULL, SDL_Surface* icon_over = NULL);
 
 	/**
@@ -223,7 +232,6 @@ public:
 	@param num	(NORM = icon for unpressed state | PRESSED = icon for pressed state | HIGH = icon for highlighted state)
 	@return a pointer to an SDL_Surface for the given icon
 	*/
-
 	SDL_Surface* GetIcon(STATE num);
 	
 	/**
@@ -232,6 +240,8 @@ public:
 	@param pressed	bordersize for pressed state
 	@param high	bordersize for highlighted state
 	@return a pointer to an SDL_Surface for the given icon
+
+	If you don't want to set the bordersize for one of the states, set it to -1.
 	*/
 	void SetBorderSize(int norm, int pressed, int high);
 
@@ -244,12 +254,25 @@ public:
 	*/
 	void SetToggle(bool bToggle);
 
-	/**  */
+	/** 
+	If the button is a toggle button you can modify the status of the button
+	with this function
+	*/
 	void SetPressed(bool pressed);
 
+	/** 
+	Set the transparency of the button
+	@param t the transparency you want to assign
+	@param bRecursive if set to true, apply the transparency to all child widgets
+	*/
 	void SetTransparency(Uint8 t, bool bRecursive = false);
 	
-	/**  */
+	/**
+	Set the transparency for the single button states
+	@param norm the transparency of the normal (unpressed) state
+	@param pressed the transparency of the pressed state
+	@param high the transparency of the highlited state
+	*/
 	void SetTransparency(Uint8 norm, Uint8 pressed, Uint8 high);
 
 	/**
@@ -261,9 +284,7 @@ public:
 	/**  
 	Determine whether a given button is pressed. This can either mean
 	that the user is clicking the button in the case of a push button, 
-	or that the button is toggled in the case of a toggle button. For programs 
-	using the event handler, this function is not necessary. 
-	In this case, see SetEventCallback instead.
+	or that the button is toggled in the case of a toggle button.
 	@return bool is the button pressed
 	*/
 	bool GetPressed();
@@ -286,6 +307,12 @@ public:
 	*/
 	Uint8 GetBlendLevel(STATE mode);
 
+	/**
+	Resizes the button so that a specified text fits on it
+	@param Width additional width apart from the width required by the text
+	@param Height additional height apart from the one required by the text
+	@param text the text which is to fit on the button
+	*/
 	void SetSizeByText(int Width = 0, int Height = 0, const char *Text = NULL);
 
 	SignalButtonClick<> sigClick;

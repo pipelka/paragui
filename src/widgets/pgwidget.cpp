@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/23 19:06:58 $
+   Update Date:      $Date: 2004/05/18 08:51:47 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.15 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.16 $
    Status:           $State: Exp $
  */
 
@@ -792,11 +792,8 @@ void PG_Widget::StartWidgetDrag() {
 	int x, y;
 	
 	SDL_GetMouseState(&x, &y);
-	_mid->ptDragStart.x = static_cast<Sint16>(x);
-	_mid->ptDragStart.y = static_cast<Sint16>(y);
-	
-	_mid->ptDragStart.x -= my_xpos;
-	_mid->ptDragStart.y -= my_ypos;
+	_mid->ptDragStart.x = static_cast<Sint16>(x) - my_xpos;
+	_mid->ptDragStart.y = static_cast<Sint16>(y) - my_ypos;
 }
 
 void PG_Widget::WidgetDrag(int x, int y) {
@@ -884,9 +881,6 @@ void PG_Widget::FadeOut() {
 	SDL_Surface* srfFade = PG_Draw::CreateRGBSurface(my_width, my_height);
 	SDL_Surface* screen = PG_Application::GetScreen();
 
-	// blit the widget to temp surface
-	PG_Draw::BlitSurface(screen, *this, srfFade, r);
-
 	int d = (255-_mid->transparency)/ _mid->fadeSteps;
 	if(!d) {
 		d = 1;
@@ -894,6 +888,9 @@ void PG_Widget::FadeOut() {
 	
 	PG_Application::LockScreen();
 	
+	// blit the widget to temp surface
+	PG_Draw::BlitSurface(screen, *this, srfFade, r);
+
 	for(int i=_mid->transparency; i<255; i += d) {
 		RestoreBackground(NULL, true);
 		SDL_SetAlpha(srfFade, SDL_SRCALPHA, 255-i);
@@ -1008,6 +1005,7 @@ bool PG_Widget::RestoreBackground(PG_Rect* clip, bool force) {
 		if(widgetList.first() != this) {
 			SDL_SetClipRect(PG_Application::GetScreen(), clip);
 			widgetList.Blit(*clip, widgetList.first(), this);
+            SDL_SetClipRect(PG_Application::GetScreen(), NULL);
 		}
 		return true;
 	}
@@ -1015,6 +1013,7 @@ bool PG_Widget::RestoreBackground(PG_Rect* clip, bool force) {
 	GetParent()->RestoreBackground(clip);
 	SDL_SetClipRect(PG_Application::GetScreen(), clip);
 	GetParent()->Blit(false, false);
+    SDL_SetClipRect(PG_Application::GetScreen(), NULL);
 
 	return true;
 }
@@ -1450,7 +1449,9 @@ void PG_Widget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 		PG_LogDBG("DST BLIT: x:%d y:%d w:%d h:%d",dst.x,dst.y,dst.w,dst.h);
 #endif // DEBUG
 
+        PG_Application::LockScreen();
 		PG_Draw::BlitSurface(srf, src, PG_Application::GetScreen(), dst);
+        PG_Application::UnlockScreen();
 	}
 }
 
@@ -1539,6 +1540,7 @@ void PG_Widget::DrawHLine(int x, int y, int w, const PG_Color& color) {
 	
 	if(my_srfObject == NULL) {
 		surface = PG_Application::GetScreen();
+        PG_Application::LockScreen();
 	}
 	
 	x += my_xpos;
@@ -1566,6 +1568,10 @@ void PG_Widget::DrawHLine(int x, int y, int w, const PG_Color& color) {
 
 	rect.SetRect(x0, y, wl, 1);
 	SDL_FillRect(surface, &rect, c);
+
+    if (my_srfObject == NULL) {
+        PG_Application::UnlockScreen();
+    }
 }
 
 void PG_Widget::DrawVLine(int x, int y, int h, const PG_Color& color) {
@@ -1574,6 +1580,7 @@ void PG_Widget::DrawVLine(int x, int y, int h, const PG_Color& color) {
 	
 	if(my_srfObject == NULL) {
 		surface = PG_Application::GetScreen();
+        PG_Application::LockScreen();
 	}
 	
 	x += my_xpos;
@@ -1601,6 +1608,10 @@ void PG_Widget::DrawVLine(int x, int y, int h, const PG_Color& color) {
 
 	rect.SetRect(x, y0, 1, hl);
 	SDL_FillRect(surface, &rect, c);
+
+    if (my_srfObject == NULL) {
+        PG_Application::UnlockScreen();
+    }
 }
 
 /**  */
