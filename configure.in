@@ -403,7 +403,6 @@ else
   if test "x$exceptions" = xyes; then
   	EXCEPTIONS_FLAGS=""
   	AC_MSG_RESULT([compile with default exceptions (no flags)])
-	AC_DEFINE(EXCEPTIONS_ENABLED)
 	AC_DEFINE([EXCEPTIONS_ENABLED], 1, [Define if exceptions are enabled])
   else
   	EXCEPTIONS_FLAGS="-fno-exceptions"
