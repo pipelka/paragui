@@ -137,6 +137,7 @@ case "$target" in
             # Look for the location of the tools and install there
             ac_default_prefix=$BUILD_PREFIX
         fi
+	EXTRA_LIBS="$EXTRA_LIBS -Wl, -u,_WinMain@16"
 	CROSSCOMPILE=YES
 	;;
     alpha*-*-linux*)
