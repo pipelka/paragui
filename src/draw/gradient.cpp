@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/03/29 21:26:40 $
+    Update Date:      $Date: 2003/03/29 21:30:54 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/gradient.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.6 $
     Status:           $State: Exp $
 */
 
@@ -66,18 +66,6 @@ void PG_Draw::DrawGradient(SDL_Surface* surface, const PG_Rect& r, PG_Gradient& 
 	    gradient.colors[2],
 	    gradient.colors[3]);
 }
-
-static const Sint32 DitherMatrix4[4][4] = {
-     1/*(0/16.)*256*/,  (16./8.)*256,  (16./2.)*256, (16./10.)*256,
-    (16./12.)*256,  (16./4.)*256, (16./14.)*256,  (16./6.)*256,
-     (16./3.)*256, (16./11.)*256,  (16./1.)*256,  (16./9.)*256,
-    (16./15.)*256,  (16./7.)*256, (16./13.)*256,  (16./5.)*256
-};
-
-static const float DitherMatrix2[2][2] = {
-     0/16.,  8/16.,
-    12/16.,  4/16.,
-};
 
 void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL_Color & ul, const SDL_Color & ur, const SDL_Color & dl, const SDL_Color & dr) {
 	Sint32 v00,v01,v02;
@@ -166,11 +154,6 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL
 	Uint32 y_pitch = pitch*drawrect.h - bpp;
 	register Uint32 pixel = 0;
 	
-	Sint32 mx;
-	Sint32 my;
-	Sint32 conv = ((bpp*8)*256 / 255*256);
-	Sint32 rd,gd,bd;
-
 	for (register Sint32 x = 0; x < drawrect.w; x++) {
 
 		yr = (r2 - r1) / h;
@@ -194,17 +177,9 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const SDL
 					break;
 
 				case 2:
-					mx = x & 3;
-					my = y & 3;
-					//PG_LogMSG("mx: %i, my: %i", mx, my);
-					rd = ((r / conv) + DitherMatrix4[my][mx]) * conv;
-					gd = ((g / conv) + DitherMatrix4[my][mx]) * conv;
-					bd = ((b / conv) + DitherMatrix4[my][mx]) * conv;
-					//PG_LogMSG("rd: %i, gd: %i, bd: %i", rd, gd, bd);
-
-					pixel =  (rd>>Rloss) << Rshift
-							   | (gd>>Gloss) << Gshift
-							   | (bd>>Bloss) << Bshift;
+					pixel =  (r>>Rloss) << Rshift
+							   | (g>>Gloss) << Gshift
+							   | (b>>Bloss) << Bshift;
 
 					*((Uint16 *) (bits)) = (Uint16) pixel;
 					break;
