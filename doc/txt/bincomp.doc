@@ -1,0 +1,80 @@
+/**
+
+\page Binary Compatibility Issues With C++
+
+	<br>
+	Binary compatibility has to be targeted for post 1.0.0 versions of ParaGUI
+
+	Matthias Ettrich from the KDE project has written a very useful document
+	that explains the do's and don'ts.
+
+	<br>
+	Here is an excerpt of the most important things:
+	<br>
+
+	<hr><br>
+	<h3>The dos and don'ts </h3>
+
+	You can ...
+	<ul>
+
+	<li> add new non-virtual functions.
+
+	<li> reimplement virtual functions defined in one of the base classes
+	<b>if</b> it is safe that programs linked with the prior version of
+	the library call the implementation in the base class rather than the
+	new one. <em> This is tricky and might be dangerous. Think twice
+	before doing it. </em>
+
+	<li> change an inline function or make an inline function non-inline
+	<b>if</b> it is safe that programs linked with the prior version of
+	the library call the old implementation. <em> This is tricky and might
+	be dangerous. Think twice before doing it. </em>
+
+	<li> Remove private non-virtual function <b>if</b> they are not called
+	by any inline functions.
+
+	<li> add new <b>static</b> data members.
+
+	<li> add new classes.
+
+	</ul>
+
+	<p> You cannot ...
+	<ul>
+
+	<li> add new virtual functions as this will change the layout of the
+	virtual table and thus break subclasses.
+
+	<li> change the order of virtual functions in the class
+	declaration. This will just as well change the layout of the virtual
+	table.
+
+	<li> change the signature of a function. Note that extending a
+	function with another parameter, even if this parameter has a default
+	argument, changes the signature and thus is <b>not</b> binary compatible
+	(only source compatible). Simply add another function with the same
+	name and the extended argument list and add a short BCI (binary
+	incompatibiliy issue) note that the two functions shall be merged with
+	a default argument in later versions of the library.
+
+	<li> change the access rights to some functions, for example from
+	<tt>private</tt> to <tt>public</tt>. With some compilers, this
+	information may be part of the signature. If you need to make a
+	private function protected or even public, you have to add a new
+	function that calls the private one.
+
+	<li> add new data members to a class except static ones.
+
+	<li> change the class hierachy apart from adding new classes.
+
+	</ul>
+       <br>
+
+\htmlonly
+	<p align=right> <small> <em>
+	Matthias Ettrich <a href="mailto:ettrich@kde.org">ettrich@kde.org</a>
+	</em></small></p>
+\endhtmlonly
+*/
+

@@ -1,0 +1,42 @@
+/**
+
+\page requirements	Requirements for compiling ParaGUI
+
+	ParaGUI is mainly based on SDL. <br>
+	Please checkout the following libs for successful compilation.<p>
+
+	<ul>
+		<li><b>ParaGUI Version <= 0.5.2:</b>
+
+			SDL (Simple Directmedia Layer) Version <= 1.1.4 <br>
+			SDL_ttf (True Type Font Rendering Engine for SDL) Version <= 1.2.1 <br>
+			FreeType >= 1.2.0 <p>
+
+		<li><b>ParaGUI Version >= 0.5.3:</b>
+
+			SDL (Simple Directmedia Layer) Version >= 1.1.5 <br>
+			or the latest snapshot from the CVS repository <br>
+			SDL_ttf (True Type Font Rendering Engine for SDL) Version >= 1.2.2 <br>
+			FreeType >= 1.2.0<p>
+
+		<li><b>ParaGUI Version >= 0.6.5:</b>
+
+			SDL (Simple Directmedia Layer) Version >= 1.2.0 <br>
+			or the latest snapshot from the CVS repository <br>
+			SDL_ttf (True Type Font Rendering Engine for SDL) Version >= 1.2.2 <br>
+			FreeType >= 1.2.0<br>
+			SDL_Image >= 1.1.0 (if enabled)<p>
+
+		<li><b>ParaGUI Version >= 1.0.0:</b>
+
+			SDL (Simple Directmedia Layer) Version >= 1.2.0 <br>
+			FreeType >= 2.0.3<br>
+			SDL_Image >= 1.1.0 (if enabled)<br>
+			expat >= 1.95.1<br>
+			zlib<br><br>
+			If you enable python support you will need the following
+			additional packages for successful compilation:<br>
+			SWIG Version >= 1.3.5 (www.swig.org)<br>
+			Python Version >= 2.0<p>
+	</ul>
+*/

@@ -1,0 +1,92 @@
+/**
+
+\page coding Coding conventions for ParaGUI
+
+<h2>Coding rules</h2>
+
+<ul>
+	<li>code in C++ - if there are standard C++ mechanisms that 
+	implement something (a list, a container, a buffer, a string etc.) 
+	then they MUST be used unless some other interfaced code requires 
+	other techniques. After all it's a C++ project
+
+	<li>major changes that may break the functionality of ParaGUI and 
+	the applications must be discussed on the devel list and _planned_
+	before comitting them. The author of such changes should take every care 
+	to implement the changes so that after commit the library is functional 
+	in all its basic functionality.
+
+	<li>If some changes require long-term development _and_ they break the
+	functionality of the library, the developer should request for a 
+	developement branch of the current tree.
+</ul>
+
+
+<h2>Coding style</h2>
+
+Grab astyle, a code formatter for C, C++, and Java, from astyle.sourceforge.net.
+All code in the repository should be run through astyle
+before being committed, with these options:
+
+<pre>astyle --style=kr --indent=tab=4 --indent-switches filename</pre>
+
+Doing this has several advantages:
+<ul>
+	<li>Code in the repository will be consistently
+	    formatted.
+	<li>You don't have to worry about the coding
+	    conventions while coding, or at all for that
+	    matter.
+	<li>You can reformat code to your own personal
+	    style preference while working on it, and
+	    then easily convert it back to the way it was,
+	    along with your added code.  Since astyle will
+	    format it in the exact same way, patches won't
+	    be filled with many lines of useless formatting
+	    changes.
+	<li>It's easy.
+</ul>
+
+Note: don't make a habit of formatting all source files
+('just to be sure') instead of just the ones you modified.
+This will update the timestamps on the files and cause all
+hell to break loose.
+
+Here's an outline of the code format, for the sake of
+completeness.. but use astyle. Please.
+
+<h2>Sample code:</h2>
+
+\code
+// No, this code is not supposed to make sense
+void foo(int bar) {
+	if (bar < 7) {
+		cout << bar << endl;
+	}
+	else {
+		cout << "That's a big bar you got there.";
+	}
+}
+\endcode
+
+<h2>Things to notice:</h2>
+
+<ul>
+	<li>C++ style comments are best for few-line comments
+	<li>Use C comments for commenting large blocks
+	<li>K&R style braces, with one space before the first brace
+	<li>No spaces padding the inside of parenthesis
+	<li>One space padding of operators on both sides
+	<li>An if statement's block will always be enclosed in braces,
+	    even if it is just one line.
+	<li>Hard tabs for indents
+	<li>And the most important thing of all, no matter what you do:
+	  <b>Do not assume anything about the length of a tab.</b>
+	  This means don't mix tabs and spaces in an interchangeable way.
+	  This way, everything that looks nice in an editor with 8-space
+	  tabs, will look just fine in an editor with 4-space tabs, etc.
+</ul>
+
+
+*/
+

@@ -1,0 +1,450 @@
+/**
+
+\page layoutformat XML format for the layout loader
+\subsection layout_basicscheme Basic scheme of the document :
+
+\code
+<?xml version="1.0"?>
+<layout>
+
+	<head>
+	.
+	.
+	.
+	</head>
+
+	<body>
+	.
+	.
+	.
+	</body>
+</layout>
+\endcode
+
+* Every tag has two form - long and short (if you use long form in the begining tag, you must use
+long form in the end tag a vice versa).
+
+
+\subsection layout_maintags Main section tags
+
+\code
+<layout>	<LA>
+\endcode
+
+This tag is document base tag.<br>
+Must be first tag in the doc and it`s allowed to have exactly one this tag in the doc.<br>
+No parameters.<br>
+
+
+\subsection layout_sectiontags Layout section tags
+
+\code
+<head>	<HD>
+\endcode
+
+This tag defines head section.<br>
+Must be placed before \code<BODY>\endcode tag.<br>
+No parameters.<br>
+
+\note In the head section is not defined any tag yet.<br>
+
+\code
+<body>	<BD>
+\endcode
+
+This tag defines body section.<br>
+In this section are defined every objects (widgets) you want to use and/or show.<br>
+No parameters.<br>
+
+
+\subsection layout_bodytags Body section tags
+
+Private params are only for this tag, public params are for use in the child`s tag.<br>
+* param must be used.
+
+\code
+<widget>	<WD>
+\endcode
+
+Private params:<br>
+ pos="x1,y1,x2,y2"	(position and size)
+
+Public params:<br>
+ name="str"			(name of the object)
+
+Parent: none<br>
+
+\code
+<dropdown>	<DD>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ id="int"			(Id)<br>
+
+Public params:<br>
+ indent="int"		(Indention of the text)<br>
+ edit="1"			(for editable text)<br>
+ text="str"			(text)<br>
+
+Parent: widget<br>
+
+\code
+<userbutton> <UB>
+\endcode
+
+\note For some reason this doesn`t work<br>
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ id="int"			(Id)<br>
+ title="str"		(title on the button)<br>
+
+Public params:<br>
+ upimage=""str"		(image when is button up)<br>
+ downmage=""str"	(image when is button down)<br>
+ colorkey="int"		(colorkey for the image)<br>
+ toggle="1"			(toggle-button)<br>
+ pressed="1"		(button will be pressed)<br>
+ border="int,int,int"
+ 					(size of border in norm, pressed, high state)<br>
+ transparency="int,int,int"
+ 					(transparency in norm, pressed, high state)<br>
+
+Parent : widget<br>
+
+\code
+<button> <BT>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ id="int"			(Id)<br>
+ title="str"		(title on the button)<br>
+
+Public params:<br>
+ upgrad="grad"		(gradient when button up)<br>
+ downgrad="grad"	(gradient when button down)<br>
+ selgrad="grad"		(gradient when button selected)<br>
+
+Parent : userbutton<br>
+
+\code
+<label> <LL>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ title="text"		(text in the label)<br>
+
+Public params:<br>
+ align="align"		(align of the text = left,center,right)<br>
+ indent="int"		(indention of the text)<br>
+ icon="str"			(icon in the label)<br>
+
+Parent : widget<br>
+
+\code
+<gradientwidget> <GW>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+
+Public params:<br>
+ image="str"		(filename of the image)<br>
+ imode="imode"		(tile / stretch)<br>
+ blend="int"		(0 - background image fully visible / 255 - gradient fully visible)<br>
+ gradient="grad"	(gradient of the background)<br>
+
+Parent : widget<br>
+
+\code
+<staticframe> <SF>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+
+Public params:<br>
+ bimage="str"		(name of the image)<br>
+ transparency="int"	(transparency of the drawing object 0 - opaque / 255 - fully transparent)<br>
+
+Parent : gradientwidget<br>
+
+\code
+<lineedit> <LE>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ length="int"		(max length of the text)<br>
+
+Public params:<br>
+ text="str"			(text)<br>
+ readonly="1"		(read-only lineedit)<br>
+ validkeys="str"	(list of valid keys)<br>
+
+Parent : staticframe<br>
+
+\code
+<maskedit> <ME>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ length="int"		(max length of the text)<br>
+
+Public params:<br>
+ mask="str"			(mask e.g. ##.##.#####)<br>
+ spacer="char"		(witch char to use inspace #)<br>
+
+Parent : lineedit<br>
+
+
+\code
+<progressbar> <PB>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+
+Public params:<br>
+ progress="int"		(progress value)<br>
+
+Parent : staticframe<br>
+
+
+\code
+<spinnerbox> <SB>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+
+Public params:<br>
+ value="int"		(value)<br>
+ min="int"			(min value)<br>
+ max="int"			(max value)<br>
+ mask="str"			(mask of the value e.g. ##)<br>
+Note: min < max - if not, min and max values are not used<br>
+
+Parent : staticframe<br>
+
+
+\code
+<window> <WN>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ title="str"		(window title)<br>
+ modal="1"			(window will be modal)<br>
+
+Public params:<br>
+ titlecolor="int,int,int"
+					(RGB of the title font color)<br>
+
+Parent : staticframe<br>
+
+
+\code
+<messagebox> <MB>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ title="str"		(window title)<br>
+ text="str"			(window text)<br>
+ talign="align"		(text align - left/center/right)<br>
+*b1text="str"		(text on the button1)<br>
+*b1pos="x1,y1,x2,y2"
+					(text on the button1)<br>
+ b2text="str"		(text on the button2)<br>
+ b2pos="x1,y1,x2,y2"
+					(text on the button2)<br<
+
+Public params:<br>
+ none<br>
+
+Parent : window<br<
+
+
+\code
+<widgetlist> <WL>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+
+Public params:<br>
+ scrollbar="1"		(enable scrollbar)<br>
+
+Parent : staticframe<br>
+
+
+\code
+<listbox> <LB>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br<
+
+Public params:<br>
+ multisel="1"		(enable multiselect)<br>
+
+Parent : widgetlist<br>
+
+
+\code
+<radiobutton> <RB>
+\endcode
+
+Private params:<br<
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ id="int"			(id)<br>
+ text="str" 		(text)<br>
+ group="str"		(name of the first radiobutton in the group if this isn`t the first one)<br>
+
+Public params:<br>
+ pressed="1"		(pressed)<br>
+
+Parent : staticframe<br<
+
+
+\code
+<checkbutton> <RB>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ id="int"			(id)<br>
+ text="str" 		(text)<br>
+
+Public params:<br>
+ none<br>
+
+Parent : radiobutton<br>
+
+
+\code
+<scrollbar> <SB>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ id="int"			(id)<br>
+ dir="int" 			(direction 0 - horizontal, 1 - vertical)<br>
+
+Public params:<br>
+ value="int"		(value)<br>
+ wsize="int"		(window size)<br>
+ lsize="int"		(l size)<br>
+ psize="int"		(p size)<br>
+ min="int"			(min value)<br>
+ max="int"			(max value)<br>
+Note: min < max - if not, min and max values are not used<br>
+
+Parent : staticframe<br>
+
+
+\code
+<slider> <SR>
+\endcode
+
+Private params:<br>
+*pos="x1,y1,x2,y2"	(position and size)<br>
+ id="int"			(id)<br>
+ dir="int" 			(direction 0 - horizontal, 1 - vertical)<br>
+
+Public params:<br>
+ none<br>
+
+Parent : scrollbar<br>
+
+
+\code
+<image> <IM>
+\endcode
+
+Private params:<br>
+*pos="x1,y1"		(position)<br>
+*iimage="str"		(filename of the image)<br>
+
+Public params:<br>
+ none<br>
+
+Parent : staticframe<br>
+
+
+\subsection layout_dropdownsection DropDown section tags
+
+\code
+<dropdownitem>	<DI>
+\endcode
+
+Params:<br>
+ text="str"			(text of the item)<br>
+
+
+\subsection layout_listboxsection ListBox section tags
+
+\code
+<listboxitem>	<LI>
+\endcode
+
+Private params:<br>
+ height="int"		(height of the item)<br>
+ ltext="str" 		(text of the item)<br>
+
+Public params:<br>
+ select="1"			(item will be selected)<br>
+
+Parent : scrollbar<br>
+
+
+\code
+<columnitem>	<CI>
+\endcode
+
+Private params:<br>
+ height="int"		(height of the item)<br>
+ colimns="int"		(no. of the columns)<br>
+
+Public params:<br>
+ none<br>
+
+Parent : listboxitem<br>
+
+
+\subsection layout_columnitemsection ColumnItem section tags
+
+\code
+<column>	<CO>
+\endcode
+
+Params:<br>
+*no="int"			(no. of the column)<br>
+*text="str"			(text of the item)<br>
+ width="int"		(width of the column)<br>
+
+
+\subsection layout_special Special tags
+
+\code
+<style>		<ST>
+\endcode
+
+Use style by widgetname and objectname<br>
+Params:<br<
+*widget="str"		(name of the widget)<br>
+ object="str"		(name of the object)<br>
+
+
+\code
+<noshow>	<NS>
+\endcode
+
+Do not show parent widget<br>
+*/
+

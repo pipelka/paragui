@@ -1,0 +1,56 @@
+/**
+
+\page aboutwidgets	About widgets, redrawing and blitting
+
+	There are 2 basic widget types:<br><br>
+	
+	<ul>
+		<li><b>PG_Widget:</b><br>
+			An unthemed widget that can have an internal drawing surface or not.<br><br>
+	
+		<li><b>PG_ThemeWidget:</b><br>
+			A themed widget (loads it's style from the theme definition)
+			that can have an internal drawing surface or not.<br><br>
+	</ul>
+	
+	
+	<H2>Widgets with drawing surfaces:</H2>
+	
+	The  content is drawn into the surface and blitted to the
+	screen.
+	
+	<ul>
+		<li>Construction with internal surface:<br><br>
+			@code PG_Widget(PG_Widget* parent, const PG_Rect& rect, true); @endcode
+			@code PG_ThemeWidget(PG_Widget* parent, const PG_Rect& rect, true); @endcode
+			The param "true" indicates the creation of the drawing surfaces.<br><br>
+	
+		<li>Redrawing & Blitting:<br><br>	
+			@code Redraw(bool doUpdate); @endcode
+			This function redraws the widget (by calling eventDraw()) 
+			and calls Update(true) if doUpdate = true.<br><br>
+			@code Update(bool doBlit); @endcode
+			This calls Blit() and updates the screen.<br><br>
+			@code Blit(); @endcode
+			This function blits the widget surface to the screen and
+			calls eventBlit() that can be used for custom blit behaviour.<br>
+	</ul>
+
+
+	<H2>Widget without drawing surfaces:</H2>
+	
+	The content of the widget is directly blitted to the screen.
+	
+	<ul>
+		<li>Construction:<br><br>
+			@code PG_Widget(PG_Widget* parent, const PG_Rect& rect); @endcode
+			@code PG_ThemeWidget(PG_Widget* parent, const PG_Rect& rect); @endcode<br><br>
+	
+		<li>Blitting:<br><br>
+			@code Update(bool doBlit); @endcode
+			This calls Blit() and updates the screen.<br><br>
+			@code Blit(); @endcode
+			This function blits the widget content directly to the
+			screen by calling eventBlit().<br><br>
+	</ul>	
+*/

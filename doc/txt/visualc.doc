@@ -1,0 +1,126 @@
+/**
+
+\page VisualC ParaGUI & VisualC++
+
+	<H2>PARGUI project files for Microsoft Visual C++ 6.0</H2>
+
+	You can either use the precompiled libraries from the ParaGUI web site, or you can build ParaGUI yourself.
+
+	<H2>Directory structure</H2>
+
+	The following directories should be created in the ParaGUI root directory:
+
+	\li bin => place for binary files (.dll, .exe), paragui examples, paragui dlls
+	\li lib => library files (.lib)
+	\li src => ParaGUI source files
+	\li include => directory for common headers
+	\li expat => expat source files (ParaGUI module)
+	\li themes => themes source files (ParaGUI module)
+	\li test => example sources
+	\li VisualC => MSVC++ project files & workspaces (created after unzipping from VisualC.zip)
+
+	<H2>Library files</H2>
+
+	First you have to choose if you want to link your application  dynamically or statically against
+	ParaGUI. For dynamic linkage you need the dynamic link library (DLL) and the import library
+	(LIB). For static linkage you only need the static library (LIB). If your application should be
+	compiled multi-threaded use the multi-threaded static library.
+
+	\li paragui.dll + paragui.lib => release mode dynamic link library and import library
+	\li paraguid.dll + paraguid.lib => debug mode dynamic link library and import library
+	\li paraguis.lib => release mode static link library (single threaded)
+	\li paraguisd.lib => debug mode static link library (single threaded)
+	\li paraguimts.lib => release mode static link library (multi threaded)
+	\li paraguimtsd.lib => debug mode static link library (multi threaded)
+
+	Note: The ParaGUI library is under LGPL licence. See <a href="http://www.bms-austria.com/projects/paragui/license.html">licence</a> for terms of linking
+	with ParaGUI.
+
+	<H2>Building ParaGUI</H2>
+
+	<ol>
+	<li> Unzip the VisualC.zip file in the root ParaGUI directory.<br>
+		Be certain that you unzip it into this directory and not any other directory.
+		If you are using WinZip, be careful to make sure that it extracts into this
+		folder, because it's convenient feature of unzipping to a folder with the
+		name of the file currently being unzipped will get you in trouble if you
+		use it right now.<br><br>
+	<li> Go into the VisualC directory that is created, and open the workspace file " paragui_all.dsw " with MSVC++.<br>
+		You may be prompted at this point to upgrade the workspace, if you are
+		using a more recent version of MSVC++. If so, allow the workspace to be upgraded.<br><br>
+	<li> Choose dynamic or static paragui project.<br>
+		This is done by right clicking on each project in turn (Projects are listed in the
+		Workspace panel in the FileView tab), and selecting "Set as active  project".<br><br>
+	<li> ParaGUI depends on sdl.lib, sdl_ttf.lib, sdl_image.lib (when HAVE_SDLIMAGE is defined) and freetype.lib<br><br>
+		<ol>
+		<li> You need to supply these libraries to the linker. There are three ways how to do this:<br><br>
+			Go to "Tools|Options|Directories|Library files", and add proper paths to all listed .lib files<br>
+			Go to "Project|Settings|Link|Category: Input|Additional Library Path", add here path to libs (relative or absolute)<br>
+			Find .lib files and copy them into /lib directory in your ParaGUI root. This dir is preset to be on the library path.<br><br>
+		<li> You also need set paths to header files of these libraries. There are also several ways how to do this:<br><br>
+			Go to "Tools|Options|Directories|Include files", and add proper paths to all listed .lib files<br>
+			Go to "Project|Settings|C/C++|Category:  Preprocessor|Additional Include directories", add here paths to headers
+			(relative or absolute)<br>
+			Find .h files and copy them into /include directory in your ParaGUI root. This dir
+			is preset to be on the include path.<br><br>
+		</ol>
+	<li> Choose the proper configuration from "Build|Configurations...":<br><br>
+		<ol>
+		<li> For <b>paragui_dynamic</b> there are<br><br>
+			<b>Release</b> => produces release mode dynamic link library and import library [bin/paragui.dll, lib/paragui.lib]<br>
+			<b>Debug</b> => produces debug mode dynamic link library and import library    [bin/paraguid.dll, lib/paraguid.lib]<br><br>
+		<li>For <b>paragui_static</b> there are<br><br>
+			<b>Release</b> = >  produces release mode static link library (single threaded) [lib/paraguis.lib]<br>
+			<b>Debug</b> => produces debug mode static link library (single threaded) [lib/paraguisd.lib]<br>
+			<b>Release MT</b> => produces release mode static link library (multi threaded) [lib/paraguimts.lib]<br>
+			<b>Debug MT</b> =>  produces debug mode static link library (multi threaded) [lib/paraguimtsd.lib]<br><br>
+		</ol>
+	<li> Build the project with the "Project|Build" command.<br>
+		You may get a few warnings, but you should not get any errors. If
+		yes check again. If you did it all correctly, check types of
+		libraries sdl.lib, sdl_ttf.lib, sdl_image.lib, freetype.lib. They must
+		be compiled in mode Multithreaded DLL. Anyway check troubleshoting section.<br><br>
+	<li> Your library files are created. Check if you find them in /lib and /bin directories.<br><br>
+	</ol>
+
+	<H2>Building example files for ParaGUI</H2>
+
+	\li Build paragui_dynamic project library files as described in <b>Building ParaGUI library</b>.<br><br>
+	\li Choose the example project you want build "As active project".<br><br>
+	\li Example projects are dependent on sdlmain.lib (lib file which comes with SDL library).<br>
+		Add it to paths in similar way as is described in step 4. of <b>Building ParaGUI library</b>.<br><br>
+	\li Choose the configuration Debug or Release same way as step 5. of Building ParaGUI library.<br><br>
+	\li Build the project with "Project|Build" command.<br>
+		File [/bin/<examplename>.exe] should becreated in the "bin" directory.<br><br>
+	\li Test your ParaGUI example.<br>
+		It will need some dlls to run (sdl.dll, sdl_image.dll). Just copy
+		them to bin directory or move them into system searching paths for dlls.<br><br>
+
+	<H2>Troubleshooting</H2>
+
+	\li I don't want to use SDL_Image library. I just want to load BMP files.<br>
+		<b>Answer:</b> remove HAVE_SDLIMAGE define from project settings.<br>
+		"Project|Settings|C/C++|Category: Preprocessor|Preprocessor definitions".<br>
+		Now you don't have to supply sdl_image.lib and SDL_Image header files.<br><br>
+	\li I want to link example files statically with ParaGUI.<br>
+		<b>Answer:</b> specify another ParaGUI library to link with in project setting:<br>
+		"Project|Settings|Link|Category: General|Object/library modules", change paragui.lib to paraguis.lib (or
+		paraguid.lib  to paraguisd.lib), or use multithreaded versions of static library.<br>
+		Don't  forget to set proper code generation for example project:<br>
+		"Project|Settings|C/C++|Category:  Code generation|Use runtime library.<br><br>
+	\li I get compiler errors like: "fatal error C1083: Cannot open include file: 'SDL_image.h': No such file or directory"<br>
+		<b>Answer:</b> header files of library were not found by the compiler. You did step 4b wrong.<br><br>
+	\li I get linker errors like: "fatal error LNK1104: cannot open file "sdl.lib""<br>
+		<b>Answer:</b> lib file was not found by the linker. You did step 4a wrong.<br><br>
+	\li I get linker errors like: "error LNK2005: __alloc_osfhnd already defined in LIBC.lib(osfinfo.obj)"<br>
+		<b>Answer:</b> you are mixing libraries of different types
+		(static vs. dynamic, multithreaded vs. singlethreaded, etc.)<br><br>
+	\li I get linker warnings like: "warning LNK4098: defaultlib "msvcrt.lib" conflicts with use of other libs; use /NODEFAULTLIB:library"<br>
+		<b>Answer:</b> you are mixing libraries of different types
+		(static vs. dynamic, multithreaded vs. singlethreaded, etc.), but it was only a warning - the project got compiled.<br><br>
+
+\htmlonly
+© 2001 Documentation written by <a href="mailto:woid@centrum.cz">Antonin Hildebrand</a><br>
+© 2001 ParaGUI library by Alexander Pipelka
+\endhtmlonly
+*/

@@ -1,0 +1,34 @@
+/**
+\example tut1.cpp
+TUTORIAL 1 - application initialization, eventloop
+*/
+
+/**
+\example tut2.cpp
+TUTORIAL 2 - our first widget (a button)
+*/
+
+/**
+\example tut3.cpp
+TUTORIAL 3 - callback functions
+*/
+
+/**
+\example tut4.cpp
+TUTORIAL 4 - custom widgets
+*/
+
+/**
+\example tut5.cpp
+TUTORIAL 5 - member callbacks, message exchange between widgets
+*/
+
+/**
+\example tut6.cpp
+TUTORIAL 6 - mouse event functions - part 1
+*/
+
+/**
+\example tut7.cpp
+TUTORIAL 7 - mouse event functions - part 2
+*/

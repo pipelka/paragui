@@ -1,0 +1,153 @@
+/**
+
+\mainpage ParaGUI Documentation
+
+\section intro Introduction
+	ParaGUI is a cross-platform high-level application framework and GUI (graphical user interface) library.<br>
+	It can be compiled on various platforms (Linux, Win32, BeOS, MacOS, ...)<br><br>
+	ParaGUI is completely based on the Simple DirectMedia Layer (SDL).<br>
+	ParaGUI is targeted on crossplatform multimedia applications and
+	embedded devices operating on framebuffer displays.
+
+\section highlights Highlights of the library
+
+	\li published under LGPL<br>
+	\li straight forward C++ class-design<br>
+	\li cross-platform<br>
+	\li supports alpha-blending of overlapping widgets<br>
+	\li threadsafe<br>
+	\li highly customizable widgets<br>
+	(background gradients, background images, transparency, colors, fonts)<br>
+	\li XML configuration<br>
+	\li many standard widgets already implemented<br>
+	(buttons, labels, scrollbars, progressbars, windows ...)<br>
+	\li create your own widgets<br>
+	(subclass an existing widget) <br>
+	\li supports various imagetypes through SDL_Image (configurable at compile time)<br>
+	\li using libSigC++ as callback framework
+
+\section install Installation
+
+	\subsection step1 Installing from RPM
+	That's the easiest method:
+
+	\code
+	rpm -Uhv paragui-x.x.x.rpm
+	rpm -Uhv paragui-devel-x.x.x.rpm
+	\endcode
+
+	and you're set.
+
+
+	\subsection step2 Requirements for building the sources
+
+	\li <a href="http://www.libsdl.org">SDL</a> >= 1.2.0<br>
+	\li <a href="http://freetype.sourceforge.net/">freetype</a> >= 2.0.3<br>
+	\li <a href="http://www.zlib.org">zlib</a> Compression library<br>
+	\li <a href="http://www.libpng.org">libpng</a> PNG image library<br>
+	\li <a href="http://www.libsdl.org/projects/SDL_image/index.html">SDL_Image</a> >= 1.2.0 (if enabled)<br>
+	\li <a href="http://expat.sourceforge.net">Expat</a> >= 1.95.1 (XML library)<br>
+	\li <a href="http://www.opengl.org">OpenGL</a> (for the ParaGL extension)<br>
+
+	You will also need the correponding development packages.
+
+
+	\subsection step3 Installation for distributions:
+
+	\code
+	tar -zxvf paragui-x.x.x.tar.gz
+	cd paragui-x.x.x
+	./configure [options]
+	make
+	make install (as root)
+	\endcode
+
+	\subsection step4 Installation for CVS snapshots
+	Get the snapshot via \ref contribute "CVS checkout" or by downloading a tarball
+
+	\code
+	tar -zxvf paragui-cvs.tar.gz
+	cd paragui
+	sh autogen.sh
+	./configure [options]
+	make
+	make install (as root)
+	\endcode
+
+	\subsection step5 Available configure options
+
+	<b>--enable-internalexpat</b><br>
+	Linking with the expat shared library may cause problems on some systems.<br>
+	This configure switch will enable an internal version of expat. 
+	(So you don't need to install the expat library anymore).<br>
+	
+	<b>--prefix="path"</b><br>
+	I found that many people out there simply forgot that this option
+	exists in every configure script.
+	I suggest to use "--prefix=/usr" for any RedHat and compatible (Mandrake, ...) 
+	system.
+	
+	<b>--disable-static</b><br>
+	This option is also a common one but not known by many people. Use it if you don't
+	need to build static link libraries. It will greatly increase the compilation (and 
+	linking) speed.
+	
+	<b>--enable-debug</b><br>
+	Will produce debug messages during execution (slow).
+
+	<b>--with-themedir=DIR</b><br>
+	ParaGUI themefiles will be placed in DIR.<br>
+	Default location is PREFIX/share/paragui
+
+	\subsection step6 Installation hint:
+	Several people had troubles compiling CVS snapshots on
+	SuSE and Slackware.
+	If you get error messages running the autogen.sh script
+	please try the following:
+
+	Change this line in autogen.sh<br>
+	\code
+	aclocal
+	\endcode
+	to:<br>
+	\code
+	aclocal -I /usr/local/share/aclocal
+	\endcode
+	
+\section samples Compiling the sample applications
+
+	I noticed that many people didn't even realize that there are some useful sample apps
+	and code snippets included in the source distribution.
+	
+	To build them simply change to the "test" directory in the sources after installation
+	of the library and enter the followwing commands:
+	
+	\code
+	make
+	\endcode
+	
+	I would suggest to browse the source of "paratest" (paratest.cpp) to learn more about ParaGUI.<br>
+	Another very useful sample is "dblbuffer" which shows how to use ParaGUI in combination
+	with the SDL doublebuffer mode (game developers know what I'm talking about).<br>
+	The XML layout loader capabilities are shown in "layouttest".
+	
+	If you downloaded the documentation tarball the described procedure also applies to the tutorials
+	included in docs (in the "tutorial" directory).
+
+
+\section concept Conceptual overview
+
+	\subsection concept_widget Widget organization
+
+	Widgets of ParaGUI  organize themselves in widget trees (PG_Rectlist). When you create a PG_Widget with another object as parent,
+	it's added to the parent's children list, and is deleted when the parent is.
+
+	A child normally also becomes a child widget, i.e. it is displayed in its parent's coordinate system and is graphically
+	clipped by its parent's boundaries. For example, when the an application deletes a message box after it has been closed,
+	the message box's buttons and label are also deleted, just as we'd want, because the buttons and label are children of
+	the message box.
+
+	You can also delete child objects yourself, and they will remove themselves from their parents.
+
+	!! UNFINISHED !! - Need to say a bit more
+*/

@@ -29,6 +29,7 @@ Whats new in ParaGUI 1.1.7 ?
 - dynamic resizing of listbox height in PG_DropDown
 - disabled alpha for application background
 - optimized PG_RectList
+- added docs
 
 
 ----------------------------

@@ -1,0 +1,44 @@
+/**
+
+\page	contribute	Contributing (A small CVS guide)
+
+<br>
+Our project is hosted at <a href="http://savannah.nongnu.org/projects/paragui">savannah</a>. The mailing lists and the CVS repository are located there.
+<p>
+<b>Check out the sources from CVS :</b>
+<p>
+ParaGUI's CVS repository can be checked out through anonymous
+CVS over SSH with the following instruction set. When prompted
+for a password for <I>anoncvs</I>, simply press the Enter key.
+
+<p>
+The SSHv2 public key fingerprints for the machine hosting the cvs
+trees are:
+<pre>
+RSA: 1024 80:5a:b0:0c:ec:93:66:29:49:7e:04:2b:fd:ba:2c:d5
+DSA: 1024 4d:c8:dc:9a:99:96:ae:cc:ce:d3:2b:b0:a3:a4:95:a5
+</pre>
+
+<b>Stable software repository :</b>
+<pre>export CVS_RSH="ssh"</pre>
+<pre>cvs -z3 -d:ext:anoncvs@savannah.nongnu.org:/cvsroot/paragui co -r devel-1-0 paragui</pre>
+<b>Development software repository :</b>
+<pre>export CVS_RSH="ssh"</pre>
+<pre>cvs -z3 -d:ext:anoncvs@savannah.nongnu.org:/cvsroot/paragui co -r devel-1-1 paragui</pre>
+<p>
+When you update from within the module's directory (with cvs update) you do not need the -d option anymore.
+<p>
+<b>Sync with the repository :</b>
+<pre>cvs -z3 update -d -P<pre>
+<p>
+<b>Create a patch/diff :</b>
+<p>
+After editing the sources it's easy to create a difference set of the current repository. Change to the modules directory and issue the following commands (asuming you're using something UNIX like):
+<p>
+<pre>cvs -z3 diff -u > whatever_the_name_of_the_patch_is.patch</pre>
+<p>
+<b>Get your patch commited :</b>
+<p>
+Send the resulting file to the "paragui-dev@nongnu.org" mailing list describing what it does and why do you want the patch to be commited.	<li>Make your changes<br>
+<br>
+*/
