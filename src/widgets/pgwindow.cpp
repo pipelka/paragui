@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/07 22:28:18 $
+    Update Date:      $Date: 2003/04/16 09:21:39 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.7 $
     Status:           $State: Exp $
 */
 
@@ -198,10 +198,10 @@ bool PG_Window::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 		PG_Point pos = GetParent()->ScreenToClient(x,y);
 		x = pos.x;
 		y = pos.y;         // Should not be moved out of the parent:
-		if(x >= GetParent()->Width() - 5)
-			x = GetParent()->Width() - 5;
-		if(y >= GetParent()->Height() - 5)
-			y = GetParent()->Height() - 5;
+		if(x >= GetParent()->Width() - my_width - 1)
+			x = GetParent()->Width() - my_width - 1;
+		if(y >= GetParent()->Height() - my_height -1)
+			y = GetParent()->Height() - my_height -1;
 	} else {                     // A top-level-widget
 		if(x > (my_srfScreen->w - my_width - 1))
 			x = (my_srfScreen->w - my_width - 1);
