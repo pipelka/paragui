@@ -18,6 +18,7 @@ noinst_PROGRAMS = \
 	listbox \
 	animation \
 	dropdown \
+	dropdown2 \
 	paratest \
 	dblbuffer \
 	navtest \
@@ -69,6 +70,9 @@ windowresize_LDADD = $(LFLAGS)
 
 dropdown_SOURCES = dropdown.cpp
 dropdown_LDADD = $(LFLAGS)
+
+dropdown2_SOURCES = dropdown2.cpp
+dropdown2_LDADD = $(LFLAGS)
 
 animation_SOURCES = animation.cpp
 animation_LDADD = $(LFLAGS)
