@@ -19,6 +19,7 @@ libpgcore_la_SOURCES = \
 	pgcolor.cpp
 
 libpgcore_la_LIBADD = \
+	$(SDL_LIBS) \
 	$(SIGC_LIBS)
 
 EXTRA_DIST = \
