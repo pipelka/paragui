@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 09:18:25 $
+    Update Date:      $Date: 2004/03/10 15:34:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.12 $
     Status:           $State: Exp $
 */
 
@@ -113,6 +113,7 @@ public:
 	template<class datatype = PG_Pointer> class SignalQuit : public PG_Signal1<PG_Application*, datatype> {};
 	template<class datatype = PG_Pointer> class SignalVideoResize : public PG_Signal2<PG_Application*, const SDL_ResizeEvent*, datatype> {};
 	template<class datatype = PG_Pointer> class SignalXMLTag : public PG_Signal1<PG_XMLTag*, datatype> {};
+	template<class datatype = PG_Pointer> class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {};
 
 	/**  */
 	PG_Application();
@@ -315,7 +316,7 @@ public:
 	*/
 	static void SetBulkMode(bool bulk = true);
 
-	static bool GetGLMode();
+	//static bool GetGLMode();
 
 	void EnableBackground(bool enable = true);
 
@@ -413,11 +414,9 @@ public:
 	}
 
 	/**
-       Get widget by id.
-
-       @param id  id of the widget
-
-       @return pointer to the requested widget or 0 if failed
+	Get widget by id.
+	@param id  id of the widget
+	@return pointer to the requested widget or 0 if failed
 	*/
 	static PG_Widget *GetWidgetById(int id);
     
@@ -550,9 +549,29 @@ public:
     */
 	static void ClearOldMousePosition();
 
+	/**
+	Translates numeric keypad keys into other keys in dependency of NUM_LOCK state.
+	Should be called in eventKeyDown() for proper numeric keypad behaviour.
+	@param key SDL_KeyboardEvent* key to translate
+	 */
+	static void TranslateNumpadKeys(SDL_KeyboardEvent *key);
+
+	/**
+	Sends an event to the global message queue.
+
+	@param event SDL_Event message
+	@return true - the message was processed by the framework
+	*/
+
+	bool PumpIntoEventQueue(const SDL_Event* event);
+
 	SignalQuit<> sigQuit;
 	SignalVideoResize<> sigVideoResize;
 	SignalXMLTag<> sigXMLTag;
+	SignalAppIdle<> sigAppIdle;
+
+	/** */
+	virtual void eventIdle();
 
 protected:
 
@@ -596,7 +615,7 @@ private:
 	static SDL_Surface* screen;
 
 	static bool bulkMode;
-	static bool glMode;
+	//static bool glMode;
 	static bool emergencyQuit;
 	static bool enableBackground;
 	static bool enableAppIdleCalls;
@@ -607,6 +626,8 @@ private:
 	static CursorMode my_mouse_mode;
 	static SDL_mutex* mutexScreen;
 	static bool disableDirtyUpdates;
+	static bool my_quitEventLoop;
+
 };
 
 /**

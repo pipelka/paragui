@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 09:18:25 $
+    Update Date:      $Date: 2004/03/10 15:34:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
     Status:           $State: Exp $
 */
 
@@ -139,9 +139,9 @@ private:
 	bool my_multiselect;
 	Uint16 my_indent;
 	int my_selectindex;
-	PG_Label::TextAlign my_alignment;
 
 	PG_ListBoxBaseItem* my_selectedItem;
+	PG_Label::TextAlign my_alignment;
 
 };
 

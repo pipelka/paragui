@@ -21,6 +21,19 @@ take a look into "TODO".
 
 
 ----------------------------
+Whats new in ParaGUI 1.1.8 ?
+----------------------------
+
+- added PG_Factory (yeah)
+- started PG_MessageObject cleanup (move code to PG_Application)
+- added GetTitlebarHeight() / SetTitlebarHeight to PG_Window
+- renamed SetColorTitlebar to SetTitlebarColor
+- marked PG_MessageBox::WaitForClick obsolete
+- new RunModal() / SetModalStatus(int) methods
+- PG_ScrollArea::ScrollToWidget(..) now honours area-bounds
+
+
+----------------------------
 Whats new in ParaGUI 1.1.7 ?
 ----------------------------
 
@@ -39,6 +52,11 @@ Whats new in ParaGUI 1.1.7 ?
 - splitted PG_WidgetList in PG_ScrollWidget / PG_WidgetList
 - PG_RichEdit is now inherited from PG_ScrollWidget
 - PG_ScrollBar / PG_Slider cleanup
+- removed obsolete PG_MessageObject::WaitEvent()
+- removed obsolete PG_MessageObject::objectList (use widgetlist instead)
+- moved PG_MessageObject::TranslateNumPadKeys to PG_Application
+- removed GlMode stuff
+- moved PG_Application stuff from PG_MessageObject
 - applied patches from Sebastian:
   made AddWidget() / AddItem() obsolete (see roadmap for more info)
   added param 'bool bRecursive' to PG_Widget::SetTransparency (set to false by default)

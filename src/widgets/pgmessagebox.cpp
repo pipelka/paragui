@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/01 14:36:03 $
+    Update Date:      $Date: 2004/03/10 15:34:03 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -64,7 +64,6 @@ PG_MessageBox::~PG_MessageBox() {
 }
 
 void PG_MessageBox::Init(const char* windowtext, int textalign, const char* style) {
-	buttonflag=0;
 
 	my_textbox = new PG_RichEdit(this, PG_Rect(10, 40, my_width-20, my_height-50));
 	my_textbox->SendToBack();
@@ -88,12 +87,7 @@ void PG_MessageBox::LoadThemeStyle(const char* widgettype) {
 //Event?
 bool PG_MessageBox::handleButton(PG_Button* button) {
 	//Set Buttonflag to ButtonID
-	buttonflag = button->GetID();
+	SetModalStatus(button->GetID());
 	QuitModal();
 	return true;
-}
-
-int PG_MessageBox::WaitForClick() {
-	RunModal();
-	return buttonflag;
 }

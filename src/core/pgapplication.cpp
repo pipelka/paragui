@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 09:18:25 $
+    Update Date:      $Date: 2004/03/10 15:34:03 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.13 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.14 $
     Status:           $State: Exp $
 */
 
@@ -58,7 +58,7 @@ SDL_Surface* PG_Application::screen = NULL;
 string PG_Application::app_path = "";
 PG_Theme* PG_Application::my_Theme = NULL;
 bool PG_Application::bulkMode = false;
-bool PG_Application::glMode = false;
+//bool PG_Application::glMode = false;
 bool PG_Application::emergencyQuit = false;
 bool PG_Application::enableBackground = true;
 bool PG_Application::enableAppIdleCalls = false;
@@ -72,6 +72,7 @@ SDL_Surface* PG_Application::my_scaled_background = NULL;
 PG_Color PG_Application::my_backcolor;
 int PG_Application::my_backmode = BKMODE_TILE;
 bool PG_Application::disableDirtyUpdates = false;
+bool PG_Application::my_quitEventLoop = false;
 
 /**
 	new shutdown procedure (called at application termination
@@ -213,11 +214,11 @@ int PG_Application::RunEventLoop(void* data) {
 			if (SDL_PollEvent(&event) == 0) {
 				object->eventIdle();
 			} else {
-				PG_MessageObject::PumpIntoEventQueue(&event);
+				object->PumpIntoEventQueue(&event);
 			}
 		} else {
 			SDL_WaitEvent(&event);
-			PG_MessageObject::PumpIntoEventQueue(&event);
+			object->PumpIntoEventQueue(&event);
 		}
 
 		DrawCursor();
@@ -425,7 +426,7 @@ SDL_Surface* PG_Application::SetScreen(SDL_Surface* surf) {
         
 	PG_Application::screen = surf;
 
-	glMode = (surf->flags & SDL_OPENGLBLIT);
+	//glMode = (surf->flags & SDL_OPENGLBLIT);
 
 	SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
 	SDL_EnableUNICODE(true);
@@ -745,16 +746,16 @@ void PG_Application::Shutdown() {
 	DeleteBackground();
 	
 	// destroy still existing objects
-	vector<PG_MessageObject*>::iterator list = objectList.begin();
+	//vector<PG_MessageObject*>::iterator list = objectList.begin();
+	PG_Widget* list = PG_Widget::GetWidgetList()->first();
 
-	while(list != objectList.end()) {
+	while(list != NULL) {
 
-		if(!(*list == this || *list == NULL)) {
-			delete *list;
-		}
+		PG_Widget* o = list;
+		list = list->next();
 
-		objectList.erase(list);
-		list = objectList.begin();
+		PG_Widget::GetWidgetList()->Remove(o);
+		delete o;
 	}
 
 	// unload theme (and free the allocated mem)
@@ -988,9 +989,9 @@ bool PG_Application::GetBulkMode() {
 	return bulkMode;
 }
 
-bool PG_Application::GetGLMode() {
+/*bool PG_Application::GetGLMode() {
 		return glMode;
-}
+}*/
 
 void PG_Application::EnableBackground(bool enable) {
 	enableBackground = enable;
@@ -1051,6 +1052,241 @@ SDL_Surface* PG_Application::GetScreen() {
 	return screen;
 }
 #endif
+
+void PG_Application::eventIdle() {
+	sigAppIdle(this);
+	SDL_Delay(1);
+}
+
+void PG_Application::TranslateNumpadKeys(SDL_KeyboardEvent *key) {
+	// note: works on WIN, test this on other platforms
+
+	// numeric keypad translation
+	if (key->keysym.unicode==0) {	 // just optimalisation
+		if (key->keysym.mod & KMOD_NUM) {
+			// numeric keypad is enabled
+			switch (key->keysym.sym) {
+				case SDLK_KP0       :
+					key->keysym.sym = SDLK_0;
+					key->keysym.unicode = SDLK_0;
+					break;
+				case SDLK_KP1       :
+					key->keysym.sym = SDLK_1;
+					key->keysym.unicode = SDLK_1;
+					break;
+				case SDLK_KP2       :
+					key->keysym.sym = SDLK_2;
+					key->keysym.unicode = SDLK_2;
+					break;
+				case SDLK_KP3       :
+					key->keysym.sym = SDLK_3;
+					key->keysym.unicode = SDLK_3;
+					break;
+				case SDLK_KP4       :
+					key->keysym.sym = SDLK_4;
+					key->keysym.unicode = SDLK_4;
+					break;
+				case SDLK_KP5       :
+					key->keysym.sym = SDLK_5;
+					key->keysym.unicode = SDLK_5;
+					break;
+				case SDLK_KP6       :
+					key->keysym.sym = SDLK_6;
+					key->keysym.unicode = SDLK_6;
+					break;
+				case SDLK_KP7       :
+					key->keysym.sym = SDLK_7;
+					key->keysym.unicode = SDLK_7;
+					break;
+				case SDLK_KP8       :
+					key->keysym.sym = SDLK_8;
+					key->keysym.unicode = SDLK_8;
+					break;
+				case SDLK_KP9       :
+					key->keysym.sym = SDLK_9;
+					key->keysym.unicode = SDLK_9;
+					break;
+				case SDLK_KP_PERIOD :
+					key->keysym.sym = SDLK_PERIOD;
+					key->keysym.unicode = SDLK_PERIOD;
+					break;
+				case SDLK_KP_DIVIDE :
+					key->keysym.sym = SDLK_BACKSLASH;
+					key->keysym.unicode = SDLK_BACKSLASH;
+					break;
+				case SDLK_KP_MULTIPLY:
+					key->keysym.sym = SDLK_ASTERISK;
+					key->keysym.unicode = SDLK_ASTERISK;
+					break;
+				case SDLK_KP_MINUS  :
+					key->keysym.sym = SDLK_MINUS;
+					key->keysym.unicode = SDLK_MINUS;
+					break;
+				case SDLK_KP_PLUS   :
+					key->keysym.sym = SDLK_PLUS;
+					key->keysym.unicode = SDLK_PLUS;
+					break;
+				case SDLK_KP_ENTER  :
+					key->keysym.sym = SDLK_RETURN;
+					key->keysym.unicode = SDLK_RETURN;
+					break;
+				case SDLK_KP_EQUALS :
+					key->keysym.sym = SDLK_EQUALS;
+					key->keysym.unicode = SDLK_EQUALS;
+					break;
+
+				default:
+					break;
+			}
+		} else {
+			// numeric keypad is disabled
+			switch (key->keysym.sym) {
+				case SDLK_KP0       :
+					key->keysym.sym = SDLK_INSERT;
+					key->keysym.unicode = 0;
+					break;
+				case SDLK_KP1       :
+					key->keysym.sym = SDLK_END;
+					key->keysym.unicode = 0;
+					break;
+				case SDLK_KP2       :
+					key->keysym.sym = SDLK_DOWN;
+					key->keysym.unicode = 0;
+					break;
+				case SDLK_KP3       :
+					key->keysym.sym = SDLK_PAGEDOWN;
+					key->keysym.unicode = 0;
+					break;
+				case SDLK_KP4       :
+					key->keysym.sym = SDLK_LEFT;
+					key->keysym.unicode = 0;
+					break;
+				case SDLK_KP6       :
+					key->keysym.sym = SDLK_RIGHT;
+					key->keysym.unicode = 0;
+					break;
+				case SDLK_KP7       :
+					key->keysym.sym = SDLK_HOME;
+					key->keysym.unicode = 0;
+					break;
+				case SDLK_KP8       :
+					key->keysym.sym = SDLK_UP;
+					key->keysym.unicode = 0;
+					break;
+				case SDLK_KP9       :
+					key->keysym.sym = SDLK_PAGEUP;
+					key->keysym.unicode = 0;
+					break;
+				case SDLK_KP_PERIOD :
+					key->keysym.sym = SDLK_DELETE;
+					key->keysym.unicode = 0;
+					break;
+				case SDLK_KP_DIVIDE :
+					key->keysym.sym = SDLK_BACKSLASH;
+					key->keysym.unicode = SDLK_BACKSLASH;
+					break;
+				case SDLK_KP_MULTIPLY:
+					key->keysym.sym = SDLK_ASTERISK;
+					key->keysym.unicode = SDLK_ASTERISK;
+					break;
+				case SDLK_KP_MINUS  :
+					key->keysym.sym = SDLK_MINUS;
+					key->keysym.unicode = SDLK_MINUS;
+					break;
+				case SDLK_KP_PLUS   :
+					key->keysym.sym = SDLK_PLUS;
+					key->keysym.unicode = SDLK_PLUS;
+					break;
+				case SDLK_KP_ENTER  :
+					key->keysym.sym = SDLK_RETURN;
+					key->keysym.unicode = SDLK_RETURN;
+					break;
+				case SDLK_KP_EQUALS :
+					key->keysym.sym = SDLK_EQUALS;
+					key->keysym.unicode = SDLK_EQUALS;
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
+}
+
+bool PG_Application::PumpIntoEventQueue(const SDL_Event* event) {
+	PG_Widget* widget = NULL;
+
+	// do we have a capture hook?
+	if((event->type != SDL_USEREVENT) && (event->type != SDL_VIDEORESIZE)) {
+		if(captureObject) {
+			return captureObject->ProcessEvent(event);
+		}
+	}
+
+	switch(event->type) {
+
+		case SDL_KEYDOWN:
+		case SDL_KEYUP:
+			if(inputFocusObject) {
+				// first send it to the focus object
+				if(inputFocusObject->ProcessEvent(event)) {
+					return true;
+				}
+				// if the focus object doesn't respond -> pump it into the queue
+			}
+			break;
+
+		case SDL_MOUSEMOTION:
+			widget = PG_Widget::FindWidgetFromPos(event->motion.x, event->motion.y);
+
+			if(lastwidget && (lastwidget != widget)) {
+				lastwidget->eventMouseLeave();
+				lastwidget = NULL;
+			}
+
+			if(widget) {
+				lastwidget = widget;
+				widget->ProcessEvent(event);
+				return true;
+			}
+			return true;
+
+		case SDL_MOUSEBUTTONUP:
+		case SDL_MOUSEBUTTONDOWN:
+			widget = PG_Widget::FindWidgetFromPos(event->button.x, event->button.y);
+			if(widget) {
+				widget->ProcessEvent(event);
+				return true;
+			}
+			break;
+	}
+
+	// first let's try to process the event ourself
+	if(ProcessEvent(event)) {
+		return true;
+	}
+
+	// send to all receivers
+	bool processed = false;
+	PG_Widget* list = PG_Widget::GetWidgetList()->first();
+	//vector<PG_MessageObject*>::iterator list = objectList.begin();
+	PG_Widget* o = NULL;
+	while(list != NULL) {
+		o = list;
+		/*if(o == NULL) {
+			list = o->next();
+			PG_Widget::GetWidgetList()->Remove(o);
+			continue;
+		}*/
+		if(o->ProcessEvent(event)) {
+			processed = true;
+			break;		// exit loop if an object responds
+		}
+		list = list->next();
+	}
+
+	return processed;
+}
 
 /*
  * Local Variables:

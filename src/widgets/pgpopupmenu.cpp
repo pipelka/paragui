@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/02/28 18:49:06 $
+   Update Date:      $Date: 2004/03/10 15:34:03 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.5 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.6 $
    Status:           $State: Exp $
  */
 
@@ -689,7 +689,7 @@ bool PG_PopupMenu::eventMouseButtonUp(const SDL_MouseButtonEvent *button) {
 
 bool PG_PopupMenu::eventKeyDown(const SDL_KeyboardEvent *key) {
 	SDL_KeyboardEvent key_copy = *key; // copy key structure
-	TranslateNumpadKeys(&key_copy);
+	PG_Application::TranslateNumpadKeys(&key_copy);
 	// from now, we use key_copy which was copied or translated from key
 
 	switch (key_copy.keysym.sym) {

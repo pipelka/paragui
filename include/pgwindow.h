@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 10:23:06 $
+    Update Date:      $Date: 2004/03/10 15:34:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -76,7 +76,11 @@ public:
 
 	void LoadThemeStyle(const char* widgettype);
 
-	void SetColorTitlebar(const PG_Color& c);
+	void SetTitlebarColor(const PG_Color& c);
+
+	void SetTitlebarHeight(Uint8 height);
+	
+	Uint8 GetTitlebarHeight();
 
 	/**
 	set window title and alignment
@@ -112,9 +116,6 @@ public:
 protected:
 
 	void RecalcPositions();
-
-	/** */
-	void eventShow();
 
 	/** */
 	void eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst);

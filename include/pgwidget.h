@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/01 20:51:40 $
+    Update Date:      $Date: 2004/03/10 15:34:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
     Status:           $State: Exp $
 */
 
@@ -405,7 +405,7 @@ public:
 	void MoveRect(int x, int y);
 
 	/** */
-	static void BulkUpdate();
+	//static void BulkUpdate();
 
 	/** */
 	static void BulkBlit();
@@ -695,7 +695,7 @@ public:
 	/**
 	Enter modal mode
 	*/
-	virtual void RunModal();
+	virtual int RunModal();
 
 	/**
 	Quit modal mode
@@ -738,6 +738,13 @@ public:
 	
 	bool IsHidden();
 
+	/**
+		Set the return status of the modal eventloop.
+		@param status returnstatus
+		The specified status will be returned by the RunModal method
+	*/
+	void SetModalStatus(int status);
+	
 protected:
 
 	/**
@@ -865,7 +872,7 @@ private:
 	PG_Widget(const PG_Widget&);
 	PG_Widget& operator=(const PG_Widget&);
 
-	static bool bBulkUpdate;
+	//static bool bBulkUpdate;
 	static int my_ObjectCounter;
 	static PG_RectList widgetList;
 

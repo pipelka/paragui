@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/09 09:18:26 $
+   Update Date:      $Date: 2004/03/10 15:34:04 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.11 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.12 $
    Status:           $State: Exp $
  */
 
@@ -49,17 +49,18 @@
 #define TXT_HEIGHT_UNDEF 0xFFFF
 
 
-bool PG_Widget::bBulkUpdate = false;
+//bool PG_Widget::bBulkUpdate = false;
 PG_RectList PG_Widget::widgetList;
 int PG_Widget::my_ObjectCounter = 0;
 
 class PG_WidgetDataInternal {
 public:
-	PG_WidgetDataInternal() : inDestruct(false), inMouseLeave(false), font(NULL), dirtyUpdate(false), id(-1),
+	PG_WidgetDataInternal() : modalstatus(0), inDestruct(false), inMouseLeave(false), font(NULL), dirtyUpdate(false), id(-1),
 	transparency(0), quitModalLoop(false), visible(false), hidden(false), firstredraw(true),
 	childList(NULL), haveTooltip(false), fadeSteps(10), mouseInside(false), userdata(NULL),
 	userdatasize(0), widthText(TXT_HEIGHT_UNDEF), heightText(TXT_HEIGHT_UNDEF) {};
 
+	int modalstatus;
 	bool inDestruct;
 	bool inMouseLeave;
 	PG_Font* font;
@@ -837,7 +838,7 @@ void PG_Widget::HideAll() {
 	}
 }
 
-void PG_Widget::BulkUpdate() {
+/*void PG_Widget::BulkUpdate() {
 	bBulkUpdate = true;
 
 	for(PG_Widget* i = widgetList.first(); i != NULL; i = i->next()) {
@@ -847,13 +848,13 @@ void PG_Widget::BulkUpdate() {
 	}
 
 	bBulkUpdate = false;
-}
+}*/
 
 void PG_Widget::BulkBlit() {
-	bBulkUpdate = true;
+	//bBulkUpdate = true;
 	widgetList.Blit();
 	PG_Application::DrawCursor();
-	bBulkUpdate = false;
+	//bBulkUpdate = false;
 }
 
 void PG_Widget::LoadThemeStyle(const char* widgettype, const char* objectname) {
@@ -1416,7 +1417,7 @@ void PG_Widget::StopQuitModal() {
 	_mid->quitModalLoop = false;
 }
 
-void PG_Widget::RunModal() {
+int PG_Widget::RunModal() {
 	SDL_Event event;
 	_mid->quitModalLoop = false;
 
@@ -1428,7 +1429,7 @@ void PG_Widget::RunModal() {
 		PG_Application::DrawCursor();
 	}
 
-	return;
+	return _mid->modalstatus;
 }
 
 bool PG_Widget::eventQuitModal(int id, PG_MessageObject* widget, unsigned long data) {
@@ -1766,4 +1767,8 @@ bool PG_Widget::IsHidden() {
 
 void PG_Widget::SetParent(PG_Widget* parent) {
 	_mid->widgetParent = parent;
+}
+
+void PG_Widget::SetModalStatus(int status) {
+	_mid->modalstatus = status;
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 10:23:06 $
+    Update Date:      $Date: 2004/03/10 15:34:04 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.10 $
     Status:           $State: Exp $
 */
 
@@ -112,7 +112,7 @@ void PG_Window::LoadThemeStyle(const char* widgettype) {
 
 	PG_Color c = my_labelTitle->GetFontColor();
 	t->GetColor(widgettype, "Titlebar", "textcolor", c);
-	SetColorTitlebar(c);
+	SetTitlebarColor(c);
 	
 	t->GetProperty(widgettype, "Titlebar", "showclosebutton", my_showCloseButton);
 	my_buttonClose->LoadThemeStyle(widgettype, "CloseButton");
@@ -265,7 +265,7 @@ bool PG_Window::handleButtonClick(PG_Button* button) {
 	return true;
 }
 
-void PG_Window::SetColorTitlebar(const PG_Color& c) {
+void PG_Window::SetTitlebarColor(const PG_Color& c) {
 	my_labelTitle->SetFontColor(c);
 }
 
@@ -285,8 +285,11 @@ SDL_Surface* PG_Window::GetIcon() {
 	return my_labelTitle->GetIcon();
 }
 
-void PG_Window::eventShow() {
-	// don't ask me why
-	//my_buttonClose->Update();
-	//my_buttonMinimize->Update();
+void PG_Window::SetTitlebarHeight(Uint8 height) {
+	my_heightTitlebar = height;
+	RecalcPositions();
+}
+	
+Uint8 PG_Window::GetTitlebarHeight() {
+	return my_heightTitlebar;
 }

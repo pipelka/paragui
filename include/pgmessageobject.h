@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/31 16:14:08 $
+    Update Date:      $Date: 2004/03/10 15:34:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -48,11 +48,6 @@ class PG_Widget;
 class DECLSPEC PG_MessageObject : public virtual SigC::Object {
 
 public:
-
-	/**
-	Signal type declaration
-	**/
-	template<class datatype = PG_Pointer> class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {};
 
 	/**
 	Creates a PG_MessageObject
@@ -108,25 +103,8 @@ public:
 	*/
 	bool IsEnabled();
 
-	/**
-	Sends an event to the global message queue.
-
-	@param event SDL_Event message
-	@return true - the message was processed by the framework
-	*/
-
-	static bool PumpIntoEventQueue(const SDL_Event* event);
-
 	/** */
-	static SDL_Event WaitEvent(Uint32 delay=0);
-
-	/**
-	Translates numeric keypad keys into other keys in dependency of NUM_LOCK state.
-	 Should be called in eventKeyDown() for proper numeric keypad behaviour.
-
-	@param key SDL_KeyboardEvent* key to translate
-	 */
-	void TranslateNumpadKeys(SDL_KeyboardEvent *key);
+	//static SDL_Event WaitEvent(Uint32 delay=0);
 
 	/**
 	Sends an event directly to an object.
@@ -136,9 +114,6 @@ public:
 	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
 	*/
 	virtual bool ProcessEvent(const SDL_Event* event);
-
-
-	SignalAppIdle<> sigAppIdle;
 
 protected:
 
@@ -264,9 +239,6 @@ protected:
 	/** */
 	virtual void eventInputFocusLost(PG_MessageObject* newfocus);
 
-	/** */
-	virtual void eventIdle();
-
 	/**
 	Overridable message filter function. Derivated classes can filter special events.
 	The default implementation returns 'false' which indicates that this message is not processed by this object.
@@ -277,9 +249,7 @@ protected:
 	*/
 	virtual bool AcceptEvent(const SDL_Event* event);
 
-	static bool my_quitEventLoop;
-
-	static vector<PG_MessageObject*> objectList;
+	//static vector<PG_MessageObject*> objectList;
 
 	static PG_MessageObject* captureObject;
 
@@ -288,7 +258,7 @@ private:
 	PG_MessageObject(const PG_MessageObject&);
 	PG_MessageObject& operator=(const PG_MessageObject&);
 
-	bool RemoveObject(PG_MessageObject* obj);
+	//bool RemoveObject(PG_MessageObject* obj);
 
 	static PG_MessageObject* inputFocusObject;
 	static PG_Widget* lastwidget;

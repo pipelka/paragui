@@ -523,7 +523,7 @@ static int SetWindowAtts(PG_Window *Widget, const char **atts, ParseUserData_t *
 	if (c[0] != 0) {
 		int r,g,b;
 		sscanf(c,"%d,%d,%d",&r,&g,&b);
-		Widget->SetColorTitlebar(((b & 0xff) << 16) | ((g & 0xff) << 8) | (r & 0xFF));
+		Widget->SetTitlebarColor(((b & 0xff) << 16) | ((g & 0xff) << 8) | (r & 0xFF));
 	}
 
 	return SetThemeWidgetAtts(Widget, atts, XMLParser);

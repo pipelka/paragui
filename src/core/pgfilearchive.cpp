@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/31 16:14:08 $
+    Update Date:      $Date: 2004/03/10 15:34:03 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14.2.5 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.6 $
     Status:           $State: Exp $
 */
 
@@ -330,7 +330,7 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool usekey, Uint
 		SDL_SetColorKey(surface, SDL_SRCCOLORKEY, colorkey);
 	}
 
-	if(convert && !PG_Application::GetGLMode()) {
+	if(convert) {
 		SDL_Surface* tmpsrf = NULL;
 		if (surface->flags & SDL_SRCALPHA)
 			tmpsrf = SDL_DisplayFormatAlpha(surface);			
