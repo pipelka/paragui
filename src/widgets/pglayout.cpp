@@ -1114,12 +1114,12 @@ static void XMLEndDoc(void *userData, const char *name) {
 //			goto object_end;
 		}
 
-		if ((XMLParser->InhTagFlags & INHTAGFLAG_HIDE) == 0)
-			if(XMLParser->ParentObject->GetParent() == NULL) {
-				XMLParser->ParentObject->Show();
-			}
-		else
+		if ((XMLParser->InhTagFlags & INHTAGFLAG_HIDE) == 0) {
+			XMLParser->ParentObject->Show();
+		}
+		else {
 			XMLParser->ParentObject->Hide();
+		}
 
 //object_end:
 //		XMLParser->ParentObject->AddText("", true);
