@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/08 16:52:39 $
+    Update Date:      $Date: 2004/03/09 09:40:06 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -142,7 +142,6 @@ void PG_ScrollWidget::LoadThemeStyle(const char* widgettype) {
 
 	my_widthScrollbar = my_objVerticalScrollbar->Width();
 	my_heightHorizontalScrollbar = my_objHorizontalScrollbar->Height();
-	PG_LogDBG("my_heightHorizontalScrollbar(%s) = %i", widgettype, my_heightHorizontalScrollbar);
 	RecalcPositions(my_objVerticalScrollbar->IsVisible(), my_objHorizontalScrollbar->IsVisible());
 }
 
