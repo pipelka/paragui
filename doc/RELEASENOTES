@@ -43,6 +43,8 @@ Whats new in ParaGUI 1.1.8 ?
 - added PG_Button::SetIconIndent(Uint16)
 - fixed non-unicode rendering of german "umlaut"
 - fixed alignment of text (PG_Button)
+- removed PG_TimerID. Please use PG_TimeObject::ID now
+- fixed detection of libSDL_image*.so for Debian
 
 - applied patches from Sebastian:
 - made PG_Application::RunEventLoop() virtual to make subclassing easier

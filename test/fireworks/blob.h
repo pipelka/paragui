@@ -40,7 +40,7 @@ public:
     //the destructor
     ~Blob();
     
-    Uint32 eventTimer(PG_TimerID id, Uint32 interval);
+    Uint32 eventTimer(PG_TimerObject::ID id, Uint32 interval);
 
 protected:
     //our custom event handler to redraw our stuff

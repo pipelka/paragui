@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/09 21:49:52 $
+    Update Date:      $Date: 2004/10/17 19:01:49 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtimerobject.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6.2.4 $
+    CVS/RCS Revision: $Revision: 1.1.2.6.2.5 $
     Status:           $State: Exp $
 */
 
@@ -33,7 +33,6 @@
 #include "pgsignals.h"
 #include <map>
 
-typedef unsigned long PG_TimerID;
 
 /**
 	@author Alexander Pipelka
@@ -46,11 +45,13 @@ typedef unsigned long PG_TimerID;
 class DECLSPEC PG_TimerObject {
 	
 public:
+
+	typedef unsigned long ID;
 	
 	/**
 	Signal type declaration
 	**/
-	template<class datatype = PG_Pointer> class SignalTimer : public PG_Signal2<PG_TimerObject*, PG_TimerID, datatype> {};
+	template<class datatype = PG_Pointer> class SignalTimer : public PG_Signal2<PG_TimerObject*, PG_TimerObject::ID, datatype> {};
 
 	/**
 	Constructor of the PG_TimerObject class.
@@ -68,17 +69,17 @@ public:
 	@return id of the timer
 	
 	You can add any number of timers to an object.
-	After the timer-interval the virtual function eventTimer(PG_TimerID id, Uint32 interval)
+	After the timer-interval the virtual function eventTimer(PG_TimerObject::ID id, Uint32 interval)
 	will be called
 	*/
-	PG_TimerID AddTimer(Uint32 interval);
+	PG_TimerObject::ID AddTimer(Uint32 interval);
 	
 	/**
 	Remove a timer
 	
 	@param id id of the timer to remove
 	*/
-	bool RemoveTimer(PG_TimerID id);
+	bool RemoveTimer(PG_TimerObject::ID id);
 	
 	int SetTimer(Uint32 interval);
 	
@@ -91,7 +92,7 @@ public:
 	@param interval timer interval
 	@return should return the interval of the next timer event
 	*/
-	virtual Uint32 eventTimer(PG_TimerID id, Uint32 interval);
+	virtual Uint32 eventTimer(PG_TimerObject::ID id, Uint32 interval);
 	
 	virtual Uint32 eventTimer(Uint32 interval);
 	
@@ -102,12 +103,12 @@ private:
 	static Uint32 callbackTimer(Uint32 interval, void* data);
 	static Uint32 callbackSingleTimer(Uint32 interval);
 	
-	static PG_TimerID globalTimerID;
-	static std::map<PG_TimerID, PG_TimerObject*> timermap;
+	static PG_TimerObject::ID globalTimerID;
+	static std::map<PG_TimerObject::ID, PG_TimerObject*> timermap;
 	static Uint32 objectcount;
 	static PG_TimerObject* objSingleTimer;
 	
-	std::map<PG_TimerID, SDL_TimerID> my_timermap;	
+	std::map<PG_TimerObject::ID, SDL_TimerID> my_timermap;	
 };
 
 #endif // PG_TIMEROBJECT_H

@@ -53,7 +53,7 @@ public:
 	// the destructor
 	~PlayField();
 
-	Uint32 eventTimer(PG_TimerID id, Uint32 interval);
+	Uint32 eventTimer(PG_TimerObject::ID id, Uint32 interval);
 
 protected:
 
@@ -125,7 +125,7 @@ void PlayField::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rec
 	}
 }
 
-Uint32 PlayField::eventTimer(PG_TimerID id, Uint32 interval) {
+Uint32 PlayField::eventTimer(PG_TimerObject::ID id, Uint32 interval) {
 	Update();
 	PG_TimerObject::eventTimer(id, interval);
 	return id;
@@ -141,7 +141,7 @@ public:
 	// the destructor
 	~PlayField2();
 
-	Uint32 eventTimer(PG_TimerID id, Uint32 interval);
+	Uint32 eventTimer(PG_TimerObject::ID id, Uint32 interval);
 
 protected:
 
@@ -212,7 +212,7 @@ void PlayField2::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Re
 	SDL_FillRect(PG_Application::GetScreen(), (SDL_Rect *)&temp_rect, temp_int);
 }
 
-Uint32 PlayField2::eventTimer(PG_TimerID id, Uint32 interval) {
+Uint32 PlayField2::eventTimer(PG_TimerObject::ID id, Uint32 interval) {
 	tickstate++;
 	
 	PG_LogDBG("eventTimer(%i, %i)", id, interval);

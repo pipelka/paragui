@@ -39,9 +39,9 @@ void CMyWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	cairo_pattern_add_color_stop (pat, 0, 1, 1, 1, 0);
 	cairo_pattern_add_color_stop (pat, h, .1, .1, .1, .9);*/
 
-	cairo_rectangle (cr, x,y,w,h);
+	//cairo_rectangle (cr, x,y,w,h);
 	//cairo_set_pattern (cr, pat);
-	cairo_fill (cr);
+	//cairo_fill (cr);
 	//cairo_pattern_destroy(pat);
 
 	// set caps
@@ -56,7 +56,7 @@ void CMyWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	cairo_close_path(cr);
 
 	// stroke
-	cairo_set_alpha(cr, 0.8);
+	cairo_set_alpha(cr, 0.2);
 	cairo_set_line_width(cr, linewidth*1.7);
 	cairo_set_rgb_color(cr, 0, 0, 0);
 	cairo_stroke(cr);
@@ -76,7 +76,7 @@ protected:
 CMyWindow::CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text, WindowFlags flags,const char* style) : PG_Window(parent,r,text,flags,style) {
 	mywidget = new CMyWidget(this, PG_Rect(5, 30, r.w-10, r.h-35));
 	SetDirtyUpdate(false);
-	SetTransparency(255);
+	SetTransparency(100);
 }
 
 

@@ -238,8 +238,8 @@ AM_PATH_SDL($SDL_VERSION,
 	    AC_MSG_ERROR([*** SDL version $SDL_VERSION not found!])
 )
 
-dnl SDL_LIBS=`sdl-config --libs`
-dnl AC_SUBST(SDL_LIBS)
+SDL_LIBS=`sdl-config --libs`
+AC_SUBST(SDL_LIBS)
 
 dnl set default prefix to `sdl-config --prefix`
 
@@ -291,10 +291,8 @@ if test "$ft2test" = "yes"; then
 fi
 
 # check name of shared lib SDL_image
-SDLIMAGE_LIBS="-lSDL_image $SDL_LIBS"
-SDLimage_lib_spec=`echo $SDLIMAGE_LIBS | sed 's/.*-L\([[^ ]]*\).*/\1\/libSDL_image-*.so.*/'`
-SDLimage_lib=`ls ${SDLimage_lib_spec} | head -1 | sed 's/.*\/\(.*\)/\1/'`
-echo "-- ${SDLimage_lib_spec} -> $SDLimage_lib"
+SDLimage_PATH=`ls $SDL_PREFIX/lib/*SDL_image*.* | head -1`
+SDLimage_lib=`basename $SDLimage_PATH`
 AC_DEFINE_UNQUOTED([SDLIMAGE_LIB], "$SDLimage_lib", [SDL_image shared library])
 			
 CFLAGS="$CFLAGS $FREETYPE_CFLAGS"

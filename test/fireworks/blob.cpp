@@ -361,7 +361,7 @@ void Blob::eventBlit(SDL_Surface* surface, const PG_Rect& scr, const PG_Rect& ds
 }
 
 
-Uint32 Blob::eventTimer(PG_TimerID id, Uint32 interval){
+Uint32 Blob::eventTimer(PG_TimerObject::ID id, Uint32 interval){
     Update();
     PG_TimerObject::eventTimer(id, interval);
     return interval;
