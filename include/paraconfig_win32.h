@@ -15,6 +15,9 @@
 #define PATH_MAX MAX_PATH
 #endif
 
+/* Define to 1 if UNICODE support is enabled */
+#define UNICODE_ENABLED
+
 /* Define if you the the SDL_image library */
 #define HAVE_SDLIMAGE 1
 

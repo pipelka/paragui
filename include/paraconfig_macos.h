@@ -1,6 +1,9 @@
 #ifndef MACOS_CONFIG_INCLUDED
 #define MACOS_CONFIG_INCLUDED
 
+/* Define to 1 if UNICODE support is enabled */
+/* #undef UNICODE_ENABLED */
+
 /* Define if you the the SDL_image library (-lSDL_Image) */
 #define HAVE_SDLIMAGE 1
 
