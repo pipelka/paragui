@@ -30,7 +30,7 @@ PARAGUI_CALLBACK(hide_handler) {
 PARAGUI_CALLBACK(add_handler) {
     PG_WidgetList* list = (PG_WidgetList*) clientdata;
     PG_Label* label=new PG_Label(NULL, PG_Rect(0,0,200,100), "Blubber Bla Bla");
-    //label->Show();
+    label->Show();
     list->AddWidget(label);
     std::cerr << "Add" << std::endl;
     return true;
