@@ -48,6 +48,6 @@
 #define PACKAGE "paragui"
 
 /* Version number of package */
-#define VERSION "1.0.2"
+#define VERSION "1.0.3"
 
 #endif // WIN32_CONFIG_INCLUDED
