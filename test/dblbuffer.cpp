@@ -206,7 +206,6 @@ int main(int argc, char *argv[])
 	/* Allocate memory for the sprite info */
 	mem = (Uint8 *)malloc(4*sizeof(SDL_Rect)*numsprites);
 	if ( mem == NULL ) {
-		SDL_FreeSurface(sprite);
 		PG_LogMSG("Out of memory!");
 		exit(2);
 	}
