@@ -1,10 +1,8 @@
 SUBDIRS = $(PHYSFS_SUBDIR) $(EXPAT_SUBDIR) draw font themes core widgets
 
-DIST_SUBDIRS = $(SUBDIRS) expat physfs
+DIST_SUBDIRS = draw font themes core widgets expat physfs
 
 lib_LTLIBRARIES = libparagui.la
-
-EXTRA_DIST =
 
 libparagui_la_SOURCES = \
 	paragui.cpp

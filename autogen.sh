@@ -1,6 +1,3 @@
-echo "Bootstrapping physfs ..."
-src/physfs/bootstrap
-
 echo "Generating build information ..."
 cd `dirname $0`
 aclocalinclude="$ACLOCAL_FLAGS"
@@ -45,6 +42,12 @@ echo "Checking for \"unix2dos\" ..."
     echo "You will be unable to convert VisualC workspace files"
     echo "(Please don't distribute unconverted VisualC projects!)"
 }
+
+echo
+echo "Bootstrapping physfs ..."
+
+./src/physfs/bootstrap
+
     
 echo
 echo "Please run ./configure now."
