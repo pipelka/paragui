@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/18 08:10:23 $
+    Update Date:      $Date: 2002/06/18 11:03:36 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -79,11 +79,15 @@
 #include "SDL.h"
 #include "SDL_thread.h"
 
-#include "paraconfig.h"
-
 #ifndef SWIG
 #include <cstdlib>
 #include <iostream>
+#include <cstring>
+#endif
+
+#include "paraconfig.h"
+
+#ifndef SWIG
 #include <string>
 #endif
 
