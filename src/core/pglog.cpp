@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 14:53:56 $
+    Update Date:      $Date: 2002/05/31 12:17:29 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.1 $
     Status:           $State  
 */
 
@@ -44,11 +44,11 @@ static PG_LOG_LEVEL PG_LogLevel = PG_LOG_DBG;
 
 struct PG_LogMessage_t {
 	PG_LOG_LEVEL	Id;
-	time_t	TimeStamp;
+	std::time_t	TimeStamp;
 	std::string	Text;
 
 	PG_LogMessage_t(PG_LOG_LEVEL _id, const char* txt)
-		: Id(_id), TimeStamp(time(0)) {Text = txt;}
+		: Id(_id), TimeStamp(std::time(0)) {Text = txt;}
 
 }
 ;
@@ -119,7 +119,7 @@ void PG_LogConsole::LogVA(PG_LOG_LEVEL id, const char *Text, va_list ap) {
 				std::cout << "??? [";
 		}
 
-		strftime(buffer, sizeof(buffer), "%m/%d/%Y %X", localtime(&NewMsg->TimeStamp));
+		strftime(buffer, sizeof(buffer), "%m/%d/%Y %X", std::localtime(&NewMsg->TimeStamp));
 		std::cout << buffer << "] > " << NewMsg << std::endl;
 	}
 
@@ -146,7 +146,7 @@ void PG_LogConsole::LogVA(PG_LOG_LEVEL id, const char *Text, va_list ap) {
 				std::cerr << "??? [";
 		}
 
-		strftime(buffer, sizeof(buffer), "%m/%d/%Y %X", localtime(&NewMsg->TimeStamp));
+		strftime(buffer, sizeof(buffer), "%m/%d/%Y %X", std::localtime(&NewMsg->TimeStamp));
 		std::cerr << buffer << "] > " << NewMsg << std::endl;
 	}
 
@@ -183,7 +183,7 @@ void PG_LogConsole::Update() {
 	        it != PG_LogMessages.rend(); it++) {
 		PG_LogMessage_t *Msg = *it;
 		char timebuf[128];
-		strftime(timebuf, sizeof(timebuf), "%m/%d/%Y %X", localtime(&Msg->TimeStamp));
+		strftime(timebuf, sizeof(timebuf), "%m/%d/%Y %X", std::localtime(&Msg->TimeStamp));
 		buffer += timebuf;
 
 		switch (Msg->Id) {

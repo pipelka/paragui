@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/29 15:34:09 $
+    Update Date:      $Date: 2002/05/31 12:17:29 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.2 $
+    CVS/RCS Revision: $Revision: 1.2.4.3 $
     Status:           $State: Exp $
 */
 
@@ -81,7 +81,11 @@ std::string *PG_FileArchive::PathToPlatform(const char *path) {
 	if(incr == 1 && sep[0] == '/')
 		return newpath;
 
+#ifdef __MACOS__
+	while( (pos = newpath->find(":", pos)) != std::string::npos) {
+#else
 	while( (pos = newpath->find("/", pos)) != std::string::npos) {
+#endif
 		newpath->replace(pos, 1, sep);
 		pos += incr;
 	}

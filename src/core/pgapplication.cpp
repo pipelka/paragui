@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/29 15:34:09 $
+    Update Date:      $Date: 2002/05/31 12:17:29 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.3 $
+    CVS/RCS Revision: $Revision: 1.2.4.4 $
     Status:           $State: Exp $
 */
 
@@ -531,21 +531,35 @@ PG_Theme* PG_Application::LoadTheme(const char* xmltheme, bool asDefault, const 
 
 	PG_LogDBG("Locating theme '%s' ...", xmltheme);
 
-	// MacOS does not use file path separator '/', instead ':' is used
-	// There could be clever solution for this, but for a while...
-	// let's assume that "data" directory must exist in working directory on MacOS.
-	// Masahiro Minami<elsur@aaa.letter.co.jp>
-	// 01/05/06
-    
-	// add paths to the archive
-
-	//#ifndef macintosh
-
 	if(searchpath != NULL) {
 		if(AddArchive(searchpath)) {
 			PG_LogDBG("'%s' added to searchpath", searchpath);
 		}
 	}
+
+#ifdef __MACOS__
+
+	if(AddArchive("")) {
+		PG_LogDBG("'' added to searchpath");
+	}
+
+	if(AddArchive(":")) {
+		PG_LogDBG("':' added to searchpath");
+	}
+
+	if(AddArchive(":data:")) {
+		PG_LogDBG("':data:' added to searchpath");
+	}
+
+	if(AddArchive("::data:")) {
+		PG_LogDBG("'::data:' added to searchpath");
+	}
+
+	if(PARAGUI_THEMEDIR) != NULL) {
+		PG_LogDBG("'"PARAGUI_THEMEDIR"' added to searchpath");
+	}
+
+#else	
 
 	if(AddArchive("./")) {
 		PG_LogDBG("'./' added to searchpath");
@@ -568,6 +582,8 @@ PG_Theme* PG_Application::LoadTheme(const char* xmltheme, bool asDefault, const 
 			PG_LogDBG("'%s' added to searchpath", getenv("PARAGUIDIR"));
 		}
 	}
+
+#endif // __MACOS__
 
 	if(AddArchive(PARAGUI_THEMEDIR)) {
 		PG_LogDBG("'"PARAGUI_THEMEDIR "' added to searchpath");
