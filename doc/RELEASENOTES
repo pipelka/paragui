@@ -28,6 +28,7 @@ Whats new in ParaGUI 1.1.5 ?
   using libsigc++ instead.
 - new sigXXX signal handlers
 - dynamic loading of SDL_image
+- performance improvements for complex layouts
 - silent mode development
 
 
