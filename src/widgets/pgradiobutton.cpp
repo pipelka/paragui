@@ -1,4 +1,4 @@
-/*
+0/*
     ParaGUI - crossplatform widgetset
     Copyright (C) 2000,2001,2002  Alexander Pipelka
  
@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/03/23 21:52:31 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.6 $
     Status:           $State: Exp $
 */
 

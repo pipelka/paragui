@@ -62,6 +62,9 @@ Whats new in ParaGUI 1.1.8 ?
 - applied patches from Ulf Lorenz:
 - commented PG_Draw::DrawTile
 - commented PG_Draw::DrawGradient
+- PG_Rect: simplified some if-clauses
+- surface.cpp: tiny check added, another one removed
+- surface.cpp: preserved clip rect
 
 
 ----------------------------
