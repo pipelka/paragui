@@ -96,6 +96,9 @@ Whats new in ParaGUI 1.1.8 ?
 - paraconfig_win32.h: renamed macro UNICODE_ENABLED to ENABLE_UNICODE
 - disabled warning flood for VC++ 7.1 concerning YChar's exception implementation
 - added DECLSPEC to YChar's and YString's class declarations
+- added a fix from Jeremie (concerning an END key bug) for his PG_MultiLineEdit (thanks Jeremie!)
+- fixes for PG_MultiLineEdit (it no longer crashes)
+- added PG_DropDown::GetFirstInList()
 
 - applied patches from Ulf Lorenz:
 - commented PG_Draw::DrawTile

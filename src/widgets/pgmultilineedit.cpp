@@ -45,8 +45,8 @@ void PG_MultiLineEdit::eventBlit(SDL_Surface* surface, const PG_Rect& src, const
 }
 
 void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
-	int x = 3;
-	int y = 3; 
+	int _x = 3;
+	int _y = 3; 
 
 	// should we draw the cursor ? 
 	if(IsCursorVisible()) { 
@@ -62,6 +62,11 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 	// draw text 
 	int maxLines = my_height/GetFontSize() + 1;
 	int endpos, start, end;
+
+	int x1 = 0;
+	Uint16 w = 0;
+	int offset = 0;
+
 	for (unsigned int i = my_firstLine; i < (unsigned int)my_firstLine + maxLines && i < my_textdata.size(); ++i) { 
 		endpos = pos + my_textdata[i].size();
 		start = (my_cursorPosition < my_mark ? my_cursorPosition : my_mark); 
@@ -69,14 +74,13 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 		
 		// check if we are in the highlighted section 
 		if (my_mark != -1 && my_mark != my_cursorPosition && pos <= end && endpos >= start) { 
-			int x1 = x; 
-			Uint16 w; 
-			int offset = 0; 
+			x1 = _x;
+			offset = 0;
 			
 			// draw the initial unhighlighted part 
 			if (pos < start) { 
 				string s = my_textdata[i].substr(0, start-pos); 
-				PG_Widget::DrawText(x1, y, s.c_str()); 
+				PG_Widget::DrawText(x1, _y, s.c_str()); 
 				PG_FontEngine::GetTextSize(s.c_str(), GetFont(), &w); 
 				x1 += w; 
 				offset = start-pos; 
@@ -88,23 +92,23 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 				middlepart = middlepart.substr(0, middlepart.size() - (endpos-end));
 				string s = my_textdata[i].substr(end - pos, my_textdata[i].size() - (end - pos));
 				PG_FontEngine::GetTextSize(middlepart.c_str(), GetFont(), &w);
-				PG_Widget::DrawText(x1+w, y, s.c_str());
+				PG_Widget::DrawText(x1+w, _y, s.c_str());
 			}
 			
 			PG_Color color(GetFontColor()); 
 			PG_Color inv_color(255 - color.r, 255 - color.g, 255 - color.b);			
 			SetFontColor(inv_color);
 			PG_FontEngine::GetTextSize(middlepart.c_str(), GetFont(), &w);
-			for (int j = y; j < y + GetFontHeight(); j++) {
-				DrawHLine(x1, j, w, color);
-			}
-			PG_Widget::DrawText(x1, y, middlepart.c_str()); 
+			SDL_Rect rect = {x + x1, y + _y, w, GetFontHeight()};
+			SDL_Surface* screen = PG_Application::GetScreen();
+			SDL_FillRect(screen, &rect, SDL_MapRGB(screen->format, color.r, color.g, color.b));
+			PG_Widget::DrawText(x1, _y, middlepart.c_str());
 			SetFontColor(color); 
 		} 
 		else { 
-			PG_Widget::DrawText(x, y, my_textdata[i].c_str());
+			PG_Widget::DrawText(_x, _y, my_textdata[i].c_str());
 		} 
-		y += GetFontHeight(); 
+		_y += GetFontHeight(); 
 		pos += my_textdata[i].size();
 	} 
 } 
@@ -207,15 +211,17 @@ void PG_MultiLineEdit::GetCursorTextPosFromScreen(int x, int y, unsigned int *ho
 	unsigned int min_xpos = 0; 
 	
 	// loop through to find the closest x position 
-	char* temp = new char[my_textdata[ypos].size()];
+	/*char* temp = new char[my_textdata[ypos].size()+1];	
+	temp[my_textdata[ypos].size()] = '\0';*/
+	string temp;
 	for (Uint16 i = 0; i <= my_textdata[ypos].size(); ++i) {  
 		// get the string up to that point 		
-		strncpy(temp, my_textdata[ypos].c_str(), i); 
-		temp[i] = '\0'; 
+		//strncpy(temp, my_textdata[ypos].c_str(), i);
+		temp = my_textdata[ypos].substr(0, i);
 	
 		// get the distance for that section 
 		Uint16 w; 
-		PG_FontEngine::GetTextSize(temp, GetFont(), &w); 
+		PG_FontEngine::GetTextSize(temp.c_str(), GetFont(), &w); 
 		unsigned int dist = abs(x - (my_xpos + 3 + w)); 
     
 		// update minimum 
@@ -224,7 +230,7 @@ void PG_MultiLineEdit::GetCursorTextPosFromScreen(int x, int y, unsigned int *ho
 			min_xpos = i; 
 		} 
 	}
-	delete[] temp;
+	//delete[] temp;
 
 	// set return data 
 	if (horzOffset != NULL) {
@@ -297,13 +303,14 @@ void PG_MultiLineEdit::GetCursorPos(int *x, int *y) {
 	GetCursorTextPos(&currentPos, &line); 
 
 	// now get the x,y position 
-	char* temp = new char[currentPos+1];	
-	strncpy(temp, my_textdata[line].c_str(), currentPos); 
-	temp[currentPos] = '\0';
+	//char* temp = new char[currentPos+1];
+	/*strncpy(temp, my_textdata[line].c_str(), currentPos); 
+	temp[currentPos] = '\0';*/
+	string temp = my_textdata[line].substr(0, currentPos);
 
 	Uint16 w; 
-	PG_FontEngine::GetTextSize(temp, GetFont(), &w); 
-	delete[] temp;
+	PG_FontEngine::GetTextSize(temp.c_str(), GetFont(), &w); 
+	//delete[] temp;
 	
 	if (x != NULL) {
 		*x = w; 
@@ -502,12 +509,14 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				SetCursorTextPos(0, line); 
 				return true; 
 		
-			case SDLK_END: 
+			case SDLK_END: {
 				if (!(key_copy.keysym.mod & KMOD_SHIFT)) {
 					my_mark = -1; 
 				}
 				GetCursorTextPos(&currentPos, &line); 
-				SetCursorTextPos(my_textdata[line].size(), line); 
+				int cursorPos = my_textdata[line].size() - (my_textdata[line][my_textdata[line].size()-1] == '\n' ? 1 : 0); 
+				SetCursorTextPos(cursorPos, line);
+			}
 				return true; 
 
 			case SDLK_RETURN: 
@@ -521,14 +530,9 @@ bool PG_MultiLineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 		} 
 	} 
 
-	// make sure to use our setCursorPos, because the one in PG_LineEdit isn't virtual (grrr....) 
-	int pos = my_cursorPosition; 
-	bool retval = PG_LineEdit::eventKeyDown(key); 
-	if (pos != my_cursorPosition) {
 		SetCursorPos(my_cursorPosition); 
-	}
 	
-	return retval; 
+	return PG_LineEdit::eventKeyDown(key); 
 }
 
 bool PG_MultiLineEdit::eventMouseButtonDown(const SDL_MouseButtonEvent* button) { 
@@ -584,6 +588,18 @@ bool PG_MultiLineEdit::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 	return PG_LineEdit::eventMouseMotion(motion); 
 } 
 
+bool PG_MultiLineEdit::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
+	if(!GetEditable()) {
+		return false;
+	}
+
+	if(!IsCursorVisible()) {
+		EditBegin();
+	}
+
+	return true;
+}
+
 void PG_MultiLineEdit::SetCursorTextPos(unsigned int offset, unsigned int line) { 
 	my_allowHiddenCursor = false; 
 	if (line < 0) {
@@ -613,7 +629,7 @@ void PG_MultiLineEdit::SetCursorPos(int p) {
 	my_isCursorAtEOL = false; 
 	my_allowHiddenCursor = false; 
 	PG_LineEdit::SetCursorPos(p);
-	Update();
+	//Update();
 } 
 
 void PG_MultiLineEdit::InsertChar(const PG_Char* c) { 
