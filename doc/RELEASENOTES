@@ -34,6 +34,8 @@ Whats new in ParaGUI 1.1.6 ?
 - moved PG_SB_xxx flags to PG_ScrollBar::ScrollDirection
 - fixed SigC::Object clashes for multiple class inheritances
   (inspired by Ulf)
+- moved constant widget id's into the corresponding classes
+- moved PG_OPEN_MODE into PG_FileArchive (now Mode)
 - more coming up
 
 

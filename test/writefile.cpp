@@ -21,7 +21,7 @@ int main() {
 
 	// Now open a file for writing
 	PG_LogMSG("creating writeable file ...");
-	wf = Arc->OpenFile("pgtestfile", PG_OPEN_WRITE);
+	wf = Arc->OpenFile("pgtestfile", PG_FileArchive::WRITE);
 
 	// Write a line of text (CR will be added)
 	wf->putline("test");
@@ -35,7 +35,7 @@ int main() {
 
 	// Open created file for reading
 	PG_LogMSG("checking file ...");
-	wf = Arc->OpenFile("pgtestfile", PG_OPEN_READ);
+	wf = Arc->OpenFile("pgtestfile", PG_FileArchive::READ);
 
 	// read and check the line of text
 	string text = wf->getline();

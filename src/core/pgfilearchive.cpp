@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2004/01/21 16:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14.2.2 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.3 $
     Status:           $State: Exp $
 */
 
@@ -189,16 +189,16 @@ const char* PG_FileArchive::GetWriteDir() {
 	return PHYSFS_getWriteDir();
 }
 
-PG_File* PG_FileArchive::OpenFile(const char* filename, PG_OPEN_MODE mode) {
+PG_File* PG_FileArchive::OpenFile(const char* filename, Mode mode) {
 	PHYSFS_file* file = 0;
 	switch(mode) {
-	case PG_OPEN_READ:
+	case READ:
 		file = PHYSFS_openRead(filename);
 		break;
-	case PG_OPEN_WRITE:
+	case WRITE:
 		file = PHYSFS_openWrite(filename);
 		break;
-	case PG_OPEN_APPEND:
+	case APPEND:
 		file = PHYSFS_openAppend(filename);
 		break;
 	}
@@ -209,16 +209,16 @@ PG_File* PG_FileArchive::OpenFile(const char* filename, PG_OPEN_MODE mode) {
 	return new PG_File(file);
 }
 
-SDL_RWops* PG_FileArchive::OpenFileRWops(const char* filename, PG_OPEN_MODE mode) {
+SDL_RWops* PG_FileArchive::OpenFileRWops(const char* filename, Mode mode) {
 	SDL_RWops* file = NULL;
 	switch(mode) {
-	case PG_OPEN_READ:
+	case READ:
 		file = PHYSFSRWOPS_openRead(filename);
 		break;
-	case PG_OPEN_WRITE:
+	case WRITE:
 		file = PHYSFSRWOPS_openWrite(filename);
 		break;
-	case PG_OPEN_APPEND:
+	case APPEND:
 		file = PHYSFSRWOPS_openAppend(filename);
 		break;
 	}

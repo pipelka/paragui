@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:57 $
+    Update Date:      $Date: 2004/01/21 16:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.2 $
     Status:           $State: Exp $
 */
 
@@ -42,13 +42,6 @@
 #include <vector>
 #include <string>
 
-//! File open mode
-enum PG_OPEN_MODE {
-  PG_OPEN_READ, //!< Open file for reading
-  PG_OPEN_WRITE, //!< Open file for writing
-  PG_OPEN_APPEND //!< Open file for writing, appending data to the end of the file
-};
-
 //! PG_FileList type (vector of strings)
 typedef vector< string > PG_FileList;
 
@@ -60,6 +53,14 @@ typedef vector< string > PG_FileList;
 
 class DECLSPEC PG_FileArchive {
 public:
+
+	//! File open mode
+	enum Mode {
+		READ, //!< Open file for reading
+		WRITE, //!< Open file for writing
+		APPEND //!< Open file for writing, appending data to the end of the file
+	};
+
 	PG_FileArchive();
 	~PG_FileArchive();
 
@@ -221,8 +222,7 @@ public:
 	   @param mode the open mode
 	   @return pointer to newly created PG_File object or NULL
 	*/
-	static PG_File* OpenFile(const char* filename,
-				 PG_OPEN_MODE mode = PG_OPEN_READ);
+	static PG_File* OpenFile(const char* filename, Mode mode = READ);
 	  
 	/**
 	   Open a file from the archive
@@ -230,8 +230,7 @@ public:
 	   @param mode the open mode
 	   @return pointer SDL_RWops structure
 	*/
-	static SDL_RWops* OpenFileRWops(const char* filename,
-				 PG_OPEN_MODE mode = PG_OPEN_READ);
+	static SDL_RWops* OpenFileRWops(const char* filename, Mode mode = READ);
 	  
 	//! Open and read a file from the archive
 	/*!
