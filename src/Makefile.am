@@ -32,4 +32,3 @@ style_cvs:
 
 style_personal:
 	astyle *.cpp
-libparagui_la_DEPENDENCIES = 
