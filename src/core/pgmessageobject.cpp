@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/05 14:48:33 $
+    Update Date:      $Date: 2003/04/16 14:02:49 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.6 $
+    CVS/RCS Revision: $Revision: 1.1.6.7 $
     Status:           $State: Exp $
 */
 
@@ -51,10 +51,6 @@ PG_MessageObject::PG_MessageObject() {
 	my_oldFocus = NULL;
 
 	objectList.push_back(this);
-
-	// init mutexes
-	//my_mutexSendMessage = SDL_CreateMutex();
-	//my_mutexReceiveMessage = SDL_CreateMutex();
 }
 
 
@@ -62,21 +58,21 @@ PG_MessageObject::PG_MessageObject() {
 
 PG_MessageObject::~PG_MessageObject() {
 
-	// destroy mutexes
-	//SDL_DestroyMutex(my_mutexSendMessage);
-	//my_mutexSendMessage = NULL;
-
-	//SDL_DestroyMutex(my_mutexReceiveMessage);
-	//my_mutexReceiveMessage = NULL;
-
 	RemoveObject(this);
 
 	PG_UnregisterEventObject(this);
 
-	if (inputFocusObject == this)
+	if (inputFocusObject == this) {
 		inputFocusObject = NULL;
-	if (lastwidget == this)
+	}
+
+	if (lastwidget == this) {
 		lastwidget = NULL;
+	}
+
+	if (captureObject == this) {
+		captureObject = NULL;
+	}
 }
 
 /** enable / disable if object can receive messages */
@@ -91,20 +87,15 @@ void PG_MessageObject::EnableReceiver(bool enable) {
 bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 	MSG_MESSAGE* msg = NULL;
 	SDL_Event e;
-	
-	//if(SDL_mutexP(my_mutexReceiveMessage) == -1)
-	//	return false;
 
 	// check if we are able to process messages
 	if(!my_canReceiveMessages) {
-		//SDL_mutexV(my_mutexReceiveMessage);
 		return false;
 	}
 
 	if(event->type != SDL_USEREVENT) {
 		if(captureObject != this)
 			if(!AcceptEvent(event)) {
-				//SDL_mutexV(my_mutexReceiveMessage);
 				return false;
 			}
 	}
@@ -169,8 +160,6 @@ bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 			rc = false;
 			break;
 	}
-
-	//SDL_mutexV(my_mutexReceiveMessage);
 
 	return rc;
 }
@@ -361,8 +350,15 @@ bool PG_MessageObject::PumpIntoEventQueue(const SDL_Event* event) {
 	// send to all receivers
 	bool processed = false;
 	vector<PG_MessageObject*>::iterator list = objectList.begin();
+	PG_MessageObject* o = NULL;
 	while(list != objectList.end()) {
-		if((*list)->ProcessEvent(event)) {
+		o = (*list);
+		if(o == NULL) {
+			objectList.erase(list);
+			list = objectList.begin();
+			continue;
+		}
+		if(o->ProcessEvent(event)) {
 			processed = true;
 			break;		// exit loop if an object responds
 		}
@@ -413,18 +409,15 @@ bool PG_MessageObject::RemoveObject(PG_MessageObject* obj) {
 		return false;
 	}
 
-	// remove the object from the chain
-	objectList.erase(list);
-
+	// mark object for removal
+	*list = NULL;
+	
 	return true;
 }
 
 /**  */
 bool PG_MessageObject::SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, MSG_ID id, MSG_DATA data) {
 	bool rc = false;
-
-	//if(SDL_mutexP(my_mutexSendMessage) == -1)
-	//	return false;
 
 	// check if there is a callback function
 	PG_EVENTHANDLERDATA* cbdata = PG_FindEventHandler(type, this);
@@ -451,15 +444,13 @@ bool PG_MessageObject::SendMessage(PG_MessageObject* target, PG_MSG_TYPE type, M
 		msg->data = data;
 
 		SDL_Event event;
-		event.type = SDL_USEREVENT;						// USEREVENT
+		event.type = SDL_USEREVENT;					// USEREVENT
 		event.user.code = 0;							// RESERVED
 		event.user.data1 = (void*)msg;					// OUR MESSAGE OBJECT
 		event.user.data2 = NULL;						// RESERVED;
 
 		rc = (SDL_PushEvent(&event) == 0);
 	}
-
-	//SDL_mutexV(my_mutexSendMessage);
 
 	return rc;
 }

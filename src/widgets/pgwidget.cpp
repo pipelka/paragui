@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/04/07 22:28:18 $
+   Update Date:      $Date: 2003/04/16 14:02:49 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.19 $
+   CVS/RCS Revision: $Revision: 1.4.4.20 $
    Status:           $State: Exp $
  */
 
@@ -228,6 +228,8 @@ PG_Widget::~PG_Widget() {
 	
 	// remove my private data
 	delete my_internaldata;
+
+	//cout << "Removed widget '" << GetName() << "'" << endl;
 }
 
 void PG_Widget::RemoveFromWidgetList() {

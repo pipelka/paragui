@@ -53,7 +53,7 @@ int main(int argc, char** argv)
         MyDialog md;
         md.Show();
         md.RunModal();
-        //md.Hide();
+        md.Hide();
     }
 
     app.Run();

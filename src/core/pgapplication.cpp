@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/04/05 14:48:33 $
+    Update Date:      $Date: 2003/04/16 14:02:49 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.18 $
+    CVS/RCS Revision: $Revision: 1.2.4.19 $
     Status:           $State: Exp $
 */
 
@@ -194,6 +194,9 @@ int PG_Application::RunEventLoop(void* data) {
 	my_quitEventLoop = false;
 
 	assert(data);
+
+	// Flush queue
+	while(SDL_PollEvent(&event));
 
 	while(!my_quitEventLoop) {
 		
@@ -684,13 +687,14 @@ void PG_Application::Shutdown() {
 
 	while(list != objectList.end()) {
 
-		if(*list == this) {
+		if(*list == this || *list == NULL) {
 			list++;
 			continue;
 		}
 
 		delete *list;
-
+		objectList.erase(list);
+		
 		list = objectList.begin();
 	}
 
