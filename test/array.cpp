@@ -7,13 +7,13 @@ class PG_ArrayWidget : public PG_ThemeWidget {
 public:
 
 	PG_ArrayWidget(PG_Widget* parent, const PG_Rect& r) : PG_ThemeWidget(parent, r) {
-		for(int i=0; i<10; i++) {
+		for(int i=0; i<50; i++) {
 			lines[i] = new PG_Label(this, PG_Rect(0,i*25,150,25), "line");
 		}
 	}
 	
 protected:
-	PG_Label* lines[10];
+	PG_Label* lines[50];
 };
 
 int main( int argc, char **argv )
