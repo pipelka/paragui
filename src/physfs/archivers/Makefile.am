@@ -1,12 +1,15 @@
 noinst_LTLIBRARIES = libarchivers.la
 
-libarchivers_la_SOURCES = \
-	dir.c \
-	grp.c \
-	unzip.c \
-	zip.c
+if BUILD_ZLIB
+INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/zlib114
+else
+INCLUDES = -I$(top_srcdir)
+endif
 
-EXTRA_DIST = \
+libarchivers_la_SOURCES =	\
+	dir.c		\
+	grp.c		\
+	zip.c		\
+	unzip.c     \
 	unzip.h
 
-INCLUDES = -I$(top_srcdir)

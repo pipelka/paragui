@@ -1,4 +1,6 @@
 EXTRA_DIST = \
-	physfshttpd.c \
-	physfsrwops.c \
-	physfsrwops.h
+	physfsrwops.c  \
+	physfsrwops.h  \
+	physfshttpd.c
+
+

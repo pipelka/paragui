@@ -1,21 +1,22 @@
 noinst_LTLIBRARIES = libplatform.la
 
-if BUILD_BEOS_CPP
-libplatform_la_SOURCES = \
-	posix.c \
+INCLUDES = -I$(top_srcdir)
+
+if BUILD_BEOS
+libplatform_la_SOURCES =	\
+	unix.c                  \
+	posix.c                 \
 	beos.cpp
 else
-libplatform_la_SOURCES = \
-	posix.c \
-	unix.c
+libplatform_la_SOURCES =	\
+	unix.c                  \
+	posix.c
 endif
 
-EXTRA_DIST = \
-	posix.c \
-	unix.c \
-	skeleton.c \
-	win32.c \
-	macclassic.c \
+
+EXTRA_DIST =      \
+	skeleton.c    \
+	macclassic.c  \
+	win32.c       \
 	beos.cpp
 
-INCLUDES = -I$(top_srcdir)

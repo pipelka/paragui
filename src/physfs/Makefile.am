@@ -1,39 +1,28 @@
 noinst_LTLIBRARIES = libphysfs.la
 
-if BUILD_ZLIB
-ZLIB_DIR = zlib114
-ZLIB_LIB = zlib114/libz.la
-ZLIB_INC = -I./zlib114
-else
-ZLIB_LIB = -lz
-ZLIB_INC =
-endif
-
-if BUILD_TEST_PHYSFS
-TEST_DIR = . test
-endif
-
-SUBDIRS = archivers platform $(ZLIB_DIR) $(TEST_DIR)
-
-DIST_SUBDIRS = $(SUBDIRS) extras zlib114 test
+SUBDIRS = platform archivers zlib114 extras
+DIST_SUBDIRS = $(SUBDIRS) test
 
 libphysfs_la_SOURCES =	\
-	physfs.c \
-	physfs_internal.h \
+	physfs.c	\
+	physfs_internal.h	\
 	physfs_byteorder.c
 
-libphysfs_la_LIBADD = \
-	archivers/libarchivers.la \
-	platform/libplatform.la \
-	$(ZLIB_LIB)
-
-libphysfs_la_INCLUDES = $(ZLIB_INC)
+if BUILD_ZLIB
+ZLIB_LIB = zlib114/libz.la
+else
+ZLIB_LIB =
+endif
 
 libphysfs_la_LDFLAGS = 		\
 	-release $(LT_RELEASE)	\
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
+libphysfs_la_LIBADD =	\
+	archivers/libarchivers.la	\
+	platform/libplatform.la	\
+	$(ZLIB_LIB)
 
-EXTRA_DIST = \
+EXTRA_DIST =	\
 	CREDITS \
 	LICENSE \
 	CHANGELOG \
@@ -44,3 +33,10 @@ EXTRA_DIST = \
 	physfs.dsp \
 	test_physfs.dsp \
 	physfs.h
+
+dist-hook:
+	mkdir $(distdir)/docs
+	echo "Docs are generated with the program "Doxygen" (http://www.doxygen.org/)," >> $(distdir)/docs/README
+	echo " or can be read online at http://icculus.org/physfs/docs/" >> $(distdir)/docs/README
+	echo >> $(distdir)/docs/README
+
