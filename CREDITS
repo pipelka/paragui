@@ -3,6 +3,10 @@ CREDITS:
 Special thanks go to Sam Lantinga <slouken@libsdl.org>
 for the great SDL library <http://www.libsdl.org>.
 
+Keith Swyer <ksswyer@hotmail.com>:
+MacOS support
+CodeWarrior 7 project files
+
 David Hedbor <david@hedbor.org>:
 GCC 3.0/Win32 testing
 VisualC++ workspaces
@@ -46,6 +50,7 @@ Ryan C. Gordon <icculus@clutteredmind.org> under the LGPL.
  
 Thanks to the many people providing patches, fixes & ideas:
 
+Andrew Ford
 Brian T. Crowder
 Oliver Lietz
 Henrik Edwards
