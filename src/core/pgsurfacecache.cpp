@@ -20,20 +20,21 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/01/04 21:13:40 $
+    Update Date:      $Date: 2003/04/22 10:49:01 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgsurfacecache.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.3 $
+    CVS/RCS Revision: $Revision: 1.2.4.4 $
     Status:           $State: Exp $
 */
 
 #include "paragui.h"
-#include "pgsurfacecache.h"
-#include "pglog.h"
 
 #include <iostream>
 #include <cstring>
 #include <string>
 #include <cassert>
+
+#include "pgsurfacecache.h"
+#include "pglog.h"
 
 #ifdef HASH_MAP_INC
 #include HASH_MAP_INC

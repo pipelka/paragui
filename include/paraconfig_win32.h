@@ -8,6 +8,8 @@
 #pragma warning(disable: 4786)
 #pragma warning(disable: 4800)
 #pragma warning(disable: 4091)
+#pragma warning(disable: 4273)
+#pragma warning(disable: 4806)
 
 // strange thing but it works
 #define PATH_MAX MAX_PATH
