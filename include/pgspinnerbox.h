@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/27 21:23:38 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -69,7 +69,7 @@ public:
 
 	/**
 	*/
-	PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r = PG_Rect::null, const char* style = "SpinnerBox");
+	PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r = PG_Rect::null, const std::string& style = "SpinnerBox");
 
 	void SetValue(int value) {
 		m_iValue = value;
@@ -82,7 +82,7 @@ public:
 		m_iMaxValue = value;
 	}
 
-	void SetMask( const char *value );
+	void SetMask( const std::string& value );
 
 	int GetValue() {
 		return( m_iValue );
@@ -93,7 +93,7 @@ public:
 	int GetMaxValue() {
 		return( m_iMaxValue );
 	}
-	char *GetMask() {
+	const std::string& GetMask() {
 		return( m_sMask );
 	}
 
@@ -112,7 +112,7 @@ private:
 	int m_iMinValue;
 	int m_iMaxValue;
 	int m_iValue;
-	char m_sMask[10];
+	std::string m_sMask;
 	void SetTextValue();
 	void AdjustSize();
 };

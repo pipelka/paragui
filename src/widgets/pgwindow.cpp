@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/29 09:29:00 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.14 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,7 @@
 #include "pgtheme.h"
 #include "pgbutton.h" 
 
-PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext, WindowFlags flags, const char* style, int heightTitlebar) 
+PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const std::string& windowtext, WindowFlags flags, const std::string& style, int heightTitlebar) 
 : PG_ThemeWidget(parent, r), my_moveable(true) {
 	my_moveMode = false;
 	my_heightTitlebar = heightTitlebar;
@@ -69,20 +69,20 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const char* windowtext
 PG_Window::~PG_Window() {
 }
 
-void PG_Window::SetText(const char* text) {
+void PG_Window::SetText(const std::string& text) {
 	my_labelTitle->SetText(text);
 }
 
-void PG_Window::SetTitle(const char* title, PG_Label::TextAlign alignment) {
+void PG_Window::SetTitle(const std::string& title, PG_Label::TextAlign alignment) {
 	my_labelTitle->SetAlignment(alignment);
 	SetText(title);
 }
 
-const char* PG_Window::GetText() {
+const std::string& PG_Window::GetText() {
 	return my_labelTitle->GetText();
 }
 
-const char* PG_Window::GetTitle() {
+const std::string& PG_Window::GetTitle() {
 	return GetText();
 }
 
@@ -101,7 +101,7 @@ void PG_Window::RecalcPositions() {
 	my_buttonMinimize->MoveWidget(PG_Rect(0, 0, my_heightTitlebar, my_heightTitlebar));
 }
 
-void PG_Window::LoadThemeStyle(const char* widgettype) {
+void PG_Window::LoadThemeStyle(const std::string& widgettype) {
 	PG_Theme* t = PG_Application::GetTheme();
 
 	PG_ThemeWidget::LoadThemeStyle(widgettype, "Window");
@@ -276,7 +276,7 @@ PG_Color PG_Window::GetTitlebarColor() {
 	return my_labelTitle->GetFontColor();
 }
 
-void PG_Window::SetIcon(const char* filename) {
+void PG_Window::SetIcon(const std::string& filename) {
 	my_labelTitle->SetIcon(filename);
 }
 	

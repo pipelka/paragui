@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/09 20:09:51 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.13 $
     Status:           $State: Exp $
 */
 
@@ -71,13 +71,13 @@ public:
 	@param r position of the widget
 	@param style style of the widget (loaded from the theme)
 	*/
-	PG_DropDown(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, int id = -1, const char* style="DropDown");
+	PG_DropDown(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, int id = -1, const std::string& style="DropDown");
 
 	/**  */
 	~PG_DropDown();
 
 	/** */
-	void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const std::string& widgettype);
 
 	/**
 	Add a new item to the dropdown box
@@ -86,7 +86,7 @@ public:
 	@param height Height of the listbox item in pixels. If 0 the height will
 			be calculated using the text height.
 	*/
-	void AddItem(const char* text, void* userdata = NULL, Uint16 height = 0);
+	void AddItem(const std::string& text, void* userdata = NULL, Uint16 height = 0);
 
 	/**
 	Remove all widgets from the drop down(without deletion)
@@ -122,13 +122,13 @@ public:
 	Get the current text string
 	@return			pointer to text string
 	*/
-	const char* GetText();
+	const std::string& GetText();
 
 	/**
 	Set the current text string
 	@param	new_text	pointer to text string
 	*/
-	void SetText(const char* new_text);
+	void SetText(const std::string& new_text);
 
 	/** */
 	bool ProcessEvent(const SDL_Event * event, bool bModal);

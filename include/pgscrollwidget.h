@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 10:51:41 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -53,7 +53,7 @@ public:
 	/**
 	Constructor of the PG_Widget class
 	*/
-	PG_ScrollWidget(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="ScrollWidget");
+	PG_ScrollWidget(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& style="ScrollWidget");
 
 	/**
 	Destructor of the PG_Widget class
@@ -61,7 +61,7 @@ public:
 	~PG_ScrollWidget();
 
 	/**  */
-	void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const std::string& widgettype);
 
 	/**
 	Enable / disable the Scrollbar (override automatic display)

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 10:51:41 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.17 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.18 $
     Status:           $State: Exp $
 */
 
@@ -121,7 +121,7 @@ public:
 
 	Loads the defined style for a given widgettype
 	*/
-	void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const std::string& widgettype);
 
 	/**
 	Load a style from the theme definition
@@ -131,7 +131,7 @@ public:
 
 	Loads the defined style of a given widgettype and objectname.
 	*/
-	virtual void LoadThemeStyle(const char* widgettype, const char* objectname);
+	virtual void LoadThemeStyle(const std::string& widgettype, const std::string& objectname);
 
 	/**
 	Start to drag a widget
@@ -277,7 +277,7 @@ public:
 	@param name   the name of the child to return
 	@return A pointer to the child with the given name or 0 if no such child exists.
 	*/
-	PG_Widget* FindChild(const char *name);
+	PG_Widget* FindChild(const std::string& name);
 
 	/**
 	Check if the mousepointer is currently inside the widget
@@ -421,20 +421,20 @@ public:
 	   Set the name for the widget
 	   @param name	Name of the widget - size of the name is defined in PG_NAMESIZE
 	*/
-	void SetName(const char *name);
+	void SetName(const std::string& name);
 
 	/**
 	Get the name for the widget
 	@return	name of the widget
 	*/
-	const char* GetName();
+	const std::string& GetName();
 
 	/**
 	Load layout from the XML file to the current widget
 	@param name	name of the xml file
 	@return returns non-zero on success or 0 if not succes
 	*/
-	bool LoadLayout(const char *name);
+	bool LoadLayout(const std::string& name);
 
 	/**
 	Load layout from the XML file to the current widget
@@ -442,7 +442,7 @@ public:
 	@param WorkCallback	address of function to show progress of loading layout
 	@return returns non-zero on success or 0 if not succes
 	*/
-	bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max));
+	bool LoadLayout(const std::string& name, void (* WorkCallback)(int now, int max));
 
 	/**
 	Load layout from the XML file to the current widget
@@ -451,7 +451,7 @@ public:
 	@param UserSpace address of user data witch are passed to Processing Instruction handler etc.
 	@return returns non-zero on success or 0 if not succes
 	*/
-	bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max), void *UserSpace);
+	bool LoadLayout(const std::string& name, void (* WorkCallback)(int now, int max), void *UserSpace);
 
 	/**
 	Removes all childs
@@ -488,15 +488,16 @@ public:
 	/**
 	Sets text
 	@param text	Set the widget text and update widget
+	C++ version, handles std::string
 	*/
-	virtual void SetText(const char* text);
+	virtual void SetText(const std::string& text);
 
 	/**
 	Adds text
 	@param text	Add text to the widget text
 	@param update Do the update
 	*/
-	void AddText(const char* text, bool update = false);
+	void AddText(const std::string& text, bool update = false);
 
 	/**
 	Sets formated text
@@ -507,11 +508,11 @@ public:
 	/** Returns text
 	@return	Pointer to the text of the widget (read-only)
 	*/
-	virtual const char* GetText();
+	virtual const std::string& GetText();
 
-	void GetTextSize(Uint16& w, Uint16& h, const char* text = NULL);
+	void GetTextSize(Uint16& w, Uint16& h, const std::string& text = PG_NULLSTR);
 
-	static void GetTextSize(Uint16& w, Uint16& h, const char* text, PG_Font* font);
+	static void GetTextSize(Uint16& w, Uint16& h, const std::string& text, PG_Font* font);
 
 	int GetTextWidth();
 
@@ -566,7 +567,7 @@ public:
 	@param	Name	Filename of the font (this function don`t load the font - or check presention of the file !!!)
 	@param	bRecursive alter all child widgets
 	*/
-	void SetFontName(const char *Name, bool bRecursive = false);
+	void SetFontName(const std::string& Name, bool bRecursive = false);
 
 	/**
 	Set widget size by size of text (should be used before Show() or AddWidget())
@@ -574,7 +575,7 @@ public:
 	@param	Height	Value witch is added to text height  (default = 0)
 	@param	Text	Text to get size from, if NULL my_text is used
 	*/
-	void SetSizeByText(int Width = 0, int Height = 0, const char *Text = NULL);
+	void SetSizeByText(int Width = 0, int Height = 0, const std::string& Text = PG_NULLSTR);
 
 	/**
 	Get the size of the font
@@ -598,7 +599,7 @@ public:
 	@param rect rectangle where the text should appear
 	@param text pointer to text string
 	*/
-	void DrawText(const PG_Rect& rect, const char* text);
+	void DrawText(const PG_Rect& rect, const std::string& text);
 
 	/**
 	Render text inside the widget
@@ -606,7 +607,7 @@ public:
 	@param y y-position where the text should appear
 	@param text pointer to text string
 	*/
-	void DrawText(int x, int y, const char* text);
+	void DrawText(int x, int y, const std::string& text);
 
 	/**
 	Render text inside the widget and clip to a given clipping rectangle
@@ -615,7 +616,7 @@ public:
 	@param text pointer to text string
 	@param cliprect text bounding rectangle
 	*/
-	void DrawText(int x, int y, const char* text, const PG_Rect& cliprect);
+	void DrawText(int x, int y, const std::string& text, const PG_Rect& cliprect);
 
 	/**
 	Render text inside the widget and set the font color
@@ -623,7 +624,7 @@ public:
 	@param text pointer to text string
 	@param c color of the rendered text
 	*/
-	void DrawText(const PG_Rect& rect, const char* text, const PG_Color& c);
+	void DrawText(const PG_Rect& rect, const std::string& text, const PG_Color& c);
 
 	/**
 	Render text inside the widget and set the font color
@@ -632,7 +633,7 @@ public:
 	@param text pointer to text string
 	@param c color of the rendered text
 	*/
-	void DrawText(int x, int y, const char* text, const PG_Color& c);
+	void DrawText(int x, int y, const std::string& text, const PG_Color& c);
 
 	/**  */
 	void DrawBorder(const PG_Rect& r, int size, bool up = true);
@@ -744,6 +745,15 @@ public:
 	
 	void EnableReceiver(bool enable, bool bRecursive = false);
 
+	/**
+	  	change the parent of the widget.
+	  	@param parent pointer to new parent
+	  	USE THIS FUNCTION WITH EXTREME CAUTION. HELL WILL BREAK LOOSE IF YOU DON'T KNOW WHAT
+	  	YOU ARE DOING.
+	  	This function will overwrite the internal parent-pointer. No checking, redrawing will be done.
+	*/
+	void SetParent(PG_Widget* parent);
+
 protected:
 
 	/**
@@ -828,8 +838,6 @@ protected:
 	@return true if the message was processed
 	*/
 	virtual bool eventQuitModal(int id, PG_MessageObject* widget, unsigned long data);
-
-	void SetParent(PG_Widget* parent);
 
 	/**  */
 	void FadeOut();

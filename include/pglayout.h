@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 10:11:15 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pglayout.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.4 $
     Status:           $State: Exp $
 */
 
@@ -64,7 +64,7 @@ namespace PG_Layout {
 	@param UserSpace ???
 	@return true on success
 */
-DECLSPEC bool Load(PG_Widget* parent, const char *filename, void (* WorkCallback)(int now, int max), void *UserSpace);
+DECLSPEC bool Load(PG_Widget* parent, const std::string& filename, void (* WorkCallback)(int now, int max), void *UserSpace);
 
 DECLSPEC int GetParamInt(const char **Source, char *What);
 DECLSPEC PG_ScrollBar::ScrollDirection GetParamScrollDirection(const char **Source, char *What);
@@ -78,7 +78,7 @@ DECLSPEC int GetParamGrad(const char **Source, char *What, PG_Gradient *grad);
 
 #ifndef DOXYGEN_SKIP
 extern void (* PG_LayoutWidgetParams)(PG_Widget *Widget, const char **atts);
-extern void (* PG_LayoutProcessingInstruction)(const char *target,  const char *data, const char *FileName, void *UserSpace);
+extern void (* PG_LayoutProcessingInstruction)(const char *target,  const char *data, const std::string& FileName, void *UserSpace);
 #endif // DOXYGEN_SKIP
 
 #endif

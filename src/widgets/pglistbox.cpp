@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:03 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.13 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,7 @@
 #include "pgscrollarea.h"
 #include "pglog.h"
 
-PG_ListBox::PG_ListBox(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_WidgetList(parent, r, style),
+PG_ListBox::PG_ListBox(PG_Widget* parent, const PG_Rect& r, const std::string& style) : PG_WidgetList(parent, r, style),
 my_selectedItem(NULL), my_alignment(PG_Label::LEFT) {
 	my_multiselect = false;
 	my_indent = 0;

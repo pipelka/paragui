@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/02 20:54:45 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.10 $
     Status:           $State: Exp $
 */
 
@@ -51,7 +51,7 @@ public:
 	template<class datatype = PG_Pointer> class SignalSelectItem : public PG_Signal1<PG_ListBoxBaseItem*, datatype> {};
 
 	/** */
-	PG_ListBox(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="ListBox");
+	PG_ListBox(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& style="ListBox");
 
 	/** */
 	~PG_ListBox();

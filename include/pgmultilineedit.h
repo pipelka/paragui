@@ -9,8 +9,8 @@
 class DECLSPEC PG_MultiLineEdit : public PG_LineEdit {
 public:
 
-	PG_MultiLineEdit(PG_Widget* parent, const PG_Rect& r, const char* style="LineEdit", int maximumLength = 1000000);
-	virtual void SetText(const char* new_text);	
+	PG_MultiLineEdit(PG_Widget* parent, const PG_Rect& r, const std::string& style="LineEdit", int maximumLength = 1000000);
+	virtual void SetText(const std::string& new_text);	
 
 protected:
 

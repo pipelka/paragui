@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:45:44 $
+    Update Date:      $Date: 2004/11/17 21:34:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14.2.8 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.9 $
     Status:           $State: Exp $
 */
 
@@ -95,7 +95,7 @@ void PG_FileArchive::Deinit() {
 	PHYSFS_deinit();
 }
 
-std::string *PG_FileArchive::PathToPlatform(const char *path) {
+std::string *PG_FileArchive::PathToPlatform(const std::string& path) {
 	std::string *newpath;
 	const char* sep = GetDirSeparator();
 	std::string::size_type pos = 0, incr;
@@ -116,25 +116,25 @@ std::string *PG_FileArchive::PathToPlatform(const char *path) {
 }
 
 
-bool PG_FileArchive::AddArchive(const char* arch, bool append) {
+bool PG_FileArchive::AddArchive(const std::string& arch, bool append) {
 	std::string *newpath = PathToPlatform(arch);
 	bool ret = (PHYSFS_addToSearchPath(newpath->c_str(),  append) != 0);
 	delete newpath;
 	return ret;
 }
 
-bool PG_FileArchive::RemoveArchive(const char* arch) {
+bool PG_FileArchive::RemoveArchive(const std::string& arch) {
 	std::string *newpath = PathToPlatform(arch);
 	bool ret = (PHYSFS_removeFromSearchPath(newpath->c_str()) != 0);
 	delete newpath;
 	return ret;
 }
 
-char **PG_FileArchive::EnumerateFiles(const char *dir) {
-	return PHYSFS_enumerateFiles(dir);
+char **PG_FileArchive::EnumerateFiles(const std::string& dir) {
+	return PHYSFS_enumerateFiles(dir.c_str());
 }
 
-PG_FileList* PG_FileArchive::GetFileList(const char *dir, const char* wildcard) {
+PG_FileList* PG_FileArchive::GetFileList(const std::string& dir, const std::string& wildcard) {
 	char **tempList = EnumerateFiles(dir);
 	
 	if( tempList == NULL ) {
@@ -144,7 +144,7 @@ PG_FileList* PG_FileArchive::GetFileList(const char *dir, const char* wildcard) 
 	PG_FileList* retVal = new PG_FileList;
 	
 	for( char** i = tempList; *i != NULL; i++) {
-		if(fnmatch(wildcard, *i, FNM_PATHNAME) == 0) {
+		if(fnmatch(wildcard.c_str(), *i, FNM_PATHNAME) == 0) {
 			retVal->push_back(std::string(*i));
 		}
 	}
@@ -155,20 +155,20 @@ PG_FileList* PG_FileArchive::GetFileList(const char *dir, const char* wildcard) 
 	return retVal;
 }
 
-bool PG_FileArchive::Exists(const char *filename) {
-	return PHYSFS_exists(filename);
+bool PG_FileArchive::Exists(const std::string& filename) {
+	return PHYSFS_exists(filename.c_str());
 }
 
-bool PG_FileArchive::IsDirectory(const char *filename) {
-	return PHYSFS_isDirectory(filename);
+bool PG_FileArchive::IsDirectory(const std::string& filename) {
+	return PHYSFS_isDirectory(filename.c_str());
 }
 
 const char* PG_FileArchive::GetDirSeparator() {
 	return PHYSFS_getDirSeparator();
 }
 
-const char* PG_FileArchive::GetRealDir(const char* filename) {
-	return PHYSFS_getRealDir(filename);
+const char* PG_FileArchive::GetRealDir(const std::string& filename) {
+	return PHYSFS_getRealDir(filename.c_str());
 }
 
 const char* PG_FileArchive::GetLastError() {
@@ -187,17 +187,17 @@ const char* PG_FileArchive::GetWriteDir() {
 	return PHYSFS_getWriteDir();
 }
 
-PG_File* PG_FileArchive::OpenFile(const char* filename, Mode mode) {
+PG_File* PG_FileArchive::OpenFile(const std::string& filename, Mode mode) {
 	PHYSFS_file* file = 0;
 	switch(mode) {
 	case READ:
-		file = PHYSFS_openRead(filename);
+		file = PHYSFS_openRead(filename.c_str());
 		break;
 	case WRITE:
-		file = PHYSFS_openWrite(filename);
+		file = PHYSFS_openWrite(filename.c_str());
 		break;
 	case APPEND:
-		file = PHYSFS_openAppend(filename);
+		file = PHYSFS_openAppend(filename.c_str());
 		break;
 	}
 	if(file == NULL) {
@@ -207,49 +207,46 @@ PG_File* PG_FileArchive::OpenFile(const char* filename, Mode mode) {
 	return new PG_File(file);
 }
 
-SDL_RWops* PG_FileArchive::OpenFileRWops(const char* filename, Mode mode) {
+SDL_RWops* PG_FileArchive::OpenFileRWops(const std::string& filename, Mode mode) {
 	SDL_RWops* file = NULL;
 	switch(mode) {
 	case READ:
-		file = PHYSFSRWOPS_openRead(filename);
+		file = PHYSFSRWOPS_openRead(filename.c_str());
 		break;
 	case WRITE:
-		file = PHYSFSRWOPS_openWrite(filename);
+		file = PHYSFSRWOPS_openWrite(filename.c_str());
 		break;
 	case APPEND:
-		file = PHYSFSRWOPS_openAppend(filename);
+		file = PHYSFSRWOPS_openAppend(filename.c_str());
 		break;
 	}
 	
 	return file;
 }
 
-bool PG_FileArchive::MakeDir(const char* dir) {
-	return PHYSFS_mkdir(dir) == 1;
+bool PG_FileArchive::MakeDir(const std::string& dir) {
+	return PHYSFS_mkdir(dir.c_str()) == 1;
 }
-bool PG_FileArchive::SetWriteDir(const char* dir) {
-	if(PHYSFS_setWriteDir(dir)) {
-		return PHYSFS_addToSearchPath(dir, 0) == 1;
+bool PG_FileArchive::SetWriteDir(const std::string& dir) {
+	if(PHYSFS_setWriteDir(dir.c_str())) {
+		return PHYSFS_addToSearchPath(dir.c_str(), 0) == 1;
 	} else {
 		return false;
 	}
 }
 
-bool PG_FileArchive::SetSaneConfig(const char *organization,
-				   const char* appName,
-				  const char* archiveExt,
+bool PG_FileArchive::SetSaneConfig(const std::string& organization,
+				   const std::string& appName,
+				  const std::string& archiveExt,
 				  bool includeCdRoms,
 				  bool archivesFirst)
 {
-	if(!appName || !organization) {
-		return false;
-	}
-	return PHYSFS_setSaneConfig(organization, appName, archiveExt,
+	return PHYSFS_setSaneConfig(organization.c_str(), appName.c_str(), archiveExt.c_str(),
 				    includeCdRoms, archivesFirst) == 1;
 }
 
 
-PG_DataContainer* PG_FileArchive::ReadFile(const char* filename) {
+PG_DataContainer* PG_FileArchive::ReadFile(const std::string& filename) {
 	PG_File *file = OpenFile(filename);
 
 	if(!file) {
@@ -276,27 +273,21 @@ PG_DataContainer* PG_FileArchive::ReadFile(const char* filename) {
 	return data;
 }
 
-SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool convert) {
+SDL_Surface* PG_FileArchive::LoadSurface(const std::string& filename, bool convert) {
 	return LoadSurface(filename, false, 0, convert);
 }
 
-SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool usekey, Uint32 colorkey, bool convert) {
-	if(filename == NULL) {
-		return NULL;
-	}
-
-	std::string fn = filename;
-
-	if(fn == "none") {
+SDL_Surface* PG_FileArchive::LoadSurface(const std::string& filename, bool usekey, Uint32 colorkey, bool convert) {
+	if(filename.empty() || filename == "none") {
 		return NULL;
 	}
 
 	// take a look into the cache
-	SDL_Surface* surface = my_cache.FindSurface(fn);
+	SDL_Surface* surface = my_cache.FindSurface(filename);
 
 	// return the cache surface if it has been found
 	if(surface != NULL) {
-		my_cache.IncRef(fn);
+		my_cache.IncRef(filename);
 		return surface;
 	}
 
@@ -304,7 +295,7 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool usekey, Uint
 	SDL_RWops *rw = OpenFileRWops(filename);
 
 	if(rw == NULL) {
-		PG_LogWRN("Unable to open '%s' !", filename);
+		PG_LogWRN("Unable to open '%s' !", filename.c_str());
 		return NULL;
 	}
 
@@ -316,12 +307,12 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool usekey, Uint
 	}
 
 	if(surface == NULL) {
-		PG_LogWRN("Failed to load imagedata from '%s' !", filename);
+		PG_LogWRN("Failed to load imagedata from '%s' !", filename.c_str());
 		return NULL;
 	}
 	
 	if(surface == NULL) {
-		PG_LogERR("Unable to load imagedata from '%s'", filename);
+		PG_LogERR("Unable to load imagedata from '%s'", filename.c_str());
 		PG_LogERR("PhysFS reported: '%s'", PG_FileArchive::GetLastError());
 		PG_LogERR("SDL reported: '%s'", SDL_GetError());
 	}
@@ -343,11 +334,8 @@ SDL_Surface* PG_FileArchive::LoadSurface(const char* filename, bool usekey, Uint
 		}
 	}
 
-	// add the loaded surface to the cache
-	return my_cache.AddSurface(fn, surface);
-
-	// return the pointer to the surface
-	//return surface;
+	// add the loaded surface to the cache and return result
+	return my_cache.AddSurface(filename, surface);
 }
 
 bool PG_FileArchive::UnloadSurface(SDL_Surface* surface, bool bDeleteIfNotExists) {

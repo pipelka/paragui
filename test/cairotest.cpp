@@ -4,11 +4,26 @@
 #include "pgwindow.h"
 #include "pgmessagebox.h"
 #include "pgdropdown.h"
+#include "pgbutton.h"
 
 #include <cairo.h>
 
 // currently global (nasty, i know), needs to be integrated into cairoified ParaGUI
 cairo_t* cr;
+
+bool cairoBlitButton(PG_Button* button, SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst, PG_Button::STATE state) {
+	double linewidth = 4;
+	cairo_save(cr);
+	
+	cairo_set_alpha(cr, 0.5);
+	cairo_rectangle (cr, button->x+linewidth/2,button->y+linewidth/2,button->w-linewidth/2-1,button->h-linewidth/2-1);
+	cairo_set_line_width(cr, 4);
+	cairo_set_rgb_color(cr, 0, 0, 0);
+	cairo_stroke(cr);
+	cairo_restore(cr);
+	
+	return true;
+}
 
 class CMyWidget : public PG_ThemeWidget {
 public:
@@ -26,7 +41,7 @@ CMyWidget::CMyWidget(PG_Widget *parent,PG_Rect rect) : PG_ThemeWidget(parent,rec
 
 void CMyWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {
 	//PG_ThemeWidget::eventBlit(srf, src, dst);
-	PG_Rect* clip = GetClipRect();
+	//PG_Rect* clip = GetClipRect();
 		
 	cairo_save(cr);
 
@@ -67,13 +82,13 @@ void CMyWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 
 class CMyWindow : public PG_Window {
 public:
-	CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text,WindowFlags flags,const char* style = "Window");
+	CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text,WindowFlags flags,const std::string& style = "Window");
 
 protected:
 	CMyWidget* mywidget;
 };
 
-CMyWindow::CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text, WindowFlags flags,const char* style) : PG_Window(parent,r,text,flags,style) {
+CMyWindow::CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text, WindowFlags flags,const std::string& style) : PG_Window(parent,r,text,flags,style) {
 	mywidget = new CMyWidget(this, PG_Rect(5, 30, r.w-10, r.h-35));
 	SetDirtyUpdate(false);
 	SetTransparency(100);
@@ -99,6 +114,12 @@ int main(int argc,char *argv[])
 	
 	cairo_set_target_image(cr, image, CAIRO_FORMAT_ARGB32, width, height, stride);
 	
+	// connect PG_Button::sigBlit to cairoBlitButton
+	PG_Button::sigBlit.connect(slot(cairoBlitButton));
+
+	PG_Button btn1(NULL, PG_Rect(300,400,200,50), "Button 1");
+	btn1.Show();
+
 	CMyWindow win1(NULL, PG_Rect(200,200,360,290), "CAIRO sample", PG_Window::DEFAULT);
 	win1.Show();
 

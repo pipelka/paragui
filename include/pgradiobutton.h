@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 10:51:41 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgradiobutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -58,12 +58,12 @@ public:
 	template<class datatype = PG_Pointer> class SignalButtonClick : public PG_Signal2<PG_RadioButton*, datatype> {};
 
 	/** */
-	PG_RadioButton(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* text = NULL, PG_RadioButton* firstOfGroup = NULL, int id = -1, const char* style="RadioButton");
+	PG_RadioButton(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& text = PG_NULLSTR, PG_RadioButton* firstOfGroup = NULL, int id = -1, const std::string& style="RadioButton");
 
 	/** */
 	~PG_RadioButton();
 
-	void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const std::string& widgettype);
 
 	/** */
 	bool GetPressed();
@@ -75,14 +75,14 @@ public:
 	void SetAlignment(PG_Label::TextAlign a);
 
 	/** */
-	void SetText(const char* text);
+	void SetText(const std::string& text);
 
 	/** */
-	const char* GetText();
+	const std::string& GetText();
 
 	void SetFontColor(const PG_Color& Color);
 
-	void SetSizeByText(int Width = 0, int Height = 0, const char *Text = NULL);
+	void SetSizeByText(int Width = 0, int Height = 0, const std::string& Text = PG_NULLSTR);
 
 	/** */
 	void AddToGroup(PG_RadioButton* w);

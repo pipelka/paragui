@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pglabel.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
     Status:           $State: Exp $
 */
 
@@ -56,22 +56,22 @@ public:
 	@param text				Text displayed by label.
 	@param style			initial widget style (from xml theme)
 	*/
-	PG_Label(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* text = NULL, const char* style="Label");
+	PG_Label(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& text = PG_NULLSTR, const std::string& style="Label");
 
 	/** Only destructor */
 	~PG_Label();
 
 	/** */
-	void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const std::string& widgettype);
 
 	/** */
-	void LoadThemeStyle(const char* widgettype, const char* objectname);
+	void LoadThemeStyle(const std::string& widgettype, const std::string& objectname);
 
 	/** Sets text alignment */
 	void SetAlignment(TextAlign a);
 
 	/** */
-	SDL_Surface* SetIcon(const char* filename);
+	SDL_Surface* SetIcon(const std::string& filename);
 
 	/** */
 	SDL_Surface* SetIcon(SDL_Surface* icon);
@@ -87,7 +87,7 @@ public:
 	/** Returns the text indentation */
 	Uint16 GetIndent();
 
-	void SetSizeByText(int Width = 0, int Height = 0, const char *Text = NULL);	
+	void SetSizeByText(int Width = 0, int Height = 0, const std::string& Text = PG_NULLSTR);
 
 protected:
 

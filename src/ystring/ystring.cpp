@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ystring.cpp,v 1.1.2.4 2004/10/12 15:44:20 braindead Exp $
+ * $Id: ystring.cpp,v 1.1.2.5 2004/11/17 21:34:23 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2004/10/12 15:44:20 $
+ *  $Date: 2004/11/17 21:34:23 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.4 $
+ *  $Revision: 1.1.2.5 $
  *  $Source: /sources/paragui/paragui/src/ystring/Attic/ystring.cpp,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -396,7 +396,7 @@ YString YString::fromUtf8(const char * utf8) throw(std::domain_error)
   return fromUtf8(std::string(utf8));
 }
 
-YString YString::fromUtf8(std::string utf8) throw(std::domain_error)
+YString YString::fromUtf8(const std::string& utf8) throw(std::domain_error)
 {
   YString buff;
   

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 16:24:05 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5.4.1.2.8 $
+    CVS/RCS Revision: $Revision: 1.5.4.1.2.9 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,9 @@
 #include "pgapplication.h"
 #include "pgtheme.h"
 
-PG_ListBoxItem::PG_ListBoxItem(PG_Widget* parent, int height, const char* text, SDL_Surface* icon, void* userdata, const char* style) : PG_ListBoxBaseItem(parent, height, userdata) {
+#include "propstrings_priv.h"
+
+PG_ListBoxItem::PG_ListBoxItem(PG_Widget* parent, int height, const std::string& text, SDL_Surface* icon, void* userdata, const std::string& style) : PG_ListBoxBaseItem(parent, height, userdata) {
 	
 	for(int i=0; i<3; i++) {
 		my_background[i] = NULL;
@@ -41,7 +43,7 @@ PG_ListBoxItem::PG_ListBoxItem(PG_Widget* parent, int height, const char* text, 
 	}
 
 	SetText(text);
-	LoadThemeStyle(style, "ListBoxItem");
+	LoadThemeStyle(style, PG_PropStr::ListBoxItem);
 
 	my_srfHover = NULL;
 	my_srfSelected = NULL;
@@ -97,30 +99,30 @@ void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 	PG_Label::eventBlit(NULL, src, dst);
 }
 
-void PG_ListBoxItem::LoadThemeStyle(const char* widgettype, const char* objectname) {
-	static char prop[80];
+void PG_ListBoxItem::LoadThemeStyle(const std::string& widgettype, const std::string& objectname) {
 	PG_Theme* t = PG_Application::GetTheme();
+	PG_Gradient* g = NULL;
 
-	for(int i=0; i<3; i++) {
-		sprintf(prop, "background%i", i);
-		my_background[i] = t->FindSurface(widgettype, objectname, prop);
+	my_background[0] = t->FindSurface(widgettype, objectname, PG_PropStr::background0);
+	my_background[1] = t->FindSurface(widgettype, objectname, PG_PropStr::background1);
+	my_background[2] = t->FindSurface(widgettype, objectname, PG_PropStr::background2);
 
-		sprintf(prop, "blend%i", i);
-		t->GetProperty(widgettype, objectname, prop, my_blend[i]);
+	t->GetProperty(widgettype, objectname, PG_PropStr::blend0, my_blend[0]);
+	t->GetProperty(widgettype, objectname, PG_PropStr::blend1, my_blend[1]);
+	t->GetProperty(widgettype, objectname, PG_PropStr::blend2, my_blend[2]);
 
-		sprintf(prop, "backmode%i", i);
-		t->GetProperty(widgettype, objectname, prop, my_bkmode[i]);
+	t->GetProperty(widgettype, objectname, PG_PropStr::backmode0, my_bkmode[0]);
+	t->GetProperty(widgettype, objectname, PG_PropStr::backmode1, my_bkmode[1]);
+	t->GetProperty(widgettype, objectname, PG_PropStr::backmode2, my_bkmode[2]);
 
-		sprintf(prop, "gradient%i", i);
-		PG_Gradient* g = t->FindGradient(widgettype, objectname, prop);
+	g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient0);
+	if(g) my_gradient[0] = g;
+	g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient1);
+	if(g) my_gradient[1] = g;
+	g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient2);
+	if(g) my_gradient[2] = g;
 
-		if(g) {
-			my_gradient[i] = g;
-		}
-
-	}
-	
 	PG_Color fontcolor(0xFFFFFF);
-	t->GetColor(widgettype, objectname, "textcolor", fontcolor);
+	t->GetColor(widgettype, objectname, PG_PropStr::textcolor, fontcolor);
 	SetFontColor(fontcolor);
 }

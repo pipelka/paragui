@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/09/05 10:51:41 $
+   Update Date:      $Date: 2004/11/17 21:34:21 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.12 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.13 $
    Status:           $State: Exp $
 */
 
@@ -37,7 +37,7 @@ const Uint32 PG_RichEdit::my_Marks[PG_RichEdit::MARKS_COUNT] = { ' ', 0x01, '\n'
 const Uint32 PG_RichEdit::my_FontBeginMark = 010;
 
 
-PG_RichEdit::PG_RichEdit(PG_Widget* parent, const PG_Rect& r, bool autoResize, Uint32 linewidth, Uint32 tabSize, Uint32 childsborderwidth, const char* style) :
+PG_RichEdit::PG_RichEdit(PG_Widget* parent, const PG_Rect& r, bool autoResize, Uint32 linewidth, Uint32 tabSize, Uint32 childsborderwidth, const std::string& style) :
 PG_ScrollWidget(parent, r, style) {
 
 	EnableScrollBar(true, PG_ScrollBar::HORIZONTAL);
@@ -96,7 +96,7 @@ void PG_RichEdit::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect&
 			Uint32 width = 0;
 
 			for (word = linePart->my_WordIndexes.begin(); word != linePart->my_WordIndexes.end(); word++) {
-				PG_FontEngine::RenderText(PG_Application::GetScreen(), dst, my_xpos - deltax + width + linePart->my_Left,  my_ypos + line->my_BaseLine - deltay, my_ParsedWords[*word].my_Word.c_str(), GetFont());
+				PG_FontEngine::RenderText(PG_Application::GetScreen(), dst, my_xpos - deltax + width + linePart->my_Left,  my_ypos + line->my_BaseLine - deltay, my_ParsedWords[*word].my_Word, GetFont());
 				width += my_ParsedWords[*word].my_WidthAfterFormating;
 			}
 		}
@@ -118,16 +118,7 @@ bool PG_RichEdit::RemoveChild(PG_Widget* child) {
 	return result;
 }
 
-void PG_RichEdit::SetText(const std::string &text) {
-	SetText(text.c_str());
-}
-
-void PG_RichEdit::SetText(const char *text) {
-	if(text == NULL) {
-		my_text = "";
-		return;
-	}
-
+void PG_RichEdit::SetText(const std::string& text) {
 	my_scrollarea->SetAreaWidth(my_LineWidth);
 	my_scrollarea->SetAreaHeight(0);
 	
@@ -183,7 +174,7 @@ void PG_RichEdit::ParseWords() {
 				word.erase(length-1, 1);
 			}
 		}
-		PG_FontEngine::GetTextSize(word.c_str(), GetFont(), &w, &h, &bl, &ls);
+		PG_FontEngine::GetTextSize(word, GetFont(), &w, &h, &bl, &ls);
 		wordDescr.my_Width = w;
 		if (space) {
 			word += ' ';
@@ -236,11 +227,11 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, std::string *word, Uint32 *endMar
 		// Candid - cut too long words, if wanted
 		if (!my_AutoHorizontalResize) {
 			Uint16 width, i = word->size() - 1, w;
-			PG_FontEngine::GetTextSize(word->c_str(), GetFont(), &width);
+			PG_FontEngine::GetTextSize(*word, GetFont(), &width);
 
 			if (width > my_width) {			
 				for (; width > my_width && i > 0; --i) {				
-					PG_FontEngine::GetTextSize(word->substr(i, 1).c_str(), GetFont(), &w);
+					PG_FontEngine::GetTextSize(word->substr(i, 1), GetFont(), &w);
 					width -= w;
 				}
 				result -= word->size() - i + 1;
@@ -260,11 +251,11 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, std::string *word, Uint32 *endMar
 		// Candid - cut too long words, if wanted
 		if (!my_AutoHorizontalResize) {
 			Uint16 width, i = word->size() - 1, w;
-			PG_FontEngine::GetTextSize(word->c_str(), GetFont(), &width);
+			PG_FontEngine::GetTextSize(*word, GetFont(), &width);
 
 			if (width > my_width) {			
 				for (; width > my_width && i > 0; --i) {				
-					PG_FontEngine::GetTextSize(word->substr(i, 1).c_str(), GetFont(), &w);
+					PG_FontEngine::GetTextSize(word->substr(i, 1), GetFont(), &w);
 					width -= w;
 				}				
 				*word = word->substr(0, i);
@@ -655,7 +646,7 @@ bool PG_RichEdit::ProcessLongLine(std::string &word, size_t &searchFrom, Uint32 
 	return true;
 }
 
-bool PG_RichEdit::LoadText(const char* textfile) {
+bool PG_RichEdit::LoadText(const std::string& textfile) {
 	PG_DataContainer* text = PG_FileArchive::ReadFile(textfile);
 	
 	if(text == NULL) {

@@ -39,3 +39,5 @@ paragui-1.*
 patches
 autopackage
 paragui-config.1
+Doxyfile
+*.pcs

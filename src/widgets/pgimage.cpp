@@ -20,15 +20,15 @@
     pipelka@teleweb.at
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2004/09/05 10:51:41 $ 
+    Update Date:      $Date: 2004/11/17 21:34:21 $ 
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgimage.cpp,v $ 
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $ 
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $ 
     Status:           $State: Exp $ 
 */
 
 #include "pgimage.h"
 
-PG_Image::PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, Uint32 colorkey, Uint8 drawmode, const char* style) : PG_ThemeWidget(parent, PG_Rect(p.x, p.y, 1, 1), style), my_cachedSrf(NULL) {
+PG_Image::PG_Image(PG_Widget* parent, const PG_Point& p, const std::string& filename, Uint32 colorkey, Uint8 drawmode, const std::string& style) : PG_ThemeWidget(parent, PG_Rect(p.x, p.y, 1, 1), style), my_cachedSrf(NULL) {
 	LoadImage(filename, colorkey);
 
 	my_DrawMode = drawmode;
@@ -43,7 +43,7 @@ PG_Image::PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, U
 	}
 }
 	
-PG_Image::PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, Uint8 drawmode, const char* style) : PG_ThemeWidget(parent, PG_Rect(p.x, p.y, 1, 1), style), my_cachedSrf(NULL) {
+PG_Image::PG_Image(PG_Widget* parent, const PG_Point& p, const std::string& filename, Uint8 drawmode, const std::string& style) : PG_ThemeWidget(parent, PG_Rect(p.x, p.y, 1, 1), style), my_cachedSrf(NULL) {
 	LoadImage(filename);
 
 	my_DrawMode = drawmode;
@@ -58,7 +58,7 @@ PG_Image::PG_Image(PG_Widget* parent, const PG_Point& p, const char* filename, U
 	}
 }
 
-PG_Image::PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage, Uint8 drawmode, const char* style) : PG_ThemeWidget(parent, PG_Rect(p.x, p.y, 1, 1), style), my_cachedSrf(NULL) {
+PG_Image::PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage, Uint8 drawmode, const std::string& style) : PG_ThemeWidget(parent, PG_Rect(p.x, p.y, 1, 1), style), my_cachedSrf(NULL) {
 	SetImage(image, freeimage);
 
 	my_DrawMode = drawmode;
@@ -111,7 +111,7 @@ void PG_Image::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& ds
 	}
 }
 
-void PG_Image::SetColorKey(Uint32 key) {
+void PG_Image::SetColorKey(const PG_Color& key) {
 	SDL_SetColorKey(my_image, SDL_SRCCOLORKEY, key);
 	DeleteThemedSurface(my_cachedSrf);
 	my_cachedSrf = NULL;
@@ -125,7 +125,7 @@ void PG_Image::SetDrawMode(Uint8 mode) {
 	}
 }
 
-bool PG_Image::LoadImage(const char* filename) {
+bool PG_Image::LoadImage(const std::string& filename) {
 	DeleteThemedSurface(my_cachedSrf);
 	my_cachedSrf = NULL;
 
@@ -143,7 +143,7 @@ bool PG_Image::LoadImage(const char* filename) {
 	return false;
 }
 
-bool PG_Image::LoadImage(const char* filename, Uint32 key) {
+bool PG_Image::LoadImage(const std::string& filename, const PG_Color& key) {
 	DeleteThemedSurface(my_cachedSrf);
 	my_cachedSrf = NULL;
 	

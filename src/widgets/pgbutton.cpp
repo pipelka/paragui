@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/30 15:12:50 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.15 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.16 $
     Status:           $State: Exp $
 */
 
@@ -32,6 +32,8 @@
 #include "pglog.h"
 #include "pgdraw.h"
 #include "pgtheme.h"
+
+#include "propstrings_priv.h"
 
 class PG_ButtonStateData {
 public:
@@ -64,7 +66,7 @@ public:
 	Uint16 iconindent;
 };
 
-PG_Button::PG_Button(PG_Widget* parent, const PG_Rect& r, const char* text, int id, const char* style) : PG_Widget(parent, r) {
+PG_Button::PG_Button(PG_Widget* parent, const PG_Rect& r, const std::string& text, int id, const std::string& style) : PG_Widget(parent, r) {
 	SetDirtyUpdate(false);
 
 	_mid = new PG_ButtonDataInternal;
@@ -82,116 +84,109 @@ PG_Button::~PG_Button() {
 	delete _mid;
 }
 
-void PG_Button::LoadThemeStyle(const char* widgettype) {
-	LoadThemeStyle("Button", "Button");
-	if(strcmp(widgettype, "Button") != 0) {
-		LoadThemeStyle(widgettype, "Button");
+void PG_Button::LoadThemeStyle(const std::string& widgettype) {
+	LoadThemeStyle(PG_PropStr::Button, PG_PropStr::Button);
+	if(widgettype != PG_PropStr::Button) {
+		LoadThemeStyle(widgettype, PG_PropStr::Button);
 	}
 }
 
-void PG_Button::LoadThemeStyle(const char* widgettype, const char* objectname) {
-	const char* s = NULL;
+void PG_Button::LoadThemeStyle(const std::string& widgettype, const std::string& objectname) {
 	PG_Theme* t = PG_Application::GetTheme();
 
 	PG_Color fontcolor = GetFontColor();
-	t->GetColor(widgettype, objectname, "textcolor", fontcolor);
+	t->GetColor(widgettype, objectname, PG_PropStr::textcolor, fontcolor);
 	SetFontColor(fontcolor);
-
-	const char  *iconup = 0, *icondown = 0, *iconover = 0;
 
 	switch (GetID()) {
 		case OK:
-			iconup = "ok_icon";
+			SetIcon(t->FindSurface(widgettype, objectname, "ok_icon"));
 			break;
 
 		case YES:
-			iconup = "yes_icon";
+			SetIcon(t->FindSurface(widgettype, objectname, "yes_icon"));
 			break;
 
 		case NO:
-			iconup = "no_icon";
+			SetIcon(t->FindSurface(widgettype, objectname, "no_icon"));
 			break;
 
 		case APPLY:
-			iconup = "apply_icon";
+			SetIcon(t->FindSurface(widgettype, objectname, "apply_icon"));
 			break;
 
 		case CANCEL:
-			iconup = "cancel_icon";
+			SetIcon(t->FindSurface(widgettype, objectname, "cancel_icon"));
 			break;
 
 		case CLOSE:
-			iconup = "close_icon";
+			SetIcon(t->FindSurface(widgettype, objectname, "close_icon"));
 			break;
 
 		case HELP:
-			iconup = "help_icon";
+			SetIcon(t->FindSurface(widgettype, objectname, "help_icon"));
 			break;
 
 		default:
-			iconup = "iconup";
-			icondown = "icondown";
-			iconover = "iconover";
+			SetIcon(
+			    t->FindSurface(widgettype, objectname, PG_PropStr::iconup),
+			    t->FindSurface(widgettype, objectname, PG_PropStr::icondown),
+			    t->FindSurface(widgettype, objectname, PG_PropStr::iconover)
+			);
 			break;
 	}
 
-	SetIcon(
-	    t->FindSurface(widgettype, objectname, iconup),
-	    t->FindSurface(widgettype, objectname, icondown),
-	    t->FindSurface(widgettype, objectname, iconover)
-	);
-
 	PG_Gradient* g;
-	g = t->FindGradient(widgettype, objectname, "gradient0");
+	g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient0);
 	if(g) {
 		(*_mid)[UNPRESSED].gradState = *g;
 	}
 
-	g = t->FindGradient(widgettype, objectname, "gradient1");
+	g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient1);
 	if(g) {
 		(*_mid)[HIGHLITED].gradState = *g;
 	}
 
-	g = t->FindGradient(widgettype, objectname, "gradient2");
+	g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient2);
 	if(g) {
 		(*_mid)[PRESSED].gradState = *g;
 	}
 
 	SDL_Surface* background;
-	background = t->FindSurface(widgettype, objectname, "background0");
-	t->GetProperty(widgettype, objectname, "backmode0", (*_mid)[UNPRESSED].backMode);
+	background = t->FindSurface(widgettype, objectname, PG_PropStr::background0);
+	t->GetProperty(widgettype, objectname, PG_PropStr::backmode0, (*_mid)[UNPRESSED].backMode);
 	SetBackground(UNPRESSED, background, (*_mid)[UNPRESSED].backMode);
 
-	background = t->FindSurface(widgettype, objectname, "background1");
-	t->GetProperty(widgettype, objectname, "backmode1", (*_mid)[PRESSED].backMode);
+	background = t->FindSurface(widgettype, objectname, PG_PropStr::background1);
+	t->GetProperty(widgettype, objectname, PG_PropStr::backmode1, (*_mid)[PRESSED].backMode);
 	SetBackground(PRESSED, background, (*_mid)[PRESSED].backMode);
 
-	background = t->FindSurface(widgettype, objectname, "background2");
-	t->GetProperty(widgettype, objectname, "backmode2", (*_mid)[HIGHLITED].backMode);
+	background = t->FindSurface(widgettype, objectname, PG_PropStr::background2);
+	t->GetProperty(widgettype, objectname, PG_PropStr::backmode2, (*_mid)[HIGHLITED].backMode);
 	SetBackground(HIGHLITED, background, (*_mid)[HIGHLITED].backMode);
 
-	t->GetProperty(widgettype, objectname, "blend0", (*_mid)[UNPRESSED].backBlend);
-	t->GetProperty(widgettype, objectname, "blend1", (*_mid)[PRESSED].backBlend);
-	t->GetProperty(widgettype, objectname, "blend2", (*_mid)[HIGHLITED].backBlend);
+	t->GetProperty(widgettype, objectname, PG_PropStr::blend0, (*_mid)[UNPRESSED].backBlend);
+	t->GetProperty(widgettype, objectname, PG_PropStr::blend1, (*_mid)[PRESSED].backBlend);
+	t->GetProperty(widgettype, objectname, PG_PropStr::blend2, (*_mid)[HIGHLITED].backBlend);
 
-	t->GetProperty(widgettype, objectname, "shift", _mid->pressShift);
+	t->GetProperty(widgettype, objectname, PG_PropStr::shift, _mid->pressShift);
 
-	t->GetProperty(widgettype, objectname, "bordersize", (*_mid)[UNPRESSED].bordersize);
-	t->GetProperty(widgettype, objectname, "bordersize", (*_mid)[PRESSED].bordersize);
-	t->GetProperty(widgettype, objectname, "bordersize", (*_mid)[HIGHLITED].bordersize);
+	t->GetProperty(widgettype, objectname, PG_PropStr::bordersize, (*_mid)[UNPRESSED].bordersize);
+	t->GetProperty(widgettype, objectname, PG_PropStr::bordersize, (*_mid)[PRESSED].bordersize);
+	t->GetProperty(widgettype, objectname, PG_PropStr::bordersize, (*_mid)[HIGHLITED].bordersize);
 
-	t->GetProperty(widgettype, objectname, "bordersize0", (*_mid)[UNPRESSED].bordersize);
-	t->GetProperty(widgettype, objectname, "bordersize1", (*_mid)[PRESSED].bordersize);
-	t->GetProperty(widgettype, objectname, "bordersize2", (*_mid)[HIGHLITED].bordersize);
+	t->GetProperty(widgettype, objectname, PG_PropStr::bordersize0, (*_mid)[UNPRESSED].bordersize);
+	t->GetProperty(widgettype, objectname, PG_PropStr::bordersize1, (*_mid)[PRESSED].bordersize);
+	t->GetProperty(widgettype, objectname, PG_PropStr::bordersize2, (*_mid)[HIGHLITED].bordersize);
 
-	t->GetProperty(widgettype, objectname, "transparency0", (*_mid)[UNPRESSED].transparency);
-	t->GetProperty(widgettype, objectname, "transparency1", (*_mid)[PRESSED].transparency);
-	t->GetProperty(widgettype, objectname, "transparency2", (*_mid)[HIGHLITED].transparency);
+	t->GetProperty(widgettype, objectname, PG_PropStr::transparency0, (*_mid)[UNPRESSED].transparency);
+	t->GetProperty(widgettype, objectname, PG_PropStr::transparency1, (*_mid)[PRESSED].transparency);
+	t->GetProperty(widgettype, objectname, PG_PropStr::transparency2, (*_mid)[HIGHLITED].transparency);
 	
-	t->GetProperty(widgettype, objectname, "iconindent", _mid->iconindent);
+	t->GetProperty(widgettype, objectname, PG_PropStr::iconindent, _mid->iconindent);
 
-	s = t->FindString(widgettype, objectname, "label");
-	if(s != NULL) {
+	const std::string& s = t->FindString(widgettype, objectname, PG_PropStr::label);
+	if(!s.empty()) {
 		SetText(s);
 	}
 
@@ -320,7 +315,7 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 }
 
 /**  */
-bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, const char* filenameover, const PG_Color& colorkey) {
+bool PG_Button::SetIcon(const std::string& filenameup, const std::string& filenamedown, const std::string& filenameover, const PG_Color& colorkey) {
 	if(!SetIcon(filenameup, filenamedown, filenameover)) {
 		return false;
 	}
@@ -340,7 +335,7 @@ bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, const 
 	return true;
 }
 
-bool PG_Button::SetIcon(const char* filenameup, const char* filenamedown, const char* filenameover) {
+bool PG_Button::SetIcon(const std::string& filenameup, const std::string& filenamedown, const std::string& filenameover) {
 	SDL_Surface* icon0 = PG_Application::LoadSurface(filenameup);
 	SDL_Surface* icon1 = PG_Application::LoadSurface(filenameover);
 	SDL_Surface* icon2 = PG_Application::LoadSurface(filenamedown);
@@ -581,7 +576,7 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 			tx += (iconsrf->w + _mid->iconindent);
 		}
 
-		DrawText(tx, ty, my_text.c_str());
+		DrawText(tx, ty, my_text);
 	}
 
 	int i0, i1;
@@ -607,7 +602,7 @@ Uint8 PG_Button::GetBlendLevel(STATE mode) {
 	return (*_mid)[mode].backBlend;
 }
 
-void PG_Button::SetSizeByText(int Width, int Height, const char *Text) {
+void PG_Button::SetSizeByText(int Width, int Height, const std::string& Text) {
 	Width += 2 * (*_mid)[UNPRESSED].bordersize + _mid->pressShift;
 	
 	SDL_Surface* srf = (*_mid)[UNPRESSED].srf_icon;
@@ -621,14 +616,17 @@ void PG_Button::SetSizeByText(int Width, int Height, const char *Text) {
 	Uint16 w,h;
 	int baselineY;
 
-	if (Text == NULL) {
-		Text = my_text.c_str();
+	if(Text.empty()) {
+		if (!PG_FontEngine::GetTextSize(my_text, GetFont(), &w, &h, &baselineY)) {
+			return;
+		}
+    	}
+	else {
+		if (!PG_FontEngine::GetTextSize(Text, GetFont(), &w, &h, &baselineY)) {
+			return;
+		}
 	}
 
-	if (!PG_FontEngine::GetTextSize(Text, GetFont(), &w, &h, &baselineY)) {
-		return;
-	}
-	
 	Uint16 dx = srf->w + Width;
 	
 	my_width = (srf->w > w) ? dx : w + dx;

@@ -12,10 +12,10 @@ ROADMAP LEADING TO 1.2
 1.1.7 - Performance tuning / more API cleanups
 1.1.8 - unify constructors (e.g.: PG_Widget(PG_Widget* parent, const PG_Rect& rect))
         needed for factory. merge object factory from paragui2.
-1.1.9 - redesign of event-handling. unify all widget constructors 
+1.1.9 - string cleanup. (redesign of event-handling?). unify all widget constructors.
+	split off XML layoutloader
 1.1.10 - bug fixing and API reality check
-1.1.11 - merge and rework XML layoutloader
-1.1.12 - bug fixing and API freeze
+1.1.12 - feature and API freeze
 1.1.? - i'll consult my magic orb
 
 If you want to take part in the development process - drop me a few lines or
@@ -27,6 +27,12 @@ Whats new in ParaGUI 1.1.9 ?
 ----------------------------
 
 - removed SigC namespace usage in pgsingals.h (Thanks Martin Bickel <mbickel@asc-hq.org>)
+- removed mostly all const char* types, now using const std::string&
+  This is a major change and will have a massive impact on code passing NULL pointers
+- performance improvements (avoiding type conversions between std::string and char*,
+  preallocate static strings)
+- updated PG_Colors (added C++ app for color generation)
+- bumped version to 1.1.9
 
 
 ----------------------------

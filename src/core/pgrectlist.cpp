@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 09:18:26 $
+    Update Date:      $Date: 2004/11/17 21:34:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2.2.9 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.10 $
     Status:           $State: Exp $
 */
 
@@ -261,9 +261,9 @@ PG_Widget* PG_RectList::Find(int id) {
 	return NULL;
 }
 
-PG_Widget* PG_RectList::Find(const char* name) {
+PG_Widget* PG_RectList::Find(const std::string& name) {
 	for(PG_Widget* i = first(); i != NULL; i = i->next()) {
-		if(strcmp(i->GetName(), name) == 0) {
+		if(i->GetName() == name) {
 			return i;
 		}
 	}

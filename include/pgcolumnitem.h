@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/04/21 06:53:58 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcolumnitem.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -55,7 +55,7 @@ public:
 	@param height height of the item in pixels.
 	@param userdata pointer to userdata this item should refer to.
 	*/
-	PG_ColumnItem(PG_Widget* parent, Uint32 columns, Uint16 height, void* userdata = NULL);
+	PG_ColumnItem(PG_Widget* parent, Uint32 columns, Uint16 height, void* userdata = NULL, const std::string& style = "ListBoxItem");
 
 	/** */
 	~PG_ColumnItem();
@@ -79,14 +79,14 @@ public:
 	@param column index of the column to change (starting at 0).
 	@param text new text of the column.
 	*/
-	void SetColumnText(Uint32 column, const char* text);
+	void SetColumnText(Uint32 column, const std::string& text);
 
 	/**
 	Get the text of a column.
 	@param column index of the column.
 	@return text of the column.
 	*/
-	const char* GetColumnText(Uint32 column);
+	const std::string& GetColumnText(Uint32 column);
 
 	/*
 	Return the number of columns in this item.

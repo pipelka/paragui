@@ -3,7 +3,7 @@
 
 using namespace std;
 
-PG_MultiLineEdit::PG_MultiLineEdit(PG_Widget* parent, const PG_Rect& r, const char* style, int maximumLength) 
+PG_MultiLineEdit::PG_MultiLineEdit(PG_Widget* parent, const PG_Rect& r, const std::string& style, int maximumLength) 
 : PG_LineEdit(parent, r, style, maximumLength) { 
 	my_vscroll = new PG_ScrollBar(this, PG_Rect(r.w-16,0,16,r.h));
 	my_isCursorAtEOL = false; 
@@ -80,8 +80,8 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 			// draw the initial unhighlighted part 
 			if (pos < start) { 
 				string s = my_textdata[i].substr(0, start-pos); 
-				PG_Widget::DrawText(x1, _y, s.c_str()); 
-				PG_FontEngine::GetTextSize(s.c_str(), GetFont(), &w); 
+				PG_Widget::DrawText(x1, _y, s); 
+				PG_FontEngine::GetTextSize(s, GetFont(), &w); 
 				x1 += w; 
 				offset = start-pos; 
 			}
@@ -91,22 +91,22 @@ void PG_MultiLineEdit::DrawText(const PG_Rect& dst) {
 			if (endpos > end) {
 				middlepart = middlepart.substr(0, middlepart.size() - (endpos-end));
 				string s = my_textdata[i].substr(end - pos, my_textdata[i].size() - (end - pos));
-				PG_FontEngine::GetTextSize(middlepart.c_str(), GetFont(), &w);
-				PG_Widget::DrawText(x1+w, _y, s.c_str());
+				PG_FontEngine::GetTextSize(middlepart, GetFont(), &w);
+				PG_Widget::DrawText(x1+w, _y, s);
 			}
 			
 			PG_Color color(GetFontColor()); 
 			PG_Color inv_color(255 - color.r, 255 - color.g, 255 - color.b);			
 			SetFontColor(inv_color);
-			PG_FontEngine::GetTextSize(middlepart.c_str(), GetFont(), &w);
+			PG_FontEngine::GetTextSize(middlepart, GetFont(), &w);
 			SDL_Rect rect = {x + x1, y + _y, w, GetFontHeight()};
 			SDL_Surface* screen = PG_Application::GetScreen();
 			SDL_FillRect(screen, &rect, SDL_MapRGB(screen->format, color.r, color.g, color.b));
-			PG_Widget::DrawText(x1, _y, middlepart.c_str());
+			PG_Widget::DrawText(x1, _y, middlepart);
 			SetFontColor(color); 
 		} 
 		else { 
-			PG_Widget::DrawText(_x, _y, my_textdata[i].c_str());
+			PG_Widget::DrawText(_x, _y, my_textdata[i]);
 		} 
 		_y += GetFontHeight(); 
 		pos += my_textdata[i].size();
@@ -214,7 +214,7 @@ void PG_MultiLineEdit::GetCursorTextPosFromScreen(int x, int y, unsigned int& ho
 	
 		// get the distance for that section 
 		Uint16 w; 
-		PG_FontEngine::GetTextSize(temp.c_str(), GetFont(), &w); 
+		PG_FontEngine::GetTextSize(temp, GetFont(), &w); 
 		unsigned int dist = abs(x - (my_xpos + 3 + w)); 
     
 		// update minimum 
@@ -280,7 +280,7 @@ void PG_MultiLineEdit::GetCursorPos(int& x, int& y) {
 	string temp = my_textdata[line].substr(0, currentPos);
 
 	Uint16 w; 
-	PG_FontEngine::GetTextSize(temp.c_str(), GetFont(), &w); 
+	PG_FontEngine::GetTextSize(temp, GetFont(), &w); 
 	
 	x = w; 
 	y = (line - my_firstLine)*GetFontHeight(); 
@@ -296,7 +296,7 @@ void PG_MultiLineEdit::CreateTextVector(bool bSetupVScroll) {
 	do { 
 		Uint16 lineWidth = 0; 
 		PG_String temp = my_text.substr(start, end-start);
-		PG_FontEngine::GetTextSize(temp.c_str(), GetFont(), &lineWidth); 
+		PG_FontEngine::GetTextSize(temp, GetFont(), &lineWidth); 
 		
 		if (lineWidth > w) { 
 			if (last == start) { 
@@ -638,7 +638,7 @@ void PG_MultiLineEdit::DeleteSelection() {
 	}
 }
 
-void PG_MultiLineEdit::SetText(const char* new_text) { 
+void PG_MultiLineEdit::SetText(const std::string& new_text) { 
 	PG_LineEdit::SetText(new_text);
 	CreateTextVector();
 	my_isCursorAtEOL = false;

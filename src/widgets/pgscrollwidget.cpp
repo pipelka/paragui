@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 17:58:49 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.9 $
+    CVS/RCS Revision: $Revision: 1.1.2.10 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,7 @@
 #include "pgapplication.h"
 #include "pglog.h"
 
-PG_ScrollWidget::PG_ScrollWidget(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_ThemeWidget(parent, r, style),
+PG_ScrollWidget::PG_ScrollWidget(PG_Widget* parent, const PG_Rect& r, const std::string& style) : PG_ThemeWidget(parent, r, style),
 my_objVerticalScrollbar(NULL),
 my_objHorizontalScrollbar(NULL) ,
 my_scrollarea(NULL)
@@ -135,7 +135,7 @@ void PG_ScrollWidget::RecalcPositions(bool bV, bool bH) {
 	}
 }
 
-void PG_ScrollWidget::LoadThemeStyle(const char* widgettype) {
+void PG_ScrollWidget::LoadThemeStyle(const std::string& widgettype) {
 	PG_ThemeWidget::LoadThemeStyle(widgettype);
 	my_objVerticalScrollbar->LoadThemeStyle(widgettype);
 	my_objHorizontalScrollbar->LoadThemeStyle(widgettype);

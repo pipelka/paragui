@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/26 08:03:47 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmaskedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -37,25 +37,25 @@ class DECLSPEC PG_MaskEdit : public PG_LineEdit {
 public:
 
 	/** */
-	PG_MaskEdit(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="LineEdit");
+	PG_MaskEdit(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& style="LineEdit");
 
 	/**
 	Set the text of the maskedit control. The new text is merged with the current mask
 	@param	new_text		pointer to new text string
 	*/
-	void SetText(const char* new_text);
+	void SetText(const std::string& new_text);
 
 	/**
 	Set the valid input mask
 	@param	mask			input mask (e.g. ##.##.####)
 	*/
-	void SetMask(const char* mask);
+	void SetMask(const std::string& mask);
 
 	/**
 	Get current input mask
 	@return						input mask
 	*/
-	const char* GetMask();
+	const std::string& GetMask();
 
 	/**
 	Set the "spacer" character. This char is displayed instead of "#"
@@ -73,7 +73,7 @@ protected:
 
 	bool eventMouseButtonDown(const SDL_MouseButtonEvent* button);
 
-	void InsertChar(const PG_Char* c);
+	void InsertChar(const PG_Char& c);
 
 	void DeleteChar(Uint16 pos);
 

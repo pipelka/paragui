@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/08 16:52:39 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgslider.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -30,7 +30,7 @@
 #include "pgapplication.h"
 #include "pgtheme.h"
 
-PG_Slider::PG_Slider(PG_Widget* parent, const PG_Rect& r, ScrollDirection direction, int id, const char* style) : PG_ScrollBar(parent, r, direction, id) {
+PG_Slider::PG_Slider(PG_Widget* parent, const PG_Rect& r, ScrollDirection direction, int id, const std::string& style) : PG_ScrollBar(parent, r, direction, id) {
 	delete scrollbutton[0];
 	scrollbutton[0] = NULL;
 
@@ -47,7 +47,7 @@ PG_Slider::PG_Slider(PG_Widget* parent, const PG_Rect& r, ScrollDirection direct
 
 PG_Slider::~PG_Slider() {}
 
-void PG_Slider::LoadThemeStyle(const char* widgettype) {
+void PG_Slider::LoadThemeStyle(const std::string& widgettype) {
 	PG_Theme* t = PG_Application::GetTheme();
 
 	dragbutton->LoadThemeStyle(widgettype, "SliderDrag");

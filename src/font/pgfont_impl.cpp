@@ -18,7 +18,7 @@ struct PG_FontDataInternal {
 
 };
 
-PG_Font::PG_Font(const char* fontfile, int size, int index) {
+PG_Font::PG_Font(const std::string& fontfile, int size, int index) {
 	my_internaldata = new PG_FontDataInternal;
 	my_internaldata->FaceCache = NULL;
 
@@ -34,7 +34,7 @@ PG_Font::PG_Font(const char* fontfile, int size, int index) {
 	my_internaldata->FaceCache = PG_FontEngine::LoadFontFace(fontfile, size, index);
 	
 	if(my_internaldata->FaceCache == NULL) {
-		PG_LogERR("Unable to create font (name=\"%s\", size=\"%i\", index=\"%i\"", fontfile, size, index);
+		PG_LogERR("Unable to create font (name=\"%s\", size=\"%i\", index=\"%i\"", fontfile.c_str(), size, index);
 	}
 }
 
@@ -81,7 +81,7 @@ PG_Font::Style PG_Font::GetStyle() {
 	return my_internaldata->style;
 }
 	
-bool PG_Font::SetName(const char* fontfile) {
+bool PG_Font::SetName(const std::string& fontfile) {
 	my_internaldata->name = fontfile;
 	my_internaldata->FaceCache = PG_FontEngine::LoadFontFace(
 			fontfile,
@@ -90,7 +90,7 @@ bool PG_Font::SetName(const char* fontfile) {
 	
 	if(my_internaldata->FaceCache == NULL) {
 		PG_LogERR("Unable to create font (name=\"%s\", size=\"%i\", index=\"%i\"",
-			GetName(),
+			GetName().c_str(),
 			GetSize(),
 			GetIndex());
 	}
@@ -98,8 +98,8 @@ bool PG_Font::SetName(const char* fontfile) {
 	return (my_internaldata->FaceCache != NULL);
 }
 
-const char* PG_Font::GetName() {
-	return my_internaldata->name.c_str();
+std::string PG_Font::GetName() {
+	return my_internaldata->name;
 }
 
 void PG_Font::SetSize(int s) {
@@ -112,7 +112,7 @@ void PG_Font::SetSize(int s) {
 	
 	if(my_internaldata->FaceCache == NULL) {
 		PG_LogERR("Unable to create font (name=\"%s\", size=\"%i\", index=\"%i\"",
-			GetName(),
+			GetName().c_str(),
 			GetSize(),
 			GetIndex());
 	}

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/13 13:45:46 $
+   Update Date:      $Date: 2004/11/17 21:34:21 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.7 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.8 $
    Status:           $State: Exp $
  */
 
@@ -39,9 +39,9 @@
 /***********************************
  * MenuItem
  */
-PG_PopupMenu::MenuItem::MenuItem(PG_PopupMenu *parent, char *caption, int id, MI_FLAGS flags)
+PG_PopupMenu::MenuItem::MenuItem(PG_PopupMenu *parent, const std::string& caption, int id, MI_FLAGS flags)
 		: myFlags(flags),
-		myCaption(caption ? caption : ""),
+		myCaption(caption),
 		myParent(parent),
 		mySubMenu(0),
 		myId(id),
@@ -54,9 +54,9 @@ needRecalc(true) {
 	myFlags &= ~MIF_SUBMENU;
 }
 
-PG_PopupMenu::MenuItem::MenuItem(PG_PopupMenu *parent, char *caption, PG_PopupMenu *submenu)
+PG_PopupMenu::MenuItem::MenuItem(PG_PopupMenu *parent, const std::string& caption, PG_PopupMenu *submenu)
 : myFlags(MIF_SUBMENU),
-myCaption(caption ? caption : ""),
+myCaption(caption),
 myParent(parent),
 mySubMenu(submenu),
 myId(-1),
@@ -188,8 +188,8 @@ inline bool PG_PopupMenu::MenuItem::paintDisabled(SDL_Surface *canvas, PG_Color*
  */
 PG_PopupMenu::PG_PopupMenu(PG_Widget *parent,
                            int x, int y,
-                           char *caption,
-                           char *style)
+                           const std::string& caption,
+                           const std::string& style)
 		: PG_ThemeWidget(parent, PG_Rect(0, 0, 1, 1)),
 		xPadding(0),
 		yPadding(0),
@@ -204,9 +204,7 @@ myMaster(0) {
 	}
 	LoadThemeStyle(style);
 
-	if(caption != NULL) {
-		myCaption = caption;
-	}
+	myCaption = caption;
 
 	getCaptionHeight(captionRect, true);
 
@@ -253,7 +251,7 @@ void PG_PopupMenu::appendItem(MenuItem *item) {
 	selected->select();
 }
 
-PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
+PG_PopupMenu& PG_PopupMenu::addMenuItem(const std::string& caption,
                                         int ID,
                                         MenuItem::MenuItemSlot handler,
                                         PG_Pointer data,
@@ -266,7 +264,7 @@ PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
 	return *this;
 }
 
-PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
+PG_PopupMenu& PG_PopupMenu::addMenuItem(const std::string& caption,
 				int ID,
 				MenuItem::MI_FLAGS flags) {
 
@@ -276,7 +274,7 @@ PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
 	return *this;
 }
 
-PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
+PG_PopupMenu& PG_PopupMenu::addMenuItem(const std::string& caption,
                                         PG_PopupMenu *sub,
                                         MenuItem::MI_FLAGS flags) {
 	MenuItem    *item = new MenuItem(this, caption, sub);
@@ -307,7 +305,7 @@ PG_PopupMenu& PG_PopupMenu::addMenuItem(char *caption,
 
 PG_PopupMenu& PG_PopupMenu::addSeparator() {
 	// Ugly
-	return addMenuItem(NULL, -1, MenuItem::MIF_SEPARATOR);
+	return addMenuItem(PG_NULLSTR, -1, MenuItem::MIF_SEPARATOR);
 }
 
 void PG_PopupMenu::disableItem(int id) {
@@ -358,7 +356,7 @@ bool PG_PopupMenu::getCaptionHeight(PG_Rect &rect, bool constructing) {
 	Uint16 w = 0, h = 0;
 
 	//+++
-	GetTextSize(w, h, myCaption.c_str());
+	GetTextSize(w, h, myCaption);
 
 	// TODO: need to make sure caption isn't wider than screen
 	if (!constructing)
@@ -469,7 +467,7 @@ void PG_PopupMenu::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect
 
 	if (!myCaption.empty()) {
 		SetFontColor(captionActiveColor);
-		DrawText(captionRect, myCaption.c_str());
+		DrawText(captionRect, myCaption);
 	}
 
 	if (!items.empty()) {
@@ -780,7 +778,7 @@ void PG_PopupMenu::eventHide() {
 	}
 }
 
-void PG_PopupMenu::LoadThemeStyle(const char *widgettype) {
+void PG_PopupMenu::LoadThemeStyle(const std::string& widgettype) {
 	PG_ThemeWidget::LoadThemeStyle(widgettype);
 
 	PG_Theme *theme = PG_Application::GetTheme();
@@ -816,7 +814,7 @@ void PG_PopupMenu::LoadThemeStyle(const char *widgettype) {
 	theme->GetProperty(widgettype, "MenuItem", "blendDisabled", miBlends[2]);
 }
 
-void PG_PopupMenu::LoadThemeStyle(const char *widgettype, const char *objectname) {
+void PG_PopupMenu::LoadThemeStyle(const std::string& widgettype, const std::string& objectname) {
 	PG_ThemeWidget::LoadThemeStyle(widgettype, objectname);
 }
 

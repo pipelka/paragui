@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/10 15:34:03 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -32,7 +32,7 @@
 #include "pgrichedit.h"
 
 //create PopUp and 2 Buttons
-PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, const PG_Rect& btn2, const char* btn2text, PG_Label::TextAlign textalign, const char* style) :
+PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const std::string& windowtitle, const std::string& windowtext, const PG_Rect& btn1, const std::string& btn1text, const PG_Rect& btn2, const std::string& btn2text, PG_Label::TextAlign textalign, const std::string& style) :
 PG_Window(parent, r, windowtitle, MODAL) {
 
 	my_btnok = new PG_Button(this, btn1, btn1text);
@@ -46,7 +46,7 @@ PG_Window(parent, r, windowtitle, MODAL) {
 	Init(windowtext, textalign, style);
 }
 
-PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const char* windowtitle, const char* windowtext, const PG_Rect& btn1, const char* btn1text, PG_Label::TextAlign textalign, const char* style) :
+PG_MessageBox::PG_MessageBox(PG_Widget* parent, const PG_Rect& r, const std::string& windowtitle, const std::string& windowtext, const PG_Rect& btn1, const std::string& btn1text, PG_Label::TextAlign textalign, const std::string& style) :
 PG_Window(parent, r, windowtitle, MODAL) {
 
 	my_btnok = new PG_Button(this, btn1, btn1text);
@@ -63,7 +63,7 @@ PG_MessageBox::~PG_MessageBox() {
 	delete my_btncancel;
 }
 
-void PG_MessageBox::Init(const char* windowtext, int textalign, const char* style) {
+void PG_MessageBox::Init(const std::string& windowtext, int textalign, const std::string& style) {
 
 	my_textbox = new PG_RichEdit(this, PG_Rect(10, 40, my_width-20, my_height-50));
 	my_textbox->SendToBack();
@@ -75,7 +75,7 @@ void PG_MessageBox::Init(const char* windowtext, int textalign, const char* styl
 	LoadThemeStyle(style);
 }
 
-void PG_MessageBox::LoadThemeStyle(const char* widgettype) {
+void PG_MessageBox::LoadThemeStyle(const std::string& widgettype) {
 	PG_Window::LoadThemeStyle(widgettype);
 
 	my_btnok->LoadThemeStyle(widgettype, "Button1");

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 10:51:41 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.18 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.19 $
     Status:           $State: Exp $
 */
 
@@ -137,7 +137,7 @@ public:
 	@param	asDefault	apply the theme as default widgettheme
 	@param	searchpath	path where the themefile is located
 	*/
-	PG_Theme* LoadTheme(const char* xmltheme, bool asDefault = true, const char* searchpath = NULL);
+	PG_Theme* LoadTheme(const std::string& xmltheme, bool asDefault = true, const std::string& searchpath = PG_NULLSTR);
 
 	/**
 	Run the applications main eventloop.
@@ -212,7 +212,7 @@ public:
 	@param	mode		background mode (BKMODE_TILE | BKMODE_STRETCH | BKMODE_3TILEH | BKMODE_3TILEV | BKMODE_9TILE)
 	@return			true - background image was altered successfully
 	*/
-	bool SetBackground(const char* filename, int mode=BKMODE_TILE);
+	bool SetBackground(const std::string& filename, int mode=BKMODE_TILE);
 
 	/**
 	Set the application's background image
@@ -238,27 +238,12 @@ public:
 	void SetEmergencyQuit(bool esc);
 
 	/**
-	Add an application search path
-
-	@param	path	the application will search for file (images,...) in this path,
-								as well as in all pathes previously added.
-	*/
-	//static void SetApplicationPath(const char* path);
-
-	/**
-	Return the current application path
-
-	@return	the current path
-	*/
-	//static const char* GetApplicationPath();
-
-	/**
 	Tries to find a specifies file
 
 	@param	file	file to look for
 	@return		path where the file was found (or NULL if not found)
 	*/
-	static const char* GetRelativePath(const char* file);
+	static const std::string& GetRelativePath(const std::string& file);
 
 	/**
 	Get the current screen (or window) height
@@ -340,7 +325,7 @@ public:
 	Transparent color is the color of first up-left pixel.
 	THIS FUNCTION MUST BE PROCESSED BEFORE PG_Application::InitScreen()
 	*/
-	void SetIcon(const char *filename);
+	void SetIcon(const std::string& filename);
 
 	/**
 	Set application`s window-manager title and icon name.
@@ -349,7 +334,7 @@ public:
 	@param icon icon name
 	Sets the title-bar and icon name of the display window.
 	*/
-	void SetCaption(const char *title, const char *icon);
+	void SetCaption(const std::string& title, const std::string& icon);
 
 	/**
 	Get application`s window-manager title and icon name.
@@ -358,7 +343,7 @@ public:
 	@param icon return place for icon name pointer
 	Set pointers to the window title and icon name.
 	*/
-	void GetCaption(char **title, char **icon);
+	void GetCaption(std::string& title, std::string& icon);
 
 	/**
 	Iconify/Minimise the window-manager window
@@ -373,7 +358,7 @@ public:
 	@param name name of the xml file
 	@return   returns non-zero on success or 0 if not succes
 	*/
-	static bool LoadLayout(const char *name);
+	static bool LoadLayout(const std::string& name);
 
 	/**
 	Load layout from the XML file
@@ -381,7 +366,7 @@ public:
 	@param WorkCallback address of the progress callback function
 	@return   returns non-zero on success or 0 if not succes
 	*/
-	static bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max));
+	static bool LoadLayout(const std::string& name, void (* WorkCallback)(int now, int max));
 
 	/**
 	Load layout from the XML file
@@ -390,17 +375,17 @@ public:
 	@param UserSpace address of user data with are returned by Processing instruction etc.
 	@return   returns non-zero on success or 0 if not succes
 	*/
-	static bool LoadLayout(const char *name, void (* WorkCallback)(int now, int max), void *UserSpace);
+	static bool LoadLayout(const std::string& name, void (* WorkCallback)(int now, int max), void *UserSpace);
 
 	/**
 	Get widget by name
 	@param Name name of the widget
 	@return   pointer to the requested widget or null if failed
 	*/
-	static PG_Widget *GetWidgetByName(const char *Name);
+	static PG_Widget *GetWidgetByName(const std::string& Name);
 
 	template<class T>
-	static T* GetWidget(const char* Name) {
+	static T* GetWidget(const std::string& Name) {
 		return static_cast<T*>(GetWidgetByName(Name));
 	}
 
@@ -456,7 +441,7 @@ public:
 	@param	Name	Filename of the font (this function doesn`t load the font - or check presention of the file !!!)
 	@return   0 when OK
 	*/
-	static void SetFontName(const char *Name);
+	static void SetFontName(const std::string& Name);
 
 	//! Set a graphical mouse cursor.
 	/*!

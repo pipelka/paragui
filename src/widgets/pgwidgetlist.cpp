@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/08 16:52:39 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.15 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.16 $
     Status:           $State: Exp $
 */
 
@@ -32,10 +32,10 @@
 #include "pglog.h"
 
 
-PG_WidgetList::PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_ScrollWidget(parent, r, style) {
+PG_WidgetList::PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const std::string& style) : PG_ScrollWidget(parent, r, style) {
 	my_scrollarea->SetShiftOnRemove(false, true);
 
-	if(strcmp(style, "WidgetList") != 0) {
+	if(style != "WidgetList") {
 		LoadThemeStyle("WidgetList");
 	}
 	LoadThemeStyle(style);

@@ -34,7 +34,7 @@ protected:
 	
 public:
 	
-	PG_ColorSelector(PG_Widget* parent, const PG_Rect&r, const char* style="colorselector");
+	PG_ColorSelector(PG_Widget* parent, const PG_Rect&r, const std::string& style="colorselector");
 	~PG_ColorSelector();
 
 	void SetColor(const PG_Color& c);

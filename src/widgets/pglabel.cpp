@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
     Status:           $State: Exp $
 */
 
@@ -32,7 +32,9 @@
 #include "pgtheme.h"
 #include "pglog.h"
 
-PG_Label::PG_Label(PG_Widget* parent, const PG_Rect& r, const char* text, const char* style) :
+#include "propstrings_priv.h"
+
+PG_Label::PG_Label(PG_Widget* parent, const PG_Rect& r, const std::string& text, const std::string& style) :
 PG_Widget(parent, r),
 my_indent(0) {
 
@@ -50,23 +52,23 @@ PG_Label::~PG_Label() {
 	}
 }
 
-void PG_Label::LoadThemeStyle(const char* style) {
-	if(strcmp(style, "Label") != 0) {
-		PG_Label::LoadThemeStyle("Label", "Label");
+void PG_Label::LoadThemeStyle(const std::string& style) {
+	if(style != PG_PropStr::Label) {
+		PG_Label::LoadThemeStyle(PG_PropStr::Label, PG_PropStr::Label);
 	}
-	PG_Label::LoadThemeStyle(style, "Label");
+	PG_Label::LoadThemeStyle(style, PG_PropStr::Label);
 }
 
-void PG_Label::LoadThemeStyle(const char* widgettype, const char* object) {
+void PG_Label::LoadThemeStyle(const std::string& widgettype, const std::string& object) {
 	PG_Theme* t = PG_Application::GetTheme();
 
-	const char* s = t->FindString(widgettype, object, "label");
+	const std::string& s = t->FindString(widgettype, object, PG_PropStr::label);
 
-	if(s != NULL) {
+	if(!s.empty()) {
 		SetText(s);
 	}
 
-	t->GetAlignment(widgettype, object, "alignment", my_alignment);
+	t->GetAlignment(widgettype, object, PG_PropStr::alignment, my_alignment);
 
 	PG_Widget::LoadThemeStyle(widgettype, object);
 }
@@ -115,7 +117,7 @@ void PG_Label::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& ds
 			break;
 	}
 
-	DrawText(my_rectLabel, my_text.c_str());
+	DrawText(my_rectLabel, my_text);
 }
 
 /**  */
@@ -139,7 +141,7 @@ SDL_Surface* PG_Label::SetIcon(SDL_Surface* icon) {
 	return my_srfIcon;
 }
 
-SDL_Surface* PG_Label::SetIcon(const char* filename) {
+SDL_Surface* PG_Label::SetIcon(const std::string& filename) {
 	if(my_freeicon){
 		PG_Application::UnloadSurface(my_srfIcon);
 	}
@@ -163,7 +165,7 @@ Uint16 PG_Label::GetIndent() {
 	return my_indent;
 }
 
-void PG_Label::SetSizeByText(int Width, int Height, const char *Text) {
+void PG_Label::SetSizeByText(int Width, int Height, const std::string& Text) {
 	if (GetIcon() == NULL) {
 		PG_Widget::SetSizeByText(Width, Height, Text);
 		return;
@@ -172,13 +174,17 @@ void PG_Label::SetSizeByText(int Width, int Height, const char *Text) {
 	Uint16 w,h;
 	int baselineY;
 	
-	if (Text == NULL) {
-		Text = my_text.c_str();
+	if(Text.empty()) {
+		if (!PG_FontEngine::GetTextSize(my_text, GetFont(), &w, &h, &baselineY)) {
+			return;
+		}
 	}
-
-	if (!PG_FontEngine::GetTextSize(Text, GetFont(), &w, &h, &baselineY)) {
-		return;
+	else {
+		if (!PG_FontEngine::GetTextSize(Text, GetFont(), &w, &h, &baselineY)) {
+			return;
+		}
 	}
+	
 
 	if (GetIcon()->w > w) {
 		my_width = GetIcon()->w + my_indent + Width;

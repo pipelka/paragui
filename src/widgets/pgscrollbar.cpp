@@ -20,16 +20,18 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:46:03 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgscrollbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
 #include "pgscrollbar.h"
 #include "pgapplication.h"
 
-PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, const PG_Rect& r, ScrollDirection direction, int id, const char* style) : PG_ThemeWidget(parent, r, style) {
+#include "propstrings_priv.h"
+
+PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, const PG_Rect& r, ScrollDirection direction, int id, const std::string& style) : PG_ThemeWidget(parent, r, style) {
 	sb_direction = direction;
 
 	SetID(id);
@@ -53,8 +55,8 @@ PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, const PG_Rect& r, ScrollDirection 
 	dragbutton->SetID(IDSCROLLBAR_DRAG);
 	dragbutton->sigClick.connect(slot(*this, &PG_ScrollBar::handleButtonClick));
 
-	if(strcmp(style, "Scrollbar") != 0) {
-		LoadThemeStyle("Scrollbar");
+	if(style != PG_PropStr::Scrollbar) {
+		LoadThemeStyle(PG_PropStr::Scrollbar);
 	}
 	LoadThemeStyle(style);
 	SetPosition(0);
@@ -62,26 +64,26 @@ PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, const PG_Rect& r, ScrollDirection 
 
 PG_ScrollBar::~PG_ScrollBar() {}
 
-void PG_ScrollBar::LoadThemeStyle(const char* widgettype) {
+void PG_ScrollBar::LoadThemeStyle(const std::string& widgettype) {
 
-	PG_ThemeWidget::LoadThemeStyle(widgettype, "Scrollbar");
+	PG_ThemeWidget::LoadThemeStyle(widgettype, PG_PropStr::Scrollbar);
 
 	if(sb_direction == VERTICAL) {
-		scrollbutton[0]->LoadThemeStyle(widgettype, "ScrollbarUp");
-		scrollbutton[1]->LoadThemeStyle(widgettype, "ScrollbarDown");
+		scrollbutton[0]->LoadThemeStyle(widgettype, PG_PropStr::ScrollbarUp);
+		scrollbutton[1]->LoadThemeStyle(widgettype, PG_PropStr::ScrollbarDown);
 	} else {
-		scrollbutton[0]->LoadThemeStyle(widgettype, "ScrollbarLeft");
-		scrollbutton[1]->LoadThemeStyle(widgettype, "ScrollbarRight");
+		scrollbutton[0]->LoadThemeStyle(widgettype, PG_PropStr::ScrollbarLeft);
+		scrollbutton[1]->LoadThemeStyle(widgettype, PG_PropStr::ScrollbarRight);
 	}
 
-	dragbutton->LoadThemeStyle(widgettype, "ScrollbarDrag");
+	dragbutton->LoadThemeStyle(widgettype, PG_PropStr::ScrollbarDrag);
 
 	if(sb_direction == VERTICAL) {
-		dragbutton->LoadThemeStyle(widgettype, "ScrollbarDragV");
-		PG_ThemeWidget::LoadThemeStyle(widgettype, "ScrollbarV");
+		dragbutton->LoadThemeStyle(widgettype, PG_PropStr::ScrollbarDragV);
+		PG_ThemeWidget::LoadThemeStyle(widgettype, PG_PropStr::ScrollbarV);
 	} else {
-		dragbutton->LoadThemeStyle(widgettype, "ScrollbarDragH");
-		PG_ThemeWidget::LoadThemeStyle(widgettype, "ScrollbarH");
+		dragbutton->LoadThemeStyle(widgettype, PG_PropStr::ScrollbarDragH);
+		PG_ThemeWidget::LoadThemeStyle(widgettype, PG_PropStr::ScrollbarH);
 	}
 	RecalcPositions();
 }

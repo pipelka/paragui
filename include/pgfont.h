@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:39 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
     Status:           $State: Exp $
 */
 
@@ -77,7 +77,7 @@ public:
 	@param size size of the new font
 	@param index font index of the loaded file
 	*/
-	PG_Font(const char* fontfile, int size=14, int index=0);
+	PG_Font(const std::string& fontfile, int size=14, int index=0);
 
 	/**
 	*/
@@ -147,13 +147,13 @@ public:
 	@return true - on success
 	This function loads a new font from a file
 	*/
-	bool SetName(const char* fontfile);
+	bool SetName(const std::string& fontfile);
 
 	/**
 	Get the current name of the font (filename)
 	@return the filename of the font
 	*/
-	const char* GetName();
+	std::string GetName();
 	
 	void SetIndex(int index);
 
@@ -192,13 +192,13 @@ public:
 	@param ParamIn		pointer to font
 	@return true on success
 	*/
-	static bool RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const char *Text, PG_Font* ParamIn);
+	static bool RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const std::string& Text, PG_Font* ParamIn);
 	
-	static bool RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const char *Text, PG_Font* ParamIn);
+	static bool RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const std::string& Text, PG_Font* ParamIn);
 
 	/**
 	*/
-	static bool GetTextSize(const char *Text, PG_Font* ParamIn, Uint16 *Width = NULL, Uint16 *Height = NULL, int *BaselineY = NULL, int *FontLineSkip = NULL, Uint16 *FontHeight = NULL, int *Ascent = NULL, int *Descent = NULL);
+	static bool GetTextSize(const std::string& Text, PG_Font* ParamIn, Uint16 *Width = NULL, Uint16 *Height = NULL, int *BaselineY = NULL, int *FontLineSkip = NULL, Uint16 *FontHeight = NULL, int *Ascent = NULL, int *Descent = NULL);
 
 protected:
 
@@ -218,7 +218,7 @@ private:
 	@param fontsize size of the face in pixels
 	@return pointer to the loaded PG_FontFaceCacheItem
 	*/
-	static PG_FontFaceCacheItem* LoadFontFace(const char* filename, FT_F26Dot6 fontsize, int index = 0);
+	static PG_FontFaceCacheItem* LoadFontFace(const std::string& filename, FT_F26Dot6 fontsize, int index = 0);
 
 	/**
 	*/

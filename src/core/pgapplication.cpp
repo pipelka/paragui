@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/27 17:01:31 $
+    Update Date:      $Date: 2004/11/17 21:34:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.18 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.19 $
     Status:           $State: Exp $
 */
 
@@ -436,9 +436,10 @@ SDL_Surface* PG_Application::SetScreen(SDL_Surface* surf) {
 }
 
 /**  */
-bool PG_Application::SetBackground(const char* filename, int mode) {
-        if (!filename)
-                return false;
+bool PG_Application::SetBackground(const std::string& filename, int mode) {
+	if (filename.empty()) {
+		return false;
+	}
         
 	if(my_freeBackground && my_background) {
 		UnloadSurface(my_background);
@@ -459,7 +460,7 @@ bool PG_Application::SetBackground(const char* filename, int mode) {
 		PG_Widget::GetWidgetList()->Blit();
 		return true;
 	} else {
-		PG_LogWRN("Failed to load '%s'",(char*)filename);
+		PG_LogWRN("Failed to load '%s'",(char*)filename.c_str());
 	}
 
 	return false;
@@ -529,24 +530,14 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 }
 
 /**  */
-/*const char* PG_Application::GetApplicationPath() {
-	return app_path.c_str();
-}*/
-
-/*void PG_Application::SetApplicationPath(const char* path) {
-	AddArchive(path);
-	app_path = path;
-}*/
-
-/**  */
-const char* PG_Application::GetRelativePath(const char* file) {
+const std::string& PG_Application::GetRelativePath(const std::string& file) {
 	static std::string buffer = "";
 
 	if(Exists(file)) {
-		buffer = (std::string)GetRealDir(file) + (std::string)file;
+		buffer = (std::string)GetRealDir(file) + file;
 	}
 
-	return buffer.c_str();
+	return buffer;
 }
 
 void PG_Application::FlipPage() {
@@ -614,14 +605,14 @@ void PG_Application::PrintVideoTest() {
 
 void PG_Application::eventInit() {}
 
-PG_Theme* PG_Application::LoadTheme(const char* xmltheme, bool asDefault, const char* searchpath) {
+PG_Theme* PG_Application::LoadTheme(const std::string& xmltheme, bool asDefault, const std::string& searchpath) {
 	PG_Theme* theme = NULL;
 
-	PG_LogDBG("Locating theme '%s' ...", xmltheme);
+	PG_LogDBG("Locating theme '%s' ...", xmltheme.c_str());
 
-	if(searchpath != NULL) {
+	if(!searchpath.empty()) {
 		if(AddArchive(searchpath)) {
-			PG_LogDBG("'%s' added to searchpath", searchpath);
+			PG_LogDBG("'%s' added to searchpath", searchpath.c_str());
 		}
 	}
 
@@ -681,8 +672,8 @@ PG_Theme* PG_Application::LoadTheme(const char* xmltheme, bool asDefault, const 
 
 	if(theme && asDefault) {
 
-		const char* c = theme->FindDefaultFontName();
-		if(c == NULL) {
+		const std::string& c = theme->FindDefaultFontName();
+		if(c.empty()) {
 			PG_LogWRN("Unable to load default font ...");
 			delete theme;
 			return NULL;
@@ -691,7 +682,7 @@ PG_Theme* PG_Application::LoadTheme(const char* xmltheme, bool asDefault, const 
 		DefaultFont = new PG_Font(c, theme->FindDefaultFontSize());
 		DefaultFont->SetStyle(theme->FindDefaultFontStyle());
 
-		PG_LogMSG("defaultfont: %s", c);
+		PG_LogMSG("defaultfont: %s", c.c_str());
 		PG_LogMSG("size: %i", DefaultFont->GetSize());
 
 		my_background = theme->FindSurface("Background", "Background", "background");
@@ -778,7 +769,7 @@ void PG_Application::SetEmergencyQuit(bool esc) {
 	emergencyQuit = esc;
 }
 
-void PG_Application::SetIcon(const char *filename) {
+void PG_Application::SetIcon(const std::string& filename) {
 	SDL_Surface* icon;
 	Uint8* pixels;
 	Uint8* mask;
@@ -840,15 +831,19 @@ void PG_Application::SetIcon(const char *filename) {
 	delete[] mask;
 }
 
-void PG_Application::SetCaption(const char *title, const char *icon) {
-	SDL_WM_SetCaption(title, NULL);
+void PG_Application::SetCaption(const std::string& title, const std::string& icon) {
+	SDL_WM_SetCaption(title.c_str(), NULL);
 	if (icon != NULL) {
 		SetIcon(icon);
 	}
 }
 
-void PG_Application::GetCaption(char **title, char **icon) {
-	SDL_WM_GetCaption(title,icon);
+void PG_Application::GetCaption(std::string& title, std::string& icon) {
+	char** t = NULL;
+	char** i = NULL;
+	SDL_WM_GetCaption(t, i);
+	title = *t;
+	icon = *i;
 }
 
 int PG_Application::Iconify(void) {
@@ -856,32 +851,33 @@ int PG_Application::Iconify(void) {
 }
 
 
-bool PG_Application::LoadLayout(const char *name) {
+bool PG_Application::LoadLayout(const std::string& name) {
 	return PG_Layout::Load(NULL, name, NULL, NULL);
 }
 
-bool PG_Application::LoadLayout(const char *name, void (* WorkCallback)(int now, int max)) {
+bool PG_Application::LoadLayout(const std::string& name, void (* WorkCallback)(int now, int max)) {
 	return PG_Layout::Load(NULL, name, WorkCallback, NULL);
 }
 
-bool PG_Application::LoadLayout(const char *name, void (* WorkCallback)(int now, int max), void *UserSpace) {
+bool PG_Application::LoadLayout(const std::string& name, void (* WorkCallback)(int now, int max), void *UserSpace) {
 	return PG_Layout::Load(NULL, name, WorkCallback, UserSpace);
 }
 
-static PG_Widget *FindInChildObjects(PG_RectList *RectList, const char *Name) {
+static PG_Widget *FindInChildObjects(PG_RectList *RectList, const std::string& Name) {
 	PG_Widget *retWidget = NULL;
 
 	if (RectList == NULL) {
 		return NULL;
 	}
 
-	if (!Name)
-            return NULL;
+	if(Name.empty()) {
+		return NULL;
+	}
     
 	PG_Widget* list = RectList->first();
 
 	while(list != NULL) {
-		if (strcmp(list->GetName(), Name) == 0) {
+		if(list->GetName() == Name) {
 			return list;
 		}
 
@@ -935,7 +931,7 @@ static inline PG_Widget *FindInChildObjects(PG_RectList *RectList, int id) {
 	return NULL;
 }
 
-PG_Widget *PG_Application::GetWidgetByName(const char *Name) {
+PG_Widget* PG_Application::GetWidgetByName(const std::string& Name) {
         return (FindInChildObjects(PG_Widget::GetWidgetList(), Name));
 }
 
@@ -963,7 +959,7 @@ void PG_Application::SetFontIndex(int Index) {
 	//DefaultFont->SetIndex(Index);
 }
 
-void PG_Application::SetFontName(const char *Name) {
+void PG_Application::SetFontName(const std::string& Name) {
 	DefaultFont->SetName(Name);
 }
 

@@ -35,3 +35,4 @@ mkinstalldirs
 *.spec
 stamp-h1
 
+docs

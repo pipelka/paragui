@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:37 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmenubar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
     Status:           $State: Exp $
 */
 
@@ -54,7 +54,7 @@ public:
 		The constructor creates a new MenuBar object without any items.
 		Use the Add member function to insert PG_PopupMenu objects.
 	*/
-	PG_MenuBar(PG_Widget* parent, const PG_Rect& rect = PG_Rect::null, const char* style = "MenuBar");
+	PG_MenuBar(PG_Widget* parent, const PG_Rect& rect = PG_Rect::null, const std::string& style = "MenuBar");
 
 	/**
 		Destroys the MenuBar object.
@@ -68,7 +68,7 @@ public:
 		@param indent	offset of pixels to the last item
 		@param width width of the MenuBar button (if 0 the button will fit the textsize)
 	*/
-	void Add(const char* text, PG_PopupMenu* menu, Uint16 indent = 5, Uint16 width = 0);
+	void Add(const std::string& text, PG_PopupMenu* menu, Uint16 indent = 5, Uint16 width = 0);
 
 protected:
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/30 15:12:50 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.13 $
     Status:           $State: Exp $
 */
 
@@ -30,7 +30,7 @@
 #include "pgapplication.h"
 #include "pgtheme.h"
 
-PG_LineEdit::PG_LineEdit(PG_Widget* parent, const PG_Rect& r, const char* style, int _my_maximumLength) : PG_ThemeWidget(parent, r, style) {
+PG_LineEdit::PG_LineEdit(PG_Widget* parent, const PG_Rect& r, const std::string& style, int _my_maximumLength) : PG_ThemeWidget(parent, r, style) {
 
 	my_buffer = "";
 	my_cursorPosition = 0;
@@ -79,7 +79,7 @@ void PG_LineEdit::DrawText(const PG_Rect& dst) {
 	}
 
 	// draw text
-	PG_Widget::DrawText(x, y, GetDrawText().c_str());
+	PG_Widget::DrawText(x, y, GetDrawText());
 }
 
 void PG_LineEdit::DrawTextCursor() {
@@ -114,7 +114,7 @@ Uint16 PG_LineEdit::GetCursorXPos() {
 	if(drawtext[0] == 0)
 		return 0;
 
-	PG_FontEngine::GetTextSize(PG_String(drawtext, 0, newpos).c_str(), GetFont(), &w);
+	PG_FontEngine::GetTextSize(PG_String(drawtext, 0, newpos), GetFont(), &w);
 
 	return w;
 }
@@ -148,9 +148,9 @@ int PG_LineEdit::GetCursorPosFromScreen(int x, int y) {
 
 PG_String PG_LineEdit::GetDrawText() {
 	if (my_passchar == '\0')
-		return my_text.substr(my_offsetX).c_str();
+		return my_text.substr(my_offsetX);
 
-	return PG_String(my_text.length(), my_passchar).substr(my_offsetX).c_str();
+	return PG_String(my_text.length(), my_passchar).substr(my_offsetX);
 }
 
 void PG_LineEdit::EditBegin() {
@@ -468,7 +468,7 @@ void PG_LineEdit::PasteText(Uint16 pos) {
 	Update();
 }
 
-void PG_LineEdit::SetText(const char* new_text) {
+void PG_LineEdit::SetText(const std::string& new_text) {
 	my_cursorPosition = 0;
 	my_offsetX = 0;
 	PG_Widget::SetText(new_text);
@@ -486,9 +486,9 @@ bool PG_LineEdit::eventFilterKey(const SDL_KeyboardEvent* key) {
 	return false;
 }
 
-void PG_LineEdit::LoadThemeStyle(const char* widgettype) {
+void PG_LineEdit::LoadThemeStyle(const std::string& widgettype) {
 	// load defaults first
-	if(strcmp(widgettype, "LineEdit") != 0) {
+	if(widgettype != "LineEdit") {
 		LoadThemeStyle("LineEdit");
 	}
 	
@@ -497,14 +497,14 @@ void PG_LineEdit::LoadThemeStyle(const char* widgettype) {
 	LoadThemeStyle(widgettype, "LineEdit");
 }
 
-void PG_LineEdit::LoadThemeStyle(const char* widgettype, const char* objectname) {
+void PG_LineEdit::LoadThemeStyle(const std::string& widgettype, const std::string& objectname) {
 	PG_Theme* t = PG_Application::GetTheme();
 
 	my_srfTextCursor = t->FindSurface(widgettype, objectname, "textcursor");
 
-	const char* keys = t->FindString(widgettype, objectname, "validkeys");
+	const std::string& keys = t->FindString(widgettype, objectname, "validkeys");
 
-	if(keys != NULL) {
+	if(!keys.empty()) {
 		SetValidKeys(keys);
 	}
 }
@@ -529,7 +529,7 @@ void PG_LineEdit::SendBackspace() {
 	}
 }
 
-void PG_LineEdit::SetValidKeys(const char* keys) {
+void PG_LineEdit::SetValidKeys(const std::string& keys) {
 	my_validkeys = keys;
 }
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/21 13:58:06 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistboxitem.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -37,13 +37,13 @@ class DECLSPEC PG_ListBoxItem : public PG_ListBoxBaseItem {
 public:
 
 	/** */
-	PG_ListBoxItem(PG_Widget* parent, int height, const char* text = NULL, SDL_Surface* icon = NULL, void* userdata = NULL, const char* style="ListBox");
+	PG_ListBoxItem(PG_Widget* parent, int height, const std::string& text = PG_NULLSTR, SDL_Surface* icon = NULL, void* userdata = NULL, const std::string& style="ListBox");
 
 	/** */
 	~PG_ListBoxItem();
 
 	/** */
-	void LoadThemeStyle(const char* widgettype, const char* objectname);
+	void LoadThemeStyle(const std::string& widgettype, const std::string& objectname);
 
 protected:
 

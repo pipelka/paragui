@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/27 09:42:34 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.15 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.16 $
     Status:           $State: Exp $
 */
 
@@ -160,16 +160,16 @@ public:
 	@param text button label
 	@param style themestyle of the button
 	*/
-	PG_Button(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* text = NULL, int id = -1, const char* style="Button");
+	PG_Button(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& text = PG_NULLSTR, int id = -1, const std::string& style="Button");
 
 	/**  */
 	virtual ~PG_Button();
 
 	/**  */
-	void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const std::string& widgettype);
 
 	/**  */
-	void LoadThemeStyle(const char* widgettype, const char* objectname);
+	void LoadThemeStyle(const std::string& widgettype, const std::string& objectname);
 
 	/**
 		Set the gradient.
@@ -204,7 +204,7 @@ public:
 	@param filenameover icon for highlited state
 	@return true on success
 	*/
-	bool SetIcon(const char* filenameup=NULL, const char* filenamedown=NULL, const char* filenameover = NULL);
+	bool SetIcon(const std::string& filenameup=PG_NULLSTR, const std::string& filenamedown=PG_NULLSTR, const std::string& filenameover = PG_NULLSTR);
 
 	/**
 	Set icons for the button
@@ -214,7 +214,7 @@ public:
 	@param colorkey the colorkey assigned to the icons
 	@return true on success
 	*/
-	bool SetIcon(const char* filenameup, const char* filenamedown, const char* filenameover, const PG_Color& colorkey);
+	bool SetIcon(const std::string& filenameup, const std::string& filenamedown, const std::string& filenameover, const PG_Color& colorkey);
 
 	/**
 	Set icons for the buttons
@@ -319,7 +319,7 @@ public:
 	@param Height additional height apart from the one required by the text
 	@param text the text which is to fit on the button
 	*/
-	void SetSizeByText(int Width = 0, int Height = 0, const char *Text = NULL);
+	void SetSizeByText(int Width = 0, int Height = 0, const std::string& Text = PG_NULLSTR);
 
 	SignalButtonClick<> sigClick;
 

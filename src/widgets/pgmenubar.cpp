@@ -2,7 +2,7 @@
 #include "pgbutton.h"
 #include "pgpopupmenu.h"
 
-PG_MenuBar::PG_MenuBar(PG_Widget* parent, const PG_Rect& rect, const char* style) : PG_ThemeWidget(parent, rect, style) {
+PG_MenuBar::PG_MenuBar(PG_Widget* parent, const PG_Rect& rect, const std::string& style) : PG_ThemeWidget(parent, rect, style) {
 	my_btnOffsetY = 2;
 	my_style = style;
 	my_active = NULL;
@@ -12,7 +12,7 @@ PG_MenuBar::~PG_MenuBar() {
 	Cleanup();
 }
 
-void PG_MenuBar::Add(const char* text, PG_PopupMenu* menu, Uint16 indent, Uint16 width) {
+void PG_MenuBar::Add(const std::string& text, PG_PopupMenu* menu, Uint16 indent, Uint16 width) {
 	MenuBarItem* last = NULL;
 	Uint16 xpos = 0;
 	Uint16 height = 0;
@@ -39,10 +39,10 @@ void PG_MenuBar::Add(const char* text, PG_PopupMenu* menu, Uint16 indent, Uint16
 	last = new MenuBarItem;
 
 	last->button = new PG_Button(
-							this,
-							PG_Rect(xpos, my_btnOffsetY, width, my_height - my_btnOffsetY*2),
-							text, -1,
-							my_style.c_str());
+				this,
+				PG_Rect(xpos, my_btnOffsetY, width, my_height - my_btnOffsetY*2),
+				text, -1,
+				my_style);
 
 	last->button->SetFontSize(GetFontSize());
 

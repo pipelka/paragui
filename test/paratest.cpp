@@ -270,17 +270,14 @@ void PrintChildObjects(PG_RectList *RectList, char *TabSpace) {
 	char tab[20];
 	strcpy(tab, TabSpace);
 
-    if (RectList == NULL) {
+	if (RectList == NULL) {
 		return;
 	}
 
-    PG_Widget* list = RectList->first();
-	const char* name = NULL;
+	PG_Widget* list = RectList->first();
 
-    while(list != NULL) {
-		name = list->GetName();
-
-		PG_LogMSG("%s %s",TabSpace,name);
+	while(list != NULL) {
+		PG_LogMSG("%s %s", TabSpace, list->GetName().c_str());
 
 		sprintf(tab,"  %s",TabSpace);	
 		PrintChildObjects(list->GetChildList(), tab);
@@ -425,7 +422,7 @@ int main(int argc, char* argv[]) {
 	PG_MenuBar menubar(NULL, PG_Rect(resx-300, 0, 300, 30));
 	menubar.Add("PopMe 2", &popmenu);
 
-	PG_PopupMenu editmenu(NULL, 0 ,0, NULL);
+	PG_PopupMenu editmenu(NULL, 0 ,0);
 	editmenu.addMenuItem("Cut", 1);
 	editmenu.addMenuItem("Copy", 2);
 	editmenu.addMenuItem("Paste", 3);
@@ -534,11 +531,11 @@ int main(int argc, char* argv[]) {
 	    
 	tmp = PG_Application::GetWidgetById(100);
 	if (tmp)
-	    PG_LogMSG("'100' found by ID (name '%s')", tmp->GetName());
+	    PG_LogMSG("'100' found by ID (name '%s')", tmp->GetName().c_str());
 	    
 	tmp = PG_Application::GetWidgetById(101);
 	if (tmp)
-	    PG_LogMSG("'101' found by ID (name '%s')", tmp->GetName());
+	    PG_LogMSG("'101' found by ID (name '%s')", tmp->GetName().c_str());
 
 	PG_LogMSG("testing the child finding methods");
 	tmp = wnd.FindChild("MyProgressBar");
@@ -548,7 +545,7 @@ int main(int argc, char* argv[]) {
 	tmp = wnd.FindChild(1001);
 	if (tmp)
 	    PG_LogMSG("sought for '1001' and found it (name '%s')",
-	              tmp->GetName());
+	              tmp->GetName().c_str());
 
 	if(!bTestMode) {
 		// Enter main loop

@@ -29,7 +29,9 @@ libpgwidgets_la_SOURCES = \
 	pgrichedit.cpp \
 	pgscrollarea.cpp \
 	pgmenubar.cpp \
-	pgmultilineedit.cpp
+	pgmultilineedit.cpp \
+	propstrings_priv.h \
+	propstrings_priv.cpp
 
 libpgwidgets_la_LIBADD = \
 	$(SIGC_LIBS)

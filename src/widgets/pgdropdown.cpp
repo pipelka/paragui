@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/09 20:09:51 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.15 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,7 @@
 #include "pglistbox.h"
 #include "pglistboxitem.h"
 
-PG_DropDown::PG_DropDown(PG_Widget* parent, const PG_Rect& r, int id, const char* style) : PG_Widget(parent, r),
+PG_DropDown::PG_DropDown(PG_Widget* parent, const PG_Rect& r, int id, const std::string& style) : PG_Widget(parent, r),
 // needed for AddChild() evaluation - H. C.
 my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 {
@@ -45,7 +45,7 @@ my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 	my_EditBox->sigEditReturn.connect(sigEditReturn.slot());
 
 	PG_Rect rbutton(abs(r.my_width - r.my_height), 0, r.my_height, r.my_height);
-	my_DropButton = new PG_Button(this, rbutton, NULL, -1, style);
+	my_DropButton = new PG_Button(this, rbutton, "", -1, style);
 	my_DropButton->SetID(IDDROPDOWN_BOX);
 	my_DropButton->sigClick.connect(slot(*this, &PG_DropDown::handleButtonClick));
 
@@ -62,7 +62,7 @@ PG_DropDown::~PG_DropDown() {
 	delete my_DropList;
 }
 
-void PG_DropDown::LoadThemeStyle(const char* style) {
+void PG_DropDown::LoadThemeStyle(const std::string& style) {
 	my_EditBox->LoadThemeStyle(style);
 	my_DropButton->LoadThemeStyle(style);
 	my_DropList->LoadThemeStyle(style);
@@ -79,7 +79,7 @@ void PG_DropDown::AddChild(PG_Widget* child) {
 }
 
 // obsolete -> roadmap
-void PG_DropDown::AddItem(const char* text, void* userdata, Uint16 height) {
+void PG_DropDown::AddItem(const std::string& text, void* userdata, Uint16 height) {
 	Uint16 h = height;
 
 	if(height == 0) {
@@ -134,11 +134,11 @@ bool PG_DropDown::GetEditable() {
 	return my_EditBox->GetEditable();
 }
 
-const char* PG_DropDown::GetText() {
+const std::string& PG_DropDown::GetText() {
 	return my_EditBox->GetText();
 }
 
-void PG_DropDown::SetText(const char* new_text) {
+void PG_DropDown::SetText(const std::string& new_text) {
 	my_EditBox->SetText(new_text);
 }
 

@@ -9,10 +9,10 @@ class CMyWindow : public PG_Window
 
 {
 public:
-	CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text,WindowFlags flags,const char* style = "Window");
+	CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text,WindowFlags flags,const std::string& style = "Window");
 };
 
-CMyWindow::CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text, WindowFlags flags,const char* style) : PG_Window(parent,r,text,flags,style)
+CMyWindow::CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text, WindowFlags flags,const std::string& style) : PG_Window(parent,r,text,flags,style)
 
 {
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/26 08:03:47 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmaskedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.1 $
+    CVS/RCS Revision: $Revision: 1.3.8.2 $
     Status:           $State: Exp $
 */
 
@@ -30,28 +30,27 @@
 #include "pgmaskedit.h"
 #include "pgstring.h"
 
-PG_MaskEdit::PG_MaskEdit(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_LineEdit(parent, r, style) {
+PG_MaskEdit::PG_MaskEdit(PG_Widget* parent, const PG_Rect& r, const std::string& style) : PG_LineEdit(parent, r, style) {
 	my_spacer = '_';
 }
 
-void PG_MaskEdit::SetText(const char* new_text) {
-	PG_LineEdit::SetText(my_displaymask.c_str());
+void PG_MaskEdit::SetText(const std::string& new_text) {
+	PG_LineEdit::SetText(my_displaymask);
 
 	// set the displaymask if the string is empty
-	if((new_text == NULL) || (new_text[0] == 0)) {
+	if(new_text.empty()) {
 		return;
 	}
 
 	SetCursorPos(0);
 
-	PG_String snew_text(new_text);
 	// merge the text with the displaymask
-	for(Uint32 i=0; i<snew_text.length(); i++) {
-		InsertChar(&snew_text[i]);
+	for(Uint32 i=0; i<new_text.length(); i++) {
+		InsertChar(new_text[i]);
 	}
 }
 
-void PG_MaskEdit::SetMask(const char* mask) {
+void PG_MaskEdit::SetMask(const std::string& mask) {
 	my_mask = mask;
 	my_displaymask = mask;
 
@@ -61,11 +60,11 @@ void PG_MaskEdit::SetMask(const char* mask) {
 		}
 	}
 
-	PG_LineEdit::SetText(my_displaymask.c_str());
+	PG_LineEdit::SetText(my_displaymask);
 }
 
-const char* PG_MaskEdit::GetMask() {
-	return my_mask.c_str();
+const std::string& PG_MaskEdit::GetMask() {
+	return my_mask;
 }
 
 void PG_MaskEdit::SetSpacer(PG_Char c) {
@@ -76,9 +75,9 @@ char PG_MaskEdit::GetSpacer() {
 	return my_spacer;
 }
 
-void PG_MaskEdit::InsertChar(const PG_Char* c) {
-        if (!c)
-	        return;
+void PG_MaskEdit::InsertChar(const PG_Char& c) {
+	/*if (!c)
+		return;*/
 
 	// check if we are on a valid position
 	while(((Uint32)my_cursorPosition < my_mask.length()) && (my_mask[my_cursorPosition] != '#')) {
@@ -89,7 +88,7 @@ void PG_MaskEdit::InsertChar(const PG_Char* c) {
 		return;
 	}
 
-	my_text[my_cursorPosition++] = *c;
+	my_text[my_cursorPosition++] = c;
 
 	while((my_cursorPosition < (int)my_mask.size()) &&
 	        (my_mask[my_cursorPosition] != '#')) {

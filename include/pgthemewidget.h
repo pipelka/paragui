@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 10:51:41 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.12 $
     Status:           $State: Exp $
 */
 
@@ -88,7 +88,7 @@ public:
 	This constructor creates a themed widget without any drawing surface.
 	All drawing operations can be done via the eventBlit() callback handler.
 	*/
-	PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="ThemeWidget");	
+	PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& style="ThemeWidget");	
 
 	/**
 	Create a new PG_ThemeWidget object
@@ -101,7 +101,7 @@ public:
 	Additional blitting can be done via the eventBlit() callback. eventBlit() will NOT draw onto the
 	internal drawing surface. Blitting will be done on the screen surface.
 	*/
-	PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, bool bCreateSurface, const char* style="ThemeWidget");
+	PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, bool bCreateSurface, const std::string& style="ThemeWidget");
 
 	/**
 	*/
@@ -111,9 +111,9 @@ public:
 	Load a specific themestyle
 	@param	widgettype		name of widget type to load
 	*/
-	void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const std::string& widgettype);
 
-	void LoadThemeStyle(const char* widgettype, const char* objectname);
+	void LoadThemeStyle(const std::string& widgettype, const std::string& objectname);
 
 	/**
 	Load the background image from a file
@@ -121,7 +121,7 @@ public:
 	@param	mode			BKMODE_TILE | BKMODE_STRETCH | BKMODE_3TILEH | BKMODE_3TILEV | BKMODE_9TILE
 	*/
 	/**  */
-	bool SetBackground(const char* filename, int mode=BKMODE_TILE);
+	bool SetBackground(const std::string& filename, int mode=BKMODE_TILE);
 
 
 	/**
@@ -131,7 +131,7 @@ public:
 	@param	mode			BKMODE_TILE | BKMODE_STRETCH | BKMODE_3TILEH | BKMODE_3TILEV | BKMODE_9TILE
 	*/
 	/**  */
-	bool SetBackground(const char* filename, int mode, const PG_Color& colorkey);
+	bool SetBackground(const std::string& filename, int mode, const PG_Color& colorkey);
 
 	/**
 	Define a surface as background image (will not be freed)
@@ -179,7 +179,7 @@ public:
 	of the widget. Image data will be erased when deleting the widget or loading / setting
 	a new image.
 	*/
-	bool LoadImage(const char* filename);
+	bool LoadImage(const std::string& filename);
 
 	/**
 	Display an image in the widget using a colorkey
@@ -190,7 +190,7 @@ public:
 	of the widget. Image data will be erased when deleting the widget or loading / setting
 	a new image.
 	*/
-	bool LoadImage(const char* filename, Uint32 key);
+	bool LoadImage(const std::string& filename, const PG_Color& key);
 	
 	/**
 	Display an image in the widget
@@ -260,7 +260,7 @@ private:
 	PG_ThemeWidget(const PG_ThemeWidget&);
 	PG_ThemeWidget& operator=(const PG_ThemeWidget&);
 
-	void Init(const char* style);
+	void Init(const std::string& style);
 
 	void CreateSurface(Uint16 w = 0, Uint16 h = 0);
 

@@ -14,7 +14,7 @@
 #define BTN_ID_CONFIRM PG_Button::YES
 #define BTN_ID_ESCAPE PG_Button::NO
 
-TKey_LineEdit::TKey_LineEdit(PG_Widget* pParent,const PG_Rect& r,const char* style,int maximumLength)
+TKey_LineEdit::TKey_LineEdit(PG_Widget* pParent,const PG_Rect& r,const std::string& style,int maximumLength)
  : PG_LineEdit(pParent,r,style,maximumLength),nReturnValue(0),bFirst(true),InitialText("")
 {
 }
@@ -63,7 +63,7 @@ bool TKey_LineEdit::SendKey(PG_Button* pWidget)
 void TKey_LineEdit::eventInputFocusLost(PG_MessageObject* p)
 {
 	nReturnValue = PG_Button::NO;
-	PG_LineEdit::SetText(InitialText.c_str());
+	PG_LineEdit::SetText(InitialText);
 	EditEnd();
 	PG_LineEdit::eventInputFocusLost(p);
 }
@@ -71,8 +71,8 @@ void TKey_LineEdit::eventInputFocusLost(PG_MessageObject* p)
 void TKey_LineEdit::eventEditBegin(int id,PG_Widget* p,unsigned long l,void* data)
 {
 	pKeyboardSpace->Show();
-	pDisplay->SetCursorPos(strlen(GetText()));
-	SetCursorPos(strlen(GetText()));
+	pDisplay->SetCursorPos(GetText().size());
+	SetCursorPos(GetText().size());
 	PG_LineEdit::eventEditBegin(id,p,l,data);
 }
 	
@@ -86,7 +86,7 @@ void TKey_LineEdit::eventEditEnd(int id,PG_Widget* w,unsigned long l,void* data)
 	/////////////////////////
  // TKeyAlpha_LineEdit
 /////////////////////////
-TKeyAlpha_LineEdit::TKeyAlpha_LineEdit(PG_Widget* pParent,const PG_Rect& r,const char* style,int maximumLength)
+TKeyAlpha_LineEdit::TKeyAlpha_LineEdit(PG_Widget* pParent,const PG_Rect& r,const std::string& style,int maximumLength)
  : TKey_LineEdit(pParent,r,style,maximumLength)
 {
 }
@@ -230,15 +230,15 @@ PG_CATCH_ALL {
 // adjusts field: an incoming "0" field is converted into empty
 void TKeyNum_LineEdit::eventEditBegin(int id,PG_Widget* p,unsigned long l,void* data)
 {
-	if (atof(GetText()) == 0)
-		pDisplay->SetText("");
+	if (atof(GetText().c_str()) == 0)
+		pDisplay->SetText(PG_NULLSTR);
 	TKey_LineEdit::eventEditBegin(id,p,l,data);
 }
 
 // adjusts field: an outgoing empty field is converted into a "0"
 void TKeyNum_LineEdit::eventEditEnd(int id,PG_Widget* p,unsigned long l,void* data)
 {
-	if (strlen(pDisplay->GetText()) == 0)
+	if (pDisplay->GetText().size() == 0)
 		SetText("0");
 	TKey_LineEdit::eventEditEnd(id,p,l,data);
 }

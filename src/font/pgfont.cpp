@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/27 09:42:34 $
+    Update Date:      $Date: 2004/11/17 21:34:23 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -505,11 +505,11 @@ bool PG_FontEngine::BlitFTBitmap(SDL_Surface *Surface, FT_Bitmap *Bitmap, int Po
 #endif
 
 
-bool PG_FontEngine::RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const char *Text, PG_Font *ParamIn) {
+bool PG_FontEngine::RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const std::string& Text, PG_Font *ParamIn) {
 	return RenderText(Surface, (PG_Rect*)&ClipRect, BaseLineX, BaseLineY, Text, ParamIn);
 }
 
-bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const char *Text, PG_Font* font) {
+bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const std::string& Text, PG_Font* font) {
 	static bool bRecursion = false;
 	int OriBaseX = BaseLineX;
 	FT_UInt previous = 0;
@@ -607,7 +607,7 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 	return true;
 }
 
-bool PG_FontEngine::GetTextSize(const char *Text, PG_Font* font, Uint16 *Width, Uint16 *Height, int *BaselineY, int *FontLineSkip, Uint16 *FontHeight, int *Ascent, int *Descent) {
+bool PG_FontEngine::GetTextSize(const std::string& Text, PG_Font* font, Uint16 *Width, Uint16 *Height, int *BaselineY, int *FontLineSkip, Uint16 *FontHeight, int *Ascent, int *Descent) {
 	FT_UInt			previous = 0;
 	int				BaseLineX = 0;
 	int				preBaseLineY = 0;
@@ -711,16 +711,16 @@ bool PG_FontEngine::GetTextSize(const char *Text, PG_Font* font, Uint16 *Width, 
 	return true;
 }
 
-PG_FontFaceCacheItem* PG_FontEngine::LoadFontFace(const char* filename, FT_F26Dot6 fontsize, int index) {
+PG_FontFaceCacheItem* PG_FontEngine::LoadFontFace(const std::string&  filename, FT_F26Dot6 fontsize, int index) {
 
 	// lets see if the file is already in the cache
-	FONT_ITEM* item = my_fontcache[(std::string)filename];
+	FONT_ITEM* item = my_fontcache[filename];
 
 	// NO -> Load the face from the file
 	if(item == NULL) {
 
 		// open the fontfile
-		PG_DataContainer* data = PG_FileArchive::ReadFile(filename);
+		PG_DataContainer* data = PG_FileArchive::ReadFile(filename.c_str());
 		if(!data) {
 			return NULL;
 		}
@@ -731,7 +731,7 @@ PG_FontFaceCacheItem* PG_FontEngine::LoadFontFace(const char* filename, FT_F26Do
 		item->memdata = data;
 
 		// add the face to the cache
-		my_fontcache[(std::string)filename] = item;
+		my_fontcache[filename] = item;
 	}
 
 	// let's see if we already have a face for the given size
@@ -749,7 +749,7 @@ PG_FontFaceCacheItem* PG_FontEngine::LoadFontFace(const char* filename, FT_F26Do
 
 		// check if the font is scaleable
 		if (!FT_IS_SCALABLE(subitem->Face) ) {
-			PG_LogWRN("Font %s is not scalable !", filename);
+			PG_LogWRN("Font %s is not scalable !", filename.c_str());
 			delete subitem;
 			return NULL;
 		}

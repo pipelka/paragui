@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/27 21:23:49 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.13 $
     Status:           $State: Exp $
 */
 
@@ -77,12 +77,12 @@ public:
 	@param style themestyle of the window
 	@param heightTitlebar	height of the window titlebar
 	*/
-	PG_Window(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* windowtext = NULL, WindowFlags flags = DEFAULT, const char* style="Window", int heightTitlebar = 25);
+	PG_Window(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& windowtext = PG_NULLSTR, WindowFlags flags = DEFAULT, const std::string& style="Window", int heightTitlebar = 25);
 
 	/** */
 	~PG_Window();
 
-	void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const std::string& widgettype);
 
 	/**
 	set window titlebar color
@@ -113,17 +113,17 @@ public:
 	@param	title					new window title
 	@param alignment	alignment of the text (PG_Label::LEFT | PG_Label::CENTER | PG_Label::RIGHT)
 	*/
-	void SetTitle(const char* title, PG_Label::TextAlign alignment = PG_Label::CENTER);
+	void SetTitle(const std::string& title, PG_Label::TextAlign alignment = PG_Label::CENTER);
 
-	void SetText(const char* text);
+	void SetText(const std::string& text);
 	
 	/**
 	get window title
 	@return	pointer to the window title string
 	*/
-	const char* GetTitle();
+	const std::string& GetTitle();
 
-	const char* GetText();
+	const std::string& GetText();
 
 	/**
 	get window icon
@@ -135,7 +135,7 @@ public:
 	set window icon
 	@param filename	image-file to load
 	*/
-	void SetIcon(const char* filename);
+	void SetIcon(const std::string& filename);
 
 	/**
 	set window icon

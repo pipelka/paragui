@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ystring.h,v 1.1.2.2 2004/09/05 10:51:41 braindead Exp $
+ * $Id: ystring.h,v 1.1.2.3 2004/11/17 21:34:21 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2004/09/05 10:51:41 $
+ *  $Date: 2004/11/17 21:34:21 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.2 $
+ *  $Revision: 1.1.2.3 $
  *  $Source: /sources/paragui/paragui/include/Attic/ystring.h,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -150,7 +150,7 @@ public:
   friend YString operator+(const uint32, const YString &);
   
   static YString fromUtf8(const char *) throw(std::domain_error);
-  static YString fromUtf8(std::string) throw(std::domain_error);
+  static YString fromUtf8(const std::string&) throw(std::domain_error);
   
 private:
   std::vector<YChar> unicode;

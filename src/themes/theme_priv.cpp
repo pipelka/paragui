@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:45:39 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.10 $
     Status:           $State: Exp $
 */
 
@@ -39,20 +39,11 @@ THEME_THEME::~THEME_THEME() {
 	delete defaultfont;
 }
 
-THEME_WIDGET* THEME_THEME::FindWidget(const char* widgettype) {
-	if (!widgettype)
-		return NULL;
-
-	MAP_WIDGET::iterator i = widget.find(widgettype);
-	if(i == widget.end()) {
-		return NULL;
-	}
-	
-	return (*i).second;
-	//return widget[widgettype];
+inline THEME_WIDGET* THEME_THEME::FindWidget(const std::string& widgettype) {
+	return widget[widgettype];
 }
 
-THEME_OBJECT* THEME_THEME::FindObject(const char* widgettype, const char* objectname) {
+THEME_OBJECT* THEME_THEME::FindObject(const std::string& widgettype, const std::string& objectname) {
 	THEME_WIDGET* widget = FindWidget(widgettype);
 
 	if(widget == NULL) {
@@ -64,7 +55,7 @@ THEME_OBJECT* THEME_THEME::FindObject(const char* widgettype, const char* object
 	return object;
 }
 
-SDL_Surface* THEME_THEME::FindSurface(const char* widgettype, const char* objectname, const char* name) {
+SDL_Surface* THEME_THEME::FindSurface(const std::string& widgettype, const std::string& objectname, const std::string& name) {
 	THEME_OBJECT* object = FindObject(widgettype, objectname);
 
 	if(object == NULL) {
@@ -74,7 +65,7 @@ SDL_Surface* THEME_THEME::FindSurface(const char* widgettype, const char* object
 	return object->FindSurface(name);
 }
 
-PG_Gradient* THEME_THEME::FindGradient(const char* widgettype, const char* objectname, const char* name) {
+PG_Gradient* THEME_THEME::FindGradient(const std::string& widgettype, const std::string& objectname, const std::string& name) {
 	THEME_OBJECT* object = FindObject(widgettype, objectname);
 
 	if(object == NULL) {
@@ -84,7 +75,7 @@ PG_Gradient* THEME_THEME::FindGradient(const char* widgettype, const char* objec
 	return object->FindGradient(name);
 }
 
-void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, const char* name, long& prop) {
+void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& objectname, const std::string& name, long& prop) {
 	THEME_OBJECT* o = FindObject(widgettype, objectname);
 
 	if(o == NULL) {
@@ -99,7 +90,7 @@ void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, co
 	prop = n;
 }
 
-void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, const char* name, Uint8& prop) {
+void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& objectname, const std::string& name, Uint8& prop) {
 	THEME_OBJECT* o = FindObject(widgettype, objectname);
 
 	if(o == NULL) {
@@ -114,7 +105,7 @@ void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, co
 	prop = (Uint8)n;
 }
 
-void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, const char* name, bool& prop) {
+void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& objectname, const std::string& name, bool& prop) {
 	THEME_OBJECT* o = FindObject(widgettype, objectname);
 
 	if(o == NULL) {
@@ -129,7 +120,7 @@ void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, co
 	prop = (n == 1);
 }
 
-void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, const char* name, int& prop) {
+void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& objectname, const std::string& name, int& prop) {
 	THEME_OBJECT* o = FindObject(widgettype, objectname);
 
 	if(o == NULL) {
@@ -144,31 +135,18 @@ void THEME_THEME::GetProperty(const char* widgettype, const char* objectname, co
 	prop = (int)n;
 }
 
-/*Uint8 THEME_THEME::FindTransparency(const char* widgettype, const char* objectname, const char* name, Uint8 def) {
-	int result = FindProperty(widgettype, objectname, name, def);
-	if(result == -1) {
-		return def;
-	}
-	
-	return (Uint8)result;
-}*/
-
-const char* THEME_THEME::FindString(const char* widgettype, const char* objectname, const char* name) {
+const std::string& THEME_THEME::FindString(const std::string& widgettype, const std::string& objectname, const std::string& name) {
 	THEME_OBJECT* object = FindObject(widgettype, objectname);
 
 	if(object == NULL) {
-		return NULL;
+		return PG_NULLSTR;
 	}
 
 	return object->FindString(name);
 }
 
-const char* THEME_THEME::FindDefaultFontName() {
-	if(!defaultfont) {
-		return NULL;
-	}
-
-	return defaultfont->value.c_str();
+const std::string& THEME_THEME::FindDefaultFontName() {
+	return defaultfont->value;
 }
 
 int THEME_THEME::FindDefaultFontSize() {
@@ -187,25 +165,21 @@ PG_Font::Style THEME_THEME::FindDefaultFontStyle() {
 	return defaultfont->style;
 }
 
-const char *THEME_THEME::FindFontName(const char* widgettype, const char* objectname) {
+const std::string& THEME_THEME::FindFontName(const std::string& widgettype, const std::string& objectname) {
 	THEME_OBJECT* o = FindObject(widgettype, objectname);
 
 	if(o == NULL) {
-		return NULL;
+		return PG_NULLSTR;
 	}
 
 	if(!o->font) {
-		return NULL;
+		return PG_NULLSTR;
 	}
 
-	if(o->font->value.empty()) {
-		return NULL;
-	}
-
-	return o->font->value.c_str();
+	return o->font->value;
 }
 
-int THEME_THEME::FindFontSize(const char* widgettype, const char* objectname) {
+int THEME_THEME::FindFontSize(const std::string& widgettype, const std::string& objectname) {
 	THEME_OBJECT* o = FindObject(widgettype, objectname);
 
 	if(o == NULL) {
@@ -219,7 +193,7 @@ int THEME_THEME::FindFontSize(const char* widgettype, const char* objectname) {
 	return o->font->size;
 }
 
-PG_Font::Style THEME_THEME::FindFontStyle(const char* widgettype, const char* objectname) {
+PG_Font::Style THEME_THEME::FindFontStyle(const std::string& widgettype, const std::string& objectname) {
 	THEME_OBJECT* o = FindObject(widgettype, objectname);
 
 	if(o == NULL) {
@@ -240,17 +214,8 @@ THEME_WIDGET::~THEME_WIDGET() {
 	object.clear();
 }
 
-THEME_OBJECT* THEME_WIDGET::FindObject(const char* objectname) {
-	if (!objectname)
-		return NULL;
-
-	THEME_OBJECT* result = object[objectname];
-
-	if(result == NULL) {
-		return NULL;
-	}
-
-	return result;
+inline THEME_OBJECT* THEME_WIDGET::FindObject(const std::string& objectname) {
+	return object[objectname];
 }
 
 THEME_OBJECT::THEME_OBJECT() {
@@ -282,10 +247,7 @@ THEME_OBJECT::~THEME_OBJECT() {
 	delete font;
 }
 
-SDL_Surface* THEME_OBJECT::FindSurface(const char* name) {
-	if (!name)
-		return NULL;
-
+SDL_Surface* THEME_OBJECT::FindSurface(const std::string& name) {
 	THEME_FILENAME* result = filename[name];
 
 	if(result == NULL) {
@@ -295,9 +257,9 @@ SDL_Surface* THEME_OBJECT::FindSurface(const char* name) {
 	return result->surface;
 }
 
-PG_Gradient* THEME_OBJECT::FindGradient(const char* name) {
-	if (!name)
-		return NULL;
+PG_Gradient* THEME_OBJECT::FindGradient(const std::string& name) {
+	/*if (!name)
+		return NULL;*/
 
 	THEME_GRADIENT* result = gradient[name];
 
@@ -308,7 +270,7 @@ PG_Gradient* THEME_OBJECT::FindGradient(const char* name) {
 	return static_cast<PG_Gradient*>(result);
 }
 
-void THEME_THEME::GetAlignment(const char* widgettype, const char* object, const char* name, PG_Label::TextAlign& align) {
+void THEME_THEME::GetAlignment(const std::string& widgettype, const std::string& object, const std::string& name, PG_Label::TextAlign& align) {
 	long b = -1;
 	GetProperty(widgettype, object, name, b);
 
@@ -331,7 +293,7 @@ void THEME_THEME::GetAlignment(const char* widgettype, const char* object, const
 	return;
 }
 
-void THEME_THEME::GetColor(const char* widgettype, const char* object, const char* name, PG_Color& color) {
+void THEME_THEME::GetColor(const std::string& widgettype, const std::string& object, const std::string& name, PG_Color& color) {
 	long b = -1;
 	GetProperty(widgettype, object, name, b);
 
@@ -342,10 +304,7 @@ void THEME_THEME::GetColor(const char* widgettype, const char* object, const cha
 	color = (Uint32)b;
 }
 
-long THEME_OBJECT::FindProperty(const char* name) {
-	if (!name)
-		return -1;
-
+long THEME_OBJECT::FindProperty(const std::string& name) {
 	MAP_PROPERTY::iterator result = property.find(name);
 
 	if(result == property.end()) {
@@ -355,15 +314,12 @@ long THEME_OBJECT::FindProperty(const char* name) {
 	return (*result).second->value;
 }
 
-const char* THEME_OBJECT::FindString(const char* name) {
-	if (!name)
-		return NULL;
-
+const std::string& THEME_OBJECT::FindString(const std::string& name) {
 	for(Uint32 i=0; i<strings.size(); i++) {
-		if(strings[i]->name == (std::string)name) {
-			return strings[i]->value.c_str();
+		if(strings[i]->name == name) {
+			return strings[i]->value;
 		}
 	}
 
-	return NULL;
+	return PG_NULLSTR;
 }

@@ -30,12 +30,17 @@ class TKey_LineEdit : public PG_LineEdit
  	virtual void eventEditEnd(int,PG_Widget*,unsigned long,void*);
  public:
  	// note: field limit set to 100 by default
-	TKey_LineEdit(PG_Widget* pParent,const PG_Rect& r,const char* style="LineEdit",int maximumLength=100);
+	TKey_LineEdit(PG_Widget* pParent,const PG_Rect& r,const std::string& style="LineEdit",int maximumLength=100);
 	// creates the keyboard. This function must be separated because if we
 	// create buttons in constructor we cannot use "this" as the parent
 	void Init(void);
 	// this assigns the initial text
-	void SetText(const char* Text) { InitialText = Text; PG_LineEdit::SetText(Text); pDisplay->SetText(Text); }
+	void SetText(const std::string& Text) {
+		InitialText = Text;
+		PG_LineEdit::SetText(Text);
+		pDisplay->SetText(Text);
+	}
+
 	// retrieves a value BTN_ID_YES or BTN_ID_NO depending on the button
 	// pressed to close the keyboard
 	unsigned int getReturnValue(void) { return nReturnValue; };
@@ -55,7 +60,7 @@ class TKeyAlpha_LineEdit : public TKey_LineEdit
 	unsigned int nReturnValue;
 	std::string InitialText;
  public:
-	TKeyAlpha_LineEdit(PG_Widget* pParent,const PG_Rect& r,const char* style="LineEdit",int maximumLength=1000000);
+	TKeyAlpha_LineEdit(PG_Widget* pParent,const PG_Rect& r,const std::string& style="LineEdit",int maximumLength=1000000);
 	// creates the keyboard. This function must be separated because if we
 	// create buttons in constructor we cannot use "this" as the parent
 	void Init(void);

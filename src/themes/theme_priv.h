@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
     Status:           $State: Exp $
 */
 
@@ -99,7 +99,7 @@ public:
 // Why go through the extra job of creating strings for comparision instead
 // of using char * directly?
 struct pg_hashstr {
-	size_t operator()(std::string s1) const {
+	size_t operator()(const std::string& s1) const {
 #if PG_VERSIONNUM(__GNUC__, __GNUC_MINOR__, 0) >= PG_VERSIONNUM(3, 1, 0)
 		return __gnu_cxx::hash<const char *>()(s1.c_str());
 #else
@@ -115,10 +115,10 @@ public:
 	THEME_OBJECT();
 	virtual ~THEME_OBJECT();
 
-	SDL_Surface* FindSurface(const char* name);
-	PG_Gradient* FindGradient(const char* name);
-	long FindProperty(const char* name);
-	const char* FindString(const char* name);
+	SDL_Surface* FindSurface(const std::string& name);
+	PG_Gradient* FindGradient(const std::string& name);
+	long FindProperty(const std::string& name);
+	const std::string& FindString(const std::string& name);
 	THEME_FONT* font;
 
 	std::string type;
@@ -148,7 +148,7 @@ public:
 	;
 	virtual ~THEME_WIDGET();
 
-	THEME_OBJECT* FindObject(const char* objectname);
+	THEME_OBJECT* FindObject(const std::string& objectname);
 
 	std::string type;
 
@@ -170,23 +170,23 @@ public:
 
 	virtual ~THEME_THEME();
 
-	const char* FindDefaultFontName();
+	const std::string& FindDefaultFontName();
 	int FindDefaultFontSize();
 	PG_Font::Style FindDefaultFontStyle();
 
-	const char* FindFontName(const char*, const char*);
-	int FindFontSize(const char*, const char*);
-	PG_Font::Style FindFontStyle(const char*, const char*);
+	const std::string& FindFontName(const std::string&, const std::string&);
+	int FindFontSize(const std::string&, const std::string&);
+	PG_Font::Style FindFontStyle(const std::string&, const std::string&);
 
-	SDL_Surface* FindSurface(const char* widgettype, const char* object, const char* name);
-	PG_Gradient* FindGradient(const char* widgettype, const char* object, const char* name);
-	void GetProperty(const char* widgettype, const char* object, const char* name, long& prop);
-	void GetProperty(const char* widgettype, const char* object, const char* name, Uint8& prop);
-	void GetProperty(const char* widgettype, const char* object, const char* name, bool& prop);
-	void GetProperty(const char* widgettype, const char* object, const char* name, int& prop);
-	void GetAlignment(const char* widgettype, const char* object, const char* name, PG_Label::TextAlign& align);
-	void GetColor(const char* widgettype, const char* object, const char* name, PG_Color& color);
-	const char* FindString(const char* widgettype, const char* object, const char* name);
+	SDL_Surface* FindSurface(const std::string& widgettype, const std::string& object, const std::string& name);
+	PG_Gradient* FindGradient(const std::string& widgettype, const std::string& object, const std::string& name);
+	void GetProperty(const std::string& widgettype, const std::string& object, const std::string& name, long& prop);
+	void GetProperty(const std::string& widgettype, const std::string& object, const std::string& name, Uint8& prop);
+	void GetProperty(const std::string& widgettype, const std::string& object, const std::string& name, bool& prop);
+	void GetProperty(const std::string& widgettype, const std::string& object, const std::string& name, int& prop);
+	void GetAlignment(const std::string& widgettype, const std::string& object, const std::string& name, PG_Label::TextAlign& align);
+	void GetColor(const std::string& widgettype, const std::string& object, const std::string& name, PG_Color& color);
+	const std::string& FindString(const std::string& widgettype, const std::string& object, const std::string& name);
 
 	THEME_FONT* defaultfont;
 
@@ -203,8 +203,8 @@ public:
 
 	MAP_WIDGET widget;
 
-	THEME_WIDGET* FindWidget(const char* widgettype);
-	THEME_OBJECT* FindObject(const char* widgettype, const char* objectname);
+	THEME_WIDGET* FindWidget(const std::string& widgettype);
+	THEME_OBJECT* FindObject(const std::string& widgettype, const std::string& objectname);
 };
 
 #endif // THEME_PRIV_H

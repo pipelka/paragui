@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 10:51:41 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.10 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,7 @@
 #include "pgtheme.h"
 #include "pgbutton.h"
 
-PG_RadioButton::PG_RadioButton(PG_Widget* parent, const PG_Rect& r, const char* text, PG_RadioButton* firstOfGroup, int id, const char* style) : PG_ThemeWidget(parent, r) {
+PG_RadioButton::PG_RadioButton(PG_Widget* parent, const PG_Rect& r, const std::string& text, PG_RadioButton* firstOfGroup, int id, const std::string& style) : PG_ThemeWidget(parent, r) {
 	PG_Rect rectButton;
 	PG_Rect rectLabel;
 
@@ -44,7 +44,7 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, const PG_Rect& r, const char* 
 	my_storeMarker = false;
 	my_hoverTransparency = 128;
 
-	if(text == NULL) {
+	if(text.empty()) {
 		rectButton.SetRect(0, 0, r.my_width, r.my_height);
 	} else {
 		rectButton.SetRect(0, 0, r.my_height, r.my_height);
@@ -59,7 +59,7 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, const PG_Rect& r, const char* 
 	my_widgetLabel = new PG_Label(this, rectLabel, text, style);
 
 	// load default first
-	if(strcmp(style, "RadioButton") != 0) {
+	if(style != "RadioButton") {
 		LoadThemeStyle("RadioButton");
 	}
 
@@ -75,7 +75,7 @@ PG_RadioButton::PG_RadioButton(PG_Widget* parent, const PG_Rect& r, const char* 
 	}
 }
 
-void PG_RadioButton::LoadThemeStyle(const char* widgettype) {
+void PG_RadioButton::LoadThemeStyle(const std::string& widgettype) {
 	PG_Theme* t = PG_Application::GetTheme();
 
 	t->GetProperty(widgettype, "RadioButton", "transparency", my_hoverTransparency);
@@ -191,11 +191,11 @@ void PG_RadioButton::AddToGroup(PG_RadioButton* w) {
 	w->my_groupNext = NULL;
 }
 
-void PG_RadioButton::SetText(const char* text) {
+void PG_RadioButton::SetText(const std::string& text) {
 	my_widgetLabel->SetText(text);
 }
 
-const char* PG_RadioButton::GetText() {
+const std::string& PG_RadioButton::GetText() {
 	return my_widgetLabel->GetText();
 }
 
@@ -207,11 +207,7 @@ void PG_RadioButton::SetFontColor(const PG_Color& Color) {
 	my_widgetLabel->SetFontColor(Color);
 }
 
-void PG_RadioButton::SetSizeByText(int Width, int Height, const char *Text) {
-	if (Text == NULL) {
-		Text = my_widgetLabel->GetText();
-	}
-
+void PG_RadioButton::SetSizeByText(int Width, int Height, const std::string& Text) {
 	my_widgetButton->SetSizeByText();
 	my_widgetLabel->SetSizeByText(0, 0, Text);
 

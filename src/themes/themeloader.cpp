@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:45:37 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.7 $
     Status:           $State: Exp $
 */
 
@@ -185,7 +185,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 		}
 
 		// load the image file
-		filename->surface = PG_FileArchive::LoadSurface(filename->value.c_str(), true);
+		filename->surface = PG_FileArchive::LoadSurface(filename->value, true);
 
 		if(filename->surface == NULL) {
 			delete filename;
@@ -386,7 +386,7 @@ void handlerEnd(void* userData, const XML_Char* name) {
 	info->depth--;
 }
 
-PG_Theme* PG_Theme::Load(const char* xmltheme) {
+PG_Theme* PG_Theme::Load(const std::string& xmltheme) {
 	std::string filename;
 
 	// create new parse info
@@ -402,11 +402,11 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 	filename = xmltheme;
 
 	// check if we have a compressed themefile somewhere
-	filename = (std::string)xmltheme + (std::string)".zip";
+	filename = xmltheme + ".zip";
 
 	// and add it to the searchpath
-	if(PG_FileArchive::Exists(filename.c_str())) {
-		const char* path = PG_FileArchive::GetRealDir(filename.c_str());
+	if(PG_FileArchive::Exists(filename)) {
+		const char* path = PG_FileArchive::GetRealDir(filename);
 		char sep = PG_FileArchive::GetDirSeparator()[0];
 		
 		std::string fullpath = (std::string)path;
@@ -415,7 +415,7 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 		}
 		fullpath += filename;
 
-		bool rc = PG_FileArchive::AddArchive(fullpath.c_str());
+		bool rc = PG_FileArchive::AddArchive(fullpath);
 		if(rc) {
 			PG_LogMSG("added '%s' to the searchpath", fullpath.c_str());
 		} else {
@@ -426,8 +426,8 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 
 	// try to open the theme
 
-	filename = (std::string)xmltheme + (std::string)THEME_SUFFIX;
-	if(!PG_FileArchive::Exists(filename.c_str())) {
+	filename = xmltheme + THEME_SUFFIX;
+	if(!PG_FileArchive::Exists(filename)) {
 		PG_LogERR("theme '%s' not found !", filename.c_str());
 		return NULL;
 	}
@@ -443,7 +443,7 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 
 	// create an input-stream
 
-	PG_File* file = PG_FileArchive::OpenFile(filename.c_str());
+	PG_File* file = PG_FileArchive::OpenFile(filename);
 
 	if(!file) {
 		XML_ParserFree(p);

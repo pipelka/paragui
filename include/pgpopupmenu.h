@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/10/28 11:49:15 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -100,11 +100,11 @@ public:
 
 	public: // methods
 		MenuItem(PG_PopupMenu *parent,
-				 char *caption,
+				 const std::string& caption,
 				 int id,
 				 MI_FLAGS flags);
 		MenuItem(PG_PopupMenu *parent,
-				 char *caption,
+				 const std::string& caption,
 				 PG_PopupMenu *submenu);
 		~MenuItem();
 	
@@ -189,8 +189,8 @@ public: // methods
 
 	PG_PopupMenu(PG_Widget *parent,
 	             int x, int y,
-	             char *caption,
-	             char *style = "PopupMenu");
+	             const std::string& caption = PG_NULLSTR,
+	             const std::string& style = "PopupMenu");
 
 	~PG_PopupMenu();
 
@@ -212,17 +212,17 @@ public: // methods
 	 * @param flags     menu item flags
 	 *
 	 */
-	PG_PopupMenu& addMenuItem(char *caption,
+	PG_PopupMenu& addMenuItem(const std::string& caption,
 				int ID,
 				MenuItem::MenuItemSlot,
 				PG_Pointer data = NULL,
 				MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
 
-	PG_PopupMenu& addMenuItem(char *caption,
+	PG_PopupMenu& addMenuItem(const std::string& caption,
 				int ID,
 				MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
 
-	PG_PopupMenu& addMenuItem(char *caption,
+	PG_PopupMenu& addMenuItem(const std::string& caption,
 				PG_PopupMenu *sub,
 				MenuItem::MI_FLAGS flags = MenuItem::MIF_SUBMENU);
 
@@ -274,8 +274,8 @@ protected: // methods
 	void eventShow();
 	void eventHide();
 
-	void LoadThemeStyle(const char *widgettype);
-	void LoadThemeStyle(const char *widgettype, const char *objectname);
+	void LoadThemeStyle(const std::string& widgettype);
+	void LoadThemeStyle(const std::string& widgettype, const std::string& objectname);
 
 	// own
 	virtual bool getCaptionHeight(PG_Rect &rect, bool constructing = false);

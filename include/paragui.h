@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/04/17 20:39:07 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.10 $
     Status:           $State: Exp $
 */
 
@@ -151,5 +151,8 @@ int fnmatch(const char *, const char *, int);
 	calculate the maximum of 2 values
 */
 #define PG_MIN(a, b)	((a<b) ? a : b)
+
+#include <string>
+static const std::string PG_NULLSTR = "";
 
 #endif // PARAGUI_H

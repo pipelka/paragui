@@ -103,7 +103,7 @@ PG_Color PG_ColorSelector::PG_ColorBox::GetBaseColor() {
 	return result;
 }
 
-PG_ColorSelector::PG_ColorSelector(PG_Widget* parent, const PG_Rect&r, const char* style) : PG_ThemeWidget(parent, r, style)  {
+PG_ColorSelector::PG_ColorSelector(PG_Widget* parent, const PG_Rect&r, const std::string& style) : PG_ThemeWidget(parent, r, style)  {
 	PG_Gradient g;
 
 	my_color.r = 255;

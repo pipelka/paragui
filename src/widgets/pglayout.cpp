@@ -84,7 +84,7 @@ typedef struct {
 	XML_Parser	Parser;
 	int			Section;
 
-	const char		*FileName;
+	const char* FileName;
 	int			EndTagFlags;			//Not inherited
 	int			InhTagFlags;			//Inherited
 	int			Height;
@@ -271,7 +271,7 @@ static void RestoreUserData(ParseUserData_t *XMLParser) {
 
 
 void (* PG_LayoutWidgetParams)(PG_Widget *Widget, const char **atts) = NULL;
-void (* PG_LayoutProcessingInstruction)(const char *target,  const char *data, const char *FileName, void *UserSpace) = NULL;
+void (* PG_LayoutProcessingInstruction)(const char* target,  const char* data, const std::string& FileName, void *UserSpace) = NULL;
 
 //Declaration
 //static void XMLTextDoc(void *userData, const XML_Char *s, int len);
@@ -424,13 +424,13 @@ static int SetUserButtonAtts(PG_Button *Widget, const char **atts, ParseUserData
 	c = PG_Layout::GetParamStr(atts, "upimage");
 	c1 = PG_Layout::GetParamStr(atts, "downimage");
 	c2 = PG_Layout::GetParamStr(atts, "overimage");
-	if (c1[0] == 0) {
+	/*if (c1[0] == 0) {
 		c1 = NULL;
 	}
 
 	if (c2[0] == 0) {
 		c2 = NULL;
-	}
+	}*/
 
 	if (c[0] != 0) {
 		b = PG_Layout::GetParamInt(atts, "colorkey");
@@ -1034,7 +1034,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 
 		// is the current popup a child of another popup ?
 		if(XMLParser->Section & XML_SECTION_POPUPMENU) {
-			Widget = new PG_PopupMenu(NULL, 0, 0, NULL);
+			Widget = new PG_PopupMenu(NULL, 0, 0, PG_NULLSTR);
 			PG_PopupMenu* menu = static_cast<PG_PopupMenu*>(XMLParser->ParentObject);
 			menu->addMenuItem(PG_Layout::GetParamStr(atts, "caption"), Widget);
 		} else {
@@ -1179,10 +1179,10 @@ static void XMLProcInstr(void *userData, const XML_Char *target, const XML_Char 
 		PG_LayoutProcessingInstruction(target, data, XMLParser->FileName, XMLParser->UserSpace);
 }
 
-bool PG_Layout::Load(PG_Widget* parent, const char *filename, void (* WorkCallback)(int now, int max), void *UserSpace) {
+bool PG_Layout::Load(PG_Widget* parent, const std::string& filename, void (* WorkCallback)(int now, int max), void *UserSpace) {
 	ParseUserData_t	XMLParser;
-	bool			status = true;
-	int				bytes_pos = 0;
+	bool status = true;
+	int bytes_pos = 0;
 
 	XMLParser.Parser = XML_ParserCreate(NULL);
 	XMLParser.Section = XML_SECTION_DOC;
@@ -1196,11 +1196,11 @@ bool PG_Layout::Load(PG_Widget* parent, const char *filename, void (* WorkCallba
 	XML_SetCharacterDataHandler(XMLParser.Parser, XMLTextDoc);
 	XML_SetProcessingInstructionHandler(XMLParser.Parser, XMLProcInstr);
 
-	XMLParser.FileName = filename;
+	XMLParser.FileName = filename.c_str();
 	PG_File* f = PG_Application::OpenFile(XMLParser.FileName);
 	if (f == NULL) {
 
-		PG_LogWRN("Layout file %s not found !", filename);
+		PG_LogWRN("Layout file %s not found !", filename.c_str());
 		return false;
 	}
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:38 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.5 $
     Status:           $State: Exp $
 */
 
@@ -72,14 +72,14 @@ public:
 	@param append true - append / false - prepend
 	@return true on success
 	*/
-	static bool AddArchive(const char* arch, bool append = true);
+	static bool AddArchive(const std::string& arch, bool append = true);
 
 	/**
 	Remove a directory or archive file from the pool
 	@param arch	directorypath or filename
 	@return true on success
 	*/
-	static bool RemoveArchive(const char* arch);
+	static bool RemoveArchive(const std::string& arch);
 
 	/**
 	Remove all currently registered directories or archive files from the pool
@@ -121,21 +121,21 @@ public:
 	 \param dir directory to list files in
 	 \return the file list
 	*/
-	static char **EnumerateFiles(const char *dir);
+	static char **EnumerateFiles(const std::string& dir);
 
 	/**
 	Check if a file exists in the archive
 	@param filename file to check
 	@return true if the file exists
 	*/
-	static bool Exists(const char *filename);
+	static bool Exists(const std::string& filename);
 
 	/**
 	Check if the "filename" is a directory
 	@param filename filename to check
 	@return true if it's a directory
 	*/
-	static bool IsDirectory(const char *filename);
+	static bool IsDirectory(const std::string& filename);
 
 	/**
 	Get the platform specifiy directory separator
@@ -143,7 +143,7 @@ public:
 	*/
 	static const char* GetDirSeparator();
 
-	static const char* GetRealDir(const char* filename);
+	static const char* GetRealDir(const std::string&filename);
 
 	static const char* GetLastError();
 	//! Create a new directory
@@ -152,14 +152,14 @@ public:
 	  write directory, if any. 
 	\param dir directory name
 	*/
-	static bool MakeDir(const char* dir); 
+	static bool MakeDir(const std::string& dir); 
 
 	//! Set write directory
 	/*! 
 	  This function sets the write directory to use.
 	  \param dir directory name
 	*/
-	static bool SetWriteDir(const char* dir); 
+	static bool SetWriteDir(const std::string& dir); 
 
 	//! convert a path from UNIX to system dependent format
 	/*!
@@ -169,7 +169,7 @@ public:
 	\param path path to convert
 	\return a string with the converted path
 	*/
-	static std::string *PathToPlatform(const char *path);
+	static std::string *PathToPlatform(const std::string& path);
 
 	//! Get the application base directory
 	/*! 
@@ -210,9 +210,9 @@ public:
 	  
 	  \return true for success, false for failure
 	*/
-	static bool SetSaneConfig(const char *organization,
-				  const char* appName,
-				  const char* archiveExt = 0,
+	static bool SetSaneConfig(const std::string& organization,
+				  const std::string& appName,
+				  const std::string& archiveExt = PG_NULLSTR,
 				  bool includeCdRoms = false,
 				  bool archivesFirst = true);
 	
@@ -222,7 +222,7 @@ public:
 	   @param mode the open mode
 	   @return pointer to newly created PG_File object or NULL
 	*/
-	static PG_File* OpenFile(const char* filename, Mode mode = READ);
+	static PG_File* OpenFile(const std::string& filename, Mode mode = READ);
 	  
 	/**
 	   Open a file from the archive
@@ -230,7 +230,7 @@ public:
 	   @param mode the open mode
 	   @return pointer SDL_RWops structure
 	*/
-	static SDL_RWops* OpenFileRWops(const char* filename, Mode mode = READ);
+	static SDL_RWops* OpenFileRWops(const std::string& filename, Mode mode = READ);
 	  
 	//! Open and read a file from the archive
 	/*!
@@ -240,7 +240,7 @@ public:
 	  \return pointer to a string with the data of the named file
 	  or 0 if the file doesn't exist or was empty
 	*/
-	static PG_DataContainer* ReadFile(const char* filename);
+	static PG_DataContainer* ReadFile(const std::string& filename);
 	
 	/**
 	Load a surface (image) from the archive
@@ -249,7 +249,7 @@ public:
 	@param convert convert the loaded surface into screen format (default = false)
 	@return pointer to loaded SDL_Surface or NULL
 	*/
-	static SDL_Surface* LoadSurface(const char* filename, bool convert = false);
+	static SDL_Surface* LoadSurface(const std::string& filename, bool convert = false);
 
 	/**
 	Load a surface (image) from the archive and apply a colorkey
@@ -260,7 +260,7 @@ public:
 	@param convert convert the loaded surface into screen format (default = false)
 	@return pointer to loaded SDL_Surface or NULL
 	*/
-	static SDL_Surface* LoadSurface(const char* filename, bool usekey, Uint32 colorkey, bool convert = false);
+	static SDL_Surface* LoadSurface(const std::string& filename, bool usekey, Uint32 colorkey, bool convert = false);
 	
 	/**
 	Removes the surface from the cache
@@ -305,7 +305,7 @@ public:
 	\param wildcard wildcard for file pattern matching
 	\return the file list
 	*/
-	static PG_FileList* GetFileList(const char *dir, const char* wildcard="*");
+	static PG_FileList* GetFileList(const std::string& dir, const std::string& wildcard="*");
 	
 private:
 

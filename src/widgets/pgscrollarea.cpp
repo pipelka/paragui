@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/07 14:19:05 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollarea.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.12 $
+    CVS/RCS Revision: $Revision: 1.1.2.13 $
     Status:           $State: Exp $
 */
 
@@ -121,6 +121,9 @@ bool PG_ScrollArea::RemoveChild(PG_Widget* child) {
 	if(GetChildList() == NULL) {
 		return false;
 	}
+	if(GetChildList()->size() == 0) {
+		return false;
+	}
 
 	// remove widget
 	PG_Rect r = *child;
@@ -192,7 +195,8 @@ void PG_ScrollArea::DeleteAll() {
 
 	for(; list != NULL; ) {
 		PG_Widget* w = list;
-		list = list->next();		
+		list = list->next();
+		w->SetVisible(false);		
 		delete w;
 	}
 	my_area.w = 0;

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/09/05 10:51:41 $
+   Update Date:      $Date: 2004/11/17 21:34:21 $
    Source File:      $Source: /sources/paragui/paragui/include/pgrichedit.h,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.8 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.9 $
    Status:           $State: Exp $
 */
 
@@ -46,13 +46,8 @@ public:
 	/**
 	Constructor of the PG_WidgetListEx class
 	*/
-	PG_RichEdit(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, bool autoVerticalResize = false, Uint32 linewidth = 0, Uint32 tabSize = 30, Uint32 childsborderwidth = 8, const char* style="WidgetList");
+	PG_RichEdit(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, bool autoVerticalResize = false, Uint32 linewidth = 0, Uint32 tabSize = 30, Uint32 childsborderwidth = 8, const std::string& style="WidgetList");
 
-	/**
-	Sets rich text
-	@param	text			rich text to set
-	*/
-	void SetText(const char *text);
 	/**
 	Sets rich text
 	@param	text			rich text to set
@@ -78,7 +73,7 @@ public:
 	through PhysFS so you can place any text files into your theme and or file archives.
 	\param textfile relative path to the text file
 	*/
-	bool LoadText(const char* textfile);
+	bool LoadText(const std::string& textfile);
 	
 	/**
 	Resize the widget automatically if there is not enough space.

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:05 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgprogressbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -46,7 +46,7 @@ class DECLSPEC PG_ProgressBar : public PG_ThemeWidget {
 public:
 
 	/** */
-	PG_ProgressBar(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="Progressbar");
+	PG_ProgressBar(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& style="Progressbar");
 
 	/** */
 	~PG_ProgressBar();
@@ -58,7 +58,7 @@ public:
 	*/
 	void SetProgress(double p);
 
-	void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const std::string& widgettype);
 
 	//! Toggle drawing of the percentage text
 	/*! 

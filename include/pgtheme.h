@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/22 16:52:42 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtheme.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.2.4 $
     Status:           $State: Exp $
 */
 
@@ -42,19 +42,19 @@ public:
 
 	virtual ~PG_Theme() {};
 
-	virtual const char* FindDefaultFontName() = 0;
+	virtual const std::string& FindDefaultFontName() = 0;
 	virtual int FindDefaultFontSize() = 0;
 	virtual PG_Font::Style FindDefaultFontStyle() = 0;
-	virtual const char* FindFontName(const char* widgettype, const char* objectname) = 0;
-	virtual int FindFontSize(const char* widgettype, const char* objectname) = 0;
-	virtual PG_Font::Style FindFontStyle(const char* widgettype, const char* objectname) = 0;
-	virtual SDL_Surface* FindSurface(const char* widgettype, const char* object, const char* name) = 0;
-	virtual PG_Gradient* FindGradient(const char* widgettype, const char* object, const char* name) = 0;
-	virtual void GetProperty(const char* widgettype, const char* object, const char* name, long& prop) = 0;
-	virtual void GetProperty(const char* widgettype, const char* object, const char* name, Uint8& prop) = 0;
-	virtual void GetProperty(const char* widgettype, const char* object, const char* name, bool& prop) = 0;
-	virtual void GetProperty(const char* widgettype, const char* object, const char* name, int& prop) = 0;
-	inline void GetProperty(const char* widgettype, const char* object, const char* name, Uint16& prop) {
+	virtual const std::string& FindFontName(const std::string& widgettype, const std::string& objectname) = 0;
+	virtual int FindFontSize(const std::string& widgettype, const std::string& objectname) = 0;
+	virtual PG_Font::Style FindFontStyle(const std::string& widgettype, const std::string& objectname) = 0;
+	virtual SDL_Surface* FindSurface(const std::string& widgettype, const std::string& object, const std::string& name) = 0;
+	virtual PG_Gradient* FindGradient(const std::string& widgettype, const std::string& object, const std::string& name) = 0;
+	virtual void GetProperty(const std::string& widgettype, const std::string& object, const std::string& name, long& prop) = 0;
+	virtual void GetProperty(const std::string& widgettype, const std::string& object, const std::string& name, Uint8& prop) = 0;
+	virtual void GetProperty(const std::string& widgettype, const std::string& object, const std::string& name, bool& prop) = 0;
+	virtual void GetProperty(const std::string& widgettype, const std::string& object, const std::string& name, int& prop) = 0;
+	inline void GetProperty(const std::string& widgettype, const std::string& object, const std::string& name, Uint16& prop) {
 		long b=-1;
 		GetProperty(widgettype, object, name, b);
 		if(b == -1) {
@@ -62,9 +62,9 @@ public:
 		}
 		prop = (Uint16)b;
 	}
-	virtual void GetAlignment(const char* widgettype, const char* object, const char* name, PG_Label::TextAlign& align) = 0;
-	virtual void GetColor(const char* widgettype, const char* object, const char* name, PG_Color& color) = 0;
-	virtual const char* FindString(const char* widgettype, const char* object, const char* name) = 0;
+	virtual void GetAlignment(const std::string& widgettype, const std::string& object, const std::string& name, PG_Label::TextAlign& align) = 0;
+	virtual void GetColor(const std::string& widgettype, const std::string& object, const std::string& name, PG_Color& color) = 0;
+	virtual const std::string& FindString(const std::string& widgettype, const std::string& object, const std::string& name) = 0;
 
 	/**
 	Load and process a XML theme definition file.
@@ -75,7 +75,7 @@ public:
 	Given the name of a file that contains the theme definition, it loads
 	the Theme into ParaGUI's system
 	*/
-	static PG_Theme* Load(const char* xmltheme);
+	static PG_Theme* Load(const std::string& xmltheme);
 
 	/**
 	*/

@@ -20,17 +20,20 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 16:24:05 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcolumnitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
     Status:           $State: Exp $
 */
 
 #include "pgcolumnitem.h"
 
-PG_ColumnItem::PG_ColumnItem(PG_Widget* parent, Uint32 columns, Uint16 height, void* userdata) : PG_ListBoxItem(parent, height) {
+PG_ColumnItem::PG_ColumnItem(PG_Widget* parent, Uint32 columns, Uint16 height, void* userdata, const std::string& style) : PG_ListBoxItem(parent, height, NULL, NULL, NULL, style) {
 	SetUserData(userdata);
 	my_columncount = columns;
+
+	my_columnwidth.reserve(columns);
+	my_columntext.reserve(columns);
 
 	// fill our vectors with the default values
 	for(Uint32 i=0; i<my_columncount; i++) {
@@ -49,7 +52,7 @@ void PG_ColumnItem::SetColumnWidth(Uint32 column, Uint32 width) {
 	my_columnwidth[column] = width;
 }
 
-void PG_ColumnItem::SetColumnText(Uint32 column, const char* text) {
+void PG_ColumnItem::SetColumnText(Uint32 column, const std::string& text) {
 	my_columntext[column] = text;
 	Update();
 }
@@ -75,15 +78,13 @@ void PG_ColumnItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rec
 		}
 
 		Uint16 w, h;
-		GetTextSize(w, h, my_columntext[i].c_str());
+		GetTextSize(w, h, my_columntext[i]);
 
 		int cw = my_columnwidth[i];
 		if(xshift + cw > my_width) {
 			cw -=  ((xshift + cw) - my_width);
 		}
-		DrawText(xshift, (my_height - h)/2, my_columntext[i].c_str(), PG_Rect(xshift, 0, cw-5, my_height));
-		//DrawText(xshift, (my_itemheight - h) >> 1, my_columntext[i].c_str());
-
+		DrawText(xshift, (my_height - h)/2, my_columntext[i], PG_Rect(xshift, 0, cw-5, my_height));
 		xshift += my_columnwidth[i];
 	}
 
@@ -93,8 +94,8 @@ int PG_ColumnItem::GetColumnWidth(Uint32 column) {
 	return my_columnwidth[column];
 }
 
-const char* PG_ColumnItem::GetColumnText(Uint32 column) {
-	return my_columntext[column].c_str();
+const std::string& PG_ColumnItem::GetColumnText(Uint32 column) {
+	return my_columntext[column];
 }
 
 int PG_ColumnItem::GetColumnCount() {

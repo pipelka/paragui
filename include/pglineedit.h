@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/09/05 10:51:41 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
     Status:           $State: Exp $
 */
 
@@ -56,15 +56,15 @@ public:
 	template<class datatype = PG_Pointer> class SignalEditReturn : public PG_Signal1<PG_LineEdit*, datatype> {};
 
 	/** */
-	PG_LineEdit(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const char* style="LineEdit", int maximumLength = 1000000);
+	PG_LineEdit(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& style="LineEdit", int maximumLength = 1000000);
 
 	/** */
 	~PG_LineEdit();
 
-	void LoadThemeStyle(const char* widgettype);
+	void LoadThemeStyle(const std::string& widgettype);
 
 	/** */
-	void LoadThemeStyle(const char* widgettype, const char* objectname);
+	void LoadThemeStyle(const std::string& widgettype, const std::string& objectname);
 
 	/** start edit */
 	void EditBegin();
@@ -82,7 +82,7 @@ public:
 	Set the current text string
 	@param	new_text	pointer to text string
 	*/
-	virtual void SetText(const char* new_text);
+	virtual void SetText(const std::string& new_text);
 
 	/** */
 	bool IsCursorVisible();
@@ -109,7 +109,7 @@ public:
 
 	@param	keys		a string which contains all valid chars
 	*/
-	void SetValidKeys(const char* keys);
+	void SetValidKeys(const std::string& keys);
 
 	/**
 	Set if the widget is editable by the user

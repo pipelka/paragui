@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/27 21:23:54 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgspinnerbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.2.6 $
     Status:           $State: Exp $
 */
 
@@ -35,7 +35,7 @@
   *@author Atani - Mike Dunston
   */
 
-PG_SpinnerBox::PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r, const char* style) : PG_ThemeWidget( parent, r, style ) {
+PG_SpinnerBox::PG_SpinnerBox(PG_Widget *parent, const PG_Rect& r, const std::string& style) : PG_ThemeWidget( parent, r, style ) {
 	PG_Rect box_rect = r;
 	PG_Rect up_rect, down_rect;
 	box_rect.my_width -= (my_height/2);
@@ -119,8 +119,8 @@ void PG_SpinnerBox::AdjustSize() {
 }
 
 bool PG_SpinnerBox::handleEditEnd(PG_LineEdit* edit) {
-	const char* text = m_pEditBox->GetText();
-	m_iValue = (text != NULL) ? atoi(text) : 0;
+	const std::string& text = m_pEditBox->GetText();
+	m_iValue = (!text.empty()) ? atoi(text.c_str()) : 0;
 
 	// AMC Dec.4/2001
 	if (m_iValue>m_iMaxValue) {
@@ -135,8 +135,8 @@ bool PG_SpinnerBox::handleEditEnd(PG_LineEdit* edit) {
 	return true;
 }
 
-void PG_SpinnerBox::SetMask( const char *value ) {
-	strcpy( m_sMask, value );
+void PG_SpinnerBox::SetMask(const std::string& value) {
+	m_sMask = value;
 	m_pEditBox->SetMask( m_sMask );
 	AdjustSize();
 }

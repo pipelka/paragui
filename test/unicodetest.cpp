@@ -72,7 +72,7 @@ int main( int argc, char **argv )
 	// Passing utf-8 encoded text directly
 	ar->SetText("Arabic:  أنا قادر على أكل الزجاج و هذا لا يؤلمني.");
 	// appending the previosuly built text in ustr to the PG_Label
-	ar->SetText((ar->GetText() + ustr + "  Some More Text").utf8().c_str());
+	ar->SetText((PG_String(ar->GetText()) + ustr + "  Some More Text").utf8());
 	ar->Show();
 	
 	

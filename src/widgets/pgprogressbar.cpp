@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgprogressbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -31,7 +31,7 @@
 #include "pgdraw.h"
 #include "pgtheme.h"
 
-PG_ProgressBar::PG_ProgressBar(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_ThemeWidget(parent, r) {
+PG_ProgressBar::PG_ProgressBar(PG_Widget* parent, const PG_Rect& r, const std::string& style) : PG_ThemeWidget(parent, r) {
 
 	my_percentCurrent = 0;
 	my_drawPercentage = true;
@@ -75,7 +75,7 @@ void PG_ProgressBar::SetDrawPercentage(bool drawit) {
 }
 
 
-void PG_ProgressBar::LoadThemeStyle(const char* widgettype) {
+void PG_ProgressBar::LoadThemeStyle(const std::string& widgettype) {
 	PG_Theme* t = PG_Application::GetTheme();
 
 	PG_ThemeWidget::LoadThemeStyle(widgettype, "Background");

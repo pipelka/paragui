@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/11/12 18:49:35 $
+   Update Date:      $Date: 2004/11/17 21:34:21 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.20 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.21 $
    Status:           $State: Exp $
  */
 
@@ -35,6 +35,8 @@
 #include "pgdraw.h"
 #include "pglayout.h"
 #include "pgtheme.h"
+
+#include "propstrings_priv.h"
 
 #define TXT_HEIGHT_UNDEF 0xFFFF
 
@@ -573,7 +575,7 @@ void PG_Widget::SetVisible(bool visible) {
 		if(!_mid->visible) {			// Object is already invisible
 			return;
 		} else {					// Hide object
-			RestoreBackground();
+			//RestoreBackground();
 			_mid->visible = visible;
 		}
 	}
@@ -661,11 +663,8 @@ void PG_Widget::Hide(bool fade) {
 	SDL_SetClipRect(screen, NULL);
 
 	if(!PG_Application::GetBulkMode()) {
-		//RestoreBackground();
 		UpdateRect(_mid->rectClip);
-	}
 
-	if(!PG_Application::GetBulkMode()) {
 		PG_Application::LockScreen();
 		SDL_UpdateRects(screen, 1, &_mid->rectClip);
 		PG_Application::UnlockScreen();
@@ -680,9 +679,6 @@ void PG_Widget::Hide(bool fade) {
 void PG_Widget::MoveRect(int x, int y) {
 	int dx = x - my_xpos;
 	int dy = y - my_ypos;
-
-	// recalc cliprect
-	RecalcClipRect();
 
 	my_xpos = x;
 	my_ypos = y;
@@ -873,16 +869,17 @@ void PG_Widget::BulkBlit() {
 	//bBulkUpdate = false;
 }
 
-void PG_Widget::LoadThemeStyle(const char* widgettype, const char* objectname) {
+void PG_Widget::LoadThemeStyle(const std::string& widgettype, const std::string& objectname) {
 	PG_Theme* t = PG_Application::GetTheme();
 	PG_Color c;
 
-	const char *font = t->FindFontName(widgettype, objectname);
+	const std::string& font = t->FindFontName(widgettype, objectname);
 	int fontsize = t->FindFontSize(widgettype, objectname);
 	PG_Font::Style fontstyle = t->FindFontStyle(widgettype, objectname);
 
-	if(font != NULL)
+	if(!font.empty()) {
 		SetFontName(font, true);
+	}
 
 	if (fontsize > 0)
 		SetFontSize(fontsize, true);
@@ -891,14 +888,14 @@ void PG_Widget::LoadThemeStyle(const char* widgettype, const char* objectname) {
 		SetFontStyle(fontstyle, true);
 
 	c = GetFontColor();
-	t->GetColor(widgettype, objectname, "textcolor", c);
+	t->GetColor(widgettype, objectname, PG_PropStr::textcolor, c);
 	SetFontColor(c);
 
-	t->GetColor(widgettype, objectname, "bordercolor0", my_colorBorder[0][0]);
-	t->GetColor(widgettype, objectname, "bordercolor1", my_colorBorder[1][0]);
+	t->GetColor(widgettype, objectname, PG_PropStr::bordercolor0, my_colorBorder[0][0]);
+	t->GetColor(widgettype, objectname, PG_PropStr::bordercolor1, my_colorBorder[1][0]);
 }
 
-void PG_Widget::LoadThemeStyle(const char* widgettype) {}
+void PG_Widget::LoadThemeStyle(const std::string& widgettype) {}
 
 void PG_Widget::FadeOut() {
 	PG_Rect r(0, 0, my_width, my_height);
@@ -1162,20 +1159,20 @@ void PG_Widget::RecalcClipRect() {
 	SetClipRect(ir);
 }
 
-bool PG_Widget::LoadLayout(const char *name) {
+bool PG_Widget::LoadLayout(const std::string& name) {
 	bool rc = PG_Layout::Load(this, name, NULL, NULL);
 	Update();
 	return rc;
 }
 
-bool PG_Widget::LoadLayout(const char *name, void (* WorkCallback)(int now, int max)) {
+bool PG_Widget::LoadLayout(const std::string& name, void (* WorkCallback)(int now, int max)) {
 	bool rc = PG_Layout::Load(this, name, WorkCallback, NULL);
 	Update();
 	return rc;
 
 }
 
-bool PG_Widget::LoadLayout(const char *name, void (* WorkCallback)(int now, int max),void *UserSpace) {
+bool PG_Widget::LoadLayout(const std::string& name, void (* WorkCallback)(int now, int max),void *UserSpace) {
 	bool rc = PG_Layout::Load(this, name, WorkCallback, UserSpace);
 	Update();
 	return rc;
@@ -1204,7 +1201,7 @@ void PG_Widget::ReleaseUserData() {
 	_mid->userdatasize = 0;
 }
 
-void PG_Widget::AddText(const char* text, bool update) {
+void PG_Widget::AddText(const std::string& text, bool update) {
 	my_text += text;
 	_mid->widthText = TXT_HEIGHT_UNDEF;
 	_mid->heightText = TXT_HEIGHT_UNDEF;
@@ -1215,17 +1212,12 @@ void PG_Widget::AddText(const char* text, bool update) {
 	}
 }
 
-void PG_Widget::SetText(const char* text) {
+void PG_Widget::SetText(const std::string& text) {
 
 	_mid->widthText = TXT_HEIGHT_UNDEF;
 	_mid->heightText = TXT_HEIGHT_UNDEF;
 
-	if(text == NULL) {
-		my_text = "";
-		return;
-	}
-
-	my_text = std::string(text);
+	my_text = text;
 	Update();
 }
 
@@ -1306,7 +1298,7 @@ void PG_Widget::SetFontIndex(int Index, bool bRecursive) {
 //	_mid->font->SetIndex(Index);
 }
 
-void PG_Widget::SetFontName(const char *Name, bool bRecursive) {
+void PG_Widget::SetFontName(const std::string& Name, bool bRecursive) {
 	_mid->font->SetName(Name);
 
 	if(!bRecursive || (GetChildList() == NULL)) {
@@ -1319,16 +1311,19 @@ void PG_Widget::SetFontName(const char *Name, bool bRecursive) {
 
 }
 
-void PG_Widget::SetSizeByText(int Width, int Height, const char *Text) {
+void PG_Widget::SetSizeByText(int Width, int Height, const std::string& Text) {
 	Uint16 w,h;
 	int baselineY;
 	
-	if (Text == NULL) {
-		Text = my_text.c_str();
+	if (Text.empty()) {
+		if (!PG_FontEngine::GetTextSize(my_text, _mid->font, &w, &h, &baselineY)) {
+			return;
+		}
 	}
-
-	if (!PG_FontEngine::GetTextSize(Text, _mid->font, &w, &h, &baselineY)) {
-		return;
+	else {
+		if (!PG_FontEngine::GetTextSize(Text, _mid->font, &w, &h, &baselineY)) {
+			return;
+		}
 	}
 
 	if (my_width == 0 && my_height > 0 && Width == 0) {
@@ -1356,25 +1351,23 @@ void PG_Widget::SetFont(PG_Font* font) {
 	_mid->font = new PG_Font(font->GetName(), font->GetSize());
 }
 
-void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const char* text) {
-	if(text == NULL) {
+void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const std::string& text) {
+	if(text.empty()) {
 		if(_mid->widthText != TXT_HEIGHT_UNDEF) {
 			w = _mid->widthText;
 			h = _mid->heightText;
 			return;
 		}
-		text = my_text.c_str();
+		GetTextSize(w, h, my_text, _mid->font);
+		_mid->widthText = w;
+		_mid->heightText = h;
+		return;
 	}
 
 	GetTextSize(w, h, text, _mid->font);
-
-	if(text == NULL) {
-		_mid->widthText = w;
-		_mid->heightText = h;
-	}
 }
 
-void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const char* text, PG_Font* font) {
+void PG_Widget::GetTextSize(Uint16& w, Uint16& h, const std::string& text, PG_Font* font) {
 	PG_FontEngine::GetTextSize(text, font, &w);
 	h = font->GetFontHeight();
 }
@@ -1394,7 +1387,7 @@ int PG_Widget::GetTextHeight() {
 	return _mid->font->GetFontAscender();
 }
 
-void PG_Widget::DrawText(const PG_Rect& rect, const char* text) {
+void PG_Widget::DrawText(const PG_Rect& rect, const std::string& text) {
 	if(my_srfObject == NULL) {
 		PG_FontEngine::RenderText(PG_Application::GetScreen(), _mid->rectClip, my_xpos+ rect.x, my_ypos + rect.y + GetFontAscender(), text, _mid->font);
 	}
@@ -1403,11 +1396,11 @@ void PG_Widget::DrawText(const PG_Rect& rect, const char* text) {
 	}
 }
 
-void PG_Widget::DrawText(int x, int y, const char* text) {
+void PG_Widget::DrawText(int x, int y, const std::string& text) {
 	DrawText(PG_Rect(x,y,w-x,h-y), text);
 }
 
-void PG_Widget::DrawText(int x, int y, const char* text, const PG_Rect& cliprect) {
+void PG_Widget::DrawText(int x, int y, const std::string& text, const PG_Rect& cliprect) {
 	if(my_srfObject == NULL) {
 		PG_Rect rect = cliprect;
 		rect.x += my_xpos;
@@ -1421,12 +1414,12 @@ void PG_Widget::DrawText(int x, int y, const char* text, const PG_Rect& cliprect
 	}
 }
 
-void PG_Widget::DrawText(const PG_Rect& rect, const char* text, const PG_Color& c) {
+void PG_Widget::DrawText(const PG_Rect& rect, const std::string& text, const PG_Color& c) {
 	SetFontColor(c);
 	DrawText(rect, text);
 }
 
-void PG_Widget::DrawText(int x, int y, const char* text, const PG_Color& c) {
+void PG_Widget::DrawText(int x, int y, const std::string& text, const PG_Color& c) {
 	DrawText(PG_Rect(x,y,w,h), text, c);
 }
 
@@ -1463,8 +1456,8 @@ bool PG_Widget::eventQuitModal(int id, PG_MessageObject* widget, unsigned long d
 	return true;
 }
 
-const char* PG_Widget::GetText() {
-	return my_text.c_str();
+const std::string& PG_Widget::GetText() {
+	return my_text;
 }
 
 void PG_Widget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {
@@ -1717,7 +1710,7 @@ PG_Widget* PG_Widget::FindChild(int id) {
 	return _mid->childList->Find(id);
 }
 
-PG_Widget* PG_Widget::FindChild(const char *name) {
+PG_Widget* PG_Widget::FindChild(const std::string& name) {
 	if(_mid->childList == NULL) {
 		return NULL;
 	}
@@ -1736,12 +1729,12 @@ PG_RectList* PG_Widget::GetWidgetList() {
 	return &widgetList;
 }
 
-void PG_Widget::SetName(const char *name) {
+void PG_Widget::SetName(const std::string& name) {
 	_mid->name = name;
 }
 
-const char* PG_Widget::GetName() {
-	return _mid->name.c_str();
+const std::string& PG_Widget::GetName() {
+	return _mid->name;
 }
 
 int PG_Widget::GetFontAscender() {

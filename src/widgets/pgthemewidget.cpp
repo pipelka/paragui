@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:45:46 $
+    Update Date:      $Date: 2004/11/17 21:34:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.13 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,8 @@
 #include "pgapplication.h"
 #include "pglog.h"
 #include "pgtheme.h"
+
+#include "propstrings_priv.h"
 
 static PG_SurfaceCache my_SurfaceCache;
 
@@ -52,15 +54,15 @@ public:
 
 };
 
-PG_ThemeWidget::PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, const char* style) : PG_Widget(parent, r) {
+PG_ThemeWidget::PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, const std::string& style) : PG_Widget(parent, r) {
 	Init(style);
 }
 
-PG_ThemeWidget::PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, bool bCreateSurface, const char* style) : PG_Widget(parent, r, bCreateSurface) {
+PG_ThemeWidget::PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, bool bCreateSurface, const std::string& style) : PG_Widget(parent, r, bCreateSurface) {
 	Init(style);
 }
 
-void PG_ThemeWidget::Init(const char* style) {
+void PG_ThemeWidget::Init(const std::string& style) {
 	SetDirtyUpdate(true);
 	
 	_mid = new PG_ThemeWidgetDataInternal;
@@ -90,59 +92,65 @@ PG_ThemeWidget::~PG_ThemeWidget() {
 	delete _mid;
 }
 
-void PG_ThemeWidget::LoadThemeStyle(const char* widgettype) {
-	if(strcmp(widgettype, "ThemeWidget") != 0) {
-		PG_ThemeWidget::LoadThemeStyle("ThemeWidget", "ThemeWidget");
+void PG_ThemeWidget::LoadThemeStyle(const std::string& widgettype) {
+	if(widgettype != PG_PropStr::ThemeWidget) {
+		PG_ThemeWidget::LoadThemeStyle(PG_PropStr::ThemeWidget, PG_PropStr::ThemeWidget);
 	}
-	PG_ThemeWidget::LoadThemeStyle(widgettype, "ThemeWidget");
+	PG_ThemeWidget::LoadThemeStyle(widgettype, PG_PropStr::ThemeWidget);
 }
 
-void PG_ThemeWidget::LoadThemeStyle(const char* widgettype, const char* objectname) {
+void PG_ThemeWidget::LoadThemeStyle(const std::string& widgettype, const std::string& objectname) {
+	
 	PG_Theme* t = PG_Application::GetTheme();
 
 	if(my_srfObject == NULL) {
-		if(strcmp(objectname, "ThemeWidget") != 0) {
-			PG_ThemeWidget::LoadThemeStyle(widgettype, "ThemeWidget");
+		if(objectname != PG_PropStr::ThemeWidget) {
+			PG_ThemeWidget::LoadThemeStyle(widgettype, PG_PropStr::ThemeWidget);
 		}
 
-		t->GetProperty(widgettype, objectname, "simplebackground", _mid->simplebackground);
-		t->GetProperty(widgettype, objectname, "nocache", _mid->nocache);
-		t->GetColor(widgettype, objectname, "backgroundcolor", _mid->backgroundcolor);
+		t->GetProperty(widgettype, objectname, PG_PropStr::simplebackground, _mid->simplebackground);
+		t->GetProperty(widgettype, objectname, PG_PropStr::nocache, _mid->nocache);
+		t->GetColor(widgettype, objectname, PG_PropStr::backgroundcolor, _mid->backgroundcolor);
 	}
 
-	const char *font = t->FindFontName(widgettype, objectname);
+	std::string font = t->FindFontName(widgettype, objectname);
 	int fontsize = t->FindFontSize(widgettype, objectname);
 	PG_Font::Style fontstyle = t->FindFontStyle(widgettype, objectname);
 
-	if(font != NULL)
+	if(!font.empty()) {
 		SetFontName(font);
-	if(fontsize > 0)
+	}
+	
+	if(fontsize > 0) {
 		SetFontSize(fontsize);
-	if(fontstyle >= 0)
+	}
+	
+	if(fontstyle >= 0) {
 		SetFontStyle(fontstyle);
+	}
 
-	SetBackground(t->FindSurface(widgettype, objectname, "background"));
+	SetBackground(t->FindSurface(widgettype, objectname, PG_PropStr::background));
 
-	t->GetProperty(widgettype, objectname, "blend", my_blendLevel);
-	t->GetProperty(widgettype, objectname, "bordersize", my_bordersize);
-	t->GetProperty(widgettype, objectname, "backmode", my_backgroundMode);
+	t->GetProperty(widgettype, objectname, PG_PropStr::blend, my_blendLevel);
+	t->GetProperty(widgettype, objectname, PG_PropStr::bordersize, my_bordersize);
+	t->GetProperty(widgettype, objectname, PG_PropStr::backmode, my_backgroundMode);
 
-	PG_Gradient* g = t->FindGradient(widgettype, objectname, "gradient");
+	PG_Gradient* g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient);
 
 	if(g) {
 		SetGradient(*g);		
 	}
 
 	Uint8 trans = GetTransparency();
-	t->GetProperty(widgettype, objectname, "transparency", trans);
+	t->GetProperty(widgettype, objectname, PG_PropStr::transparency, trans);
 	SetTransparency(trans);
 
 	PG_Widget::LoadThemeStyle(widgettype, objectname);
 
 	int w = Width();
-	t->GetProperty(widgettype, objectname, "width", w);
+	t->GetProperty(widgettype, objectname, PG_PropStr::width, w);
 	int h = Height();
-	t->GetProperty(widgettype, objectname, "height", h);
+	t->GetProperty(widgettype, objectname, PG_PropStr::height, h);
 
 	if((w != Width()) || (h != Height())) {
 		SizeWidget(w, h);
@@ -167,7 +175,7 @@ void PG_ThemeWidget::eventDraw(SDL_Surface* surface, const PG_Rect& rect) {
 	}
 }
 
-bool PG_ThemeWidget::SetBackground(const char* filename, int mode, const PG_Color &colorkey) {
+bool PG_ThemeWidget::SetBackground(const std::string& filename, int mode, const PG_Color &colorkey) {
 	// try to load the file
 	SDL_Surface* temp = PG_Application::LoadSurface(filename, true);
 
@@ -198,7 +206,7 @@ bool PG_ThemeWidget::SetBackground(const char* filename, int mode, const PG_Colo
 	return (my_background != NULL);
 }
 
-bool PG_ThemeWidget::SetBackground(const char* filename, int mode) {
+bool PG_ThemeWidget::SetBackground(const std::string& filename, int mode) {
 
 	// try to load the file
 	SDL_Surface* temp = PG_Application::LoadSurface(filename, true);
@@ -310,7 +318,7 @@ bool PG_ThemeWidget::SetImage(SDL_Surface* image, bool bFreeImage) {
 	return true;
 }
 
-bool PG_ThemeWidget::LoadImage(const char* filename, Uint32 key) {
+bool PG_ThemeWidget::LoadImage(const std::string& filename, const PG_Color& key) {
 	if(LoadImage(filename)) {
 		SDL_SetColorKey(my_image, SDL_SRCCOLORKEY, key);
 		return true;
@@ -319,7 +327,7 @@ bool PG_ThemeWidget::LoadImage(const char* filename, Uint32 key) {
 	return false;
 }
 
-bool PG_ThemeWidget::LoadImage(const char* filename) {
+bool PG_ThemeWidget::LoadImage(const std::string& filename) {
 	SDL_Surface* image = PG_Application::LoadSurface(filename);
 	return SetImage(image, true);
 }
