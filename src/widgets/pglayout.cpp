@@ -857,7 +857,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		XMLParser->Section = XML_SECTION_LISTBOXITEM | XML_SECTION_COMWIDPARAMS;
 
 		int h = PG_Layout::GetParamInt(atts, "height");
-		if(h == -1) {
+		if(h < 0) {
 			h = 25;
 		}
 
@@ -1031,6 +1031,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		XMLParser->ParentObject = Widget;
 
 		XMLParser->InhTagFlags |= SetPopupMenuAtts(Widget, atts, XMLParser);
+		XMLParser->InhTagFlags |= INHTAGFLAG_HIDE; // Popups shouldn't be displayed immediately
 		return;
 	}
 
@@ -1110,7 +1111,7 @@ static void XMLEndDoc(void *userData, const char *name) {
 	if ((XMLParser->EndTagFlags & ENDTAGFLAG_OBJECT) != 0) {
 		if (((XMLParser->InhTagFlags & INHTAGFLAG_ADDWIDGET) != 0) && ((XMLParser->EndTagFlags & ENDTAGFLAG_WIDGETLIST) == 0)) {
 			WidgetToAdd = XMLParser->ParentObject;
-			goto object_end;
+//			goto object_end;
 		}
 
 		if ((XMLParser->InhTagFlags & INHTAGFLAG_HIDE) == 0)
@@ -1120,8 +1121,8 @@ static void XMLEndDoc(void *userData, const char *name) {
 		else
 			XMLParser->ParentObject->Hide();
 
-object_end:
-		XMLParser->ParentObject->AddText("", true);
+//object_end:
+//		XMLParser->ParentObject->AddText("", true);
 	}
 
 	RestoreUserData(XMLParser);

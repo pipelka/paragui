@@ -32,6 +32,7 @@ int main( int argc, char **argv )
 	
 	PG_ListBox listbox(NULL, PG_Rect(10,10,300,100));
 	listbox.SetEventCallback(MSG_SELECTITEM, handleListBoxItem);
+	listbox.Show();
 
 	PG_ListBoxItem* items[10];
 	int i;
@@ -48,8 +49,7 @@ int main( int argc, char **argv )
 	for(i=0; i<10; i++) {
 		listbox.AddItem(items[i]);
 	}
-
-	listbox.Show();
+	listbox.Update();
 
 	app.Run();
 	

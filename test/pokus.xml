@@ -5,18 +5,18 @@
 	<body>
 
 		<menubar pos="100,50,300,25">
-			<popupmenu text="test" hide="1">
+			<popupmenu text="test">
 				<popupmenuitem caption="item1" id="1"/>
 				<popupmenuitem caption="item2" id="2"/>
 				<popupmenuitem caption="item3" id="3"/>
 				<popupmenuitem caption="item4" id="4"/>
 			</popupmenu>
-			<popupmenu text="test2" hide="1">
+			<popupmenu text="test2">
 				<popupmenuitem caption="item1" id="1"/>
 			</popupmenu>
 		</menubar>
 		
-		<button text="button3" id="7" pos="10,10,80,30" toggle="1" pressed="1" border="5,10,15" transparency="0,128,255"/>
+		<button text="button3" id="7" pos="10,10,80,30" toggle="1" pressed="1" border="5,10,15" transparency="0,128,255" hide="1"/>
 		<button text="grad button" id="7" pos="90,150,100,20" upgrad="255,0,0, 0,255,0, 0,0,255, 255,255,0" downgrad="0,255,0, 0,0,255, 0,0,0, 255,255,255" selgrad="0,0,255, 0,0,0, 255,0,0, 0,255,255"/>
 
 		<dropdown pos="490,50,100,20" indent="10" edit="1" text="pretext">
@@ -50,8 +50,8 @@
 		<listbox pos="360,500,100,90" multisel="0">
 			<listboxitem height="15" ltext="First" select="1"/>
 			<listboxitem height="15" ltext="Second"/>
-			<listboxitem height="15" ltext="Third" select="1"/>
-			<listboxitem height="15" ltext="Fouth" select="1"/>
+			<listboxitem height="15" ltext="Third"/>
+			<listboxitem height="15" ltext="Fouth"/>
 			<listboxitem height="15" ltext="Fifth"/>
 			<listboxitem height="15" ltext="Sixth"/>
 			<listboxitem height="15" ltext="Seventh"/>

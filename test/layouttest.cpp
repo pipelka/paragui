@@ -16,11 +16,7 @@ int main() {
 		exit(-1);
 	}
 
-	PG_Window wnd(NULL, PG_Rect(0,0,400,300), "Test");
-	wnd.LoadLayout("pokus.xml");
-
-	SDL_Delay(2000);
-	wnd.Show();
+	app.LoadLayout("pokus.xml");
 	
 	// Enter main loop 
 	app.Run();
