@@ -31,6 +31,9 @@ Whats new in ParaGUI 1.1.7 ?
 - disabled alpha for application background
 - optimized PG_RectList
 - added docs
+- major rewrite of PG_WidgetList (new class PG_ScrollArea)
+- fixed many widget child-handling bugs
+- the new design should simply do it *right*
 - applied patches from Sebastian:
   made AddWidget() / AddItem() obsolete (see roadmap for more info)
   added param 'bool bRecursive' to PG_Widget::SetTransparency (set to false by default)
@@ -51,6 +54,9 @@ Whats new in ParaGUI 1.1.7 ?
   made some changes to paratest.cpp to make use of PG_Button::SetTransparency()
   and the new way of adding items to lists
   made some minor cleanups
+- applied patches from Ulf Lorenz
+  documented pgsurfacecache.h
+  remove obsolete code from drawline.cpp
 
 
 ----------------------------
