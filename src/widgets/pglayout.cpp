@@ -849,18 +849,6 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		return;
 	}
 
-	//Tag <widgetlistex> <WX>
-	if (IsTag("widgetlistex","WX",XML_SECTION_BODY)) {
-		XMLParser->Section = XML_SECTION_WIDGETLISTEX | XML_SECTION_BODY | XML_SECTION_COMWIDPARAMS;
-		PG_Layout::GetParamRect(atts, "pos", Rect, parent);
-
-		PG_WidgetListEx *Widget = new PG_WidgetListEx(parent, Rect);
-		XMLParser->ParentObject = Widget;
-
-		XMLParser->InhTagFlags |= SetWidgetListAtts(Widget, atts, XMLParser);
-		return;
-	}
-
 	//Tag <listbox> <LB>
 	if (IsTag("listbox","LB",XML_SECTION_BODY)) {
 		XMLParser->Section = XML_SECTION_LISTBOX | XML_SECTION_BODY | XML_SECTION_COMWIDPARAMS;

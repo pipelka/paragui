@@ -34,6 +34,8 @@ Whats new in ParaGUI 1.1.7 ?
 - major rewrite of PG_WidgetList (new class PG_ScrollArea)
 - fixed many widget child-handling bugs
 - the new design should simply do it *right*
+- removed obsolete PG_WidgetListEx class
+- reworked nearly all class constructors
 - applied patches from Sebastian:
   made AddWidget() / AddItem() obsolete (see roadmap for more info)
   added param 'bool bRecursive' to PG_Widget::SetTransparency (set to false by default)

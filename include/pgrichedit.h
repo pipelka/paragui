@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/02/29 11:23:24 $
+   Update Date:      $Date: 2004/02/29 16:32:53 $
    Source File:      $Source: /sources/paragui/paragui/include/pgrichedit.h,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.3 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.4 $
    Status:           $State: Exp $
 */
 
@@ -30,7 +30,7 @@
 #define PG_RICHEDIT_H
 
 #include "paragui.h"
-#include "pgwidgetlistex.h"
+#include "pgwidgetlist.h"
 #include <map>
 
 /**

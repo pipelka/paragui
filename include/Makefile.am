@@ -33,7 +33,6 @@ libparaguiinclude_HEADERS = \
 	pgmaskedit.h \
 	pgspinnerbox.h \
 	pgnavigator.h \
-	pgwidgetlistex.h \
 	pgrichedit.h \
 	pgimage.h \
 	pglayout.h \
