@@ -3,6 +3,7 @@
 Uint32 PG_TimerObject::objectcount = 0;
 PG_TimerID PG_TimerObject::globalTimerID = 0;
 std::map<PG_TimerID, PG_TimerObject*> PG_TimerObject::timermap;
+PG_TimerObject* PG_TimerObject::objSingleTimer = NULL;
 
 PG_TimerObject::PG_TimerObject() {
 	if(objectcount == 0) {
@@ -13,6 +14,9 @@ PG_TimerObject::PG_TimerObject() {
 }
 
 PG_TimerObject::~PG_TimerObject() {
+
+	// stop single timers
+	StopTimer();
 	
 	// remove all timers of this object
 	std::map<PG_TimerID, SDL_TimerID>::iterator i;
@@ -54,7 +58,30 @@ Uint32 PG_TimerObject::eventTimer(PG_TimerID id, Uint32 interval) {
 	return interval;
 }
 
+Uint32 PG_TimerObject::eventTimer(Uint32 interval) {
+	return interval;
+}
+
 Uint32 PG_TimerObject::callbackTimer(Uint32 interval, void* data) {
 	PG_TimerID id = reinterpret_cast<PG_TimerID>(data);
 	return timermap[id]->eventTimer(id, interval);
+}
+
+Uint32 PG_TimerObject::callbackSingleTimer(Uint32 interval) {
+	if(objSingleTimer != NULL) {
+		return objSingleTimer->eventTimer(interval);
+	}
+	
+	return 0;
+}
+
+int PG_TimerObject::SetTimer(Uint32 interval) {
+	StopTimer();
+	objSingleTimer = this;
+	return SDL_SetTimer(interval, &PG_TimerObject::callbackSingleTimer);
+}
+	
+void PG_TimerObject::StopTimer() {
+	objSingleTimer = NULL;
+	SDL_SetTimer(0, NULL);
 }

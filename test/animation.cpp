@@ -16,6 +16,7 @@
 #include "pgmenubar.h"
 #include "pgscrollbar.h"
 #include "pgtimerobject.h"
+#include "pglog.h"
 
 #define ID_APP_EXIT		1
 
@@ -213,6 +214,8 @@ void PlayField2::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Re
 Uint32 PlayField2::eventTimer(PG_TimerID id, Uint32 interval) {
 	tickstate++;
 	
+	PG_LogDBG("eventTimer(%i, %i)", id, interval);
+	
 	if(tickstate >= 40) {
 		tickstate = 0;
 	}
@@ -299,7 +302,7 @@ int main(int argc, char* argv[]) {
 		PG_Rect(260,120,120,50)
 		);
 
-	anim_test.AddTimer(500);
+	anim_test.AddTimer(400);
 	anim_test.Show();
 
     PlayField2 anim_test2(
@@ -307,7 +310,8 @@ int main(int argc, char* argv[]) {
 	  PG_Rect(260, 300, 120, 100)
 	  );
 	  
-	anim_test2.AddTimer(50);
+	anim_test2.AddTimer(40);
+	anim_test2.AddTimer(20);
 	anim_test2.Show();
 
 	app.Run();
