@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/29 16:24:05 $
+    Update Date:      $Date: 2004/03/01 16:03:31 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -52,7 +52,7 @@ my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 	//my_DropList->EnableScrollBar(false);
 	my_DropList->sigSelectItem.connect(slot(*this, &PG_DropDown::select_handler));
 
-	//LoadThemeStyle(style);
+	LoadThemeStyle(style);
 }
 
 PG_DropDown::~PG_DropDown() {
@@ -78,8 +78,6 @@ void PG_DropDown::AddChild(PG_Widget* child) {
 // obsolete -> roadmap
 void PG_DropDown::AddItem(const char* text, void* userdata, Uint16 height) {
 	Uint16 h = height;
-
-	PG_FontEngine::GetTextSize(text, GetFont(), NULL, NULL, NULL, NULL, &h);	
 
 	if(height == 0) {
 	    PG_FontEngine::GetTextSize(text, GetFont(), NULL, NULL, NULL, NULL, &h);

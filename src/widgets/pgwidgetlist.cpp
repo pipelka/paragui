@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/01 15:09:52 $
+    Update Date:      $Date: 2004/03/01 16:03:31 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.11 $
     Status:           $State: Exp $
 */
 
@@ -68,7 +68,7 @@ my_scrollarea(NULL)
 	my_objHorizontalScrollbar->sigScrollPos.connect(slot(*this, &PG_WidgetList::handleScrollPos));
 	my_objHorizontalScrollbar->sigScrollTrack.connect(slot(*this, &PG_WidgetList::handleScrollTrack));
 
-	my_scrollarea = new PG_ScrollArea(this, r);
+	my_scrollarea = new PG_ScrollArea(this);
 	my_scrollarea->sigAreaChangedHeight.connect(slot(*this, &PG_WidgetList::handleAreaChangedHeight));
 	my_scrollarea->sigAreaChangedWidth.connect(slot(*this, &PG_WidgetList::handleAreaChangedWidth));
 	my_scrollarea->SetShiftOnRemove(false, true);
@@ -155,10 +155,12 @@ void PG_WidgetList::eventSizeWidget(Uint16 w, Uint16 h) {
 	PG_ThemeWidget::eventSizeWidget(w,h);
 
 	if(h != my_height) {
+		my_height = h;
 		handleAreaChangedHeight(my_scrollarea, GetListHeight());
 	}
 
 	if(w != my_width) {
+		my_width = w;
 		handleAreaChangedWidth(my_scrollarea, GetListWidth());
 	}
 }
