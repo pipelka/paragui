@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/01 20:55:35 $
+   Update Date:      $Date: 2004/03/02 20:19:04 $
    Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollarea.h,v $
-   CVS/RCS Revision: $Revision: 1.1.2.4 $
+   CVS/RCS Revision: $Revision: 1.1.2.5 $
    Status:           $State: Exp $
 */
 
@@ -87,10 +87,18 @@ public:
 	*/
 	void SetAreaHeight(Uint16 h);
 
+	/**
+	Get the width of the scrollable area.
+	@return width (in pixels) of the scrollable area
+	*/
 	inline Uint16 GetAreaWidth() {
 		return my_area.w;
 	};
 
+	/**
+	Get the height of the scrollable area.
+	@return width (in pixels) of the scrollable area
+	*/
 	inline Uint16 GetAreaHeight() {
 		return my_area.h;
 	};
@@ -115,6 +123,7 @@ public:
 	Uint16 GetScrollPosY();
 
 	SignalAreaChangedHeight sigAreaChangedHeight;
+
 	SignalAreaChangedWidth sigAreaChangedWidth;
 
 	void AddChild(PG_Widget* child);
