@@ -20,15 +20,18 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/11 14:13:47 $
+    Update Date:      $Date: 2002/06/17 08:18:43 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
 #include "paragui.h"
+
+
 #include "theme_priv.h"
 #include "pglog.h"
+#include "pgfilearchive.h"
 
 #include <string>
 #include <expat.h>
@@ -57,10 +60,7 @@ typedef struct _PARSE_INFO {
 	std::string str_currentObject;
 	THEME_WIDGET* p_currentWidget;
 	THEME_OBJECT* p_currentObject;
-	const char* path;
 	std::string themename;
-	int xml_file_size;
-	PG_FileArchive archive;
 }
 PARSE_INFO;
 
@@ -191,7 +191,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 		}
 
 		// load the image file
-		filename->surface = info->archive.LoadSurface(filename->value.c_str());
+		filename->surface = PG_FileArchive::LoadSurface(filename->value.c_str());
 
 		if(filename->surface == NULL) {
 			delete filename;
@@ -414,8 +414,8 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 	filename = (std::string)xmltheme + (std::string)".zip";
 
 	// and add it to the searchpath
-	if(info.archive.Exists(filename.c_str())) {
-		const char* path = info.archive.GetRealDir(filename.c_str());
+	if(PG_FileArchive::Exists(filename.c_str())) {
+		const char* path = PG_FileArchive::GetRealDir(filename.c_str());
 		char sep = PG_FileArchive::GetDirSeparator()[0];
 		
 		std::string fullpath = (std::string)path;
@@ -424,19 +424,19 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 		}
 		fullpath += filename;
 
-		bool rc = info.archive.AddArchive(fullpath.c_str());
+		bool rc = PG_FileArchive::AddArchive(fullpath.c_str());
 		if(rc) {
 			PG_LogMSG("added '%s' to the searchpath", fullpath.c_str());
 		} else {
 			PG_LogWRN("failed to add '%s'", fullpath.c_str());
-			PG_LogWRN("%s", info.archive.GetLastError());
+			PG_LogWRN("%s", PG_FileArchive::GetLastError());
 		}
 	}
 
 	// try to open the theme
 
 	filename = (std::string)xmltheme + (std::string)THEME_SUFFIX;
-	if(!info.archive.Exists(filename.c_str())) {
+	if(!PG_FileArchive::Exists(filename.c_str())) {
 		PG_LogERR("theme '%s' not found !", filename.c_str());
 		return NULL;
 	}
@@ -452,7 +452,7 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 
 	// create an input-stream
 
-	PG_File* file = info.archive.OpenFile(filename.c_str());
+	PG_File* file = PG_FileArchive::OpenFile(filename.c_str());
 
 	if(!file) {
 		XML_ParserFree(p);
@@ -485,9 +485,6 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 	delete file;
 
 	PG_LogMSG("theme '%s' loaded sucessfully", filename.c_str());
-
-	//PG_Theme *theme = info.theme;
-	//return theme;
 
 	return info.theme;
 }
