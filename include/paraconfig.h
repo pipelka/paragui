@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/29 22:11:45 $
+    Update Date:      $Date: 2002/05/31 07:43:25 $
     Source File:      $Source: /sources/paragui/paragui/include/paraconfig.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.3 $
     Status:           $State: Exp $
 */
 
@@ -32,7 +32,7 @@
 #undef PACKAGE
 #undef VERSION
 
-#define PG_VERSIONNUM(X, Y, Z) ((X)*1000 + (Y)*100 + (Z))
+#define PG_VERSIONNUM(X, Y, Z) ((X)*10000 + (Y)*100 + (Z))
 
 #if (defined(WIN32) || defined(__WIN32__)) && (defined(_MSC_VER) || defined(__BCPLUSPLUS__))
 #include "paraconfig_win32.h"
