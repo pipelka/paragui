@@ -22,16 +22,14 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/22 16:52:42 $
+    Update Date:      $Date: 2004/03/13 13:46:03 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/drawtile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
 #include "pgdraw.h"
 #include <cmath>
-
-using namespace std;
 
 void PG_Draw::DrawTile(SDL_Surface* surface, const PG_Rect& ref, const PG_Rect& drawrect, SDL_Surface* tilemap) {
 	PG_Point index1;
@@ -46,8 +44,8 @@ void PG_Draw::DrawTile(SDL_Surface* surface, const PG_Rect& ref, const PG_Rect& 
 		return;
 	}
 
-	int dx = (int)abs((double)(drawrect.x - ref.x));
-	int dy = (int)abs((double)(drawrect.y - ref.y));
+	int dx = (int)std::abs((double)(drawrect.x - ref.x));
+	int dy = (int)std::abs((double)(drawrect.y - ref.y));
 
 	index1.x = dx / tilemap->w;
 	index1.y = dy / tilemap->h;

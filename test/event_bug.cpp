@@ -4,7 +4,6 @@
 #include <pgbutton.h>
 #include <iostream>
 
-using namespace std;
 
 class MyDialog : public PG_Window {
     public:
@@ -33,14 +32,14 @@ int main(int argc, char** argv) {
 	app.SetEmergencyQuit(true);
 	
 	if (!app.LoadTheme("default", true, "../dat")) {
-		cerr << "Unable to load theme!" << endl;
+		std::cerr << "Unable to load theme!" << std::endl;
 		exit(-1);
 	}
 	
 	app.SetFontSize(14);
 
 	if (!app.InitScreen(300, 300, 16, 0)) {
-		cerr << "Couldn't initialize X Windowing System\n";
+		std::cerr << "Couldn't initialize X Windowing System\n";
 		exit(1);
 	}
 

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/12 18:46:33 $
+   Update Date:      $Date: 2004/03/13 13:45:45 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.13 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.14 $
    Status:           $State: Exp $
  */
 
@@ -35,8 +35,6 @@
 #include "pgdraw.h"
 #include "pglayout.h"
 #include "pgtheme.h"
-
-using namespace std;
 
 /**
 	calculate the minimum of 2 values
@@ -86,7 +84,7 @@ public:
 	PG_Point ptDragStart;
 	PG_Rect rectClip;
 	bool havesurface;
-	string name;
+	std::string name;
 	
 };
 
@@ -1209,7 +1207,7 @@ void PG_Widget::SetText(const char* text) {
 		return;
 	}
 
-	my_text = string(text);
+	my_text = std::string(text);
 	Update();
 }
 

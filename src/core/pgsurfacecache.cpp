@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:20 $
+    Update Date:      $Date: 2004/03/13 13:45:40 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgsurfacecache.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.4.2.2 $
+    CVS/RCS Revision: $Revision: 1.2.4.4.2.3 $
     Status:           $State: Exp $
 */
 
@@ -42,15 +42,13 @@
 #include <map>
 #endif
 
-using namespace std;
-
 #define MY_SURFACEMAP ((pg_surfacemap_t*)my_surfacemap)
 #define MY_SURFACEINDEX ((pg_surfacemap_index_t*)my_surfacemap_index)
 
 #ifdef HASH_MAP_INC
 
 struct pg_surface_hash {
-	size_t operator()(string s1) const {
+	size_t operator()(std::string s1) const {
 		unsigned long hash = 0;
 		for(Uint32 i = 0; i < s1.length(); i++) {
 			hash = 5*hash + s1[i];
@@ -60,7 +58,7 @@ struct pg_surface_hash {
 };
 
 // Don't need custom comparision for strings.
-typedef STL_MAP<string, pg_surface_cache_t*, pg_surface_hash> pg_surfacemap_t;
+typedef STL_MAP<std::string, pg_surface_cache_t*, pg_surface_hash> pg_surfacemap_t;
 // Don't need custom hash or comparision functions when the key is a long.
 typedef STL_MAP<unsigned long, pg_surface_cache_t* > pg_surfacemap_index_t;
 
@@ -68,9 +66,9 @@ typedef pg_surfacemap_t::iterator pg_surfacemap_iter_t;
 typedef pg_surfacemap_index_t::iterator pg_surfacemap_index_iter_t;
 #else
 // Don't need custom comparisions for strings.
-typedef map<string, pg_surface_cache_t*> pg_surfacemap_t;
+typedef std::map<std::string, pg_surface_cache_t*> pg_surfacemap_t;
 // Don't need a custom comparision function when the key is a long
-typedef map<unsigned long, pg_surface_cache_t*> pg_surfacemap_index_t;
+typedef std::map<unsigned long, pg_surface_cache_t*> pg_surfacemap_index_t;
 
 typedef pg_surfacemap_t::iterator pg_surfacemap_iter_t;
 typedef pg_surfacemap_index_t::iterator pg_surfacemap_index_iter_t;
@@ -112,7 +110,7 @@ void PG_SurfaceCache::Cleanup() {
 	MY_SURFACEINDEX->clear();
 }
 
-void PG_SurfaceCache::CreateKey(string &key, Uint16 w, Uint16 h,
+void PG_SurfaceCache::CreateKey(std::string &key, Uint16 w, Uint16 h,
                                 PG_Gradient* gradient, SDL_Surface* background,
                                 Sint8 bkmode, Uint8 blend) {
 	char tmpkey[256];
@@ -171,7 +169,7 @@ void PG_SurfaceCache::CreateKey(string &key, Uint16 w, Uint16 h,
 	key = string(tmpkey, 24);*/
 }
 
-pg_surface_cache_t* PG_SurfaceCache::FindByKey(const string &key) {
+pg_surface_cache_t* PG_SurfaceCache::FindByKey(const std::string &key) {
 	return (*MY_SURFACEMAP)[key];
 }
 
@@ -179,7 +177,7 @@ pg_surface_cache_t* PG_SurfaceCache::FindBySurface(SDL_Surface* surface) {
 	return (*MY_SURFACEINDEX)[reinterpret_cast<unsigned long>(surface)];
 }
 
-SDL_Surface* PG_SurfaceCache::FindSurface(const string &key) {
+SDL_Surface* PG_SurfaceCache::FindSurface(const std::string &key) {
 	pg_surface_cache_t* t = (*MY_SURFACEMAP)[key];
 
 	if(t == NULL) {
@@ -189,7 +187,7 @@ SDL_Surface* PG_SurfaceCache::FindSurface(const string &key) {
 	return t->surface;
 }
 
-SDL_Surface* PG_SurfaceCache::AddSurface(const string &key, SDL_Surface* surface) {
+SDL_Surface* PG_SurfaceCache::AddSurface(const std::string &key, SDL_Surface* surface) {
 	pg_surface_cache_t* t = NULL;
 
 	if(surface == NULL) {
@@ -256,7 +254,7 @@ void PG_SurfaceCache::DeleteSurface(SDL_Surface* surface, bool bDeleteIfNotExist
 	delete t;
 }
 
-void PG_SurfaceCache::IncRef(const string &key) {
+void PG_SurfaceCache::IncRef(const std::string &key) {
 	pg_surface_cache_t* t = FindByKey(key);
 
 	if(t == NULL) {

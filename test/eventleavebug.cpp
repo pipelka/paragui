@@ -5,8 +5,6 @@
 #include <pgwindow.h>
 #include <iostream>
 
-using namespace std;
-
 class CentralWidget : public PG_ThemeWidget {
 public:
     CentralWidget(PG_Widget *parent, const PG_Rect &rect);
@@ -27,7 +25,7 @@ CentralWidget::~CentralWidget() {
 }
 
 void CentralWidget::eventMouseLeave() {
-    cout << "eventMouseLeave triggered" << endl;
+    std::cout << "eventMouseLeave triggered" << std::endl;
     innerWidget->Hide(); // this will set off an infinite loop
 }
 
@@ -37,7 +35,7 @@ int main(int argc, char* argv[]) {
    PG_Application app;
 
    if (!app.LoadTheme("default") || !app.InitScreen(800, 600, 32, SDL_SWSURFACE | SDL_NOFRAME)) {
-       cout << "error, aborting" << endl;
+       std::cout << "error, aborting" << std::endl;
        return EXIT_FAILURE;
    }
 

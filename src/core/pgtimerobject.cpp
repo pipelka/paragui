@@ -1,10 +1,8 @@
 #include "pgtimerobject.h"
 
-using namespace std;
-
 Uint32 PG_TimerObject::objectcount = 0;
 PG_TimerID PG_TimerObject::globalTimerID = 0;
-map<PG_TimerID, PG_TimerObject*> PG_TimerObject::timermap;
+std::map<PG_TimerID, PG_TimerObject*> PG_TimerObject::timermap;
 PG_TimerObject* PG_TimerObject::objSingleTimer = NULL;
 
 PG_TimerObject::PG_TimerObject() {
@@ -21,7 +19,7 @@ PG_TimerObject::~PG_TimerObject() {
 	StopTimer();
 	
 	// remove all timers of this object
-	map<PG_TimerID, SDL_TimerID>::iterator i;
+	std::map<PG_TimerID, SDL_TimerID>::iterator i;
 	
 	for(i = my_timermap.begin(); i != my_timermap.end(); ) {
 		RemoveTimer((*i).first);

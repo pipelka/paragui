@@ -141,7 +141,7 @@ struct explosion **lastblob,*ablob;
 int x,y;
 
 	lastblob=&activeblobs;
-	while(ablob=*lastblob)
+	while((ablob = *lastblob) != NULL)
 	{
 		x=ablob->blobx>>BLOBFRAC;
 		y=ablob->bloby>>BLOBFRAC;

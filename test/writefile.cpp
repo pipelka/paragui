@@ -7,8 +7,6 @@ Roger D. Vargas
 #include <pglog.h>
 #include <string>
 
-using namespace std;
-
 int main() {
 	PG_FileArchive *Arc;
 	PG_File *wf;
@@ -40,7 +38,7 @@ int main() {
 	wf = Arc->OpenFile("pgtestfile", PG_FileArchive::READ);
 
 	// read and check the line of text
-	string text = wf->getline();
+	std::string text = wf->getline();
 	if(text != "test") {
 		PG_LogERR("File corrupted (reading text failed)");
 	}

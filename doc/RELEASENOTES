@@ -33,6 +33,8 @@ Whats new in ParaGUI 1.1.8 ?
 - new RunModal() / SetModalStatus(int) methods
 - PG_ScrollArea::ScrollToWidget(..) now honours area-bounds
 - removed "using namespace std;" from header files
+- removed "using namespace std;" from all sources
+- removed Get / SetApplicationPath from PG_Application
 
 
 ----------------------------

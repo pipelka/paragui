@@ -35,3 +35,4 @@ paragui-1.*
 *.doxygen
 .cdtproject
 .externalToolBuilders
+patches

@@ -20,16 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:19 $
+    Update Date:      $Date: 2004/03/13 13:45:39 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
     Status:           $State: Exp $
 */
 
 #include "theme_priv.h"
 #include "pgcolor.h"
-
-using namespace std;
 
 THEME_THEME::~THEME_THEME() {
 	// clean up
@@ -362,7 +360,7 @@ const char* THEME_OBJECT::FindString(const char* name) {
 		return NULL;
 
 	for(Uint32 i=0; i<strings.size(); i++) {
-		if(strings[i]->name == (string)name) {
+		if(strings[i]->name == (std::string)name) {
 			return strings[i]->value.c_str();
 		}
 	}

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:18 $
+    Update Date:      $Date: 2004/03/13 13:45:37 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.6 $
     Status:           $State: Exp $
 */
 
@@ -37,8 +37,6 @@
 #include <string>
 #include <expat.h>
 #include <iostream>
-
-using namespace std;
 
 // Expat UNICODE workaround - copied from xmltchar.h (Expat dist) - Inserted by Ales Teska
 #ifdef XML_UNICODE
@@ -56,11 +54,11 @@ typedef struct _PARSE_INFO {
 	int depth;
 	int mode;
 	THEME_THEME* theme;
-	string str_currentWidget;
-	string str_currentObject;
+	std::string str_currentWidget;
+	std::string str_currentObject;
 	THEME_WIDGET* p_currentWidget;
 	THEME_OBJECT* p_currentObject;
-	string themename;
+	std::string themename;
 }
 PARSE_INFO;
 
@@ -82,7 +80,7 @@ void parseGlobProps(PARSE_INFO* info, const XML_Char* name, const XML_Char** att
 		// create new theme template
 		info->theme = new THEME_THEME;
 	} else {
-		cerr << "UNKNOWN PROP: " << name << endl;
+		std::cerr << "UNKNOWN PROP: " << name << std::endl;
 	}
 }
 
@@ -115,19 +113,19 @@ void parseThemeProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** at
 			} else if(tcscmp(T(atts[i]), T("size")) == 0) {
 				font->size = atoi(atts[i+1]);
 			} else {
-				cerr << "UNKNOWN FONT ATTRIBUTE: " << atts[i] << endl;
+				std::cerr << "UNKNOWN FONT ATTRIBUTE: " << atts[i] << std::endl;
 			}
 		}
 
 		info->theme->defaultfont = font;
 	} else {
-		cerr << "UNKNOWN THEME ATTRIBUTE: " << prop << endl;
+		std::cerr << "UNKNOWN THEME ATTRIBUTE: " << prop << std::endl;
 	}
 
 }
 
 void parseWidgetProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** atts) {
-	string val=atts[1];
+	std::string val=atts[1];
 
 	if(tcscmp(T(prop), T("type")) == 0) {
 		info->p_currentWidget->type = val;
@@ -139,12 +137,12 @@ void parseWidgetProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 		info->p_currentObject = object;
 		info->mode = THEMEMODE_OBJECT;
 	} else {
-		cerr << "UNKNOWN WIDGET ATTRIBUTE: " << prop << endl;
+		std::cerr << "UNKNOWN WIDGET ATTRIBUTE: " << prop << std::endl;
 	}
 }
 
 void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** atts) {
-	string val=atts[1];
+	std::string val=atts[1];
 	int i;
 	THEME_OBJECT* object = info->p_currentObject;
 
@@ -182,7 +180,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 				sscanf(atts[i+1], "0x%08x", (unsigned int*)(&filename->colorkey));
 				filename->hasColorKey = true;
 			} else {
-				cerr << "UNKNOWN FILENAME ATTRIBUTE: " << atts[i] << endl;
+				std::cerr << "UNKNOWN FILENAME ATTRIBUTE: " << atts[i] << std::endl;
 			}
 		}
 
@@ -221,7 +219,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 			} else if(tcscmp(T(atts[i]), T("size")) == 0) {
 				font->size = atoi(atts[i+1]);
 			} else {
-				cerr << "UNKNOWN FONT ATTRIBUTE: " << atts[i] << endl;
+				std::cerr << "UNKNOWN FONT ATTRIBUTE: " << atts[i] << std::endl;
 			}
 		}
 
@@ -253,7 +251,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 					property->value = atoi(atts[i+1]);
 				}
 			} else {
-				cerr << "UNKNOWN PROPERTY ATTRIBUTE: " << atts[i] << endl;
+				std::cerr << "UNKNOWN PROPERTY ATTRIBUTE: " << atts[i] << std::endl;
 			}
 		}
 		object->property[property->name] = property;
@@ -272,7 +270,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 			} else if(tcscmp(T(atts[i]), T("value")) == 0) {
 				sscanf(atts[i+1], "0x%08x", (unsigned int*)(&property->value));
 			} else {
-				cerr << "UNKNOWN COLOR ATTRIBUTE: " << atts[i] << endl;
+				std::cerr << "UNKNOWN COLOR ATTRIBUTE: " << atts[i] << std::endl;
 			}
 		}
 		object->property[property->name] = property;
@@ -285,7 +283,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 	else if(tcscmp(T(prop), T("gradient")) == 0) {
 		THEME_GRADIENT* gradient = new THEME_GRADIENT;
 		Uint32 c;
-		string val;
+		std::string val;
 
 		for(i=0; atts[i]; i += 2) {
 
@@ -308,7 +306,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 				sscanf(val.c_str(), "0x%08x", &c);
 				gradient->colors[3] = c;
 			} else {
-				cerr << "UNKNOWN PROPERTY ATTRIBUTE: " << atts[i] << endl;
+				std::cerr << "UNKNOWN PROPERTY ATTRIBUTE: " << atts[i] << std::endl;
 			}
 		}
 
@@ -332,7 +330,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 			} else if(tcscmp(T(atts[i]), T("value")) == 0) {
 				str->value = atts[i+1];
 			} else {
-				cerr << "UNKNOWN STRING ATTRIBUTE: " << atts[i] << endl;
+				std::cerr << "UNKNOWN STRING ATTRIBUTE: " << atts[i] << std::endl;
 			}
 		}
 
@@ -344,7 +342,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 	//
 
 	else {
-		cerr << "UNKNOWN OBJECT ATTRIBUTE: " << prop << endl;
+		std::cerr << "UNKNOWN OBJECT ATTRIBUTE: " << prop << std::endl;
 	}
 }
 
@@ -389,7 +387,7 @@ void handlerEnd(void* userData, const XML_Char* name) {
 }
 
 PG_Theme* PG_Theme::Load(const char* xmltheme) {
-	string filename;
+	std::string filename;
 
 	// create new parse info
 	PARSE_INFO info;
@@ -404,14 +402,14 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 	filename = xmltheme;
 
 	// check if we have a compressed themefile somewhere
-	filename = (string)xmltheme + (string)".zip";
+	filename = (std::string)xmltheme + (std::string)".zip";
 
 	// and add it to the searchpath
 	if(PG_FileArchive::Exists(filename.c_str())) {
 		const char* path = PG_FileArchive::GetRealDir(filename.c_str());
 		char sep = PG_FileArchive::GetDirSeparator()[0];
 		
-		string fullpath = (string)path;
+		std::string fullpath = (std::string)path;
 		if(fullpath[fullpath.size()-1] != sep) {
 			fullpath += sep;
 		}
@@ -428,7 +426,7 @@ PG_Theme* PG_Theme::Load(const char* xmltheme) {
 
 	// try to open the theme
 
-	filename = (string)xmltheme + (string)THEME_SUFFIX;
+	filename = (std::string)xmltheme + (std::string)THEME_SUFFIX;
 	if(!PG_FileArchive::Exists(filename.c_str())) {
 		PG_LogERR("theme '%s' not found !", filename.c_str());
 		return NULL;

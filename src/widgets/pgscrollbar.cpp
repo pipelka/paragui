@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/08 16:52:39 $
+    Update Date:      $Date: 2004/03/13 13:46:03 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgscrollbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -441,9 +441,9 @@ int PG_ScrollBar::ScrollButton::GetPosFromPoint(PG_Point p) {
 
 	//if(!my_tickMode) {
 		if(GetParent()->sb_direction == VERTICAL) {
-			pos = (double)(p.y - GetParent()->position[2].y) / (((double)GetParent()->position[2].h - (double)GetParent()->position[3].h) / (double)range);
+			pos = (int)((double)(p.y - GetParent()->position[2].y) / (((double)GetParent()->position[2].h - (double)GetParent()->position[3].h) / (double)range));
 		} else {
-			pos = (double)(p.x - GetParent()->position[2].x) / (((double)GetParent()->position[2].w - (double)GetParent()->position[3].w) / (double)range);
+			pos = (int)((double)(p.x - GetParent()->position[2].x) / (((double)GetParent()->position[2].w - (double)GetParent()->position[3].w) / (double)range));
 		}
 	/*} else {
 		if(GetParent()->sb_direction == VERTICAL) {

@@ -2,8 +2,6 @@
 #include "pgbutton.h"
 #include "pgpopupmenu.h"
 
-using namespace std;
-
 PG_MenuBar::PG_MenuBar(PG_Widget* parent, const PG_Rect& rect, const char* style) : PG_ThemeWidget(parent, rect, style) {
 	my_btnOffsetY = 2;
 	my_style = style;
@@ -77,7 +75,7 @@ bool PG_MenuBar::handle_button(PG_Button* button, PG_Pointer last) {
 }
 
 void PG_MenuBar::Cleanup() {
-	for(vector<MenuBarItem*>::iterator i = ItemList.begin(); i != ItemList.end(); i = ItemList.begin()) {
+	for(std::vector<MenuBarItem*>::iterator i = ItemList.begin(); i != ItemList.end(); i = ItemList.begin()) {
 		delete (*i)->button;
 		delete (*i);
 		ItemList.erase(i);

@@ -20,16 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:32 $
+    Update Date:      $Date: 2004/03/13 13:45:44 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.4.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.6.4.2.3 $
     Status:           $State: Exp $
 */
 
 #include "pgfile.h"
 #include "physfs.h"
-
-using namespace std;
 
 PG_File::PG_File(void* f) :
 file(f) {}
@@ -48,7 +46,7 @@ int PG_File::write(void *buffer, unsigned int bytestowrite) {
 	return write(buffer, 1, bytestowrite);
 }
 
-int PG_File::write(string &buffer) {
+int PG_File::write(std::string &buffer) {
   	return write(const_cast<char*>(buffer.c_str()), 1, buffer.length());
 }
 
@@ -89,8 +87,8 @@ char PG_File::getc() {
 	return 0;
 }
 	
-string PG_File::getline() {
-	string result;
+std::string PG_File::getline() {
+	std::string result;
 	char c = 0;
 
 	c = getc();
@@ -104,7 +102,7 @@ string PG_File::getline() {
 	return result;
 }
 
-void PG_File::putline(const string& line) {
+void PG_File::putline(const std::string& line) {
 	// write characters
 	write((void*)line.c_str(), line.size());
 	

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:30 $
+    Update Date:      $Date: 2004/03/13 13:45:41 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.15 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.16 $
     Status:           $State: Exp $
 */
 
@@ -49,12 +49,10 @@
 #endif  // macintosh
 #endif  // PARAGUI_THEMEDIR
 
-using namespace std;
-
 SDL_mutex* PG_Application::mutexScreen = NULL;
 PG_Application* PG_Application::pGlobalApp = NULL;
 SDL_Surface* PG_Application::screen = NULL;
-string PG_Application::app_path = "";
+//std::string PG_Application::app_path = "";
 PG_Theme* PG_Application::my_Theme = NULL;
 bool PG_Application::bulkMode = false;
 //bool PG_Application::glMode = false;
@@ -106,7 +104,7 @@ PG_Application::PG_Application() {
 
 	/* Initialize the SDL library */
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE) < 0) {
-		cerr << "Could not initialize SDL: " << SDL_GetError() << endl;
+		std::cerr << "Could not initialize SDL: " << SDL_GetError() << std::endl;
 		exit(-1);
 	}
 
@@ -530,21 +528,21 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 }
 
 /**  */
-const char* PG_Application::GetApplicationPath() {
+/*const char* PG_Application::GetApplicationPath() {
 	return app_path.c_str();
-}
+}*/
 
-void PG_Application::SetApplicationPath(const char* path) {
+/*void PG_Application::SetApplicationPath(const char* path) {
 	AddArchive(path);
 	app_path = path;
-}
+}*/
 
 /**  */
 const char* PG_Application::GetRelativePath(const char* file) {
-	static string buffer = "";
+	static std::string buffer = "";
 
 	if(Exists(file)) {
-		buffer = (string)GetRealDir(file) + (string)file;
+		buffer = (std::string)GetRealDir(file) + (std::string)file;
 	}
 
 	return buffer.c_str();

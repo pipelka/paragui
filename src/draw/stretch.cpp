@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/11/21 12:27:55 $
+    Update Date:      $Date: 2004/03/13 13:46:03 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/stretch.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
@@ -41,8 +41,6 @@
 #endif // not defined macintosh nor __MWERKS__
 
 #define sign(x) ((x)>0 ? 1:-1)
-
-using namespace std;
 
 /*void SDL_FillRectEx(SDL_Surface *dst, Uint16 x0, Uint16 y0, Uint16 x1, Uint16 y1, Uint32 color) {
 	SDL_Rect r;

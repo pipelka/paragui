@@ -23,8 +23,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 #define RESX 800
 #define RESY 600
 
@@ -235,8 +233,8 @@ bool TestWindow::handleButtonClick(PG_Button* button) {
 }
 
 bool handle_menu_click(PG_PopupMenu::MenuItem* item, PG_Pointer clientdata) {
-	cout << "menu item '" << item->getId() << "' (\""
-		<< item->getCaption() << "\") clicked" << endl;
+	std::cout << "menu item '" << item->getId() << "' (\""
+		<< item->getCaption() << "\") clicked" << std::endl;
 
 	switch (item->getId()) {
 		case 5:

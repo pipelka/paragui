@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/09 09:18:26 $
+    Update Date:      $Date: 2004/03/13 13:45:44 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.3 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.4 $
     Status:           $State  
 */
 
@@ -38,8 +38,6 @@
 #include <cstdarg>
 #include <ctime>
 
-using namespace std;
-
 Uint32 PG_LogMaxMessages = 200;
 int PG_LogMethod = PG_LOGMTH_STDOUT;
 static PG_LOG_LEVEL PG_LogLevel = PG_LOG_DBG;
@@ -49,7 +47,7 @@ class PG_LogMessage_t {
 public:
 	PG_LOG_LEVEL	Id;
 	time_t	TimeStamp;
-	string	Text;
+	std::string	Text;
 
 	PG_LogMessage_t(PG_LOG_LEVEL _id, const char* txt)
 		: Id(_id), TimeStamp(time(0)) {Text = txt;}
@@ -57,12 +55,12 @@ public:
 }
 ;
 
-inline ostream& operator<<(ostream& os, PG_LogMessage_t *msg) {
+inline std::ostream& operator<<(std::ostream& os, PG_LogMessage_t *msg) {
 	os << msg->Text;
 	return os;
 }
 
-static list<PG_LogMessage_t*> PG_LogMessages;
+static std::list<PG_LogMessage_t*> PG_LogMessages;
 static PG_Window* PG_LogWindow = NULL;
 static PG_RichEdit* PG_LogWindowData = NULL;
 static std::string my_title = "ParaGUI Log Console";
@@ -103,61 +101,61 @@ void PG_LogConsole::LogVA(PG_LOG_LEVEL id, const char *Text, va_list ap) {
 	if (PG_LogMethod & PG_LOGMTH_STDOUT) {
 		switch (NewMsg->Id) {
 			case PG_LOG_MSG :
-				cout << "MESSAGE [";
+				std::cout << "MESSAGE [";
 				break;
 
 			case PG_LOG_ERR :
-				cout << "ERROR [";
+				std::cout << "ERROR [";
 				break;
 
 			case PG_LOG_WRN :
-				cout << "WARNING [";
+				std::cout << "WARNING [";
 				break;
 
 			case PG_LOG_DBG :
-				cout << "DEBUG [";
+				std::cout << "DEBUG [";
 				break;
 
 			default :
-				cout << "??? [";
+				std::cout << "??? [";
 		}
 
 		strftime(buffer, sizeof(buffer), "%m/%d/%Y %X", localtime(&NewMsg->TimeStamp));
-		cout << buffer << "] > " << NewMsg << endl;
+		std::cout << buffer << "] > " << NewMsg << std::endl;
 	}
 
 	//Print to stderr
 	if (PG_LogMethod & PG_LOGMTH_STDERR) {
 		switch (NewMsg->Id) {
 			case PG_LOG_MSG :
-				cerr << "MESSAGE [";
+				std::cerr << "MESSAGE [";
 				break;
 
 			case PG_LOG_ERR :
-				cerr << "ERROR [";
+				std::cerr << "ERROR [";
 				break;
 
 			case PG_LOG_WRN :
-				cerr << "WARNING [";
+				std::cerr << "WARNING [";
 				break;
 
 			case PG_LOG_DBG :
-				cerr << "DEBUG [";
+				std::cerr << "DEBUG [";
 				break;
 
 			default :
-				cerr << "??? [";
+				std::cerr << "??? [";
 		}
 
 		strftime(buffer, sizeof(buffer), "%m/%d/%Y %X", localtime(&NewMsg->TimeStamp));
-		cerr << buffer << "] > " << NewMsg << endl;
+		std::cerr << buffer << "] > " << NewMsg << std::endl;
 	}
 
 	return;
 }
 
 void PG_LogConsole::Done() {
-	list<PG_LogMessage_t*>::iterator it = PG_LogMessages.begin();
+	std::list<PG_LogMessage_t*>::iterator it = PG_LogMessages.begin();
 
 	while (it!=PG_LogMessages.end()) {
 		delete *it;
@@ -184,8 +182,8 @@ void PG_LogConsole::Update() {
 		PG_LogWindowData = new PG_RichEdit(PG_LogWindow, PG_Rect(1,26,r.w-2,r.h-27));
 	}
 
-	string buffer;
-	for(list<PG_LogMessage_t*>::reverse_iterator it = PG_LogMessages.rbegin();
+	std::string buffer;
+	for(std::list<PG_LogMessage_t*>::reverse_iterator it = PG_LogMessages.rbegin();
 	        it != PG_LogMessages.rend(); it++) {
 		PG_LogMessage_t *Msg = *it;
 		char timebuf[128];

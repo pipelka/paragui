@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:39 $
+    Update Date:      $Date: 2004/03/13 13:46:05 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -30,8 +30,6 @@
 #include "pglog.h"
 #include "pgfilearchive.h"
 #include "facecache.h"
-
-using namespace std;
 
 //#define OLD_TEXTRENDERING
 
@@ -692,7 +690,7 @@ bool PG_FontEngine::GetTextSize(const char *Text, PG_Font* font, Uint16 *Width, 
 PG_FontFaceCacheItem* PG_FontEngine::LoadFontFace(const char* filename, FT_F26Dot6 fontsize, int index) {
 
 	// lets see if the file is already in the cache
-	FONT_ITEM* item = my_fontcache[(string)filename];
+	FONT_ITEM* item = my_fontcache[(std::string)filename];
 
 	// NO -> Load the face from the file
 	if(item == NULL) {
@@ -709,7 +707,7 @@ PG_FontFaceCacheItem* PG_FontEngine::LoadFontFace(const char* filename, FT_F26Do
 		item->memdata = data;
 
 		// add the face to the cache
-		my_fontcache[(string)filename] = item;
+		my_fontcache[(std::string)filename] = item;
 	}
 
 	// let's see if we already have a face for the given size

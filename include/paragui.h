@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/01/31 16:14:08 $
+    Update Date:      $Date: 2004/03/13 13:46:05 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.7 $
     Status:           $State: Exp $
 */
 
@@ -68,18 +68,18 @@
 #if defined(HAVE_HASH_MAP)
 #define HASH_MAP_INC <hash_map>
 #define MAP_INC <hash_map>
-#define STL_MAP hash_map
+#define STL_MAP std::hash_map
 #elif defined(HAVE_EXT_HASH_MAP)
 #define HASH_MAP_INC <ext/hash_map>
 #define MAP_INC <ext/hash_map>
 #if PG_VERSIONNUM(__GNUC__, __GNUC_MINOR__, 0) >= PG_VERSIONNUM(3, 1, 0)
 #define STL_MAP __gnu_cxx::hash_map
 #else
-#define STL_MAP hash_map
+#define STL_MAP std::hash_map
 #endif
 #else
 #define MAP_INC <map>
-#define STL_MAP map
+#define STL_MAP std::map
 #endif
 
 

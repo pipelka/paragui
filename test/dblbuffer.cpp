@@ -106,7 +106,7 @@ Uint32 FastestFlags(Uint32 flags, int width, int height, int bpp)
 		/* Direct hardware blitting without double-buffering
 		   causes really bad flickering.
 		 */
-		if ( info->video_mem*1024 > (height*width*bpp/8) ) {
+		if ( info->video_mem*1024 > (Uint32)(height*width*bpp/8) ) {
 			flags |= SDL_DOUBLEBUF;
 		} else {
 			flags &= ~SDL_HWSURFACE;
