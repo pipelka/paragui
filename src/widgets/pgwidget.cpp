@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2003/05/23 12:40:20 $
+   Update Date:      $Date: 2003/06/19 10:59:26 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.21 $
+   CVS/RCS Revision: $Revision: 1.4.4.22 $
    Status:           $State: Exp $
  */
 
@@ -220,7 +220,7 @@ PG_Widget::~PG_Widget() {
 	my_internaldata->childList = NULL;
 
 	if (my_internaldata->userdata != NULL) {
-		free(my_internaldata->userdata);
+		delete[] my_internaldata->userdata;
 	}
 	
 	// remove the font
@@ -1257,7 +1257,7 @@ bool PG_Widget::LoadLayout(const char *name, void (* WorkCallback)(int now, int 
 }
 
 void PG_Widget::SetUserData(void *userdata, int size) {
-	my_internaldata->userdata = new char(size);
+	my_internaldata->userdata = new char[size];
 	memcpy(my_internaldata->userdata, userdata, size);
 	my_internaldata->userdatasize = size;
 }

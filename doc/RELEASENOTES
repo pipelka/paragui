@@ -41,7 +41,9 @@ Whats new in ParaGUI 1.0.4 ?
 - fixed several bug in PG_WidgetList
   Thanks Alexander Opitz <opitz@primacom.net>
 - fixed the layoutloader (child widgets are now shown properly)
-- fixed a but in the PG_Application::GetWidget template
+- fixed a bug in the PG_Application::GetWidget template
+- fixed userdata handling in PG_Widget
+  Thanks Mark Junker <mjscod@gmx.de>
 
 ----------------------------
 Whats new in ParaGUI 1.0.3 ?
