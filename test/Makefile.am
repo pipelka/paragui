@@ -47,7 +47,8 @@ $(PACKAGE)-$(VERSION).tar.gz: dist
 EXTRA_DIST = \
 	dblbuffer.xml \
 	pokus.xml \
-	icon.bmp
+	icon.bmp \
+	paratest.dev
 
 mlz: $(PACKAGE)-$(VERSION).tar.gz
 	mkdir $(PACKAGE)-$(VERSION)

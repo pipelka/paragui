@@ -1,4 +1,4 @@
-noinst_LTLIBRARIES = libphysfs.la
+lib_LTLIBRARIES = libphysfs.la
 
 libphysfsincludedir = $(includedir)
 libphysfsinclude_HEADERS =	\
