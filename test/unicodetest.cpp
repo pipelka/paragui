@@ -35,7 +35,7 @@ int main( int argc, char **argv )
 	app.LoadTheme("default");
 
 	app.InitScreen( 640, 480, 0 );
-	app.SetCaption("ParaGUI with Unicode Support", NULL);
+	app.SetCaption("ParaGUI with Unicode Support");
 	
 	int currentY = 0;
 	const int H = 20;

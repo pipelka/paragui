@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2004/12/30 07:10:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
     Status:           $State: Exp $
 */
 
@@ -384,11 +384,11 @@ inline bool PG_PopupMenu::MenuItem::isSelected() const {
 }
 
 inline bool PG_PopupMenu::MenuItem::isSeparator() const {
-	return (myFlags & MIF_SEPARATOR);
+	return ((myFlags & MIF_SEPARATOR) != 0);
 }
 
 inline bool PG_PopupMenu::MenuItem::isSubMenu() const {
-	return (myFlags & MIF_SUBMENU);
+	return ((myFlags & MIF_SUBMENU) != 0);
 }
 
 inline bool PG_PopupMenu::MenuItem::isMute() const {

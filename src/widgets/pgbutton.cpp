@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/30 06:56:02 $
+    Update Date:      $Date: 2004/12/30 07:10:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.19 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.20 $
     Status:           $State: Exp $
 */
 
@@ -599,14 +599,14 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 		DrawText(tx, ty, my_text);
 	}
 
-	int i0, i1;
+	bool i0, i1;
 
 	if(!_mid->togglemode) {
-		i0 = (_mid->state == PRESSED) ? 1 : 0;
-		i1 = (_mid->state == PRESSED) ? 0 : 1;
+		i0 = (_mid->state == PRESSED) ? true : false;
+		i1 = (_mid->state == PRESSED) ? false : true;
 	} else {
-		i0 = (_mid->isPressed) ? 1 : 0;
-		i1 = (_mid->isPressed) ? 0 : 1;
+		i0 = (_mid->isPressed) ? true : false;
+		i1 = (_mid->isPressed) ? false : true;
 	}
 
 	DrawBorder(PG_Rect(0, 0, Width(), Height()), (*_mid)[_mid->state].bordersize, i1);

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:45:44 $
+    Update Date:      $Date: 2004/12/30 07:10:21 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.4.2.3 $
+    CVS/RCS Revision: $Revision: 1.1.6.4.2.4 $
     Status:           $State: Exp $
 */
 
@@ -63,7 +63,7 @@ int PG_File::write(void *buffer, unsigned int objSize, unsigned int objCount) {
 }
 
 bool PG_File::eof() {
-	return PHYSFS_eof((PHYSFS_file*)file);
+	return PHYSFS_eof((PHYSFS_file*)file) != 0;
 }
 
 int PG_File::tell() {
@@ -71,7 +71,7 @@ int PG_File::tell() {
 }
 
 bool PG_File::seek(int pos) {
-	return PHYSFS_seek((PHYSFS_file*)file, pos);
+	return PHYSFS_seek((PHYSFS_file*)file, pos) != 0;
 }
 
 int PG_File::fileLength() {

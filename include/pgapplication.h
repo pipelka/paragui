@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2004/12/30 07:10:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.20 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.21 $
     Status:           $State: Exp $
 */
 
@@ -321,7 +321,7 @@ public:
 	@param icon icon name
 	Sets the title-bar and icon name of the display window.
 	*/
-	void SetCaption(const std::string& title, const std::string& icon);
+	void SetCaption(const std::string& title, const std::string& icon = PG_NULLSTR);
 
 	/**
 	Get application`s window-manager title and icon name.

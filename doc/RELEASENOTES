@@ -58,6 +58,8 @@ Whats new in ParaGUI 1.1.9 ?
 - defined HAVE_STRDUP macro for VC++
 - PG_PopupMenu: added DLL interface for nested class MenuItem
 - replaced BKMODE_X macros with enum PG_Draw::BkMode to avoid some ambiguities (and to make it more C++ like ;))
+- fixed some int to bool conversion warnings
+- added default value for PG_Application::SetCaption()'s second param
 
 - applied patches from Martin Bickel <mbickel@asc-hq.org>)
 - removed SigC namespace usage in pgsingals.h

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/11/30 17:48:57 $
+   Update Date:      $Date: 2004/12/30 07:10:21 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.9 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.10 $
    Status:           $State: Exp $
  */
 
@@ -109,7 +109,7 @@ bool PG_PopupMenu::MenuItem::measureItem(PG_Rect* rect, bool full) {
 
 	PG_Widget::GetTextSize(
 		w, h,
-		myCaption.c_str(),
+		myCaption,
 		myParent->GetFont());
 
 	rect->w = w;

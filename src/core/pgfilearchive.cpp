@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:22 $
+    Update Date:      $Date: 2004/12/30 07:10:21 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14.2.9 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.10 $
     Status:           $State: Exp $
 */
 
@@ -156,11 +156,11 @@ PG_FileList* PG_FileArchive::GetFileList(const std::string& dir, const std::stri
 }
 
 bool PG_FileArchive::Exists(const std::string& filename) {
-	return PHYSFS_exists(filename.c_str());
+	return PHYSFS_exists(filename.c_str()) != 0;
 }
 
 bool PG_FileArchive::IsDirectory(const std::string& filename) {
-	return PHYSFS_isDirectory(filename.c_str());
+	return PHYSFS_isDirectory(filename.c_str()) != 0;
 }
 
 const char* PG_FileArchive::GetDirSeparator() {

@@ -52,7 +52,7 @@ bool PG_TimerObject::RemoveTimer(PG_TimerObject::ID id) {
 	my_timermap.erase(id);
 	timermap.erase(id);
 	
-	return SDL_RemoveTimer(sid);
+	return SDL_RemoveTimer(sid) != 0;
 }
 	
 Uint32 PG_TimerObject::eventTimer(PG_TimerObject::ID id, Uint32 interval) {
