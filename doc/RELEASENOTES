@@ -3,6 +3,9 @@ Whats new in ParaGUI 1.0.3 ?
 ----------------------------
 
 - made PhysFS optional (like expat)
+- autoconf / automake fixes
+  "make distcheck" passes now
+- fixed a problem in the destructor of PG_TimerObject
 
 
 ----------------------------
