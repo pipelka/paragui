@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2005/01/30 11:59:10 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.18 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.19 $
     Status:           $State: Exp $
 */
 
@@ -198,6 +198,11 @@ void PG_DropDown::SelectItem(const int n) {
 	for (i=0; i < n; i++)
 	  my_DropList->SelectNextItem();
 }
+
+int PG_DropDown::GetSelectedItemIndex() {
+	return my_DropList->GetSelectedIndex();
+}
+
 
 Uint16 PG_DropDown::GetIndent() {
 	return my_DropList->GetIndent();
