@@ -19,10 +19,10 @@
    Alexander Pipelka
    pipelka@teleweb.at
  
-   Last Update:      $Author: braindead $
-   Update Date:      $Date: 2002/07/30 10:18:38 $
+   Last Update:      $Author: eross $
+   Update Date:      $Date: 2002/09/12 06:34:28 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.2 $
+   CVS/RCS Revision: $Revision: 1.3.6.3 $
    Status:           $State: Exp $
 */
 
@@ -113,7 +113,6 @@ void PG_RichEdit::SetText(const char *text) {
 
 void PG_RichEdit::ParseWords() {
 	size_t searchFrom = 0;
-	std::string word;
 
 	my_ParsedWords.clear();
 
@@ -122,6 +121,7 @@ void PG_RichEdit::ParseWords() {
 		Uint16 w, h, sw = 0;
 		int bl, ls;
 		bool space = false;
+		std::string word;
 
 		searchFrom = GetWord(searchFrom, &word, &wordDescr.my_EndMark);
 
