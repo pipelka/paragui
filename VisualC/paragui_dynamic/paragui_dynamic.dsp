@@ -242,7 +242,7 @@ SOURCE=..\..\src\core\pgtimerobject.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\core\physfsrwops.c
+SOURCE=..\..\src\core\physfsrwops.cpp
 # End Source File
 # Begin Source File
 
@@ -576,10 +576,6 @@ SOURCE=..\..\include\pgmessagebox.h
 # Begin Source File
 
 SOURCE=..\..\include\pgmessageobject.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\include\pgmsgmap.h
 # End Source File
 # Begin Source File
 

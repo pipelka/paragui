@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/30 13:54:47 $
+    Update Date:      $Date: 2002/06/18 08:10:23 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -38,6 +38,8 @@
 %}
 #endif
 
+#include "pgthemewidget.h"
+
 #include <string>
 #include <list>
 #ifdef HASH_MAP_INC
@@ -45,8 +47,6 @@
 #else
 # include <map>
 #endif
-
-#include "pgthemewidget.h"
 
 /**
  * @author Marek Habersack

@@ -22,16 +22,17 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/17 08:01:56 $
+    Update Date:      $Date: 2002/06/18 08:10:23 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/gradient.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
+
+#include "pgdraw.h"
 
 #include <cmath>
 #include <cassert>
 
-#include "pgdraw.h"
 SDL_Surface* PG_Draw::CreateGradient(const PG_Rect& r, PG_Gradient& gradient) {
 	return CreateGradient(
 	           r,

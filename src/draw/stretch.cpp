@@ -20,18 +20,18 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/06/18 08:10:23 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/stretch.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
+
+#include "pgdraw.h"
 
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
 #include <cmath>
-
-#include "pgdraw.h"
 
 #if ! defined( macintosh ) && ! defined( __MWERKS__ )
 // malloc.h should not be included on Mac with CodeWarrior (pro 4)

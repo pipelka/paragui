@@ -20,11 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/03 08:27:17 $
+    Update Date:      $Date: 2002/06/18 08:10:23 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2 $
+    CVS/RCS Revision: $Revision: 1.1.6.3 $
     Status:           $State  
 */
+
+#include "pgapplication.h"
+#include "pgwindow.h"
+#include "pgrichedit.h"
+#include "pglog.h"
 
 #include <iostream>
 #include <string>
@@ -32,11 +37,6 @@
 #include <cstring>
 #include <cstdarg>
 #include <ctime>
-
-#include "pgapplication.h"
-#include "pgwindow.h"
-#include "pgrichedit.h"
-#include "pglog.h"
 
 Uint32 PG_LogMaxMessages = 200;
 int PG_LogMethod = PG_LOGMTH_STDOUT;

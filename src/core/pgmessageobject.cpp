@@ -20,17 +20,18 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/02 08:45:36 $
+    Update Date:      $Date: 2002/06/18 08:10:23 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.2 $
     Status:           $State: Exp $
 */
 
-#include <iostream>
 #include "pgmessageobject.h"
 #include "pgwidget.h"
 #include "pgmsgmap.h"
 #include "pglog.h"
+
+#include <iostream>
 #include <algorithm>
 
 // static variables for message processing

@@ -22,18 +22,18 @@
     cosmetical (interface and naming) to fit the ParaGUI library.
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/15 13:35:35 $
+    Update Date:      $Date: 2002/06/18 08:10:23 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/rotozoom.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
+
+#include "paragui.h"
+#include "pgdraw.h"
 
 #include <cstdlib>
 #include <cstring>
 #include <cmath>
-
-#include "paragui.h"
-#include "pgdraw.h"
 
 #define MAX(a,b)    (((a) > (b)) ? (a) : (b))
 

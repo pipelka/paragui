@@ -20,22 +20,22 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/06/17 11:32:59 $
+    Update Date:      $Date: 2002/06/18 08:10:23 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.7 $
+    CVS/RCS Revision: $Revision: 1.2.4.8 $
     Status:           $State: Exp $
 */
-
-#include <iostream>
-#include <cstring>
-#include <cassert>
-#include <cmath>
 
 #include "pgapplication.h"
 #include "pgwidget.h"
 #include "pglayout.h"
 #include "pglog.h"
 #include "pgdraw.h"
+
+#include <iostream>
+#include <cstring>
+#include <cassert>
+#include <cmath>
 
 // usually PARAGUI_THEMEDIR is defined by the configure script
 // or passed to the compiler. This is just a kind of last resort.
@@ -950,7 +950,8 @@ void PG_Application::DisableDirtyUpdates(bool disable) {
 bool PG_Application::GetDirtyUpdatesDisabled() {
 	return disableDirtyUpdates;
 }
-PG_Application* PG_Application::GetApp() {
+
+PG_Application* PG_Application::GetApp() {
 	return pGlobalApp;
 }
 
