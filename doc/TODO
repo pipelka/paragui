@@ -54,7 +54,7 @@ If you want to help us to bring ParaGUI to a new web presence:
 1) Get an account at http://savannah.nongnu.org
 2) Email your account name to me (pipelka@teleweb.at),
    or any other project member.
-3) Login at savannah and register your public key
+3) Login at savannah and register your SSH public key
 4) Checkout the webpages from savannah:
    http://savannah.nongnu.org/cvs/?group=paragui
 5) Create new ones

@@ -46,6 +46,9 @@
 /* Define if you have the tiff library (-ltiff).  */
 #define HAVE_LIBTIFF 1
 
+/* SDL_image shared library */
+#define SDLIMAGE_LIB "???"
+
 /* Name of package */
 #define PACKAGE "paragui"
 
