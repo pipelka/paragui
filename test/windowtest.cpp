@@ -12,7 +12,7 @@ public:
 	CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text,Uint32 flags,const char* style = "Window");
 };
 
-CMyWindow::CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text,Uint32 flags,const char* style = "Window") : PG_Window(parent,r,text,flags,style)
+CMyWindow::CMyWindow(PG_Widget *parent,const PG_Rect& r,char *text,Uint32 flags,const char* style) : PG_Window(parent,r,text,flags,style)
 
 {
 }

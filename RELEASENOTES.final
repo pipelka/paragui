@@ -10,6 +10,11 @@ Whats new in ParaGUI 1.0.2 ?
 - fixed a crash in PG_ListBox when deleting an
   item in the event handler
 - fixed Show()/Hide() on child widgets
+- added PG_TimerObject
+- added a switch to disable dirty widget updates
+  globally (PG_Application::DisableDirtyUpdates(bool))
+- GCC 3.1 compilation fixes 
+  Thanks Guillaume Cottenceau <gc@mandrakesoft.com>
 
 
 ----------------------------

@@ -20,15 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/27 15:36:55 $
+    Update Date:      $Date: 2002/05/29 22:11:45 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrectlist.h,v $
-    CVS/RCS Revision: $Revision: 1.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.1 $
     Status:           $State: Exp $
 */
 
 #ifndef PG_RECTLIST_H
 #define PG_RECTLIST_H
 
+#include "paragui.h"
 #include "pgrect.h"
 #include <vector>
 
@@ -37,9 +38,6 @@
 #else
 #include <map>
 #endif
-
-class PG_Widget;
-
 /**
 	@author Alexander Pipelka
 	@short A list derived from vector to handle overlapping and child-widgets

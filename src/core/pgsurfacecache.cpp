@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/04/26 12:43:22 $
+    Update Date:      $Date: 2002/05/29 22:11:45 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgsurfacecache.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2 $
+    CVS/RCS Revision: $Revision: 1.2.4.1 $
     Status:           $State: Exp $
 */
 
@@ -56,9 +56,9 @@ struct pg_surface_hash {
 };
 
 // Don't need custom comparision for strings.
-typedef std::hash_map<std::string, pg_surface_cache_t*, pg_surface_hash> pg_surfacemap_t;
+typedef STL_MAP<std::string, pg_surface_cache_t*, pg_surface_hash> pg_surfacemap_t;
 // Don't need custom hash or comparision functions when the key is a long.
-typedef std::hash_map<unsigned long, pg_surface_cache_t* > pg_surfacemap_index_t;
+typedef STL_MAP<unsigned long, pg_surface_cache_t* > pg_surfacemap_index_t;
 
 typedef pg_surfacemap_t::iterator pg_surfacemap_iter_t;
 typedef pg_surfacemap_index_t::iterator pg_surfacemap_index_iter_t;

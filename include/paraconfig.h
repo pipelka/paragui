@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2002/05/02 08:45:35 $
+    Update Date:      $Date: 2002/05/29 22:11:45 $
     Source File:      $Source: /sources/paragui/paragui/include/paraconfig.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,8 @@
 
 #undef PACKAGE
 #undef VERSION
+
+#define PG_VERSIONNUM(X, Y, Z) ((X)*1000 + (Y)*100 + (Z))
 
 #if (defined(WIN32) || defined(__WIN32__)) && (defined(_MSC_VER) || defined(__BCPLUSPLUS__))
 #include "paraconfig_win32.h"
@@ -72,11 +74,16 @@ extern int SDL_RegisterApp(char*, Uint32, void*);
 #elif defined(HAVE_EXT_HASH_MAP)
 #define HASH_MAP_INC <ext/hash_map>
 #define MAP_INC <ext/hash_map>
+#if PG_VERSIONNUM(__GNUC__, __GNUC_MINOR__, 0) >= PG_VERSIONNUM(3, 1, 0)
+#define STL_MAP __gnu_cxx::hash_map
+#else
 #define STL_MAP std::hash_map
+#endif
 #else
 #define MAP_INC <map>
 #define STL_MAP std::map
 #endif
+
 
 //
 // Modelled after g++ stdc++ v3

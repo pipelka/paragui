@@ -1,3 +1,4 @@
+#include "paragui.h"
 #include "pgdatacontainer.h"
 
 #define FT_FLOOR(X)	((X & -64) / 64)
@@ -29,7 +30,7 @@ public:
 	int Advance_x;
 };
 
-typedef STL_MAP<int, PG_GlyphCacheItem*> PG_GlyphCache;
+typedef std::map<int, PG_GlyphCacheItem*> PG_GlyphCache;
 
 class PG_FontFaceCacheItem {
 public:
