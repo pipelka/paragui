@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcolumnitem.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
     Status:           $State: Exp $
 */
 
@@ -104,6 +104,7 @@ private:
 	Uint32 my_columncount;
 
 	std::vector <Uint32> my_columnwidth;
+	
 	std::vector <PG_String> my_columntext;
 };
 

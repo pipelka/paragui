@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/02/07 13:17:21 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.24 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.25 $
     Status:           $State: Exp $
 */
 
@@ -403,9 +403,6 @@ public:
 	void MoveRect(int x, int y);
 
 	/** */
-	//static void BulkUpdate();
-
-	/** */
 	static void BulkBlit();
 
 	// Navigation
@@ -700,7 +697,7 @@ public:
 	/**
 	Quit modal mode
 	*/
-	void QuitModal();
+	bool QuitModal();
 
 	bool WillQuitModal();
 
@@ -748,9 +745,11 @@ public:
 	void EnableReceiver(bool enable, bool bRecursive = false);
 
 	template<class datatype = PG_Pointer> class SignalMouseEnter : public PG_Signal0<datatype> {};
+
 	template<class datatype = PG_Pointer> class SignalMouseLeave : public PG_Signal0<datatype> {};
 	
 	SignalMouseEnter<> sigMouseEnter;
+
 	SignalMouseLeave<> sigMouseLeave;
 
 	/**
@@ -782,16 +781,6 @@ protected:
 	virtual void eventMoveWidget(int x, int y);
 
 	/**
-	Callback for the MoveWidget event -- OBSOLETE
-	@param x new x position
-	@param y new y position
-	This virtual function can be used to implement custom behavior for
-	MoveWidget events.
-	CAUTION: This function will be removed in the final version
-	*/
-	//virtual void eventMoveWindow(int x, int y);
-
-	/**
 	Callback for the SizeWidget event
 	@param w new width
 	@param h new height
@@ -799,16 +788,6 @@ protected:
 	SizeWidget events.
 	*/
 	virtual void eventSizeWidget(Uint16 w, Uint16 h);
-
-	/**
-	Callback for the SizeWidget event
-	@param w new width
-	@param h new height
-	This virtual function can be used to implement custom behavior for
-	SizeWidget events.
-	CAUTION: This function will be removed in the final version
-	*/
-	//virtual void eventSizeWindow(Uint16 w, Uint16 h);
 
 	/**
 	overridable eventhandler to draw the object surface
@@ -868,11 +847,6 @@ protected:
 	SDL_Surface* my_srfObject;
 
 	/**
-	pointer to the screen surface
-	*/
-	//SDL_Surface* my_srfScreen;
-
-	/**
 	text attached to the widget
 	*/
 	PG_String my_text;
@@ -885,10 +859,11 @@ protected:
 private:
 
 	PG_Widget(const PG_Widget&);
+
 	PG_Widget& operator=(const PG_Widget&);
 
-	//static bool bBulkUpdate;
 	static int my_ObjectCounter;
+
 	static PG_RectList widgetList;
 
 	// this is a bit rude but neccessary for future binary compatibility

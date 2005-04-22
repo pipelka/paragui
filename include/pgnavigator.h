@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:36 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgnavigator.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -42,24 +42,34 @@
 class PG_Navigator : protected std::vector<PG_Widget*> {
 
 public:
+
 	void Add(PG_Widget* widget);
+
 	void Remove(PG_Widget* widget);
+
 	bool Action(PG_Widget::KeyAction action);
 
 	PG_Widget* Goto(PG_Widget* widget);
+
 	PG_Widget* GotoFirst();
+
 	PG_Widget* GotoLast();
+
 	PG_Widget* GotoNext();
+
 	PG_Widget* GotoPrev();
 
 	PG_Widget* FindLeft(PG_Widget* widget = NULL);
+
 	PG_Widget* FindRight(PG_Widget* widget = NULL);
+
 	PG_Widget* FindUp(PG_Widget* widget = NULL);
+
 	PG_Widget* FindDown(PG_Widget* widget = NULL);
 
 private:
 
-	PG_Widget* FindWidget(PG_Widget* from, PG_Point ref, bool absx, bool absy, int xmode, int ymode);
+	DLLLOCAL PG_Widget* FindWidget(PG_Widget* from, PG_Point ref, bool absx, bool absy, int xmode, int ymode);
 
 	static PG_Widget* my_currentWidget;
 };

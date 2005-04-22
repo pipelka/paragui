@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/02/15 14:12:51 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessagebox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -97,14 +97,17 @@ protected:
 	virtual bool handleButton(PG_Button* button);
 
 	PG_Button* my_btnok;
+
 	PG_Button* my_btncancel;
 
 private:
 
+	DLLLOCAL void Init(const std::string& windowtext, int textalign, const std::string& style) ;
+
 	PG_MultiLineEdit* my_textbox;
+
 	int my_msgalign;
 
-	void Init(const std::string& windowtext, int textalign, const std::string& style) ;
 };
 
 #endif //PG_MESSAGEBOX_H

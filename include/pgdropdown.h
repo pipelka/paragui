@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/01/30 11:59:10 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.15 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.16 $
     Status:           $State: Exp $
 */
 
@@ -202,10 +202,15 @@ protected:
 	virtual bool eventSelectItem(PG_ListBoxBaseItem* item);
 
 	PG_LineEdit* my_EditBox;
+
 	PG_Button* my_DropButton;
+
 	PG_ListBox* my_DropList;
 
-	bool select_handler(PG_ListBoxBaseItem* item);
+private:
+
+	DLLLOCAL bool select_handler(PG_ListBoxBaseItem* item);
+
 };
 
 #endif	// PG_DROPDOWN_H

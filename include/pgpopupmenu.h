@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/30 07:10:21 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
     Status:           $State: Exp $
 */
 
@@ -143,9 +143,9 @@ public:
 		inline operator PG_Point const&() const;
 	
 	private: // methods
-		void initItem();
-		bool renderSurface(SDL_Surface *canvas, SDL_Surface **text, PG_Color* tcol, PG_Color* scol = 0);
-		bool isValidRect();
+		DLLLOCAL void initItem();
+		DLLLOCAL bool renderSurface(SDL_Surface *canvas, SDL_Surface **text, PG_Color* tcol, PG_Color* scol = 0);
+		DLLLOCAL bool isValidRect();
 	
 	protected: // data
 		unsigned      myFlags;
@@ -287,9 +287,9 @@ protected: // methods
 
 private: // methods
 
-	bool selectItem(MenuItem *item, MII iter);
-	bool handleMotion(PG_Point const&);
-	void appendItem(MenuItem *item);
+	DLLLOCAL bool selectItem(MenuItem *item, MII iter);
+	DLLLOCAL bool handleMotion(PG_Point const&);
+	DLLLOCAL void appendItem(MenuItem *item);
 
 protected: // data
 

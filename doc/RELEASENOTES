@@ -38,6 +38,8 @@ Whats new in ParaGUI 1.1.9 ?
 - all multiline text-rendering is now done with PG_MultiLineEdit (log, messagebox).
   This is much faster.
 - added PG_Button::sigGlobalClick
+- changed returntype of PG_Widget::QuitModal to bool. Signals can now be connected to it.
+- support for GCC 4.0 (visibility)
 
 - applied patches from Sebastian:
 - PG_ListBox: fixed GetSelectedIndex()

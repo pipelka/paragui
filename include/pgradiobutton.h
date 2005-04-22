@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 22:44:21 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgradiobutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -118,18 +118,23 @@ protected:
 	virtual bool handleButtonClick(PG_Button* button);
 
 	PG_RadioButton* my_groupFirst;
+
 	PG_RadioButton* my_groupNext;
 
 	PG_Button* my_widgetButton;
+
 	PG_Label* my_widgetLabel;
+
 	bool my_isPressed;
 
 private:
 
 	PG_RadioButton(const PG_RadioButton&);
+
 	PG_RadioButton& operator=(const PG_RadioButton&);
 
 	bool my_storeMarker;
+
 	Uint8 my_hoverTransparency;
 };
 

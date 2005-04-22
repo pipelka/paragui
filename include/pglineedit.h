@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/05 19:25:10 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
     Status:           $State: Exp $
 */
 
@@ -191,25 +191,36 @@ protected:
 private:
 
 	PG_LineEdit(const PG_LineEdit&);
+
 	PG_LineEdit& operator=(PG_LineEdit&);
 
-	void DrawText(const PG_Rect& dst);
-	void DrawTextCursor();
-	Uint16 GetCursorXPos();
-	PG_String GetDrawText();
-	int GetCursorPosFromScreen(int x, int y);
+	DLLLOCAL void DrawText(const PG_Rect& dst);
 
-	bool IsValidKey(PG_Char c);
+	DLLLOCAL void DrawTextCursor();
+
+	DLLLOCAL Uint16 GetCursorXPos();
+	
+	DLLLOCAL PG_String GetDrawText();
+	
+	DLLLOCAL int GetCursorPosFromScreen(int x, int y);
+
+	DLLLOCAL bool IsValidKey(PG_Char c);
 
 	std::string my_buffer;
+	
 	int my_startMark;
+
 	int my_endMark;
 
 	bool my_isCursorVisible;
+
 	int my_offsetX;
-	PG_String my_validkeys;
+
 	bool my_isEditable;
+
 	int my_maximumLength;
+
+	PG_String my_validkeys;
 
 	PG_Char my_passchar;
 };

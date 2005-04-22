@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgprogressbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -77,11 +77,17 @@ private:
 	PG_ProgressBar& operator=(const PG_ProgressBar&);
 
 	PG_Gradient my_pbGradient;
+
 	SDL_Surface* my_pbBackground;
+
 	PG_Draw::BkMode my_pbBackmode;
+
 	int my_pbBlend;
+
 	PG_Color my_colorText;
+
 	double my_percentCurrent;
+
 	bool my_drawPercentage;
 };
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/02/15 14:12:51 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -65,7 +65,7 @@ PG_MessageBox::~PG_MessageBox() {
 
 void PG_MessageBox::Init(const std::string& windowtext, int textalign, const std::string& style) {
 
-	my_textbox = new PG_MultiLineEdit(this, PG_Rect(10, 40, my_width-20, my_height-50));
+	my_textbox = new PG_MultiLineEdit(this, PG_Rect(10, 40, my_width-20, my_btnok->y - my_ypos - 40));
 	my_textbox->SendToBack();
 	my_textbox->SetTransparency(255);
 	my_textbox->SetEditable(false);

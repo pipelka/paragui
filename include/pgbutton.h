@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/02/17 15:39:05 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.19 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.20 $
     Status:           $State: Exp $
 */
 
@@ -372,10 +372,10 @@ private:
 	PG_Button& operator=(const PG_Button&);
 
 	/**  */
-	void FreeSurfaces();
+	DLLLOCAL void FreeSurfaces();
 
 	/**  */
-	void FreeIcons();
+	DLLLOCAL void FreeIcons();
 
 	PG_ButtonDataInternal* _mid;
 };

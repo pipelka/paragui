@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/04/17 20:39:07 $
+   Update Date:      $Date: 2005/04/22 12:29:24 $
    Source File:      $Source: /sources/paragui/paragui/include/pgpoint.h,v $
-   CVS/RCS Revision: $Revision: 1.1.4.5 $
+   CVS/RCS Revision: $Revision: 1.1.4.6 $
    Status:           $State: Exp $
 */
 
@@ -43,7 +43,9 @@
 
 class DECLSPEC PG_Point {
 public:
+
 	PG_Point();
+
 	PG_Point(Sint16 _x, Sint16 _y);
 
 	Sint16 x;

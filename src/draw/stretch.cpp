@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 10:59:33 $
+    Update Date:      $Date: 2005/04/22 12:29:25 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/stretch.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.4 $
     Status:           $State: Exp $
 */
 
@@ -207,7 +207,7 @@ inline void StretchTemplate24to32(int x1, int x2, int y1, int y2, int yr, int yw
 		pg = lut[*(src_pixels+1)];
 		pb = lut[*(src_pixels+2)];
 
-		r = pb << 16 | pg << 8 | pr;
+		r = pr << 16 | pg << 8 | pb;
 		*dst_pixels++ = r;
 
 		while (e >= 0) {

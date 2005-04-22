@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2003/12/02 15:27:58 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetdnd.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.2.2 $
     Status:           $State: Exp $
 */
 
@@ -115,24 +115,31 @@ protected: // Protected methods
 private:
 
 	/**  */
-	void cacheDragArea(PG_Point p);
+	DLLLOCAL void cacheDragArea(PG_Point p);
 
 	/**  */
-	void restoreDragArea(PG_Point p);
+	DLLLOCAL void restoreDragArea(PG_Point p);
 
 	/**  */
-	void CheckCursorPos(int& x, int& y);
+	DLLLOCAL void CheckCursorPos(int& x, int& y);
 
 	/**  */
-	void slideDragImage(PG_Point start, PG_Point end, int steps, SDL_Surface* image);
+	DLLLOCAL void slideDragImage(PG_Point start, PG_Point end, int steps, SDL_Surface* image);
 
-	bool		CanDrag;
-	bool		CanDrop;
-	bool		Draging;
+	bool CanDrag;
+
+	bool CanDrop;
+
+	bool Draging;
+
 	PG_Point dragPointStart;
+
 	PG_Point dragPointOld;
+
 	PG_Point dragPointCurrent;
+
 	SDL_Surface* dragimage;
+
 	SDL_Surface* dragimagecache;
 
 private: // disable the copy operators

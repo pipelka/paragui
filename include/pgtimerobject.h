@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/10/17 19:01:49 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtimerobject.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6.2.5 $
+    CVS/RCS Revision: $Revision: 1.1.2.6.2.6 $
     Status:           $State: Exp $
 */
 
@@ -100,15 +100,20 @@ public:
 
 private:
 	
-	static Uint32 callbackTimer(Uint32 interval, void* data);
-	static Uint32 callbackSingleTimer(Uint32 interval);
+	DLLLOCAL static Uint32 callbackTimer(Uint32 interval, void* data);
+
+	DLLLOCAL static Uint32 callbackSingleTimer(Uint32 interval);
 	
 	static PG_TimerObject::ID globalTimerID;
+
 	static std::map<PG_TimerObject::ID, PG_TimerObject*> timermap;
+
 	static Uint32 objectcount;
+
 	static PG_TimerObject* objSingleTimer;
 	
 	std::map<PG_TimerObject::ID, SDL_TimerID> my_timermap;	
+
 };
 
 #endif // PG_TIMEROBJECT_H

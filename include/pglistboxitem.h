@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/02/10 11:48:03 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistboxitem.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -55,11 +55,15 @@ protected:
 	void eventSizeWidget(Uint16 w, Uint16 h);
 
 	PG_Gradient* my_gradient[3];
+
 	SDL_Surface* my_background[3];
+
 	SDL_Surface* my_srfHover;
+
 	SDL_Surface* my_srfSelected;
 
 	PG_Draw::BkMode my_bkmode[3];
+
 	Uint8 my_blend[3];
 };
 

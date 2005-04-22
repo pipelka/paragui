@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.7 $
+    CVS/RCS Revision: $Revision: 1.1.2.8 $
     Status:           $State: Exp $
 */
 
@@ -158,9 +158,10 @@ protected:
 private:
 
 	PG_ScrollWidget(const PG_ScrollWidget&);
+
 	PG_ScrollWidget& operator=(const PG_ScrollWidget&);
 
-	void RecalcPositions(bool bV, bool bH);
+	DLLLOCAL void RecalcPositions(bool bV, bool bH);
 };
 
 #endif // PG_SCROLLWIDGET_H

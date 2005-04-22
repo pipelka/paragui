@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/12 18:46:38 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfile.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.4 $
     Status:           $State: Exp $
 */
 
@@ -156,6 +156,7 @@ public:
 	void putline(const std::string& line);
 	
 private:
+
 	void* file;
 
 	friend class PG_FileArchive;

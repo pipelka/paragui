@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/12/30 06:56:02 $
+   Update Date:      $Date: 2005/04/22 12:29:24 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.26 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.27 $
    Status:           $State: Exp $
  */
 
@@ -1421,8 +1421,8 @@ void PG_Widget::DrawText(int x, int y, const PG_String& text, const PG_Color& c)
 	DrawText(PG_Rect(x,y,w,h), text, c);
 }
 
-void PG_Widget::QuitModal() {
-	eventQuitModal(GetID(), this, 0);
+bool PG_Widget::QuitModal() {
+	return eventQuitModal(GetID(), this, 0);
 }
 
 bool PG_Widget::WillQuitModal()

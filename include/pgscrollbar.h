@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -152,13 +152,19 @@ protected:
 	bool eventMouseButtonUp(const SDL_MouseButtonEvent* button);
 
 	int scroll_min;
+
 	int scroll_max;
+
 	int scroll_current;
+
 	int my_linesize;
+
 	int my_pagesize;
 
 	PG_Button* scrollbutton[2];
+
 	ScrollButton* dragbutton;
+
 	PG_Rect position[4];
 
 	ScrollDirection sb_direction;
@@ -170,6 +176,7 @@ protected:
 private:
 	
 	PG_ScrollBar(const PG_ScrollBar&);
+
 	PG_ScrollBar& operator=(PG_ScrollBar&);
 
 };

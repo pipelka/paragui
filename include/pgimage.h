@@ -20,9 +20,9 @@
     pipelka@teleweb.at 
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2004/12/01 11:28:22 $ 
+    Update Date:      $Date: 2005/04/22 12:29:24 $ 
     Source File:      $Source: /sources/paragui/paragui/include/pgimage.h,v $ 
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $ 
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $ 
     Status:           $State: Exp $ 
 */
 
@@ -102,6 +102,7 @@ public:
 	bool LoadImage(const std::string& filename);
 
 	bool LoadImage(const std::string& filename, const PG_Color& key);
+
 	bool SetImage(SDL_Surface* image, bool bFreeImage = true);
 
 	~PG_Image();
@@ -109,6 +110,7 @@ public:
 protected:
 
 	PG_Draw::BkMode my_DrawMode;
+
 	SDL_Surface* my_cachedSrf;
 	
 	/** */

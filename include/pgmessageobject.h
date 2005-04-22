@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/05/27 21:23:37 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
     Status:           $State: Exp $
 */
 
@@ -270,21 +270,20 @@ protected:
 	*/
 	virtual bool AcceptEvent(const SDL_Event* event);
 
-	//static vector<PG_MessageObject*> objectList;
-
 	static PG_MessageObject* captureObject;
 
 private:
 
 	PG_MessageObject(const PG_MessageObject&);
+
 	PG_MessageObject& operator=(const PG_MessageObject&);
 
-	//bool RemoveObject(PG_MessageObject* obj);
-
 	static PG_MessageObject* inputFocusObject;
+
 	static PG_Widget* lastwidget;
 
 	PG_MessageObject* my_oldCapture;
+
 	PG_MessageObject* my_oldFocus;
 
 	bool my_canReceiveMessages;

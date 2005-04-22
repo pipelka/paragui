@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.2.10 $
     Status:           $State: Exp $
 */
 
@@ -102,19 +102,31 @@ public:
 protected:
 
 	bool handleButtonClick(PG_Button* button);
+
 	bool handleEditEnd(PG_LineEdit* edit);
 
 private:
 
-	PG_Widget *m_pParent;
-	PG_MaskEdit *m_pEditBox;
-	PG_Button *m_pButtonUp, *m_pButtonDown;
+	DLLLOCAL void SetTextValue();
+
+	DLLLOCAL void AdjustSize();
+
+	PG_Widget* m_pParent;
+
+	PG_MaskEdit* m_pEditBox;
+
+	PG_Button* m_pButtonUp;
+	
+	PG_Button* m_pButtonDown;
+
 	int m_iMinValue;
+
 	int m_iMaxValue;
+
 	int m_iValue;
+
 	PG_String m_sMask;
-	void SetTextValue();
-	void AdjustSize();
+
 };
 
 #endif	// PG_SPINNERBOX_H

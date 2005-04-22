@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.6 $
     Status:           $State: Exp $
 */
 
@@ -310,6 +310,7 @@ public:
 private:
 
 	static Uint32 my_instance_count;
+
 	static PG_SurfaceCache my_cache;
 };
 

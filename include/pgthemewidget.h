@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.14 $
     Status:           $State: Exp $
 */
 
@@ -245,30 +245,37 @@ protected:
 
 
 	bool my_has_gradient;
+
 	PG_Gradient my_gradient;
+
 	SDL_Surface* my_background;
+
 	SDL_Surface* my_image;
 
 	Uint8 my_blendLevel;
+
 	bool my_backgroundFree;
+
 	PG_Draw::BkMode my_backgroundMode;
+
 	int my_bordersize;
 
 private:
 
 	PG_ThemeWidget(const PG_ThemeWidget&);
+
 	PG_ThemeWidget& operator=(const PG_ThemeWidget&);
 
-	void Init(const std::string& style);
+	DLLLOCAL void Init(const std::string& style);
 
-	void CreateSurface(Uint16 w = 0, Uint16 h = 0);
+	DLLLOCAL void CreateSurface(Uint16 w = 0, Uint16 h = 0);
 
 	/**
 	This function frees background surface if possible
 	*/
-	void FreeSurface();
+	DLLLOCAL void FreeSurface();
 
-	void FreeImage();
+	DLLLOCAL void FreeImage();
 
 	// this is a bit rude but neccessary for future binary compatibility
 	// because adding non-static data members would break the ABI.

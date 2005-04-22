@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsurfacecache.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -58,6 +58,7 @@ class DECLSPEC PG_SurfaceCache {
 public:
 
 	PG_SurfaceCache();
+
 	virtual ~PG_SurfaceCache();
 
     /** Create a fairly unique key for a given surface.
@@ -125,8 +126,9 @@ public:
 
 private:
 
-	pg_surface_cache_t* FindByKey(const std::string &key);
-	pg_surface_cache_t* FindBySurface(SDL_Surface* surface);
+	DLLLOCAL pg_surface_cache_t* FindByKey(const std::string &key);
+
+	DLLLOCAL pg_surface_cache_t* FindBySurface(SDL_Surface* surface);
 
 	void* my_surfacemap;
 	void* my_surfacemap_index;

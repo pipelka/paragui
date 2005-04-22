@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/11/30 17:48:57 $
+   Update Date:      $Date: 2005/04/22 12:29:24 $
    Source File:      $Source: /sources/paragui/paragui/include/pgrichedit.h,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.10 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.11 $
    Status:           $State: Exp $
 */
 
@@ -186,15 +186,23 @@ private:
 
 	typedef std::map<Sint32, PG_Widget*> WidgetMap;
 
-	Sint32 CompleteLines();
-	size_t CompleteLine(RichLineArray::iterator actualLine, Sint32 &lineTop, size_t searchFrom, Uint32 &lineSpace, Uint32 &lineAscent, bool changeAlign);
-	Sint32 CompleteLinePart(size_t searchFrom, Sint32 lineTop, Uint32 &lineSpace, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, bool &breakLine, Uint32 &lineAscent, bool changeAlign);
-	void GetWidgetsOnLine(Sint32 lineTop, Uint32 lineHeight, WidgetMap &widgetsOnLine, bool clear);
-	bool ProcessLongLine(PG_String &word, size_t &searchFrom, Uint32 oldFind, Sint32 lineTop, Uint32 &lineSpace, bool normalLine, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, Uint32 &lineAscent);
-	size_t GetWord(size_t searchFrom, PG_String *word, Uint32 *endMark);
-	void AlignLinePart(RichLinePartArray::iterator actualLinePart, Uint32 align, bool breakLine);
-	void AlignLine(RichLineArray::iterator actualLine, WidgetMap &widgetsOnLine, Uint32 align);
-	void ParseWords();
+	DLLLOCAL Sint32 CompleteLines();
+
+	DLLLOCAL size_t CompleteLine(RichLineArray::iterator actualLine, Sint32 &lineTop, size_t searchFrom, Uint32 &lineSpace, Uint32 &lineAscent, bool changeAlign);
+
+	DLLLOCAL Sint32 CompleteLinePart(size_t searchFrom, Sint32 lineTop, Uint32 &lineSpace, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, bool &breakLine, Uint32 &lineAscent, bool changeAlign);
+
+	DLLLOCAL void GetWidgetsOnLine(Sint32 lineTop, Uint32 lineHeight, WidgetMap &widgetsOnLine, bool clear);
+
+	DLLLOCAL bool ProcessLongLine(PG_String &word, size_t &searchFrom, Uint32 oldFind, Sint32 lineTop, Uint32 &lineSpace, bool normalLine, RichLineArray::iterator actualLine, RichLinePartArray::iterator actualLinePart, Uint32 &lineAscent);
+
+	DLLLOCAL size_t GetWord(size_t searchFrom, PG_String *word, Uint32 *endMark);
+
+	DLLLOCAL void AlignLinePart(RichLinePartArray::iterator actualLinePart, Uint32 align, bool breakLine);
+
+	DLLLOCAL void AlignLine(RichLineArray::iterator actualLine, WidgetMap &widgetsOnLine, Uint32 align);
+
+	DLLLOCAL void ParseWords();
 
 public:
 

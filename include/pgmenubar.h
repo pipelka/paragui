@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2005/04/22 12:29:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmenubar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
     Status:           $State: Exp $
 */
 
@@ -87,11 +87,12 @@ private:
 	/**
 		Callback handler for MSG_BUTTONCLICK messages
 	*/
-	bool handle_button(PG_Button* button, PG_Pointer last);
+	DLLLOCAL bool handle_button(PG_Button* button, PG_Pointer last);
 
-	void Cleanup();
+	DLLLOCAL void Cleanup();
 
 	std::string my_style;
+
 	PG_PopupMenu* my_active;
 
 };

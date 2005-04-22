@@ -36,29 +36,29 @@ protected:
 
 private:
 
-    void FindWordRight();
+    DLLLOCAL void FindWordRight();
 
-    void FindWordLeft();
+	DLLLOCAL void FindWordLeft();
 
-    void DeleteSelection();
+	DLLLOCAL void DeleteSelection();
 
-    void GetCursorTextPosFromScreen(int x, int y, unsigned int& horzOffset, unsigned int& lineOffset);
+	DLLLOCAL void GetCursorTextPosFromScreen(int x, int y, unsigned int& horzOffset, unsigned int& lineOffset);
 
-    void GetCursorTextPos(unsigned int& horzOffset, unsigned int& lineOffset);
+	DLLLOCAL void GetCursorTextPos(unsigned int& horzOffset, unsigned int& lineOffset);
 
-    void SetCursorTextPos(unsigned int offset, unsigned int line);
+	DLLLOCAL void SetCursorTextPos(unsigned int offset, unsigned int line);
 
-    int ConvertCursorPos(unsigned int offset, unsigned int line);
+	DLLLOCAL int ConvertCursorPos(unsigned int offset, unsigned int line);
 
-    void GetCursorPos(int& x, int& y);
+	DLLLOCAL void GetCursorPos(int& x, int& y);
 
-    void DrawText(const PG_Rect& dst);
+	DLLLOCAL void DrawText(const PG_Rect& dst);
 
-    void DrawTextCursor();
+	DLLLOCAL void DrawTextCursor();
 
-    void CreateTextVector(bool bSetupVScroll = true);
+	DLLLOCAL void CreateTextVector(bool bSetupVScroll = true);
 
-    void SetupVScroll();
+	DLLLOCAL void SetupVScroll();
 
 	std::vector<PG_String> my_textdata;
 
