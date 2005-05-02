@@ -11,7 +11,7 @@
 dnl AM_PATH_PARAGUI([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]]])
 dnl Test for PARAGUI, and define PARAGUI_CFLAGS and PARAGUI_LIBS
 dnl
-AC_DEFUN(AM_PATH_PARAGUI,
+AC_DEFUN([AM_PATH_PARAGUI],
 [dnl 
 dnl Get the cflags and libraries from the paragui-config script
 dnl
