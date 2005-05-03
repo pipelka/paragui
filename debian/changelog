@@ -1,3 +1,9 @@
+libparagui1.1 (1.1.9-5) unstable; urgency=low
+
+  * fix libc6 dependency to make the library installable on debian (testing) and ubuntu (hoary)
+
+ -- Alexander Pipelka <pipelka@localhost.localdomain>  Tue,  3 May 2005 15:33:29 +0200
+
 libparagui1.1 (1.1.9-4) unstable; urgency=low
 
   * made PG_Widget::Show/Hide methods virtual 

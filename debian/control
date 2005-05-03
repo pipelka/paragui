@@ -8,7 +8,7 @@ Standards-Version: 3.6.1
 Package: libparagui1.1
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}
+Depends: libc6 (>= 2.3.2.ds1-20), ${shlibs:Depends}
 Conflicts: paragui-themes
 Description: a real crossplatform widget set based on SDL
  ParaGUI is a cross-platform high-level application framework and GUI
