@@ -1,0 +1,4 @@
+Makefile
+*.cs
+Makefile.in
+paragui_wrap.cxx

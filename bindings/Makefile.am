@@ -1,3 +1,3 @@
 SUBDIRS= $(BINDINGS)
 
-DIST_SUBDIRS = python ruby
+DIST_SUBDIRS = ruby python csharp

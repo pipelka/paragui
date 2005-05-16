@@ -489,6 +489,12 @@ AC_ARG_ENABLE(ruby,
      swig_p=$enable_ruby]
 )
 
+AC_ARG_ENABLE(csharp,
+	[  --enable-csharp         create C# (.NET, MONO) bindings],
+	[csharp_p=$enable_csharp
+     swig_p=$enable_csharp]
+)
+
 if test "x$swig_p" = xyes; then
   SWIG=""
   AC_PATH_PROG(SWIG, swig, no)
@@ -550,6 +556,10 @@ if test "x$ruby_p" = xyes; then
     BINDINGS="$BINDINGS ruby"
 fi
 
+if test "x$csharp_p" = xyes; then
+    BINDINGS="$BINDINGS csharp"
+fi
+
 AC_SUBST(BINDINGS)
 AC_SUBST(SYSTEM_LIBS)
 
@@ -603,6 +613,7 @@ AC_SUBST(RPM_ROOT)
 AC_OUTPUT([
 Makefile
 bindings/Makefile
+bindings/csharp/Makefile
 bindings/python/Makefile
 bindings/ruby/Makefile
 data/Makefile
