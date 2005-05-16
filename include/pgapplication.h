@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/30 07:10:21 $
+    Update Date:      $Date: 2005/05/16 16:26:51 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.21 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.22 $
     Status:           $State: Exp $
 */
 
@@ -38,6 +38,8 @@
 #include "pgfilearchive.h"
 #include "pgfont.h"
 #include "pgdraw.h"
+
+class PG_EventSupplier;
 
 class PG_Theme;
 class PG_Widget;
@@ -530,9 +532,26 @@ public:
 	@param event SDL_Event message
 	@return true - the message was processed by the framework
 	*/
-
 	bool PumpIntoEventQueue(const SDL_Event* event);
+        
+       
+	/**        
+	Registers a new source for obtaining SDL_Event objects from. This source will
+	be used in all event loops in Paragui.
+	
+	@param eventSupplier the new event source. 
+	Paragui will not delete this object. If NULL is passed, Paragui will obtain 
+	its events directly from SDL 
+	*/        
+	static void SetEventSupplier( PG_EventSupplier* eventSupplier );                
 
+	/**        
+	Returns the EventSupplier that's currently active. \see SetEventSupplier
+        
+        @return the active EventSupplier
+	*/        
+	static  PG_EventSupplier* GetEventSupplier();
+        
 	SignalXMLTag<> sigXMLTag;
 	SignalAppIdle<> sigAppIdle;
 
@@ -587,6 +606,8 @@ private:
 	bool emergencyQuit;
 	static bool enableBackground;
 	bool enableAppIdleCalls;
+	static PG_EventSupplier* my_eventSupplier;
+	static PG_EventSupplier* my_defaultEventSupplier;
 
 	static SDL_Surface* my_mouse_pointer;
 	static SDL_Surface* my_mouse_backingstore;

@@ -56,7 +56,9 @@ libparaguiinclude_HEADERS = \
 	pgstring.h \
 	pgmultilineedit.h \
 	ystring.h \
-	ychar.h
+	ychar.h \
+	pgeventsupplier.h \
+	pgsdleventsupplier.h 
 
 EXTRA_DIST = \
 	paraconfig_win32.h \

@@ -16,7 +16,8 @@ libpgcore_la_SOURCES = \
 	pgsurfacecache.cpp \
 	pgtimerobject.cpp \
 	pgsigconvert.cpp \
-	pgcolor.cpp
+	pgcolor.cpp \
+	pgsdleventsupplier.cpp
 
 libpgcore_la_LIBADD = \
 	$(SDL_LIBS) \

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2005/05/16 16:26:50 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.21 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.22 $
     Status:           $State: Exp $
 */
 
@@ -32,6 +32,8 @@
 #include "pglog.h"
 #include "pgdraw.h"
 #include "pgtheme.h"
+#include "pgeventsupplier.h"
+#include "pgsdleventsupplier.h"
 
 #include <iostream>
 #include <cstring>
@@ -70,6 +72,8 @@ PG_Color PG_Application::my_backcolor;
 PG_Draw::BkMode PG_Application::my_backmode = PG_Draw::TILE;
 bool PG_Application::disableDirtyUpdates = false;
 //bool PG_Application::my_quitEventLoop = false;
+PG_EventSupplier* PG_Application::my_eventSupplier = NULL;
+PG_EventSupplier* PG_Application::my_defaultEventSupplier = NULL;
 
 /**
 	new shutdown procedure (called at application termination
@@ -124,6 +128,8 @@ PG_Application::PG_Application()
 	my_background = NULL;
 	my_freeBackground = false;
 	my_backmode = PG_Draw::TILE;
+	my_defaultEventSupplier = new PG_SDLEventSupplier;
+	my_eventSupplier = my_defaultEventSupplier;
 	
 	// add our base dir to the searchpath
 	AddArchive(GetBaseDir());
@@ -137,6 +143,8 @@ PG_Application::~PG_Application() {
 	Shutdown();
 	
 	pGlobalApp = NULL;
+        delete my_defaultEventSupplier;
+        my_defaultEventSupplier = NULL;
 
 	// remove all archives from PG_FileArchive
 	PG_FileArchive::RemoveAllArchives();
@@ -199,26 +207,35 @@ void PG_Application::RunEventLoop() {
 	FlushEventQueue();
 	
 	while(!my_quitEventLoop) {
-		
-		// pull motion events (may flood the eventqueue)
-		while(SDL_PeepEvents(&event, 1, SDL_GETEVENT, SDL_MOUSEMOTIONMASK) > 0)
-			;
-		
 		ClearOldMousePosition();
 
 		if(enableAppIdleCalls) {
-			if (SDL_PollEvent(&event) == 0) {
+			if ( my_eventSupplier->PollEvent(&event) == 0) {
 				eventIdle();
 			} else {
 				PumpIntoEventQueue(&event);
 			}
 		} else {
-			SDL_WaitEvent(&event);
+			my_eventSupplier->WaitEvent(&event);
 			PumpIntoEventQueue(&event);
 		}
 
 		DrawCursor();
 	}
+}
+
+
+void PG_Application::SetEventSupplier( PG_EventSupplier* eventSupplier )
+{
+	if ( eventSupplier )
+		my_eventSupplier = eventSupplier;
+	else 
+		my_eventSupplier = my_defaultEventSupplier;
+}
+
+PG_EventSupplier* PG_Application::GetEventSupplier()
+{
+	return my_eventSupplier;
 }
 
 

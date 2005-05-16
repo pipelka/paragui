@@ -1,0 +1,260 @@
+This is mostly a list of questions from the ParaGUI mailing list. If it
+is incomplete, send a mail. ;)
+
+
+0. About this document
+
+
+1. General questions
+    1.1. Where to look for documentation? Is there an introduction?
+    1.2. I want to understand how ParaGUI works. Where should I start?
+    1.3. I have found an error or a missing feature. Who should I mail?
+
+
+2. Errors, features and installation problems
+    2.1. I don't see any fonts? What is wrong?
+    2.2. I can't load images other than simple bmp files. What should I
+         do?
+    2.3. Whenever I run the unicode test, it just displays rubbish.
+    2.4. configure error with output containing PKG_CHECK_MODULES
+    2.5. Why don't the (python/ruby/...) bindings work?
+
+
+3. General problems
+    3.1. How do I turn off the debugging output when I run a program?
+    3.2. I use PG_TimerObjects, but my timers always stop working. What
+         has happened?
+    3.3. I get strange segfaults using valgrind and PG_TimerObject.
+
+
+4. Special problems
+    4.1. Is it possible to rotate a dialog for embedded systems?
+    4.2. How do I simulate keys for embedded systems?
+
+---------------------------------------------------------------------
+
+0. About this document
+
+This FAQ is mostly a collection of problems that have appeared on the
+mailing list. I have assembled them, added the stupid standard questions
+you always find in a FAQ and here you are. For corrections, please don't
+mail Alex, but send a mail to ulf82@users.sf.net; I don't suppose he has
+the nerves of caring for the documentation as well.
+
+If you have any questions about ParaGUI, please send a mail to the
+mailing list. There are more people reading this. I will propably
+update this FAQ then, regularily.
+
+Last I should note that I am a bit linux-centered and have to admit that
+I have no ideas about doxygen under Windows and such. Corrections and
+Annotations here would be welcome.
+
+---------------------------------------------------------------------
+
+1. General questions
+
+1.1. Where to look for documentation? Is there an introduction?
+
+Yes, there is. To build the documentation, go to the doc directory of
+the sources and type "make builddoc". This creates a complete reference
+in $(src)/doc/html. Opening the file index.html, you find the
+documentation under "Related pages".
+
+For those who cannot build the documentation for some reason, the intro
+can also be found together with other documentation under
+$(src)/doc/txt in plain text.
+
+
+1.2. I want to know how ParaGUI works. Where should I start?
+
+>From my own experience, I would start with the files:
+- src/core/pgapplication.cpp    because it is often referenced
+- src/core/pgmessageobject.cpp  where the whole message stuff is
+  described
+- src/widgets/pgwidget.cpp      where a widget (the base class of the
+  graphics) is described
+  
+These three files should get you started just fine. Understanding e.g. a
+PG_Button is not too much work after that.
+
+Since ParaGUI uses SDL and libSigC++ excessively, the documentation
+there should also be read. LibsigC++ comes with an excellent
+introduction as does SDL, where the header files can also be read
+fluently (mainly the video and the event part of SDL are important).
+
+
+1.3. I have found an error or a missing feature. Who should I mail?
+
+The preferred way here is the paragui mailing list. Either mail to
+paragui-users@nongnu.org or to paragui-devel@nongnu.org. The same goes
+for questions, BTW.
+
+---------------------------------------------------------------------
+
+2. Errors and features
+
+2.1. I don't see any fonts? What is wrong?
+
+This is propably one of the favorite questions and has some background.
+For displaying purpose, ParaGUI uses the free font rendering engine
+freetype. However, thanks to Apple, the bytecode interpreter used there
+possibly interferes with some patents; actual information can be found
+under http://www.freetype.org/patents.html.
+
+Even if you don't care for patents, some distributors have therefore
+disabled the bytecode interpreter at least in some versions. Possibly,
+it is also disabled by default when compiling freetype from scratch.
+ParaGUI then just shows no fonts for some reason.
+
+The only solution here is to recompile freetype from scratch. And don't
+forget to uncomment the option TT_CONFIG_OPTION_BYTECODE_INTERPRETER in
+some header file.
+
+
+2.2. I can't load images other than simple bmp files. What should I do?
+
+You have propably forgot to install/compile SDL_Image. SDL itself can
+only handle bitmap files, other formats are loaded by using the image
+extension.
+
+
+2.3. Whenever I run the unicode test, it just displays rubbish.
+
+Use a font that supports unicode. Unfortunately, the font that comes
+with paragui (Vera) does only display standard characters found in
+Western European charsets. Font files generally end with .ttf. To
+replace a font file to see this (this is just a quick start, no
+explanation!):
+
+- unzip default.zip (found in the data subdir)
+- copy you new font in the now existing "default" directory
+- change the font entry in default.theme from "Vera.ttf" to your font
+  file
+- zip the default directory and default.theme again to a file
+  default.zip
+- copy the new default.zip to the "test" directory
+
+If you have used a proper font, at least some more symbols should make
+sense now.
+
+Note: When using fonts other than Vera, especially in free projects,
+CHECK THE COPYRIGHT!
+
+
+2.4. configure error with output containing PKG_CHECK_MODULES
+
+You have not installed pkgconfig. Unfortunately, ParaGUI does not check
+for the presence of this program. So either install or compile it.
+
+
+2.5. Why don't the (python/ruby/...) bindings work?
+
+To quote Alex (own translation):
+
+" The SWIG bindings were a huge hack. The decision was to either use
+  SigC++ for the callbacks or keep SWIG for the bindings. Both together
+  would not work."
+
+Guess what the decision was...
+If someone volunteers, maybe there is a possibility of updating the
+code.
+
+---------------------------------------------------------------------
+
+3. General problems
+
+3.1. How do I turn off the debugging output when I run a program?
+
+ParaGUI logs stuff using the functions defined in pglog.h. If you are
+for some reason (sometimes) annoyed by the debugging output, you can
+turn it off by calling
+
+PG_LogConsole::SetLogLevel(loglevel);
+
+where loglevel can be something like PG_LOG_NONE (see pglog.h for the
+complete list).
+
+
+3.2. I use PG_TimerObjects, but my timers always stop working. What has
+     happened?
+
+PG_TimerObject's unregister themselves upon destruction. However, due
+to a "feature" in SDL, this has the side effect of removing _all_ timers
+that are still running (AFAIR there is no easy way around this apart
+from hacking SDL).
+So when using multiple timers, ensure that they are sufficiently
+persistent and not created/removed the whole time.
+
+
+3.3. I get strange segfaults using valgrind and PG_TimerObject.
+
+I have noticed this problem not long ago. When running multiple timers
+with short intervals, there may be a race condition caused by the fact
+that the timers are removed while another SDL function still goes
+through the list of timers to see if one is due to be raised.
+
+AFAIR, this may also happen in theory under certain, very exotic
+circumstances (all of them including very fast timers and/or very slow
+processing). However, most likely this bug will not pop up under normal
+circumstances.
+
+---------------------------------------------------------------------
+
+4. Special questions
+
+4.1. Is it possible to rotate a dialog for embedded systems?
+
+Short answer: maybe.
+
+As of the time of writing this, I plan to write a small test application
+to demonstrate this. If there is none in the test directory, drop me a
+mail. I will do my very best to give you a solution, then.
+
+What is possible with not too much of an effort is to rotate the dialog
+itself. Basically you derive a new class from PG_Widget and, when
+redrawing, have PG_Widget redraw the dialog and rotate the result
+afterwards.
+
+However, this is not the full job when using a pointer device, since the
+x/y coordinates would have to be inverted for the dialog to function
+properly. (you see just the rotated image of the dialog, but all
+elements stay on their unrotated place). It should still be possible to
+solve this problem (if you really mean it, I could give you some more
+details per mail), but most of you will propably be interested in an X
+server or so that can handle this.
+
+
+4.2. How do I simulate keys for embedded systems?
+
+I will sketch a solution for the case that you have an embedded system
+without keyboard mapping the keys you can press on keyboard keys. I hope
+it is realistic. I have also not tested it, so some details may be wrong
+(e.g. SDL could kick out invalid events or so), but the basic mechanism
+should stay the same.
+
+Imagine that you have an embedded system with an "up" key where you can
+query the last pressed key with some user-defined function my_getkey().
+The solution works in three steps.
+
+1. You query my_getkey() and find out that the "up" key was pressed.
+   (This is our job)
+
+2. You add an event to the event queue. See SDL_event.h for details. In
+   the given example, it could go like this:
+
+     SDL_KeyboardEvent* myevent = new SDL_KeyboardEvent;
+     myevent->type = SDL_KEYDOWN;
+     myevent->which = 0;
+     myevent->state = SDL_PRESSED;
+     myevent->keysym.sym = SDLK_UP;
+     SDL_PushEvent(myevent);
+
+   Maybe you should also add an event with KEYUP for completeness.
+
+3. Now when paragui checks the event queue next, it finds a keyboard
+   event that says that the up key on the keyboard was pressed. It
+   passes the event around, looking for someone to use it...
+
+4. In your dialogs, all that is left to do now is to implement the
+   response to the up key being pressed (i.e. overwrite
+   PG_MessageObject::eventKeyDown or -KeyUp)

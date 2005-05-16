@@ -13,10 +13,10 @@ ROADMAP LEADING TO 1.2
 1.1.8 - unify constructors (e.g.: PG_Widget(PG_Widget* parent, const PG_Rect& rect))
         needed for factory. merge object factory from paragui2.
 1.1.9 - string cleanup. (redesign of event-handling?). unify all widget constructors.
-	split off XML layoutloader
+        split off XML layoutloader
 1.1.10 - bug fixing and API reality check
 1.1.12 - feature and API freeze
-1.1.? - i'll consult my magic orb
+1.1.?? - i'll consult my magic orb
 
 If you want to take part in the development process - drop me a few lines or
 take a look into "TODO".
@@ -76,6 +76,11 @@ Whats new in ParaGUI 1.1.9 ?
 - adaptive PG_Button behaviour
 - the PG_Dropdown missed a function to get the item index, although the
   itemlist offered one.
+- SDL Event source customization patch
+
+- applied patches from Ulf Lorenz:
+- documentation updates (faq, tutorial)
+
 
 ----------------------------
 Whats new in ParaGUI 1.1.8 ?

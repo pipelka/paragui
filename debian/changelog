@@ -1,33 +1,39 @@
+libparagui1.1 (1.1.9-6) unstable; urgency=low
+
+  * added PG_EventSupplier
+
+ -- Alexander Pipelka <pipelka@teleweb.at>  Mon, 16 May 2005 18:21:37 +0200
+
 libparagui1.1 (1.1.9-5) unstable; urgency=low
 
   * fix libc6 dependency to make the library installable on debian (testing) and ubuntu (hoary)
 
- -- Alexander Pipelka <pipelka@localhost.localdomain>  Tue,  3 May 2005 15:33:29 +0200
+ -- Alexander Pipelka <pipelka@teleweb.at>  Tue,  3 May 2005 15:33:29 +0200
 
 libparagui1.1 (1.1.9-4) unstable; urgency=low
 
   * made PG_Widget::Show/Hide methods virtual 
 
- -- Alexander Pipelka <pipelka@localhost.localdomain>  Mon,  7 Feb 2005 14:15:43 +0100
+ -- Alexander Pipelka <pipelka@teleweb.at>  Mon,  7 Feb 2005 14:15:43 +0100
 
 libparagui1.1 (1.1.9-3) unstable; urgency=low
 
   * fixed duplicated libparagui.so 
 
- -- Alexander Pipelka <pipelka@localhost.localdomain>  Mon, 20 Dec 2004 11:19:16 +0100
+ -- Alexander Pipelka <pipelka@teleweb.at>  Mon, 20 Dec 2004 11:19:16 +0100
 
 libparagui1.1 (1.1.9-2) unstable; urgency=low
 
   * changed compiler flags (for non-debug builds), removed static libs from
     dev package
 
- -- Alexander Pipelka <pipelka@localhost.localdomain>  Sat, 18 Dec 2004 20:07:32 +0100
+ -- Alexander Pipelka <pipelka@teleweb.at>  Sat, 18 Dec 2004 20:07:32 +0100
 
 libparagui1.1 (1.1.9-1) unstable; urgency=low
 
   * changed version to 1.1.9
 
- -- Alexander Pipelka <pipelka@localhost.localdomain>  Wed, 17 Nov 2004 19:18:16 +0100
+ -- Alexander Pipelka <pipelka@teleweb.at>  Wed, 17 Nov 2004 19:18:16 +0100
 
 libparagui1.1 (1.1.8-1) unstable; urgency=low
 

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/04/22 12:29:24 $
+   Update Date:      $Date: 2005/05/16 16:26:50 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.27 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.28 $
    Status:           $State: Exp $
  */
 
@@ -35,6 +35,7 @@
 #include "pgdraw.h"
 #include "pglayout.h"
 #include "pgtheme.h"
+#include "pgeventsupplier.h"
 
 #include "propstrings_priv.h"
 
@@ -1440,7 +1441,7 @@ int PG_Widget::RunModal() {
 
 	// run while in modal mode
 	while(!_mid->quitModalLoop) {
-		SDL_WaitEvent(&event);
+		PG_Application::GetEventSupplier()->WaitEvent(&event);
 		PG_Application::ClearOldMousePosition();
 		ProcessEvent(&event, true);
 		PG_Application::DrawCursor();

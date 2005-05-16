@@ -1,7 +1,33 @@
+// TODO: images of the test programs
+
 /**
 
-@page tutorial	Some steps to take to get started with paragui
-@author Fred Ollinger
+@page tutorial	Getting started with ParaGUI
+
+@author Fred Ollinger (follinge@piconap.com).
+@author Ulf Lorenz (ulf82@users.sf.net)
+
+@date 04/15/2005
+
+
+@section Content
+
+<ol>
+    <li>@ref Acknowledgements</li>
+    <li>@ref Introduction</li>
+    <li>@ref section1</li>
+    <ol>
+        <li>@ref section1_1</li>
+        <li>@ref section1_2</li>
+    </ol>
+    <li>@ref section2</li>
+    <ol>
+        <li>@ref section2_1</li>
+        <li>@ref section2_2</li>
+        <li>@ref section2_3</li>
+    </ol>
+</ol>
+
 
 @section Acknowledgements
 
@@ -10,141 +36,175 @@ Tony Gale <gale@gtk.org>, Ian Main <imain@gtk.org>. They had originally written
 this document for GTK. Copies can be found here:
 http://www.gtk.org/tutorial1.2/.
 
-I have taken their work and adapted it for use with paragui. All the decent
-organization is Tony and Ian's. Mistakes are my own. Please do not contact them
-with any questions regarding this document as they had nothing to do with the
-final version. 
+The first section largely bases on their work adapted for use with ParaGUI. All
+the decent organization there is Tony and Ian's. Mistakes are my own. Please do
+not contact them with any questions regarding this document as they had nothing
+to do with the final version.
 
-@section Introduction
+From the second section on, the text is not based on any other work.
 
-Paragui is a library for creating graphical user
-interfaces. It is licensed using the LGPL license, so you can develop
-open software, free software, or even commercial non-free software
-using GTK without having to spend anything for licenses or royalties.
 
-Paragui is built upon SDL (http://www.libsdl.org/) which is
-is a cross-platform multimedia library designed to provide low level access to
-audio, keyboard, mouse, joystick, 3D hardware via OpenGL, and 2D video
-framebuffer.
-Thus Paragui is very cross-platform as well full featured. The power
-of SDL is available in Paragui.
+@section Introduction Introduction and Thanks
 
-The primary authors of SDL are:
+ParaGUI is a library for creating graphical user interfaces. It is licensed
+using the LGPL license, so you can develop open software, free software, or
+even commercial non-free software without having to spend anything for
+licenses or royalties.
 
-Special thanks go to Sam Lantinga <slouken@libsdl.org>
-for the great SDL library <http://www.libsdl.org>.
+ParaGUI is built upon SDL (http://www.libsdl.org/), a cross-platform multimedia
+library designed to provide low level access to audio, keyboard, mouse,
+joystick, 3D hardware via OpenGL, and 2D video framebuffer.
+Thus, ParaGUI is very cross-platform as well full featured. The power of SDL is
+available in ParaGUI.
 
-The primary authors of Paragui are:
+Special thanks go to Sam Lantinga <slouken@libsdl.org> for the great SDL library.
 
-Alexander Pipelka <pipelka@teleweb.at>
+The primary authors of ParaGUI are:
 
-Sebastian Haag <ulf82@users.sf.net>:
-Win32 maintenance
-bug fix wizard
-overall improvements
+<ul type="none">
+    <li>Alexander Pipelka <pipelka@teleweb.at></li>
 
-Keith Swyer <ksswyer@hotmail.com>:
-MacOS support
-CodeWarrior 7 project files
+    <li>Sebastian Haag <shaag@ix.urz.uni-heidelberg.de></li>
+    <ul>
+        <li>Win32 maintenance</li>
+        <li>bug fix wizard</li>
+        <li>overall improvements</li>
+    </ul>
 
-David Hedbor <david@hedbor.org>:
-GCC 3.0/Win32 testing
-VisualC++ workspaces
-bug fixes
-C++ standards checking
-SDL_rotozoom integration
+    <li>Mohammed Yousif <mhdyousif@gmx.net></li>
+    <ul>
+        <li>UNICODE support</li>
+    </ul>
 
-Marek Habersack <grendel@vip.net.pl>:
-PG_PopupMenu
-STLport integration
+    <li>Keith Swyer <ksswyer@hotmail.com></li>
+    <ul>
+        <li>MacOS support</li>
+        <li>CodeWarrior 7 project files</li>
+    </ul>
 
-Ales Teska <ales.teska@dbinvest.cz>:
-new freetype font rendering
-XML layout loader
-various small changes
+    <li>David Hedbor <david@hedbor.org></li>
+    <ul>
+        <li>GCC 3.0/Win32 testing</li>
+        <li>VisualC++ workspaces</li>
+        <li>bug fixes</li>
+        <li>C++ standards checking</li>
+        <li>SDL_rotozoom integration</li>
+    </ul>
 
-Jaroslav Vozab <vozab@dbsystem.cz>:
-PG_RichEdit, PG_WidgetListEx
-new text rendering
+    <li>Marek Habersack <grendel@vip.net.pl></li>
+    <ul>
+        <li>PG_PopupMenu</li>
+        <li>STLport integration</li>
+    </ul>
 
-Antonin Hildebrand <woid@centrum.cz>:
-Win32 testing
+    <li>Ales Teska <ales.teska@dbinvest.cz></li>
+    <ul>
+        <li>new freetype font rendering</li>
+        <li>XML layout loader</li>
+        <li>various small changes</li>
+    </ul>
 
-Mike Dunston <atani@atani-software.net>:
-PG_SpinnerBox
-first version of zipped themes
+    <li>Jaroslav Vozab <vozab@dbsystem.cz></li>
+    <ul>
+        <li>PG_RichEdit, PG_WidgetListEx</li>
+        <li>new text rendering</li>
+    </ul>
 
-Michael Moerz <aon.912411198@aon.at>:
-Debian packaging
+    <li>Antonin Hildebrand <woid@centrum.cz></li>
+    <ul>
+        <li>Win32 testing</li>
+    </ul>
 
-Jacek Poplawski - OpenGL ideas
-Donald Molaro - bug fixes
+    <li>Mike Dunston <atani@atani-software.net></li>
+    <ul>
+        <li>PG_SpinnerBox</li>
+        <li>first version of zipped themes</li>
+    </ul>
 
-rotozoom.cpp is based on the LGPL package
-SDL_rotozoom by A. Schiffler <aschiffler@home.com>. Reworked to fit
-into the ParaGUI framework by David Hedbor <david@hedbor.org>.
+    <li>Michael Moerz <aon.912411198@aon.at></li>
+    <ul>
+        <li>Debian packaging</li>
+    </ul>
 
-PhysicsFS <http://icculus.org/physfs/> is copyrighted by
-Ryan C. Gordon <icculus@clutteredmind.org> under the LGPL.
+    <li>Jacek Poplawski</li>
+    <ul>
+        <li>OpenGL ideas</li>
+    </ul>
+    
+    <li>Donald Molaro</li>
+    <ul>
+        <li>bug fixes</li>
+    </ul>
+</ul>
+
+rotozoom.cpp is based on the LGPL package SDL_rotozoom by A. Schiffler
+<aschiffler@home.com>. Reworked to fit into the ParaGUI framework by David
+Hedbor.
+
+PhysicsFS <http://icculus.org/physfs/> is copyrighted by Ryan C. Gordon
+<icculus@clutteredmind.org> under the LGPL.
  
 Thanks to the many people providing patches, fixes & ideas:
 
-Andrew Ford
-Brian T. Crowder
-Oliver Lietz
-Henrik Edwards
-Paolo Ciccone
-David Hunt
-Jens Rieks
-Dave Robillard
-Ray Kelm
-Francis Irving
-Pete Shinners
-Franck Guillaud
+<ul type="none">
+    <li>Andrew Ford</li>
+    <li>Brian T. Crowder</li>
+    <li>Oliver Lietz</li>
+    <li>Henrik Edwards</li>
+    <li>Paolo Ciccone</li>
+    <li>David Hunt</li>
+    <li>Jens Rieks</li>
+    <li>Dave Robillard</li>
+    <li>Ray Kelm</li>
+    <li>Francis Irving</li>
+    <li>Pete Shinners</li>
+    <li>Franck Guillaud</li>
+</ul>
 
-Sorry, if I forgot anyone. If I did, then please email me
-(follinge@piconap.com).
+Sorry, if I forgot anyone. If I did, then please email me.
 
-This tutorial is an attempt to document as much as possible of Paragui,
+This tutorial is an attempt to document as much as possible of ParaGUI,
 but it is by no means complete. This tutorial assumes a good
 understanding of C++, and how to create C++ programs. It would be a great
 benefit for the reader to have previous SDL programming experience, but
-it shouldn't be necessary. If you are learning Paragui as your first
+it shouldn't be necessary. If you are learning ParaGUI as your first
 widget set, please comment on how you found this tutorial, and what
-you had trouble with. There are also Python and Ruby, and
-other language bindings available, and I believe C bindings in the works.
-Check the bindings directory in the toplevel of the Paragui source code 
-for details.
+you had trouble with. This will help other people understand the tutorial
+better.
 
-@section Getting Started
-@subsection Getting Started
 
-The first thing to do, of course, is download the Paragui source and
+@section section1 The Beginning
+@subsection section1_1 Getting Started
+
+The first thing, of course, is to download the ParaGUI source and
 install it. You can always get the latest version from  
-http://savannah.gnu.org/projects/paragui/ in
-http://savannah.nongnu.org/files/?group=paragu. 
-Paragui uses autoconf for configuration. Once the source code is unpacked, 
-type ./configure --help to get a list of options.
+http://savannah.gnu.org/projects/paragui/
+ParaGUI uses autoconf for configuration. Once the source code is unpacked, 
+type ./configure --help to get a list of options. \e If you intend to
+internationalize your code, it may be especially useful to configure with
+--enable-unicode.
 
-To begin our introduction to Paragui, we'll start with the simplest
+To begin our introduction to ParaGUI, we'll start with the simplest
 program possible. 
 
 @code
 
-#include "pgapplication.h"
+#include <pgapplication.h>
 
 int main() {
     // construct the application object
     PG_Application app;
 
-    //app.EnableBackground(true);
     app.LoadTheme("default");
 
-    // init 1024x768
-    if(!app.InitScreen(800,600, 0, SDL_SWSURFACE)){
+    // init a small window
+    if(!app.InitScreen(200, 100, 0, SDL_SWSURFACE)){
         printf("Resolution not supported\n");
         exit(-1);
     }
+
+    // Set the window caption
+    app.SetCaption("Hello, World!");
 
     // Enter main loop 
     app.Run();
@@ -154,86 +214,329 @@ int main() {
 
 @endcode
 
-@subsection Compiling Helloworld
+
+@subsection section1_2 The Helloworld program
 
 You can compile the above program with gcc using:
 
+@verbatim
 g++ `paragui-config --cflags` -c hello.cpp
 g++ hello.o -o hello `paragui-config --libs`
+@endverbatim
 
-The first line will compile the hello.o file. It takes the output of paragui-config,
-which is a program that is used to get the compilation flags. The next line
-compiles the hello.o into an executable.
+The first line compiles the hello.cpp file and creates an object file, the
+second links the object file with the libraries and creates the executable.
+\c paragui-config is a script that can be called to get the correct flags for
+compiling or linking a program using ParaGUI. Having done this, let us take a
+closer look at the program:
 
+@code
+#include <pgapplication.h>
+@endcode
 All programs will of course include "pgapplication.h" which 
 contains the class that represents an application in ParaGUI. It handles the
 main loop and screen attibutes.
  
-An application must have a maximum of one PG_Application. If you try to create
-more than one PG_Application the constructor will exit your application with an
-console error message.
+A program must have a maximum of one PG_Application. If you try to create
+more than one, the constructor will exit your program with a console error
+message.
 
-The first line, main() {, is boilerplate C++.
+@code
+int main() {
+    // construct the application object
+    PG_Application app;
+@endcode
+The first line is boilerplate C++.
 
-The next line, PG_Application app, creates the paragui application object.
+The next line creates the ParaGUI application object. It does not need
+additional arguments.
 
-The next line, app.LoadTheme("default"),
-loads the theme. Themes are one of the greatest features of paragui as they
-allow you to change the look and feel of an application without recoding C++.
-Themes will be explained later. For now, its enough to know that you should
+@code
+    app.LoadTheme("default");
+@endcode
+This line loads the theme. Themes are one of the greatest features of ParaGUI
+as they allow you to change the look and feel of an application without recoding
+C++. Themes will be explained later. For now, its enough to know that you should
 include this line as boilerplate code.
 
 @code
-    if(!app.InitScreen(800,600, 0, SDL_SWSURFACE)){
+    if(!app.InitScreen(200, 100, 0, SDL_SWSURFACE)){
         printf("Resolution not supported\n");
         exit(-1);
     }
 @endcode
+This line pops up a window or exits the application gracefully if the window
+can not be created for some reason. 
 
-This line pops up a window or it exits the application gracefully if the window
-can not be popped up for some reason. 
+@code
+    app.SetCaption("Hello, World!");
 
-Finally, app.Run(). 
-This line is a bit confusing for people who are unused to
-dealing with gui toolkits. Why do I need to run my app? Actually, the 
-next line is a little misleading. The application can run without the next
-line, but it won't be interactive unless you add a great deal of more code.
+    // Enter main loop 
+    app.Run();
+@endcode
+The first line here sets the caption of the window that popped up right now.
+
+Then, the main application loop is started. This line is a bit confusing for
+people who are unused to dealing with gui toolkits. Why do I need to run my
+app? Actually, the next line is a little misleading. The application \e can run
+without the next line, but it won't be interactive unless you add a \e great
+deal of more code.
 
 The app.Run() line inverts the usual way that an application runs. When one
-writes a script style application, one instruction after the next is executing.
-
-In the initial parts of this application, we have seen that this is true.
-However, in a gui application, most of the app's time is spent waiting for user
-input. 
-
-Designers of toolkits were clever and made a shortcut so that instead of
-writing code each time to handle all that input, it would be automatically
-handled by the toolkit. Details of input handling will be explained in
-subsequent chapters on callbacks.
-
-FIXME: Start here and make this paragui style:
-
-@subsection Theory of Signals and Callbacks
-
-   Before we look in detail at helloworld, we'll discuss signals and callbacks.
-GTK is an event driven toolkit, which means it will sleep in gtk_main until an
-event occurs and control is passed to the appropriate function.
-
-   This passing of control is done using the idea of "signals". (Note that
-these signals are not the same as the Unix system signals, and are not
-implemented using them, although the terminology is almost identical.) When an
-event occurs, such as the press of a mouse button, the appropriate signal will
-be "emitted" by the widget that was pressed. This is how GTK does most of its
-useful work. There are signals that all widgets inherit, such as "destroy", and
-there are signals that are widget specific, such as "toggled" on a toggle
-button.
-
-   To make a button perform an action, we set up a signal handler to catch
-these signals and call the appropriate function. This is done by using a
-function such as:
+writes a typical non-GUI application, the commands are executed one after the
+other. However, in graphical applications, the program has to react to the user
+input, mouse movements and such. All the input is internally stored in an event
+list by SDL. What app.Run() does is going over this list again and again,
+picking out the interesting events (mouse motion, key pressing etc.) and passing
+them to the appropriate subwindows. When you finally quit an application, what
+really happens is that this loop is exited.
 
 
+@section section2 Signals and Slots
 
+This section is divided in three parts. The first one explains the basic concept
+of signals and slots and can be ignored by those who have already worked with
+Qt, libsigc++ or other libraries using this concept. The second part explains
+some details on the implementation of this concept in ParaGUI while the third
+implements a first signal in the hello world program.
+
+
+@subsection section2_1 What is this signal stuff anyway?
+
+Let us imagine an application that just pops up a window (as our hello world
+example), but with a button. Now calling app.Run() ensures that all the user
+activities are handled properly. In this case, if you click on a button, the
+button receives the information that he is clicked. So far everything is fine.
+But now you want to do something (usually call a function) when the button is
+clicked. So how do you tell the button that it should call a function when
+clicked?
+
+There are several solutions to the problem. An old and particularily crude one
+was implemented in the first versions of the Borland C++ Builder. The
+buttons had some (virtual) placeholder functions and whenever you actually
+implemented a button, you derived from the button class and overwrote this
+function that is automatically called whenever the button is pressed. Another
+one is passing messages around that the button is pressed and waiting for one of
+several registered objects to accept them (as partially been done in ParaGUI up
+to version 1.0.4).
+
+However, a much finer approach are function pointers. They behave just like a
+normal pointer, but point to functions instead of variables. You just tell the
+button the address of the function you want it to call whenever it is pressed
+and everything works fine. However, function pointers have some huge
+disadvantages:
+
+<ul type="none">
+    <li>they are ugly</li>
+    <li>their functionality is restricted</li>
+    <li>they can only point to one function</li>
+</ul>
+
+So people (Qt is propably \e the reference here) decided to abstract the concept
+of a function pointer a bit, fixed these problems along the way and called their
+new invention "signal/slot system".
+
+In these terms, a "signal" is basically something like a function pointer. You
+can do two things with a signal: you can "connect" it to a "slot" or you can
+"emit" it. "Connecting" a signal means that you associate this signal with a
+"slot" (basically a normal function). When you "emit" a signal, you
+automagically call all the connected slots with the given parameters. So
+implementing a button that calls one of your functions means to "connect" your
+function to the sigClick "signal" of the button. Of course, type safety issues
+have to be considered (i.e. only signals and slots with the same parameters and
+return value can be combined).
+
+If you still struggle with the concept of signals and slots, it may be helpful
+to read the documentation of the libsigc++ library, as it comes with a quite
+good tutorial of its own.
+
+
+@subsection section2_2 How ParaGUI does signals
+
+If you haven't found out already, ParaGUI uses libsigc++ for the signal code.
+However, some things have been customized.
+
+The most important remark is an extension of the type equivalence. Usually, the
+signal and the slot have to be of the same type. If, for example, we have a look
+at the signal that a button emits on clicks, we find in pgbutton.h:
+
+@code
+template<class datatype = PG_Pointer> class SignalButtonClick
+                    : public PG_Signal1<PG_Button*, datatype> {};
+@endcode
+
+Don't be terrified! All the information you should need from this line is that the
+signal when a button is clicked demands a slot with a bool return value (this is
+standard for all signals used within ParaGUI; however, as of version 1.1.8, I
+don't know any class that actually uses the return value) and that a
+fitting slot should take a PG_Button* and a PG_Pointer as parameter. However, in
+the case of paragui, it does not need to.
+
+Each object in ParaGUI can have some defined user data, which is stored as a
+PG_Pointer (typically, this is just a void*). It is set using SetUserData().
+This user data can then be supplied with all signals. The PG_Button* is a
+pointer to the button that raises the signal.
+
+Now let us continue with the button. Further down in pgbutton.h, we find
+the line
+
+@code
+SignalButtonClick<> sigClick;
+@endcode
+
+This says that the signal raised when the button is clicked is called sigClick
+and of the type seen further above. Due to internal conversions, this signal can
+be connected to one of the four following functions:
+
+@code
+bool long(PG_Button* b, PG_Pointer userdata);
+bool short(PG_Button* b);
+bool shortest();
+@endcode
+
+So if the signal sends some user data and the button pointer, it is already
+satisfied with a function that e.g. takes no arguments. Equipped with this
+knowledge, a second signal declaration should not worry us. We find one in
+pgslider.h:
+
+@code
+template<class datatype> class SignalSlide 
+                : public PG_Signal2<PG_ScrollBar*, datatype> {};
+...
+SignalSlide<long> sigSlide;
+@endcode
+
+Here, the slider emits a signal with three arguments (two plus the usual user
+data), namely a PG_ScrollBar, a long (the datatype in the original declaration
+is substituted by a long) and the user data not written explicitely here.
+
+This signal can then be connected to one of the functions
+
+@code
+bool func1(PG_ScollBar* s, long val, PG_Pointer userdata);
+bool func2(PG_ScrollBar* s, PG_Pointer userdata);
+bool func3(PG_ScrollBar* s, long val);
+bool func4(PG_ScrollBar* s);
+bool func5(long val);
+bool func6();
+@endcode
+
+Though this was a rather long theory part, I would like to make some final notes
+before going over to an actual implementation.
+
+First, libsigc++ does not neccessarily guarantee a specific order of execution
+(maybe this has changed, and typically this should be the reverse order of
+connection), so if you connect a signal to multiple slots, make sure order is
+not of any importance.
+
+If you get a bunch of error messages with the word "signal" occuring everywhere
+you have propably connected a signal to a slot of the wrong type.
+
+Furthermore, libsigc++ also offers some advanced techniques, such as rebinding
+(connecting signals to functions of the "wrong" type). If this sounds
+interesting, I'd strongly encourage you to read the libsigc++ manual (should be
+installed in the documentation directory). It is quite short and very readable,
+by the way.
+
+
+@subsection section2_3 Hello World with button
+
+Now, after all this dry theory, we want to actually do something with signals.
+Let us equip our hello world example from the previous section with a button. If
+you click on the button, its text shall be changed.
+
+The complete sourcecode can be found here: @ref ex_button
+Let us have a look at the changes.
+
+
+@code
+#include <pgbutton.h>
+@endcode
+Of course, now that we use buttons, we also have to include the appropriate
+header file.
+
+@code
+bool ChangeText(PG_Button* b)
+{
+    b->SetText("Clicked!");
+    return true;
+}
+@endcode
+Furthermore, we need a function that the button calls when clicked. It changes
+the text of the clicked button and uses the given argument for it.
+
+@code
+    PG_Button* btn = new PG_Button(0, PG_Rect(50, 50, 100, 30), "Click Me!");
+@endcode
+Now we create a button. The arguments don't need to concern us for now. They
+will be dealt with in the next section.
+
+@code
+    btn->sigClick.connect(slot(ChangeText));
+@endcode
+Here we connect the sigClick signal of the button with our function. Note the
+syntax. \e Always include the function you want to connect to in a call to \c
+slot.
+This function makes an appropriate slot from the given function. In the next
+section, an example where the slot is created from a member function of a
+class will be given.
+
+@code
+    btn->Show();
+@endcode
+Since the button is not visible by default, we need to explicitely display it.
+
+
+
+@section section3 Creating a dialog
+here I wanted to put the constructor stuff (parents, PG_Rect, connecting to
+objects etc.)
 */
 
 
+//-----------------------------------------------------------------------------
+// Here come the examples that I have put to separate pages
+
+/**
+@page ex_button button.cpp
+
+@code
+#include <pgapplication.h>
+#include <pgbutton.h>
+
+bool ChangeText(PG_Button* b)
+{
+    b->SetText("Clicked!");
+    return true;
+}
+
+int main() {
+    // construct the application object
+    PG_Application app;
+
+    //app.EnableBackground(true);
+    app.LoadTheme("default");
+
+    // init a small window
+    if(!app.InitScreen(200,100, 0, SDL_SWSURFACE)){
+        printf("Resolution not supported\n");
+        exit(-1);
+    }
+
+    // Set the text in the title bar
+    app.SetCaption("Hello, World!");
+
+    // construct a button
+    PG_Button* btn = new PG_Button(0, PG_Rect(50, 50, 100, 30), "Click Me!");
+
+    // connect the button to our function
+    btn->sigClick.connect(slot(ChangeText));
+    btn->Show();
+    
+    // Enter main loop 
+    app.Run();
+
+    return EXIT_SUCCESS;
+}
+@endcode
+*/
