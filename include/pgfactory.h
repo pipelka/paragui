@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/06/27 06:32:59 $
+    Update Date:      $Date: 2005/05/18 11:18:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfactory.h,v $
-    CVS/RCS Revision: $Revision: 1.8.2.3 $
+    CVS/RCS Revision: $Revision: 1.8.2.4 $
     Status:           $State: Exp $
 */
 
@@ -41,6 +41,10 @@ public:
 	static T* CreateObject(PT* parent) {
 		return new T(parent);
 	}
+
+	static T* CreateObject0() {
+		return new T;
+	}
 };
 
 template<class H>
@@ -57,7 +61,21 @@ public:
 		PG_Singleton< PG_FactoryHolder<H> >::GetInstance().RegisterCreateFn(classname, (CREATEFN)&PG_FactoryObject<T>::CreateObject);
 	}
 
+	template< class T > static void RegisterClass0(const H& classname) {
+		PG_Singleton< PG_FactoryHolder<H> >::GetInstance().RegisterCreateFn(classname, (CREATEFN)&PG_FactoryObject<T>::CreateObject0);
+	}
+
 	static PG_Widget* CreateObject(const H& classname, PG_Widget* parent = NULL) {
+		CREATEFN create = PG_Singleton< PG_FactoryHolder<H> >::GetInstance().creator_map[classname];
+		
+		if(create == NULL) {
+			return NULL;
+		}
+		
+		return create(parent);
+	}
+
+	static PG_Widget* CreateObject0(const H& classname, PG_Widget* parent = NULL) {
 		CREATEFN create = PG_Singleton< PG_FactoryHolder<H> >::GetInstance().creator_map[classname];
 		
 		if(create == NULL) {
