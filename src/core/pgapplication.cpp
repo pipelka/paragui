@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/16 16:26:50 $
+    Update Date:      $Date: 2005/05/19 12:16:39 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.22 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.23 $
     Status:           $State: Exp $
 */
 
@@ -216,7 +216,10 @@ void PG_Application::RunEventLoop() {
 				PumpIntoEventQueue(&event);
 			}
 		} else {
-			my_eventSupplier->WaitEvent(&event);
+			if(my_eventSupplier->WaitEvent(&event) != 1) {
+				SDL_Delay(10);
+				continue;
+			}
 			PumpIntoEventQueue(&event);
 		}
 
@@ -264,7 +267,7 @@ void PG_Application::DrawCursor(bool update) {
 		SDL_ShowCursor(SDL_DISABLE);
 	}
 
-	SDL_GetMouseState(&x, &y);
+	my_eventSupplier->GetMousePosition(x, y);
 
 	Sint16 dx = x - my_mouse_position.my_xpos;
 	Sint16 dy = y - my_mouse_position.my_ypos;
@@ -1036,7 +1039,7 @@ PG_Application* PG_Application::GetApp() {
 void PG_Application::FlushEventQueue() {
 	SDL_Event event;
 
-	while(SDL_PollEvent(&event)) {
+	while(my_eventSupplier->PollEvent(&event)) {
 		/*if(event.type == SDL_USEREVENT) {
 			delete (MSG_MESSAGE*)(event.user.data1);
 		}*/

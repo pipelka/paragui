@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/05/16 16:26:50 $
+   Update Date:      $Date: 2005/05/19 12:16:39 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.28 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.29 $
    Status:           $State: Exp $
  */
 
@@ -521,7 +521,7 @@ bool PG_Widget::RemoveChild(PG_Widget * child) {
 
 bool PG_Widget::IsMouseInside() {
 	int x, y;
-	SDL_GetMouseState(&x, &y);
+	PG_Application::GetEventSupplier()->GetMousePosition(x, y);
 	PG_Point p(x, y);
 	_mid->mouseInside = IsInside(p);
 
@@ -814,7 +814,7 @@ void PG_Widget::SetChildTransparency(Uint8 t) {
 void PG_Widget::StartWidgetDrag() {
 	int x, y;
 	
-	SDL_GetMouseState(&x, &y);
+	PG_Application::GetEventSupplier()->GetMousePosition(x, y);
 	_mid->ptDragStart.x = static_cast<Sint16>(x) - my_xpos;
 	_mid->ptDragStart.y = static_cast<Sint16>(y) - my_ypos;
 }
@@ -1439,9 +1439,14 @@ int PG_Widget::RunModal() {
 	SDL_Event event;
 	_mid->quitModalLoop = false;
 
+	//PG_Application::FlushEventQueue();
+
 	// run while in modal mode
 	while(!_mid->quitModalLoop) {
-		PG_Application::GetEventSupplier()->WaitEvent(&event);
+		if(PG_Application::GetEventSupplier()->WaitEvent(&event) != 1) {
+			SDL_Delay(10);
+			continue;
+		}
 		PG_Application::ClearOldMousePosition();
 		ProcessEvent(&event, true);
 		PG_Application::DrawCursor();

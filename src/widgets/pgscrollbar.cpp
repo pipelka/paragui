@@ -20,14 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2005/05/19 12:16:39 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgscrollbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
     Status:           $State: Exp $
 */
 
 #include "pgscrollbar.h"
 #include "pgapplication.h"
+#include "pgeventsupplier.h"
 
 #include "propstrings_priv.h"
 
@@ -210,7 +211,7 @@ bool PG_ScrollBar::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 	int mx = dragbutton->my_xpos + dragbutton->my_width / 2;
 	int my = dragbutton->my_ypos + dragbutton->my_height / 2;
 
-	SDL_GetMouseState(&x, &y);
+	PG_Application::GetEventSupplier()->GetMousePosition(x,y);
 
 	switch (button->button) {
 		case 1:
@@ -263,7 +264,6 @@ bool PG_ScrollBar::ScrollButton::eventMouseMotion(const SDL_MouseMotionEvent* mo
 
 	if(GetPressed()) {
 
-		//SDL_GetMouseState(&x, &y);
 		p = GetParent()->ScreenToClient(motion->x, motion->y);
 
 		if(GetParent()->sb_direction == VERTICAL) {
@@ -322,7 +322,7 @@ bool PG_ScrollBar::ScrollButton::eventMouseButtonDown(const SDL_MouseButtonEvent
 	int x,y;
 
 	if(button->button == 1) {
-		SDL_GetMouseState(&x, &y);
+		PG_Application::GetEventSupplier()->GetMousePosition(x,y);
 		offset = ScreenToClient(x, y);
 	}
 

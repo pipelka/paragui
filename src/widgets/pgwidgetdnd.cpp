@@ -20,15 +20,16 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2005/05/19 12:16:39 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetdnd.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.1 $
+    CVS/RCS Revision: $Revision: 1.3.8.2 $
     Status:           $State: Exp $
 */
 
 #include "pgwidgetdnd.h"
 #include "pgapplication.h"
 #include "pgdraw.h"
+#include "pgeventsupplier.h"
 
 PG_WidgetDnD* PG_WidgetDnD::dnd_objectlist = NULL;
 
@@ -150,7 +151,7 @@ bool PG_WidgetDnD::eventDragStart() {
 bool PG_WidgetDnD::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 	int x,y;
 
-	SDL_GetMouseState(&x, &y);
+	PG_Application::GetEventSupplier()->GetMousePosition(x, y);
 	CheckCursorPos(x, y);
 
 	if((button->button == 1) && CanDrag) {
@@ -186,7 +187,7 @@ bool PG_WidgetDnD::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 	int x,y;
 	PG_Point pt;
 
-	SDL_GetMouseState(&x, &y);
+	PG_Application::GetEventSupplier()->GetMousePosition(x, y);
 	CheckCursorPos(x, y);
 	pt.x = x;
 	pt.y = y;
@@ -242,7 +243,7 @@ bool PG_WidgetDnD::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 	int x,y;
 	PG_Point pt;
 
-	SDL_GetMouseState(&x, &y);
+	PG_Application::GetEventSupplier()->GetMousePosition(x, y);
 	CheckCursorPos(x, y);
 
 	pt.x = x;

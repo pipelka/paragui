@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/16 16:26:51 $
+    Update Date:      $Date: 2005/05/19 12:16:39 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgsdleventsupplier.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.1.2.2 $
     Status:           $State: Exp $
 */
 
@@ -86,6 +86,14 @@ public:
 	@return  return 0 if there was an error while waiting for events        
 	*/
 	int WaitEvent(SDL_Event* event);
+
+	/**
+	Get the current mouse position.
+	
+	@param x current mouse x position
+	@param y current mouse y position
+	*/
+	void GetMousePosition(int& x, int& y);
 
 };
 
