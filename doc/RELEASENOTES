@@ -77,6 +77,11 @@ Whats new in ParaGUI 1.1.9 ?
 - the PG_Dropdown missed a function to get the item index, although the
   itemlist offered one.
 - SDL Event source customization patch
+- Popupmenu patch
+  It adds the ability to use menuitems like "save\tctrl-s", where the ctrl-s is
+  displayed at the right side. Another change is that a separator entry displays a line (it was until
+  now only a little more space between two menu items). 
+
 
 - applied patches from Ulf Lorenz:
 - documentation updates (faq, tutorial)

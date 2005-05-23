@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/05/23 10:27:24 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
     Status:           $State: Exp $
 */
 
@@ -143,13 +143,14 @@ public:
 		inline operator PG_Point const&() const;
 	
 	private: // methods
-		DLLLOCAL void initItem();
+		DLLLOCAL void initItem( const std::string& caption );
 		DLLLOCAL bool renderSurface(SDL_Surface *canvas, SDL_Surface **text, PG_Color* tcol, PG_Color* scol = 0);
 		DLLLOCAL bool isValidRect();
 	
 	protected: // data
 		unsigned      myFlags;
 		PG_String     myCaption;
+		PG_String     myRightCaption; 
 		PG_PopupMenu *myParent;
 	
 		PG_PopupMenu *mySubMenu;
@@ -163,7 +164,6 @@ public:
 	
 	private: // data
 		bool          needRecalc;
-		SDL_Rect      blitRect;
 		PG_Point      myPoint;
 	};
 
@@ -309,6 +309,12 @@ protected: // data
 	int                   xPadding;
 	int                   yPadding;
 
+	/** if a menu entry has a right justified component 
+            ( e.g. "save\tctrl-s" ), this is the minimum space for the tab  */
+	int                  minTabWidth;                
+
+	int                  separatorLineWidth;                
+        
 private: // data
 	PG_Rect               captionRect;
 	PG_Rect               actionRect;

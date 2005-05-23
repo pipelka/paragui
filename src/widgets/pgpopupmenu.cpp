@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/12/30 07:10:21 $
+   Update Date:      $Date: 2005/05/23 10:27:24 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.10 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.11 $
    Status:           $State: Exp $
  */
 
@@ -41,7 +41,6 @@
  */
 PG_PopupMenu::MenuItem::MenuItem(PG_PopupMenu *parent, const std::string& caption, int id, MI_FLAGS flags)
 		: myFlags(flags),
-		myCaption(caption),
 		myParent(parent),
 		mySubMenu(0),
 		myId(id),
@@ -50,13 +49,12 @@ PG_PopupMenu::MenuItem::MenuItem(PG_PopupMenu *parent, const std::string& captio
 		sDisabled(0),
 		selected(false),
 needRecalc(true) {
-	initItem();
+	initItem( caption );
 	myFlags &= ~MIF_SUBMENU;
 }
 
 PG_PopupMenu::MenuItem::MenuItem(PG_PopupMenu *parent, const std::string& caption, PG_PopupMenu *submenu)
 : myFlags(MIF_SUBMENU),
-myCaption(caption),
 myParent(parent),
 mySubMenu(submenu),
 myId(-1),
@@ -65,15 +63,24 @@ sSelected(0),
 sDisabled(0),
 selected(false),
 needRecalc(true) {
-	initItem();
+	initItem( caption );
 }
 
 PG_PopupMenu::MenuItem::~MenuItem() {}
 
-void PG_PopupMenu::MenuItem::initItem() {
+void PG_PopupMenu::MenuItem::initItem( const std::string& caption ) {
 	my_xpos = my_ypos = my_height = my_width = 0;
 	myPoint.x = myPoint.y = 0;
 
+        
+	std::string::size_type tabPos = caption.find('\t');
+	if ( tabPos != std::string::npos && tabPos < caption.length()-1 ) {
+		myCaption  = caption.substr(0,tabPos);
+		myRightCaption = caption.substr(tabPos+1 );
+	} else {                
+		myCaption = caption;
+	}
+                        
 	measureItem(this);
 	needRecalc = false;
 
@@ -107,13 +114,31 @@ bool PG_PopupMenu::MenuItem::measureItem(PG_Rect* rect, bool full) {
 	
 	Uint16 w,h;
 
-	PG_Widget::GetTextSize(
-		w, h,
-		myCaption,
-		myParent->GetFont());
+	if ( myRightCaption.length()  ) {
+		PG_Widget::GetTextSize(
+			w, h,
+			myCaption,
+			myParent->GetFont());
 
-	rect->w = w;
-	rect->h = h;
+		rect->w = w;
+		rect->h = h;
+                
+		PG_Widget::GetTextSize(
+			w, h,
+			myRightCaption,
+			myParent->GetFont());
+
+		rect->w = rect->w + w + myParent->minTabWidth;
+		rect->h = std::max( rect->h, h);
+	} else {        
+		PG_Widget::GetTextSize(
+			w, h,
+			myCaption,
+			myParent->GetFont());
+
+		rect->w = w;
+		rect->h = h;
+	}                
 
 	//+++
 	//    TTF_SizeText(myFont, myCaption.c_str(),
@@ -142,14 +167,26 @@ bool PG_PopupMenu::MenuItem::renderSurface(SDL_Surface *canvas, SDL_Surface **te
 	if (/*!*text ||*/ !canvas)
 		return false;
 
+	SDL_Rect      blitRect;
 	blitRect.x = x + myParent->x;
 	blitRect.y = y  + myParent->y;
-	blitRect.w = w;
+	blitRect.w = myParent->maxItemWidth();
 	blitRect.h = h;
 
-	myParent->SetFontColor(*tcol);
-	PG_FontEngine::RenderText(canvas, blitRect, blitRect.x, blitRect.y+myParent->GetFontAscender(), myCaption, myParent->GetFont());
+	if ( myFlags & MIF_SEPARATOR ) {
+		PG_Draw::DrawLine(canvas, blitRect.x, blitRect.y + 1, blitRect.x + myParent->maxItemWidth(), blitRect.y + 1, myParent->GetFont()->GetColor(), myParent->separatorLineWidth );        
+	} else {        
+		myParent->SetFontColor(*tcol);
+		if ( myRightCaption.length()  ) {
+			Uint16 tw,th;
 
+			PG_Widget::GetTextSize( tw, th, myRightCaption, myParent->GetFont());
+		
+			PG_FontEngine::RenderText(canvas, blitRect, blitRect.x + myParent->maxItemWidth() - tw, blitRect.y+myParent->GetFontAscender(), myRightCaption, myParent->GetFont());
+		}
+		PG_FontEngine::RenderText(canvas, blitRect, blitRect.x, blitRect.y+myParent->GetFontAscender(), myCaption, myParent->GetFont());
+		
+	}
 	//SDL_BlitSurface(*text, NULL, canvas, &blitRect);
 
 	return true;
@@ -193,6 +230,8 @@ PG_PopupMenu::PG_PopupMenu(PG_Widget *parent,
 		: PG_ThemeWidget(parent, PG_Rect(0, 0, 1, 1)),
 		xPadding(0),
 		yPadding(0),
+		minTabWidth(5),
+		separatorLineWidth(1),
 		itemHeight(0),
 		selected(0),
 		tracking(false),
@@ -786,6 +825,7 @@ void PG_PopupMenu::LoadThemeStyle(const std::string& widgettype) {
 	// Global
 	theme->GetProperty(widgettype, "PopupMenu", "xPadding", xPadding);
 	theme->GetProperty(widgettype, "PopupMenu", "yPadding", yPadding);
+	theme->GetProperty(widgettype, "PopupMenu", "minTabWidth", minTabWidth);
 
 	// caption
 	PG_ThemeWidget::LoadThemeStyle(widgettype, "Caption");
@@ -796,6 +836,7 @@ void PG_PopupMenu::LoadThemeStyle(const std::string& widgettype) {
 	theme->GetColor(widgettype, "MenuItem", "Disabled", miDisabledColor);
 	theme->GetColor(widgettype, "MenuItem", "SepNormal", sepNormalColor);
 	theme->GetColor(widgettype, "MenuItem", "SepShadow", sepShadowColor);
+	theme->GetProperty(widgettype, "MenuItem", "separatorLineWidth", separatorLineWidth);
 
 	miGradients[0] = theme->FindGradient(widgettype, "MenuItem", "gradientNormal");
 	miGradients[1] = theme->FindGradient(widgettype, "MenuItem", "gradientSelected");
