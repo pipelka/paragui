@@ -45,7 +45,7 @@ If you have any questions about ParaGUI, please send a mail to the
 mailing list. There are more people reading this. I will propably
 update this FAQ then, regularily.
 
-Last I should note that I am a bit linux-centered and have to admit that
+Last I should note that I am a bit Linux-centered and have to admit that
 I have no ideas about doxygen under Windows and such. Corrections and
 Annotations here would be welcome.
 
@@ -62,12 +62,12 @@ documentation under "Related pages".
 
 For those who cannot build the documentation for some reason, the intro
 can also be found together with other documentation under
-$(src)/doc/txt in plain text.
+$(src)/doc/txt in something like plain text.
 
 
 1.2. I want to know how ParaGUI works. Where should I start?
 
->From my own experience, I would start with the files:
+From my own experience, I would start with the files:
 - src/core/pgapplication.cpp    because it is often referenced
 - src/core/pgmessageobject.cpp  where the whole message stuff is
   described
@@ -77,7 +77,7 @@ $(src)/doc/txt in plain text.
 These three files should get you started just fine. Understanding e.g. a
 PG_Button is not too much work after that.
 
-Since ParaGUI uses SDL and libSigC++ excessively, the documentation
+Since ParaGUI uses SDL and LibSigC++ excessively, the documentation
 there should also be read. LibsigC++ comes with an excellent
 introduction as does SDL, where the header files can also be read
 fluently (mainly the video and the event part of SDL are important).
@@ -99,7 +99,7 @@ This is propably one of the favorite questions and has some background.
 For displaying purpose, ParaGUI uses the free font rendering engine
 freetype. However, thanks to Apple, the bytecode interpreter used there
 possibly interferes with some patents; actual information can be found
-under http://www.freetype.org/patents.html.
+under http://www.freetype.sf.net/patents.html.
 
 Even if you don't care for patents, some distributors have therefore
 disabled the bytecode interpreter at least in some versions. Possibly,
@@ -108,23 +108,24 @@ ParaGUI then just shows no fonts for some reason.
 
 The only solution here is to recompile freetype from scratch. And don't
 forget to uncomment the option TT_CONFIG_OPTION_BYTECODE_INTERPRETER in
-some header file.
+include/freetype/config/ftoption.h before compiling it. I have not yet
+tested if the more recent versions of freetype work without this
+feature, so if you have tested this, mail me.
 
 
 2.2. I can't load images other than simple bmp files. What should I do?
 
-You have propably forgot to install/compile SDL_Image. SDL itself can
+You have propably forgotten to install/compile SDL_Image. SDL itself can
 only handle bitmap files, other formats are loaded by using the image
 extension.
 
 
 2.3. Whenever I run the unicode test, it just displays rubbish.
 
-Use a font that supports unicode. Unfortunately, the font that comes
-with paragui (Vera) does only display standard characters found in
-Western European charsets. Font files generally end with .ttf. To
-replace a font file to see this (this is just a quick start, no
-explanation!):
+Use a font that supports unicode. The font that comes with paragui
+(Vera) does only display standard characters found in Western European
+charsets. Font files generally end with .ttf. To replace a font file to
+see this (this is just a quick start, no explanation!):
 
 - unzip default.zip (found in the data subdir)
 - copy you new font in the now existing "default" directory
@@ -144,7 +145,8 @@ CHECK THE COPYRIGHT!
 2.4. configure error with output containing PKG_CHECK_MODULES
 
 You have not installed pkgconfig. Unfortunately, ParaGUI does not check
-for the presence of this program. So either install or compile it.
+for the presence of this program. You need to either install or compile
+it.
 
 
 2.5. Why don't the (python/ruby/...) bindings work?
@@ -194,7 +196,7 @@ that the timers are removed while another SDL function still goes
 through the list of timers to see if one is due to be raised.
 
 AFAIR, this may also happen in theory under certain, very exotic
-circumstances (all of them including very fast timers and/or very slow
+conditions (all of them including very fast timers and/or very slow
 processing). However, most likely this bug will not pop up under normal
 circumstances.
 
@@ -237,7 +239,7 @@ query the last pressed key with some user-defined function my_getkey().
 The solution works in three steps.
 
 1. You query my_getkey() and find out that the "up" key was pressed.
-   (This is our job)
+   (This is your job)
 
 2. You add an event to the event queue. See SDL_event.h for details. In
    the given example, it could go like this:
