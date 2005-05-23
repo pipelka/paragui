@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/19 12:16:39 $
+    Update Date:      $Date: 2005/05/23 17:35:52 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgeventsupplier.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -82,8 +82,9 @@ public:
 	
 	@param x current mouse x position
 	@param y current mouse y position
+        @return bitmap of pressed mouse buttons
 	*/
-	virtual void GetMousePosition(int& x, int& y) = 0;
+	virtual int GetMouseState(int& x, int& y) = 0;
 };
 
 #endif // PG_EVENTSUPPLIER_H

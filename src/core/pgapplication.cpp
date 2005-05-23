@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/19 12:16:39 $
+    Update Date:      $Date: 2005/05/23 17:35:52 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.23 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.24 $
     Status:           $State: Exp $
 */
 
@@ -267,7 +267,7 @@ void PG_Application::DrawCursor(bool update) {
 		SDL_ShowCursor(SDL_DISABLE);
 	}
 
-	my_eventSupplier->GetMousePosition(x, y);
+	my_eventSupplier->GetMouseState(x, y);
 
 	Sint16 dx = x - my_mouse_position.my_xpos;
 	Sint16 dy = y - my_mouse_position.my_ypos;

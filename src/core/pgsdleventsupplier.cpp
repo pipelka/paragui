@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/19 12:16:39 $
+    Update Date:      $Date: 2005/05/23 17:35:52 $
     Source File:      $Source: /sources/paragui/paragui/src/core/Attic/pgsdleventsupplier.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -67,6 +67,6 @@ int PG_SDLEventSupplier::WaitEvent(SDL_Event* event) {
 	return res;
 }
 
-void PG_SDLEventSupplier::GetMousePosition(int& x, int& y) {
-	SDL_GetMouseState(&x, &y);
+int  PG_SDLEventSupplier::GetMouseState(int& x, int& y) {
+	return SDL_GetMouseState(&x, &y);
 }

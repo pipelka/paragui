@@ -20,17 +20,17 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/05/23 10:27:24 $
+   Update Date:      $Date: 2005/05/23 17:35:52 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.11 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.12 $
    Status:           $State: Exp $
  */
 
 #include "pgdraw.h"
 #include "pgapplication.h"
 #include "pgpopupmenu.h"
-#include "pglog.h"
 #include "pgtheme.h"
+#include "pgeventsupplier.h"
 
 #include <functional>
 #include <algorithm>
@@ -129,7 +129,8 @@ bool PG_PopupMenu::MenuItem::measureItem(PG_Rect* rect, bool full) {
 			myParent->GetFont());
 
 		rect->w = rect->w + w + myParent->minTabWidth;
-		rect->h = std::max( rect->h, h);
+		if ( h > rect->h )
+			rect->h = h;
 	} else {        
 		PG_Widget::GetTextSize(
 			w, h,
@@ -174,7 +175,7 @@ bool PG_PopupMenu::MenuItem::renderSurface(SDL_Surface *canvas, SDL_Surface **te
 	blitRect.h = h;
 
 	if ( myFlags & MIF_SEPARATOR ) {
-		PG_Draw::DrawLine(canvas, blitRect.x, blitRect.y + 1, blitRect.x + myParent->maxItemWidth(), blitRect.y + 1, myParent->GetFont()->GetColor(), myParent->separatorLineWidth );        
+		PG_Draw::DrawLine(canvas, blitRect.x, blitRect.y + 1, blitRect.x + myParent->maxItemWidth(), blitRect.y + 1, myParent->GetFont()->GetColor(), myParent->separatorLineWidth );
 	} else {        
 		myParent->SetFontColor(*tcol);
 		if ( myRightCaption.length()  ) {
@@ -364,6 +365,12 @@ void PG_PopupMenu::enableItem(int id) {
 }
 
 void PG_PopupMenu::trackMenu(int x, int y) {
+	tracking = true;
+	openMenu( x, y );
+	buttonDown = PG_Application::GetEventSupplier()->GetMouseState( x,y ) & SDL_BUTTON_LEFT;
+}
+                
+void PG_PopupMenu::openMenu(int x, int y) {
 	if (x >= 0 && y >= 0) {
 		if (x != my_xpos && y != my_ypos)
 			MoveWidget(x, y);
@@ -383,7 +390,6 @@ void PG_PopupMenu::trackMenu(int x, int y) {
 	if (x != my_xpos || y != my_ypos)
 		MoveWidget(x, y);
 	
-	tracking = true;
 	Show();
 }
 

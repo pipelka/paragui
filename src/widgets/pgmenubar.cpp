@@ -1,6 +1,9 @@
 #include "pgmenubar.h"
 #include "pgbutton.h"
 #include "pgpopupmenu.h"
+#include "pglog.h"
+#include "pgapplication.h"
+#include "pgeventsupplier.h"
 
 PG_MenuBar::PG_MenuBar(PG_Widget* parent, const PG_Rect& rect, const std::string& style) : PG_ThemeWidget(parent, rect, style) {
 	my_btnOffsetY = 2;
@@ -44,14 +47,42 @@ void PG_MenuBar::Add(const std::string& text, PG_PopupMenu* menu, Uint16 indent,
 				text, -1,
 				my_style);
 
+	last->button->SetBehaviour( PG_Button::SIGNALONCLICK );
 	last->button->SetFontSize(GetFontSize());
 
 	last->button->sigClick.connect(slot(*this, &PG_MenuBar::handle_button), (PG_Pointer)last);
+	last->button->sigMouseLeave.connect(slot(*this, &PG_MenuBar::leaveButton), (PG_Pointer)last );
+	last->button->sigMouseEnter.connect(slot(*this, &PG_MenuBar::enterButton), (PG_Pointer)last );
 
 	last->popupmenu = menu;
 
 	ItemList.push_back(last);
 }
+
+bool PG_MenuBar::leaveButton( PG_Pointer last )
+{
+	MenuBarItem* item = static_cast<MenuBarItem*>(last);
+	if( my_active ) {
+		if ( my_active->IsMouseInside() ) {
+			my_active->trackMenu( item->button->x, item->button->y + item->button->h );
+		} else {
+			my_active->Hide();
+			my_active = NULL;
+		}
+	}      
+	return true;
+}
+
+bool PG_MenuBar::enterButton( PG_Pointer last )
+{
+	MenuBarItem* item = static_cast<MenuBarItem*>(last);
+	int x, y;
+	if ( PG_Application::GetEventSupplier()->GetMouseState(x,y) & SDL_BUTTON_LEFT ) {
+		handle_button( item->button, last );
+	}
+	return true;
+}
+
 
 bool PG_MenuBar::handle_button(PG_Button* button, PG_Pointer last) {
 	MenuBarItem* item = static_cast<MenuBarItem*>(last);
@@ -69,7 +100,7 @@ bool PG_MenuBar::handle_button(PG_Button* button, PG_Pointer last) {
 	}
 
 	my_active = item->popupmenu;
-	my_active->trackMenu(button->x, button->y + button->h);
+	my_active->openMenu(button->x, button->y + button->h);
 
 	return true;
 }
