@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2005/05/31 20:19:00 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdraw.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -48,7 +48,7 @@
 namespace PG_Draw {
 
 // Background modes
-DECLSPEC enum BkMode {
+enum BkMode {
 	TILE,
 /**
 	Backgroundmode STRETCH.

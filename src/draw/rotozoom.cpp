@@ -22,9 +22,9 @@
     cosmetical (interface and naming) to fit the ParaGUI library.
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:46:03 $
+    Update Date:      $Date: 2005/05/31 20:19:00 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/rotozoom.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
     Status:           $State: Exp $
 */
 
@@ -40,6 +40,7 @@
 /* ---- Structures */
 
 typedef struct tColorRGBA {
+	tColorRGBA() : r(0), g(0), b(0), a(0) {};
 	Uint8 r;
 	Uint8 g;
 	Uint8 b;

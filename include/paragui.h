@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/05/31 20:19:00 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.12 $
     Status:           $State: Exp $
 */
 
@@ -72,6 +72,7 @@
 #else
 	#include "paraconfig_gnu.h"
 	#if PG_VERSIONNUM(__GNUC__, __GNUC_MINOR__, 0) >= PG_VERSIONNUM(4, 0, 0)
+		#undef DECLSPEC
 		#define DECLSPEC __attribute__ ((visibility("default")))
 		#define DLLLOCAL __attribute__ ((visibility("hidden")))
 	#else

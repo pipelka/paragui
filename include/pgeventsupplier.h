@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/23 17:35:52 $
+    Update Date:      $Date: 2005/05/31 20:19:00 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgeventsupplier.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -49,6 +49,9 @@
 class DECLSPEC PG_EventSupplier {
 public:
 
+	// make gcc 4 happy
+	virtual ~PG_EventSupplier() {
+	};
 
 	/**
 	Polls for currently pending events, and returns true if there are any pending events, or false if there are none available. 

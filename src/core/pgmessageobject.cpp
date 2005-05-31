@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/24 12:25:51 $
+    Update Date:      $Date: 2005/05/31 20:19:00 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.8 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.9 $
     Status:           $State: Exp $
 */
 
