@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/09 14:51:55 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.8 $
+    CVS/RCS Revision: $Revision: 1.1.2.9 $
     Status:           $State: Exp $
 */
 
@@ -31,8 +31,8 @@
 
 #include "pgthemewidget.h"
 #include "pgscrollbar.h"
+#include "pgscrollarea.h"
 
-class PG_ScrollArea;
 
 /**
 	@author Alexander Pipelka
@@ -123,6 +123,10 @@ public:
 	@param bAdd adjusts size when adding a child
 	*/
 	void SetAutoResize(bool bRemove, bool bAdd);
+
+	PG_ScrollArea::SignalAreaChangedHeight sigAreaChangedHeight;
+
+	PG_ScrollArea::SignalAreaChangedWidth sigAreaChangedWidth;
 
 protected:
 

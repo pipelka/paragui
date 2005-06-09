@@ -41,7 +41,7 @@ Whats new in ParaGUI 1.1.9 ?
 - changed returntype of PG_Widget::QuitModal to bool. Signals can now be connected to it.
 - support for GCC 4.0 (visibility)
 - fix for PG_ScrollArea::ScrollToWidget
-
+- added sigAreaChangedWidth, sigAreaChangedHeight to PG_ScrollWidget
 
 - applied patches from Sebastian:
 - PG_ListBox: fixed GetSelectedIndex()
