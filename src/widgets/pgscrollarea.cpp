@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2005/06/09 09:06:03 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollarea.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.13 $
+    CVS/RCS Revision: $Revision: 1.1.2.14 $
     Status:           $State: Exp $
 */
 
@@ -101,12 +101,26 @@ void PG_ScrollArea::ScrollToWidget(PG_Widget* widget, bool bVertical) {
 	Uint16 xpos = 0;
 	
 	if(bVertical) {
+		// widget within visible area, no need to scroll
+		if(widget->y >= my_ypos && widget->y+widget->h <= my_ypos+my_height) {
+			return;
+		}
 		ypos = widget->y - my_ypos + my_area.y;
 		xpos = my_area.x;
+		if(my_area.h > my_height && ypos > my_area.h - my_height) {
+			ypos = my_area.h - my_height;
+		}
 	}
 	else {
+		// widget within visible area, no need to scroll
+		if(widget->x >= my_xpos && widget->x+widget->w <= my_xpos+my_width) {
+			return;
+		}
 		xpos = widget->x - my_xpos + my_area.x;
 		ypos = my_area.y;
+		if(my_area.w > my_width && xpos > my_area.w - my_width) {
+			xpos = my_area.w - my_width;
+		}
 	}
 
 	ScrollTo(xpos, ypos);
