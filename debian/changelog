@@ -1,3 +1,16 @@
+libparagui1.1 (1.1.9-8) unstable; urgency=low
+
+  * disabled exceptions, rtti
+
+ -- Alexander Pipelka <pipelka@teleweb.at>  Fri, 10 Jun 2005 09:12:42 +0200
+
+libparagui1.1 (1.1.9-7) unstable; urgency=low
+
+  * made the debian package compatible with sarge and ubuntu (hoary, breezy)
+    fixed some GCC 4 compiler warnings
+
+ -- Alexander Pipelka <pipelka@teleweb.at>  Tue, 31 May 2005 22:07:48 +0200
+
 libparagui1.1 (1.1.9-6) unstable; urgency=low
 
   * added PG_EventSupplier
