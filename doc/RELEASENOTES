@@ -42,6 +42,7 @@ Whats new in ParaGUI 1.1.9 ?
 - support for GCC 4.0 (visibility)
 - fix for PG_ScrollArea::ScrollToWidget
 - added sigAreaChangedWidth, sigAreaChangedHeight to PG_ScrollWidget
+- fixed a race condition in PG_TimerObject
 
 - applied patches from Sebastian:
 - PG_ListBox: fixed GetSelectedIndex()

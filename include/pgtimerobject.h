@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/11 16:10:10 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtimerobject.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6.2.6 $
+    CVS/RCS Revision: $Revision: 1.1.2.6.2.7 $
     Status:           $State: Exp $
 */
 
@@ -114,6 +114,7 @@ private:
 	
 	std::map<PG_TimerObject::ID, SDL_TimerID> my_timermap;	
 
+	SDL_mutex* my_lock;
 };
 
 #endif // PG_TIMEROBJECT_H
