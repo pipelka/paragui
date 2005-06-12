@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/12 08:03:10 $
+    Update Date:      $Date: 2005/06/12 17:29:28 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.20 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.21 $
     Status:           $State: Exp $
 */
 
@@ -103,19 +103,23 @@ void PG_DropDown::AddItem(const std::string& text, void* userdata, Uint16 height
 }
 
 void PG_DropDown::RemoveAll() {
-	my_DropList->RemoveAll();
+	if ( my_DropList )
+		my_DropList->RemoveAll();
 }
 
 void PG_DropDown::DeleteAll() {
-	my_DropList->DeleteAll();
+	if ( my_DropList )
+		my_DropList->DeleteAll();
 }
 
 void PG_DropDown::eventShow() {
-	my_DropList->SetVisible(false);
+	if ( my_DropList )
+		my_DropList->SetVisible(false);
 }
 
 void PG_DropDown::eventHide() {
-	my_DropList->Hide();
+	if ( my_DropList )
+		my_DropList->Hide();
 }
 
 bool PG_DropDown::handleButtonClick(PG_Button* button) {
@@ -160,7 +164,7 @@ bool PG_DropDown::eventSelectItem(PG_ListBoxBaseItem* item) {
 void PG_DropDown::eventSizeWidget(Uint16 w, Uint16 h) {}
 
 void PG_DropDown::eventMoveWidget(int x, int y) {
-	if(my_DropList->IsVisible()) {
+	if(my_DropList && my_DropList->IsVisible()) {
 		my_DropList->Hide();
 	}
 }
