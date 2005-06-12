@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/31 20:19:00 $
+    Update Date:      $Date: 2005/06/12 08:03:10 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.9 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.10 $
     Status:           $State: Exp $
 */
 
@@ -56,7 +56,7 @@ PG_MessageObject::PG_MessageObject() {
 /**  destructor */
 
 PG_MessageObject::~PG_MessageObject() {
-
+	sigDelete(this);
 	//RemoveObject(this);
 
 	//PG_UnregisterEventObject(this);

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/01/30 11:59:10 $
+    Update Date:      $Date: 2005/06/12 08:03:10 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.19 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.20 $
     Status:           $State: Exp $
 */
 
@@ -54,9 +54,19 @@ my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 	my_DropList->SetAutoResize(true, false);
 	//my_DropList->EnableScrollBar(false);
 	my_DropList->sigSelectItem.connect(slot(*this, &PG_DropDown::select_handler));
+	my_DropList->sigDelete.connect(slot(*this, &PG_DropDown::onDropListDeletion));
 
 	LoadThemeStyle(style);
 }
+
+
+bool PG_DropDown::onDropListDeletion( const PG_MessageObject* dropList )
+{
+	if ( dropList == my_DropList ) 
+		my_DropList = NULL;        
+	return true;                
+}
+
 
 PG_DropDown::~PG_DropDown() {
 	delete my_DropList;

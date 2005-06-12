@@ -43,6 +43,7 @@ Whats new in ParaGUI 1.1.9 ?
 - fix for PG_ScrollArea::ScrollToWidget
 - added sigAreaChangedWidth, sigAreaChangedHeight to PG_ScrollWidget
 - fixed a race condition in PG_TimerObject
+- fixed a bug in PG_Application::Shutdown
 
 - applied patches from Sebastian:
 - PG_ListBox: fixed GetSelectedIndex()
@@ -84,6 +85,7 @@ Whats new in ParaGUI 1.1.9 ?
   It adds the ability to use menuitems like "save\tctrl-s", where the ctrl-s is
   displayed at the right side. Another change is that a separator entry displays a line (it was until
   now only a little more space between two menu items). 
+- fixed double deletion of DropList objects
 
 
 - applied patches from Ulf Lorenz:

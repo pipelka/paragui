@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/12 08:03:09 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -165,6 +165,12 @@ protected:
 
 	ScrollButton* dragbutton;
 
+	/** the positions of the elements the scrollbar exists of:
+	     \li \c position[0] is the position of the first button ( left / upper )
+	     \li \c position[1] is the position of the second button ( right / lower )
+	     \li \c position[2] is the position of the sliding area
+	     \li \c position[3] is the position of the slider
+	*/     
 	PG_Rect position[4];
 
 	ScrollDirection sb_direction;

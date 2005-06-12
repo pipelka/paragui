@@ -5,3 +5,4 @@ latex
 *.tar.gz
 doxygen.log
 *.tar.gz.sig
+*.swp

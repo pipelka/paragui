@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/12 08:03:09 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.16 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.17 $
     Status:           $State: Exp $
 */
 
@@ -208,6 +208,7 @@ protected:
 	PG_ListBox* my_DropList;
 
 private:
+	bool onDropListDeletion( const PG_MessageObject* dropList );
 
 	DLLLOCAL bool select_handler(PG_ListBoxBaseItem* item);
 

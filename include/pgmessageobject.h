@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/12 08:03:09 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
     Status:           $State: Exp $
 */
 
@@ -59,6 +59,8 @@ public:
 	template<class datatype = PG_Pointer> class SignalQuit : public PG_Signal1<PG_MessageObject*, datatype> {};
 	template<class datatype = PG_Pointer> class SignalSysWM : public PG_Signal2<PG_MessageObject*, const SDL_SysWMEvent*, datatype> {};
 	template<class datatype = PG_Pointer> class SignalVideoResize : public PG_Signal2<PG_MessageObject*, const SDL_ResizeEvent*, datatype> {};
+        
+	template<class datatype = PG_Pointer> class SignalDelete : public PG_Signal1<const PG_MessageObject*, datatype> {};
 	
 	/**
 	Creates a PG_MessageObject
@@ -136,6 +138,7 @@ public:
 	SignalVideoResize<> sigVideoResize;
 	SignalQuit<> sigQuit;
 
+	SignalDelete<> sigDelete;
 protected:
 
 	/**
