@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/12 08:03:10 $
+    Update Date:      $Date: 2005/06/13 08:07:03 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.25 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.26 $
     Status:           $State: Exp $
 */
 
@@ -752,10 +752,7 @@ void PG_Application::Shutdown() {
 	DeleteBackground();
 	
 	// destroy still existing objects
-	//vector<PG_MessageObject*>::iterator list = objectList.begin();
 	PG_Widget* list = PG_Widget::GetWidgetList()->first();
-
-		PG_Widget* o = list;
 
 	while((list = PG_Widget::GetWidgetList()->first()) != NULL) {
 		delete list;
