@@ -26,6 +26,12 @@
         <li>@ref section2_2</li>
         <li>@ref section2_3</li>
     </ol>
+    <li>@ref section3</li>
+    <ol>
+        <li>@ref section3_1</li>
+        <li>@ref section3_2</li>
+        <li>@ref section3_3</li>
+    </ol>
 </ol>
 
 
@@ -184,6 +190,9 @@ type ./configure --help to get a list of options. \e If you intend to
 internationalize your code, it may be especially useful to configure with
 --enable-unicode.
 
+
+@subsection section1_2 The Helloworld program
+
 To begin our introduction to ParaGUI, we'll start with the simplest
 program possible. 
 
@@ -215,8 +224,6 @@ int main() {
 @endcode
 
 
-@subsection section1_2 The Helloworld program
-
 You can compile the above program with gcc using:
 
 @verbatim
@@ -227,8 +234,11 @@ g++ hello.o -o hello `paragui-config --libs`
 The first line compiles the hello.cpp file and creates an object file, the
 second links the object file with the libraries and creates the executable.
 \c paragui-config is a script that can be called to get the correct flags for
-compiling or linking a program using ParaGUI. Having done this, let us take a
-closer look at the program:
+compiling or linking a program using ParaGUI.
+
+@image html example_1.jpg "The first example program"
+
+Now let us have a closer look at the program:
 
 @code
 #include <pgapplication.h>
@@ -266,7 +276,7 @@ include this line as boilerplate code.
     }
 @endcode
 This line pops up a window or exits the application gracefully if the window
-can not be created for some reason. 
+cannot be created for some reason. 
 
 @code
     app.SetCaption("Hello, World!");
@@ -446,6 +456,9 @@ Let us equip our hello world example from the previous section with a button. If
 you click on the button, its text shall be changed.
 
 The complete sourcecode can be found here: @ref ex_button
+
+@image html example_2.jpg "Test program with button"
+
 Let us have a look at the changes.
 
 
@@ -489,8 +502,72 @@ Since the button is not visible by default, we need to explicitely display it.
 
 
 @section section3 Creating a dialog
-here I wanted to put the constructor stuff (parents, PG_Rect, connecting to
-objects etc.)
+
+The next logical step is to create an actual dialog. For this, we need to
+introduce some new concepts; namely parent widgets and the difference between
+local and global coordinate systems.
+
+@subsection section3_1 Parent widgets
+
+In ParaGUI, every widget, be it a window, a label or a menu item, can have a
+parent. This parent is supplied at creation time and normally not changed. For
+this, the first argument, every ParaGUI class will take in the constructor
+is always a pointer to the parent widget. See for example the PG_Button:
+
+@code
+	PG_Button(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, [...]);
+@endcode
+
+The concept of parent widgets has a lot of advantages. If you want to hide a
+dialog with lots of fancy buttons and stuff, you don't need to explicitely ask
+every single item to hide. Neither do you have to implement a
+Dialog::HideEverything function that hides every single item. If you set up the
+dialog properly (which means that all dialog items have the dialog widget as
+their parent), just calling the Hide() function of the dialog automatically
+hides all children as well.
+
+Other features of the parent/child concept are:
+
+<ul>
+    <li>The same goes for transparency settings, widget updates, showing a
+        widget and other things</li>
+    <li>If a widget is deleted, it automatically removes all its children</li>
+    <li>Children's coordinates are relative to the parent coordinates, allowing
+        a greater flexibility (see next subsection)</li>
+</ul>
+
+Widgets that do not have a natural parent (such as main windows) just set their
+parent to NULL. Obviously, this means you have to handle them manually in every
+way.
+
+
+@subsection section3_2 Coordinates
+
+Here, I would like to explain a bit more about coordinates. I assume that you
+are familiar with x/y coordinates. The second parameter to (almost?) all
+constructors is a PG_Rect that defines the area which the widget occupies. It's
+values are the x/y coordinates of its upper left edge, the width and the height.
+Note that if the widget extends beyond the area that the parent occupies, this
+part will <em> not be displayed! </em>
+
+However, the interesting part here is the upper left edge. If the widget in
+question has no parent, the x/y coordinates will be global, i.e. relative to the
+upper left edge of the program's window. However, for children, these
+coordinates are relative to the upper left edge of their \e parent. This has to
+be kept in mind when e.g. writing dialogs.
+
+
+@subsection section3_3 A simple dialog
+
+Now, to summarize this chapter, I would like to introduce a small program that
+imitates a simple calculator. You have two input fields where you can input
+numbers and a button to show the result when adding these two values. As usual,
+I will not spend my breath on catching errors caused by malicious users or
+something similar.
+
+Further ideas:
+- introduce xml description files 
+
 */
 
 
