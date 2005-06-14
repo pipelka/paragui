@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/09 14:51:55 $
+    Update Date:      $Date: 2005/06/14 19:46:51 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.9 $
+    CVS/RCS Revision: $Revision: 1.1.2.10 $
     Status:           $State: Exp $
 */
 
@@ -101,7 +101,7 @@ public:
 	/**
 	Shift widgets on removal.
 	@param shiftx shift all widgets to the right of the removed widgets.
-	@param shift shift all widgets beneath the removed one.
+	@param shifty shift all widgets beneath the removed one.
 	This method controls the behaviour if a widget will be removed from the client
 	context.
 	*/

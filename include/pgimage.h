@@ -20,9 +20,9 @@
     pipelka@teleweb.at 
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2005/05/16 16:26:51 $ 
+    Update Date:      $Date: 2005/06/14 19:46:51 $ 
     Source File:      $Source: /sources/paragui/paragui/include/pgimage.h,v $ 
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $ 
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $ 
     Status:           $State: Exp $ 
 */
 
@@ -48,10 +48,11 @@ public:
 
 	Creates the widget and loads the image from a file
 
-	@param parent	pointer to the parent widget or NULL
-	@param p			position of the PG_Image widget
+	@param parent pointer to the parent widget or NULL
+	@param p position of the PG_Image widget
 	@param filename	image-file to load
-	@param style		widgetstyle to use
+	@param drawmode Image drawmode (see PG_Draw::BkMode)
+	@param style widgetstyle to use
 
 	*/
 	PG_Image(PG_Widget* parent, const PG_Point& p, const std::string& filename, PG_Draw::BkMode drawmode = PG_Draw::TILE, const std::string& style = "ThemeWidget");
@@ -61,11 +62,12 @@ public:
 
 	Creates the widget and loads the image from an SDL_Surface	
 
-	@param parent		pointer to the parent widget or NULL
-	@param p				position of the PG_Image widget
-	@param image		pointer to imagedata (SDL_Surface)
-	@param freeimage	if true the imagedata is handled by the widget
-	@param style		widgetstyle to use
+	@param parent pointer to the parent widget or NULL
+	@param p position of the PG_Image widget
+	@param image pointer to imagedata (SDL_Surface)
+	@param freeimage if true the imagedata is handled by the widget
+	@param drawmode Image drawmode (see PG_Draw::BkMode)
+	@param style widgetstyle to use
 	*/
 	PG_Image(PG_Widget* parent, const PG_Point& p, SDL_Surface* image, bool freeimage = true, PG_Draw::BkMode drawmode = PG_Draw::TILE, const std::string& style = "ThemeWidget");
 
@@ -74,11 +76,12 @@ public:
 
 	Creates the widget and loads the image from a file using a colorkey
 
-	@param parent	pointer to the parent widget or NULL
-	@param p		position of the PG_Image widget
+	@param parent pointer to the parent widget or NULL
+	@param p position of the PG_Image widget
 	@param filename	image-file to load
-	@param	colorkey	colorkey (0xRRGGBB)
-	@param style		widgetstyle to use
+	@param	colorkey colorkey (0xRRGGBB)
+	@param drawmode Image drawmode (see PG_Draw::BkMode)
+	@param style widgetstyle to use
 
 	*/
 	PG_Image(PG_Widget* parent, const PG_Point& p, const std::string& filename, Uint32 colorkey, PG_Draw::BkMode drawmode = PG_Draw::TILE, const std::string& style = "ThemeWidget");

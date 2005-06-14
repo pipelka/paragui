@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/10/18 19:39:41 $
+    Update Date:      $Date: 2005/06/14 19:46:51 $
     Source File:      $Source: /sources/paragui/paragui/include/pglog.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.5 $
     Status:           $State 
 */
 
@@ -163,7 +163,7 @@ namespace PG_LogConsole {
 	/**
 	Set a limit for the amount of log lines (200 lines by default).
 
-	@param	maximum amount of log lines.
+	@param	max maximum amount of log lines.
 	*/
 	DECLSPEC void SetMaxLogLines(Uint32 max);
 }

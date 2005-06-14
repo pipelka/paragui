@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/14 19:46:51 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.25 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.26 $
     Status:           $State: Exp $
 */
 
@@ -529,7 +529,8 @@ public:
 
 	/**
 	Set font color
-	@param	Color PG_Color class contains color information (RGB)
+	@param Color PG_Color class contains color information (RGB)
+	@param bRecursive set font color of childwidgets if true
 	*/
 	void SetFontColor(const PG_Color& Color, bool bRecursive = false);
 

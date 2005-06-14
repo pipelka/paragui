@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/10/28 11:49:15 $
+    Update Date:      $Date: 2005/06/14 19:46:51 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsignals.h,v $
-    CVS/RCS Revision: $Revision: 1.8.2.4 $
+    CVS/RCS Revision: $Revision: 1.8.2.5 $
     Status:           $State: Exp $
 */
 
@@ -35,7 +35,11 @@
 
 typedef void* PG_Pointer;
 
-template<class datatype = PG_Pointer> class PG_Signal0 : public SigC::Signal0<bool> {
+template<class datatype = PG_Pointer> class PG_Signal0
+#ifndef DOXYGEN_SKIP
+ : public SigC::Signal0<bool>
+#endif
+{
 public:
 
 	SigC::Connection connect(const SigC::Slot1<bool, datatype>& s, datatype data) {
@@ -44,7 +48,11 @@ public:
 
 };
 
-template<class P1, class datatype = PG_Pointer> class PG_Signal1 : public SigC::Signal1<bool, P1> {
+template<class P1, class datatype = PG_Pointer> class PG_Signal1
+#ifndef DOXYGEN_SKIP
+ : public SigC::Signal1<bool, P1>
+#endif
+{
 
 	static bool sig_convert0(SigC::Slot0<bool>& s, P1 p1) {
 		return s();
@@ -72,7 +80,11 @@ public:
 };
 
 
-template<class P1, class P2, class datatype = PG_Pointer> class PG_Signal2 : public SigC::Signal2<bool, P1, P2> {
+template<class P1, class P2, class datatype = PG_Pointer> class PG_Signal2 
+#ifndef DOXYGEN_SKIP
+ : public SigC::Signal2<bool, P1, P2>
+#endif
+{
 
 	static bool sig_convert_p2( SigC::Slot1<bool, P2>& s, P1 p1, P2 p2) {
 		return s(p2);
@@ -115,21 +127,5 @@ private:
 	PG_Signal2& operator=(const PG_Signal2&);
 
 };
-
-/*
-typedef PG_Signal1<PG_MessageObject*> PG_SignalAppIdle;
-
-typedef PG_Signal1<PG_Application*> PG_SignalAppQuit;
-
-typedef PG_Signal1<const SDL_ResizeEvent*> PG_SignalVideoResize;
-
-typedef PG_Signal2<PG_TabBar*, PG_Button*> PG_SignalTabSelect;
-
-typedef Slot1<bool, PG_Button*> PG_TabSelectSlot;
-
-typedef PG_Signal2<PG_NoteBook*, PG_Widget*> PG_PageSelect;
-
-typedef Slot1<bool, PG_Widget*> PG_PageSelectSlot;
-*/
 
 #endif // PG_SIGNALS_H

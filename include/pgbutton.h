@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/14 19:46:51 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.20 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.21 $
     Status:           $State: Exp $
 */
 
@@ -328,7 +328,7 @@ public:
 	Resizes the button so that a specified text fits on it
 	@param Width additional width apart from the width required by the text
 	@param Height additional height apart from the one required by the text
-	@param text the text which is to fit on the button
+	@param Text the text which is to fit on the button
 	*/
 	void SetSizeByText(int Width = 0, int Height = 0, const std::string& Text = PG_NULLSTR);
 
