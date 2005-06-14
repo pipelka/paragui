@@ -6,3 +6,4 @@ latex
 doxygen.log
 *.tar.gz.sig
 *.swp
+*.tmp
