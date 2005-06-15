@@ -20,10 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/23 17:35:52 $
+    Update Date:      $Date: 2005/06/15 07:32:14 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmenubar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
     Status:           $State: Exp $
+*/
+
+/** \file pgmenubar.h
+	Header file for the PG_MenuBar class.
 */
 
 #ifndef PG_MENUBAR_H

@@ -20,10 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/12 08:03:09 $
+    Update Date:      $Date: 2005/06/15 07:32:14 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.2.10 $
     Status:           $State: Exp $
+*/
+
+/** \file pgscrollbar.h
+	Header file for the PG_ScrollBar class.
 */
 
 #ifndef PG_SCROLLBAR_H

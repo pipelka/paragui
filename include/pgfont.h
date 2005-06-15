@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.13 $
     Status:           $State: Exp $
 */
 
 /** \file pgfont.h
-	Header file of the PG_Font and PG_FontEngine classes.
+	Header file for the PG_Font and PG_FontEngine classes.
 */
 
 #ifndef PG_FONT_H

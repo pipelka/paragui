@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2005/06/15 07:32:14 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcheckbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.2.7 $
     Status:           $State: Exp $
 */
 
 /** \file pgcheckbutton.h
-	Header file of the PG_CheckButton class.
+	Header file for the PG_CheckButton class.
 */
 
 #ifndef PG_CHECKBUTTON_H

@@ -20,14 +20,15 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2005/06/15 07:32:14 $
     Source File:      $Source: /sources/paragui/paragui/include/pginfo.h,v $
-    CVS/RCS Revision: $Revision: 1.3.8.2 $
+    CVS/RCS Revision: $Revision: 1.3.8.3 $
     Status:           $State: Exp $
 */
 
 /** \file pginfo.h
     Paragui Library related functions.
+    Various version and information related functions.
     @author Alexander Pipelka
 */
 

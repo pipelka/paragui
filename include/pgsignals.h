@@ -20,10 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/14 19:46:51 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsignals.h,v $
-    CVS/RCS Revision: $Revision: 1.8.2.5 $
+    CVS/RCS Revision: $Revision: 1.8.2.6 $
     Status:           $State: Exp $
+*/
+
+/** \file pgsignals.h
+	Header file for the PG_Signal0, PG_Signal1 and PG_Signal2 classes.
 */
 
 #ifndef PG_SIGNALS_H

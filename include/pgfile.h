@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfile.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.5 $
     Status:           $State: Exp $
 */
 
 /** \file pgfile.h
-	Header file of the PG_File class.
+	Header file for the PG_File class.
 */
 
 #ifndef PG_FILE_H

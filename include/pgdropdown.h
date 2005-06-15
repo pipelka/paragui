@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/12 08:03:09 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.17 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.18 $
     Status:           $State: Exp $
 */
 
 /** \file pgdropdown.h
-	Header file of the PG_DropDown class.
+	Header file for the PG_DropDown class.
 */
 
 #ifndef PG_DROPDOWN_H

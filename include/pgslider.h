@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgslider.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.2.9 $
     Status:           $State: Exp $
 */
 
 /** @file pgslider.h
-	Header file of the PG_Slider class.
+	Header file for the PG_Slider class.
 */
 
 #ifndef PG_SLIDER_H

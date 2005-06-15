@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdatacontainer.h,v $
-    CVS/RCS Revision: $Revision: 1.3.8.1 $
+    CVS/RCS Revision: $Revision: 1.3.8.2 $
     Status:           $State: Exp $
 */
 
 /** \file pgdatacontainer.h
-	Header file of the PG_DataContainer class.
+	Header file for the PG_DataContainer class.
 */
 
 #ifndef PG_DATACONTAINER

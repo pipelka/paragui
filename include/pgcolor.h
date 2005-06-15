@@ -15,6 +15,10 @@
 
 #include "SDL.h"
 
+/** \file pgcolor.h
+	Header file for the PG_Color class.
+*/
+
 /** @class PG_Color
  
 	@short Allows for an abstraction of a particular color.

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2005/06/15 07:32:14 $
     Source File:      $Source: /sources/paragui/paragui/include/pglayout.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.6 $
     Status:           $State: Exp $
 */
 
@@ -33,6 +33,11 @@
 #include "pgapplication.h"
 #include "pglabel.h"
 #include "pgscrollbar.h"
+
+/** \file pglayout.h
+	Header file for the PG_Layout namespace.
+	This include file defines the PG_Layout namespace and the PG_XMLTag class.
+*/
 
 /**
 	@author Ales Teska

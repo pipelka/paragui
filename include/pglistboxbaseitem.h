@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistboxbaseitem.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -30,6 +30,10 @@
 #define PG_LISTBOXBASEITEM_H
 
 #include "pglabel.h"
+
+/** \file pglistboxbaseitem.h
+	Header file for the PG_ListBoxBaseItem class.
+*/
 
 /**
 	@author Alexander Pipelka

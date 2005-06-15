@@ -20,10 +20,14 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.15 $
     Status:           $State: Exp $
+*/
+
+/** \file pgthemewidget.h
+	Header file for the PG_ThemeWidget class.
 */
 
 #ifndef PG_THEMEWIDGET_H

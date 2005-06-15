@@ -20,10 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/15 07:32:14 $
     Source File:      $Source: /sources/paragui/paragui/include/pgprogressbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.2.8 $
     Status:           $State: Exp $
+*/
+
+/** \file pgprogressbar.h
+	Header file for the PG_ProgressBar class.
 */
 
 #ifndef PG_PROGRESSBAR_H

@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.7 $
     Status:           $State: Exp $
 */
 
 /** \file pgfilearchive.h
-	Header file of the PG_FileArchive class.
+	Header file for the PG_FileArchive class.
 	It also defines the PG_OPEN_MODE enumeration.
 */
 

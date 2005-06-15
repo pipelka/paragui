@@ -20,10 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/11 16:10:10 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtimerobject.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6.2.7 $
+    CVS/RCS Revision: $Revision: 1.1.2.6.2.8 $
     Status:           $State: Exp $
+*/
+
+/** \file pgtimerobject.h
+	Header file for the PG_TimerObject class.
 */
 
 #ifndef PG_TIMEROBJECT_H

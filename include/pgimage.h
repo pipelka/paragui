@@ -20,14 +20,14 @@
     pipelka@teleweb.at 
   
     Last Update:      $Author: braindead $ 
-    Update Date:      $Date: 2005/06/14 19:46:51 $ 
+    Update Date:      $Date: 2005/06/15 07:32:14 $ 
     Source File:      $Source: /sources/paragui/paragui/include/pgimage.h,v $ 
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $ 
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $ 
     Status:           $State: Exp $ 
 */
 
 /** \file pgimage.h
-	Header file of the PG_Image class.
+	Header file for the PG_Image class.
 */
 
 #ifndef PG_IMAGE_H

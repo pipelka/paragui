@@ -20,12 +20,15 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/23 17:35:52 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.14 $
     Status:           $State: Exp $
 */
 
+/** \file pgpopupmenu.h
+	Header file for the PG_PopupMenu class.
+*/
 
 #ifndef PG_POPUPMENU_H
 #define PG_POPUPMENU_H

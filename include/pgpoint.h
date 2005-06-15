@@ -20,10 +20,14 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/04/22 12:29:24 $
+   Update Date:      $Date: 2005/06/15 07:32:15 $
    Source File:      $Source: /sources/paragui/paragui/include/pgpoint.h,v $
-   CVS/RCS Revision: $Revision: 1.1.4.6 $
+   CVS/RCS Revision: $Revision: 1.1.4.7 $
    Status:           $State: Exp $
+*/
+
+/** \file pgpoint.h
+	Header file for the PG_Pointt class.
 */
 
 #ifndef PG_POINT_H

@@ -20,10 +20,14 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/04/22 12:29:24 $
+   Update Date:      $Date: 2005/06/15 07:32:15 $
    Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollarea.h,v $
-   CVS/RCS Revision: $Revision: 1.1.2.10 $
+   CVS/RCS Revision: $Revision: 1.1.2.11 $
    Status:           $State: Exp $
+*/
+
+/** \file pgscrollarea.h
+	Header file for the PG_ScrollArea class.
 */
 
 #ifndef PG_SCROLLAREA_H

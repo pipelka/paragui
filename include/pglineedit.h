@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.12 $
     Status:           $State: Exp $
 */
 
@@ -32,6 +32,10 @@
 #include "pgthemewidget.h"
 #include "pgsignals.h"
 #include "pgstring.h"
+
+/** \file pglineedit.h
+	Header file for the PG_LineEdit class.
+*/
 
 /**
 	@author Alexander Pipelka

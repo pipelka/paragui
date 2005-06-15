@@ -20,14 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/14 19:46:51 $
+    Update Date:      $Date: 2005/06/15 07:32:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcolumnitem.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
     Status:           $State: Exp $
 */
 
 /** \file pgcolumnitem.h
-	Header file of the PG_ColumnItem class.
+	Header file for the PG_ColumnItem class.
 */
 
 #ifndef PG_COLUMNITEM_H

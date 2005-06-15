@@ -1,3 +1,8 @@
+
+/** \file pgmultilineedit.h
+	Header file for the PG_MultiLineEdit class.
+*/
+
 #ifndef PG_MULTI_LINE_EDIT 
 #define PG_MULTI_LINE_EDIT 
 
