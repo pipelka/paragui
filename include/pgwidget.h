@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2005/06/27 09:34:55 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.27 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.28 $
     Status:           $State: Exp $
 */
 
@@ -69,6 +69,8 @@ class PG_WidgetDataInternal;
 			<property color="textcolor" value="0x00FFFFFF"/>
 			<property color="bordercolor0" value="0x00202020"/>
 			<property color="bordercolor1" value="0x00E0E0E0"/>
+			<property color="bordercolor0i" value="0x00202020"/>
+			<property color="bordercolor1i" value="0x00E0E0E0"/>
 		</object>
 	</widget>
 	\endcode
@@ -858,6 +860,10 @@ protected:
 
 	/**
 	array of border colors
+	     \li \c my_colorBorder[0][0] upper and left border 
+	     \li \c my_colorBorder[1][0] lower and right border
+	     \li \c my_colorBorder[0][1] upper and left inner border (if bordersize >=2)
+	     \li \c my_colorBorder[1][1] lower and right inner border (if bordersize >=2)
 	*/
 	PG_Color my_colorBorder[2][2];
 

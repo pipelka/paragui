@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/16 16:26:51 $
+    Update Date:      $Date: 2005/06/27 09:34:55 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.22 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.23 $
     Status:           $State: Exp $
 */
 
@@ -208,9 +208,10 @@ public:
 
 	@param	surface	pointer to a background surface
 	@param	mode	background mode (BKMODE_TILE | BKMODE_STRETCH | BKMODE_3TILEH | BKMODE_3TILEV | BKMODE_9TILE)
+	@param	freeBackground true if the background surface shall be freed when it is no longer used
 	@return		true - background image was altered successfully
 	*/
-	bool SetBackground(SDL_Surface* surface, PG_Draw::BkMode mode=PG_Draw::TILE);
+	bool SetBackground(SDL_Surface* surface, PG_Draw::BkMode mode=PG_Draw::TILE, bool freeBackground = false );
 
 	/**
 	Redraw the application background

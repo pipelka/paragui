@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/23 17:35:52 $
+    Update Date:      $Date: 2005/06/27 09:34:55 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgscrollbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
     Status:           $State: Exp $
 */
 
@@ -42,7 +42,7 @@ PG_ScrollBar::PG_ScrollBar(PG_Widget* parent, const PG_Rect& r, ScrollDirection 
 	scroll_current = 0;
 
 	my_linesize = 1;
-	my_pagesize = 5;
+	my_pagesize = 1;
 
 	scrollbutton[0] = new PG_Button(this);
 	scrollbutton[0]->SetID((direction == VERTICAL) ? IDSCROLLBAR_UP : IDSCROLLBAR_LEFT);
@@ -109,13 +109,15 @@ void PG_ScrollBar::RecalcPositions() {
 
 		position[3].x = 0;
 		position[3].w = w;
-		position[3].h = (position[2].h / 2); //(scroll_max - scroll_min)) * scroll_windowsize;
-
-		if((scroll_max - scroll_min) == 0) {
-			position[3].y = position[2].y;
-		} else {
-			position[3].y = ((position[2].h - position[3].h) / (scroll_max - scroll_min)) * scroll_current;
-		}
+		position[3].h = position[2].h / 2;
+                
+		if ( my_pagesize <= 0 || scroll_max - scroll_min <= 0 ) 
+			position[3].h = position[2].h;
+		else {    
+			position[3].h = (position[2].h * my_pagesize ) / (scroll_max - scroll_min + my_pagesize );
+			if ( position[3].h < position[3].w * 3 / 2)
+				position[3].h = position[3].w * 3 / 2 ;
+		} 
 	} else {
 		position[0].x = 0;
 		position[0].y = 0;
@@ -136,23 +138,29 @@ void PG_ScrollBar::RecalcPositions() {
 		position[3].w = (Uint16)((double)position[2].w / 2.0);
 		position[3].h = h;
 
-		if((scroll_max - scroll_min) == 0) {
-			position[3].x = position[2].x;
-		} else {
-			position[3].x = ((position[2].w - position[3].w) / (scroll_max - scroll_min)) * scroll_current;
-		}
+		if ( my_pagesize <= 0 || scroll_max - scroll_min <= 0 ) 
+			position[3].w = position[2].w;
+		else {    
+			position[3].w = (position[2].w * my_pagesize ) / (scroll_max - scroll_min + my_pagesize  );
+			if ( position[3].w < position[3].h * 3 / 2)
+				position[3].w = position[3].h * 3 / 2;
+		} 
 	}
 
 	int pos = 	scroll_current - scroll_min;
 
 	if(sb_direction == VERTICAL) {
 		position[3].x = 0;
-		position[3].h = (Uint16)((double)position[2].h / ((double)position[2].h / (double)position[3].h));
-		position[3].y = (Uint16)(position[0].h + (((double)position[2].h - (double)position[3].h) / (double)(scroll_max - scroll_min)) * (double)pos);
+		if ( (scroll_max - scroll_min) * pos <= 0 ) 
+			position[3].y = (Uint16)(position[0].h + (((double)position[2].h - (double)position[3].h) / (double)(scroll_max - scroll_min)) * (double)pos);
+		else
+			position[3].y = position[0].h;
 	} else {
 		position[3].y = 0;
-		position[3].w = (Uint16)((double)position[2].w / ((double)position[2].w / (double)position[3].w) );
-		position[3].x = (Uint16)(position[0].w + (((double)position[2].w - (double)position[3].w) / (double)(scroll_max - scroll_min)) * (double)pos);
+		if ( (scroll_max - scroll_min) * pos <= 0 ) 
+			position[3].x = (Uint16)(position[0].w + (((double)position[2].w - (double)position[3].w) / (double)(scroll_max - scroll_min)) * (double)pos);
+		else
+			position[3].x = position[0].w;
 	}
 
 	// bordersize
@@ -414,12 +422,9 @@ void PG_ScrollBar::ScrollButton::SetTickMode(bool on) {
 void PG_ScrollBar::SetRange(Uint32 min, Uint32 max) {
 	scroll_min = min;
 	scroll_max = max;
-	if (scroll_current < scroll_min) {
-		SetPosition(scroll_min);
-	}
-	if (scroll_current > scroll_max) {
-		SetPosition(scroll_max);
-	}
+	
+	// checks if the position is valid and recalculates the size
+	SetPosition( scroll_current ); 
 }
 
 int PG_ScrollBar::GetMinRange() {
@@ -477,4 +482,5 @@ void PG_ScrollBar::SetLineSize(int ls) {
 
 void PG_ScrollBar::SetPageSize(int ps) {
 	my_pagesize = ps;
+	RecalcPositions();
 }

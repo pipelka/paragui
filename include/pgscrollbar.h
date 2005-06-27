@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:14 $
+    Update Date:      $Date: 2005/06/27 09:34:55 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.2.11 $
     Status:           $State: Exp $
 */
 
@@ -120,7 +120,7 @@ public:
 	/**  */
 	int GetPosition();
 
-	/**  */
+	/**  The range in which the scrollbar operates. The whole scrolling area is (max - min) + pagesize */
 	void SetRange(Uint32 min, Uint32 max);
 
 	/**  */
@@ -129,7 +129,7 @@ public:
 	/**  */
 	int GetMaxRange();
 
-	/**  */
+	/** Linesize is the scroll distance that is scrolled if one of the arrow buttons is pressed  */
 	void SetLineSize(int ls);
 
 	/**  */

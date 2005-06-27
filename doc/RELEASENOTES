@@ -72,6 +72,7 @@ Whats new in ParaGUI 1.1.9 ?
 - fixed some int to bool conversion warnings
 - added default value for PG_Application::SetCaption()'s second param
 
+
 - applied patches from Martin Bickel <mbickel@asc-hq.org>)
 - removed SigC namespace usage in pgsingals.h
 - non-const Width- and Height methods of PG_Rect are redundant
@@ -86,6 +87,19 @@ Whats new in ParaGUI 1.1.9 ?
   displayed at the right side. Another change is that a separator entry displays a line (it was until
   now only a little more space between two menu items). 
 - fixed double deletion of DropList objects
+- PGApplication:: SetBackground didn't update the screen. It now does. It
+  also allows for freeing surfaces itself.
+- The sliders in ScrollBars now have a proportional size. Since the
+  PageSize is becoming important now, PG_MultilineEdit had to be updated
+  to set it. I expect that some other classes also need to set the
+  pagesize, but I haven't checked all of them yet.
+- PGWidget already had properties for the inner border color for thicker
+  borders, but they couldn't be set using a theme. I've changed that, the
+  entries are called bordercolor0i / bordercolor1i
+- PGScrollWidget initialized the scroll area with a width and height of
+  0. This caused scrollbars to appear as soon as the first widget was
+  added. The area size is now correctly initialized so that the
+  scrollbars only appear when necessary.
 
 
 - applied patches from Ulf Lorenz:

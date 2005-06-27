@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/05/23 17:35:52 $
+   Update Date:      $Date: 2005/06/27 09:34:55 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.30 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.31 $
    Status:           $State: Exp $
  */
 
@@ -891,6 +891,8 @@ void PG_Widget::LoadThemeStyle(const std::string& widgettype, const std::string&
 
 	t->GetColor(widgettype, objectname, PG_PropStr::bordercolor0, my_colorBorder[0][0]);
 	t->GetColor(widgettype, objectname, PG_PropStr::bordercolor1, my_colorBorder[1][0]);
+	t->GetColor(widgettype, objectname, PG_PropStr::bordercolor0i, my_colorBorder[0][1]);
+	t->GetColor(widgettype, objectname, PG_PropStr::bordercolor1i, my_colorBorder[1][1]);
 }
 
 void PG_Widget::LoadThemeStyle(const std::string& widgettype) {}

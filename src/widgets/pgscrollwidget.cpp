@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/09 14:51:55 $
+    Update Date:      $Date: 2005/06/27 09:34:55 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.13 $
+    CVS/RCS Revision: $Revision: 1.1.2.14 $
     Status:           $State: Exp $
 */
 
@@ -65,6 +65,7 @@ my_scrollarea(NULL)
 	my_objHorizontalScrollbar->sigScrollTrack.connect(slot(*this, &PG_ScrollWidget::handleScrollTrack));
 
 	my_scrollarea = new PG_ScrollArea(this);
+	RecalcPositions(false,false);
 	my_scrollarea->sigAreaChangedHeight.connect(slot(*this, &PG_ScrollWidget::handleAreaChangedHeight));
 	my_scrollarea->sigAreaChangedHeight.connect(sigAreaChangedHeight.slot());
 	my_scrollarea->sigAreaChangedWidth.connect(slot(*this, &PG_ScrollWidget::handleAreaChangedWidth));
@@ -216,7 +217,7 @@ void PG_ScrollWidget::CheckScrollBars() {
 		else {
 			scrollBars[i]->SetLineSize(10);
 		}
-		scrollBars[i]->SetRange(0, listsizes[i] - sizes[i]);
+		scrollBars[i]->SetRange(0, listsizes[i] -  sizes[i] );
 		scrollBars[i]->SetPageSize(sizes[i]);
 		scrollBars[i]->SetPosition(pos[i]);
 	}

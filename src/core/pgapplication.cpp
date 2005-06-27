@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/13 08:07:03 $
+    Update Date:      $Date: 2005/06/27 09:34:55 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.26 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.27 $
     Status:           $State: Exp $
 */
 
@@ -458,33 +458,14 @@ bool PG_Application::SetBackground(const std::string& filename, PG_Draw::BkMode 
 		return false;
 	}
         
-	if(my_freeBackground && my_background) {
-		UnloadSurface(my_background);
-		my_freeBackground = false;
-	}
-		
-	my_background = LoadSurface(filename);
-
-	if(my_scaled_background) {
-		// Destroyed scaled background if present
-		SDL_FreeSurface(my_scaled_background);
-		my_scaled_background = 0;
-	}		
-	if(my_background != NULL) {
-		my_freeBackground = true;
-		my_backmode = mode;
-		RedrawBackground(PG_Rect(0,0,screen->w,screen->h));
-		PG_Widget::GetWidgetList()->Blit();
-		return true;
-	} else {
+	if ( !SetBackground ( LoadSurface(filename), mode, true )) 
 		PG_LogWRN("Failed to load '%s'",(char*)filename.c_str());
-	}
 
 	return false;
 }
 
 /**  */
-bool PG_Application::SetBackground(SDL_Surface* surface, PG_Draw::BkMode mode) {
+bool PG_Application::SetBackground(SDL_Surface* surface, PG_Draw::BkMode mode, bool freeBackground ) {
 	if(surface == NULL)
 		return false;
 
@@ -495,7 +476,7 @@ bool PG_Application::SetBackground(SDL_Surface* surface, PG_Draw::BkMode mode) {
 	}
 	if(my_freeBackground && my_background) {
 		UnloadSurface(my_background);
-		my_freeBackground = false;
+		my_freeBackground = freeBackground;
 	}
 
 	my_background = surface;
@@ -503,6 +484,8 @@ bool PG_Application::SetBackground(SDL_Surface* surface, PG_Draw::BkMode mode) {
 
 	RedrawBackground(PG_Rect(0,0,screen->w,screen->h));
 	PG_Widget::GetWidgetList()->Blit();
+	if(!GetBulkMode() ) 
+		SDL_UpdateRect(screen,0,0,GetScreen()->w,GetScreen()->h);
 	return true;
 }
 

@@ -351,6 +351,7 @@ void PG_MultiLineEdit::SetupVScroll() {
 	
 	else { 
 		my_vscroll->SetRange(0, my_textdata.size() - my_height/GetFontHeight() + 1);
+		my_vscroll->SetPageSize( my_height/GetFontHeight() );
 		if (my_firstLine > my_vscroll->GetMaxRange()) {
 			SetVPosition(my_vscroll->GetMaxRange()); 
 		}
