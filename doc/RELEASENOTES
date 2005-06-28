@@ -44,6 +44,8 @@ Whats new in ParaGUI 1.1.9 ?
 - added sigAreaChangedWidth, sigAreaChangedHeight to PG_ScrollWidget
 - fixed a race condition in PG_TimerObject
 - fixed a bug in PG_Application::Shutdown
+- added devhelp support to html documentation
+
 
 - applied patches from Sebastian:
 - PG_ListBox: fixed GetSelectedIndex()
