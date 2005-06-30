@@ -37,3 +37,4 @@ cairotest
 callgrind.out.*
 dropdown2
 windowtest2
+updatetest

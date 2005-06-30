@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/06/27 09:34:55 $
+   Update Date:      $Date: 2005/06/30 13:34:29 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.31 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.32 $
    Status:           $State: Exp $
  */
 
@@ -51,7 +51,7 @@ public:
 	PG_WidgetDataInternal() : modalstatus(0), inDestruct(false), inMouseLeave(false), font(NULL), dirtyUpdate(false), id(-1),
 	transparency(0), quitModalLoop(false), visible(false), hidden(false), firstredraw(true),
 	childList(NULL), haveTooltip(false), fadeSteps(10), mouseInside(false), userdata(NULL),
-	userdatasize(0), widthText(TXT_HEIGHT_UNDEF), heightText(TXT_HEIGHT_UNDEF), widgetParent(NULL) {};
+	userdatasize(0), widthText(TXT_HEIGHT_UNDEF), heightText(TXT_HEIGHT_UNDEF), widgetParent(NULL), updateOverlappingSiblings(true) {};
 
 	int modalstatus;
 	bool inDestruct;
@@ -78,6 +78,7 @@ public:
 	PG_Rect rectClip;
 	bool havesurface;
 	std::string name;
+	bool updateOverlappingSiblings;
 	
 };
 
@@ -767,20 +768,26 @@ void PG_Widget::Update(bool doBlit) {
 		src.SetRect(_mid->rectClip.x - my_xpos, _mid->rectClip.y - my_ypos, _mid->rectClip.w, _mid->rectClip.h);
 		dst = _mid->rectClip;
 
+		if(GetParent() != NULL && _mid->updateOverlappingSiblings ) 
+			if( !_mid->dirtyUpdate || (_mid->transparency > 0) ) {
+				PG_RectList* children = GetParent()->GetChildList();
+				if(children) {
+					children->Blit(_mid->rectClip, GetParent()->GetChildList()->first(), this);
+				}
+			}
+		
 		eventBlit(my_srfObject, src, dst);
 
 		if(_mid->childList != NULL) {
 			_mid->childList->Blit(_mid->rectClip);
 		}
 
-		// check if other children of my parent overlap myself
-		// DISABLED FOR TESTING -- ALEX
-		/*if(GetParent() != NULL) {
+		if(GetParent() != NULL && _mid->updateOverlappingSiblings ) {
 			PG_RectList* children = GetParent()->GetChildList();
 			if(children) {
-				children->Blit(_mid->rectClip, this->next());
+				children->Blit(_mid->rectClip, this->next() );
 			}
-		}*/
+		}
 
 		// find the toplevel widget
 		PG_Widget* obj = GetToplevelWidget();
@@ -1788,6 +1795,16 @@ void PG_Widget::SetDirtyUpdate(bool bDirtyUpdate) {
 	
 	_mid->dirtyUpdate = bDirtyUpdate;
 }
+
+void PG_Widget::UpdateOverlappingSiblings( bool enable, bool recursive )
+{
+	_mid->updateOverlappingSiblings = enable;
+	
+	if ( recursive && GetChildList() ) 
+		for(PG_Widget* i = GetChildList()->first(); i != NULL; i = i->next()) 
+			i->UpdateOverlappingSiblings(enable, true);
+}
+
 
 bool PG_Widget::GetDirtyUpdate() {
 	return _mid->dirtyUpdate;

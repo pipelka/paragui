@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/27 09:34:55 $
+    Update Date:      $Date: 2005/06/30 13:34:30 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.28 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.29 $
     Status:           $State: Exp $
 */
 
@@ -719,6 +719,15 @@ public:
 	If you encounter problems with activated dirty updates simple disable it.
 	*/
 	void SetDirtyUpdate(bool bDirtyUpdate);
+	
+	/**
+	Set the sibling update mode.
+	@param enable true - enable / false - disable
+	@param recursive true : the flag will also be set for all childs of the current widget
+	If enabled (the default), an Update operation will not only Update the Widget itself, but also all overlapping siblings.
+	Disabling this will gain a performance boost, but causes the overlapping parts of siblings to be overdrawn after Update operations
+	*/
+	void UpdateOverlappingSiblings( bool enable, bool recursive = true );
 	
 	/**
 	return if the dirty update mode is enabled

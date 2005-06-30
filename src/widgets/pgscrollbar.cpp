@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/27 09:34:55 $
+    Update Date:      $Date: 2005/06/30 13:34:29 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgscrollbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
     Status:           $State: Exp $
 */
 
@@ -152,15 +152,15 @@ void PG_ScrollBar::RecalcPositions() {
 	if(sb_direction == VERTICAL) {
 		position[3].x = 0;
 		if ( (scroll_max - scroll_min) * pos <= 0 ) 
-			position[3].y = (Uint16)(position[0].h + (((double)position[2].h - (double)position[3].h) / (double)(scroll_max - scroll_min)) * (double)pos);
-		else
 			position[3].y = position[0].h;
+		else
+			position[3].y = (Uint16)(position[0].h + (((double)position[2].h - (double)position[3].h) / (double)(scroll_max - scroll_min)) * (double)pos);
 	} else {
 		position[3].y = 0;
 		if ( (scroll_max - scroll_min) * pos <= 0 ) 
-			position[3].x = (Uint16)(position[0].w + (((double)position[2].w - (double)position[3].w) / (double)(scroll_max - scroll_min)) * (double)pos);
-		else
 			position[3].x = position[0].w;
+		else
+			position[3].x = (Uint16)(position[0].w + (((double)position[2].w - (double)position[3].w) / (double)(scroll_max - scroll_min)) * (double)pos);
 	}
 
 	// bordersize

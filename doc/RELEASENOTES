@@ -102,6 +102,7 @@ Whats new in ParaGUI 1.1.9 ?
   0. This caused scrollbars to appear as soon as the first widget was
   added. The area size is now correctly initialized so that the
   scrollbars only appear when necessary.
+- added PG_Widget::UpdateOverlappingSiblings(...)
 
 
 - applied patches from Ulf Lorenz:

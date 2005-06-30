@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2005/06/30 13:34:29 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.11 $
+    CVS/RCS Revision: $Revision: 1.1.2.12 $
     Status:           $State: Exp $
 */
 
@@ -150,10 +150,6 @@ protected:
 	PG_ScrollBar* my_objVerticalScrollbar;
 	PG_ScrollBar* my_objHorizontalScrollbar;
 	PG_ScrollArea* my_scrollarea;
-
-	PG_Rect my_rectVerticalScrollbar;
-	PG_Rect my_rectHorizontalScrollbar;
-	PG_Rect my_rectList;
 
 	int my_widthScrollbar;
 	int my_heightHorizontalScrollbar;

@@ -23,7 +23,7 @@ noinst_PROGRAMS = \
 	dblbuffer \
 	navtest \
 	windowtest \
-	windowtest2 \
+	updatetest \
 	layouttest \
 	windowresize \
 	unicodetest
@@ -90,8 +90,8 @@ navtest_LDADD = $(LFLAGS)
 windowtest_SOURCES = windowtest.cpp
 windowtest_LDADD = $(LFLAGS)
 
-windowtest2_SOURCES = windowtest2.cpp
-windowtest2_LDADD = $(LFLAGS)
+updatetest_SOURCES = updatetest.cpp
+updatetest_LDADD = $(LFLAGS)
 
 layouttest_SOURCES = layouttest.cpp
 layouttest_LDADD = $(LFLAGS)

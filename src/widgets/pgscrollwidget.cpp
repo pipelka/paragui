@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/27 09:34:55 $
+    Update Date:      $Date: 2005/06/30 13:34:29 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.14 $
+    CVS/RCS Revision: $Revision: 1.1.2.15 $
     Status:           $State: Exp $
 */
 
@@ -78,6 +78,9 @@ PG_ScrollWidget::~PG_ScrollWidget() {
 }
 
 void PG_ScrollWidget::RecalcPositions(bool bV, bool bH) {
+	PG_Rect my_rectVerticalScrollbar = *my_objVerticalScrollbar;
+	PG_Rect my_rectHorizontalScrollbar = *my_objHorizontalScrollbar;
+	PG_Rect my_rectList = *my_scrollarea;
 
 	// only vertical
 	if(bV && !bH) {
