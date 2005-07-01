@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/30 13:34:29 $
+    Update Date:      $Date: 2005/07/01 10:31:13 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.15 $
+    CVS/RCS Revision: $Revision: 1.1.2.16 $
     Status:           $State: Exp $
 */
 
@@ -150,15 +150,9 @@ void PG_ScrollWidget::eventSizeWidget(Uint16 w, Uint16 h) {
 
 	PG_ThemeWidget::eventSizeWidget(w,h);
 
-	if(h != my_height) {
-		my_height = h;
-		handleAreaChangedHeight(my_scrollarea, GetListHeight());
-	}
-
-	if(w != my_width) {
-		my_width = w;
-		handleAreaChangedWidth(my_scrollarea, GetListWidth());
-	}
+	my_height = h;
+	my_width = w;
+	my_scrollarea->SizeWidget(w, h);
 }
 
 bool PG_ScrollWidget::handleScrollPos(PG_ScrollBar* widget, long data) {

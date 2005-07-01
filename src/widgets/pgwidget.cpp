@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/06/30 13:34:29 $
+   Update Date:      $Date: 2005/07/01 10:31:13 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.32 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.33 $
    Status:           $State: Exp $
  */
 
@@ -1838,3 +1838,12 @@ void PG_Widget::EnableReceiver(bool enable, bool bRecursive) {
 		i->EnableReceiver(enable, true);
 	}
 }
+
+void PG_Widget::SetBorderSize(int b) {
+	my_bordersize = b;
+}
+
+int PG_Widget::GetBorderSize() {
+	return my_bordersize;
+}
+

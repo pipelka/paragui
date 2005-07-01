@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/06/15 07:32:15 $
+   Update Date:      $Date: 2005/07/01 10:31:13 $
    Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollarea.h,v $
-   CVS/RCS Revision: $Revision: 1.1.2.11 $
+   CVS/RCS Revision: $Revision: 1.1.2.12 $
    Status:           $State: Exp $
 */
 
@@ -152,6 +152,8 @@ public:
 	
 protected:
 
+	void eventSizeWidget(Uint16 w, Uint16 h);
+	
 	PG_Rect my_area;
 
 	bool my_shiftx;

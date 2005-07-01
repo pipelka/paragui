@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/08 21:28:48 $
+    Update Date:      $Date: 2005/07/01 10:31:13 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.15 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.16 $
     Status:           $State: Exp $
 */
 
@@ -39,6 +39,7 @@ my_selectedItem(NULL), my_alignment(PG_Label::LEFT) {
 	my_indent = 0;
 	my_selectindex = 0;
 	PG_ThemeWidget::LoadThemeStyle(style, PG_PropStr::ListBox);
+	EnableScrollBar(false, PG_ScrollBar::HORIZONTAL);
 }
 
 PG_ListBox::~PG_ListBox() {

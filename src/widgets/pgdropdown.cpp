@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/12 17:29:28 $
+    Update Date:      $Date: 2005/07/01 10:31:13 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.21 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.22 $
     Status:           $State: Exp $
 */
 
@@ -51,7 +51,9 @@ my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 
 	PG_Rect rlist(r.my_xpos, r.my_ypos + r.my_height +1, r.my_width, r.my_height /* * 5 */);
 	my_DropList = new PG_ListBox(NULL, rlist, style);
-	my_DropList->SetAutoResize(true, false);
+	my_DropList->SetAutoResize(true, true);
+	my_DropList->SetShiftOnRemove(false, true);
+
 	//my_DropList->EnableScrollBar(false);
 	my_DropList->sigSelectItem.connect(slot(*this, &PG_DropDown::select_handler));
 	my_DropList->sigDelete.connect(slot(*this, &PG_DropDown::onDropListDeletion));
@@ -84,7 +86,7 @@ void PG_DropDown::AddChild(PG_Widget* child) {
 	}
 	else {
 		my_DropList->AddChild(child);
-		my_DropList->SizeWidget(my_width, my_DropList->GetListHeight() + my_DropList->GetBorderSize()*2);
+		//my_DropList->SizeWidget(my_width, my_DropList->GetListHeight() + my_DropList->GetBorderSize()*2);
 	}
 }
 

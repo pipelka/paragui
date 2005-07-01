@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/09 09:06:03 $
+    Update Date:      $Date: 2005/07/01 10:31:13 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollarea.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.14 $
+    CVS/RCS Revision: $Revision: 1.1.2.15 $
     Status:           $State: Exp $
 */
 
@@ -75,7 +75,7 @@ void PG_ScrollArea::AddChild(PG_Widget* child) {
 		sigAreaChangedWidth(this, my_area.w);
 
 		if(my_AddResizeParent) {
-			GetParent()->SizeWidget(my_area.w, GetParent()->my_height);
+			GetParent()->SizeWidget(my_area.w + GetParent()->GetBorderSize()*2, GetParent()->my_height);
 		}
 	}
 	if(child->y+child->h+my_area.y-my_ypos > my_area.h) {
@@ -83,7 +83,7 @@ void PG_ScrollArea::AddChild(PG_Widget* child) {
 		sigAreaChangedHeight(this, my_area.h);
 
 		if(my_AddResizeParent) {
-			GetParent()->SizeWidget(GetParent()->my_width, my_area.h);
+			GetParent()->SizeWidget(GetParent()->my_width, my_area.h + GetParent()->GetBorderSize()*2);
 		}
 	}
 
@@ -194,6 +194,17 @@ void PG_ScrollArea::RemoveAll() {
 		return;
 	}
 	GetChildList()->clear();
+	
+	if(my_shiftx) {
+		my_area.w = 0;
+		sigAreaChangedWidth(this, 0);
+	}
+	
+	if(my_shifty) {
+		my_area.h = 0;
+		sigAreaChangedHeight(this, 0);
+	}
+
 	Update();
 }
 
@@ -271,4 +282,15 @@ void PG_ScrollArea::SetResizeParent(bool bRemove, bool bAdd) {
 
 	my_RemoveResizeParent = bRemove;
 	my_AddResizeParent = bAdd;
+}
+
+void PG_ScrollArea::eventSizeWidget(Uint16 w, Uint16 h) {
+	if(w != my_width) {
+		this->w = w;
+		sigAreaChangedWidth(this, my_area.w);
+	}
+	if(h != my_height) {
+		this->h = h;
+		sigAreaChangedHeight(this, my_area.h);
+	}
 }

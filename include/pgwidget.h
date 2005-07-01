@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/30 13:34:30 $
+    Update Date:      $Date: 2005/07/01 10:31:13 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.29 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.30 $
     Status:           $State: Exp $
 */
 
@@ -777,6 +777,18 @@ public:
 	*/
 	void SetParent(PG_Widget* parent);
 
+	/**
+	Set the bordersize of the widget
+	@param	b	bordersize in pixels (currently 0,1,2)
+	*/
+	void SetBorderSize(int b);
+
+	/**
+	Get the bordersize of the widget
+	@return bordersize in pixels
+	*/
+	int GetBorderSize();
+
 protected:
 
 	/**
@@ -875,6 +887,8 @@ protected:
 	     \li \c my_colorBorder[1][1] lower and right inner border (if bordersize >=2)
 	*/
 	PG_Color my_colorBorder[2][2];
+
+	int my_bordersize;
 
 private:
 

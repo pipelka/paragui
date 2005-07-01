@@ -136,7 +136,6 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	WidgetList->SetBackground("default/wnd_close.bmp", PG_Draw::TILE, 0xFF);
 	WidgetList->SetBackgroundBlend(0);
 			
-	WidgetList->EnableScrollBar(true, PG_ScrollBar::VERTICAL);
 	WidgetList->EnableScrollBar(true, PG_ScrollBar::HORIZONTAL);
 		
 	(new PG_Button(this, PG_Rect(260,130,110,30), "<< ADD", 100))->sigClick.connect(slot(*this, &TestWindow::handleButtonClick));
@@ -185,8 +184,7 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	drop->AddItem("Item 3");
 	drop->AddItem("Item 4");
 	drop->AddItem("Item 5");
-	drop->AddItem("Item 6");
-	//drop->Hide();
+	//drop->AddItem("Item 6");
 }
 
 bool TestWindow::handleScrollPos(PG_ScrollBar* widget, long data){

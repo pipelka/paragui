@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2005/07/01 10:31:13 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.15 $
     Status:           $State: Exp $
 */
 
@@ -280,14 +280,6 @@ void PG_ThemeWidget::SetGradient(PG_Gradient& grad) {
 
 PG_Gradient PG_ThemeWidget::GetGradient() {
 	return my_gradient;
-}
-
-void PG_ThemeWidget::SetBorderSize(int b) {
-	my_bordersize = b;
-}
-
-int PG_ThemeWidget::GetBorderSize() {
-	return my_bordersize;
 }
 
 void PG_ThemeWidget::FreeImage() {
