@@ -47,6 +47,7 @@ Whats new in ParaGUI 1.1.9 ?
 - added devhelp support to html documentation
 - fixed "test/dropdown2" bug (proper resize of scrollarea von RemoveAll)
 - added PG_Application::Get/SetUpdateOverlappingSiblings
+- added devhelp debian package
 
 - applied patches from Sebastian:
 - PG_ListBox: fixed GetSelectedIndex()

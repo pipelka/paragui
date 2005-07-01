@@ -37,3 +37,15 @@ paragui.devhelp.gz: paragui.devhelp
 paragui.devhelp: xml/index.xml
 	xsltproc -o $(devhelp_file) doxygen_to_devhelp.xsl xml/index.xml
 
+devhelpdir = $(prefix)/share/devhelp/books/paragui
+
+install-devhelp: paragui.devhelp.gz html/index.html
+	mkdir -p $(DESTDIR)$(devhelpdir)
+	mkdir -p $(DESTDIR)$(devhelpdir)/images
+	$(INSTALL_DATA) html/*.html $(DESTDIR)$(devhelpdir)
+	$(INSTALL_DATA) html/*.gif $(DESTDIR)$(devhelpdir)
+	$(INSTALL_DATA) html/*.map $(DESTDIR)$(devhelpdir)
+	$(INSTALL_DATA) html/*.css $(DESTDIR)$(devhelpdir)
+	$(INSTALL_DATA) html/*.png $(DESTDIR)$(devhelpdir)
+	$(INSTALL_DATA) paragui.devhelp.gz $(DESTDIR)$(devhelpdir)
+	$(INSTALL_DATA) html/images/*.png $(DESTDIR)$(devhelpdir)/images

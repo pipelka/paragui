@@ -7,3 +7,4 @@ Makefile.in
 *.debhelper
 *.substvars
 files
+devhelp-book-paragui

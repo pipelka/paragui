@@ -68,6 +68,7 @@ install: build
 	dh_installdirs
 
 	$(MAKE) install DESTDIR=$(CURDIR)/debian/tmp
+	$(MAKE) -C doc install-devhelp DESTDIR=$(CURDIR)/debian/tmp
 
 	dh_install --sourcedir=debian/tmp
 

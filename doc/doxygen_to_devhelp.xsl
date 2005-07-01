@@ -25,7 +25,7 @@
       </xsl:apply-templates>
     </sub>
     <sub name="Related Pages" link="{$reference_prefix}pages.html">
-      <sub name="About widgets, redrwaing and blitting" link="{$reference_prefix}aboutwidgets.html">
+      <sub name="About widgets, redrawing and blitting" link="{$reference_prefix}aboutwidgets.html">
       </sub>
       <sub name="Coding conventions" link="{$reference_prefix}coding.html">
       </sub>
