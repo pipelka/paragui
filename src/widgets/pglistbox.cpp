@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 11:25:15 $
+    Update Date:      $Date: 2005/07/01 11:27:13 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.17 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.18 $
     Status:           $State: Exp $
 */
 
@@ -49,8 +49,6 @@ void PG_ListBox::AddChild(PG_Widget* item) {
 	if(item == NULL) {
         return;
 	}
-
-	PG_LogDBG("PG_ListBox::Addchild() w = %i", Width());
 
 	item->SizeWidget(Width(), item->Height());	
 
