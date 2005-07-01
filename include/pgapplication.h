@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/27 09:34:55 $
+    Update Date:      $Date: 2005/07/01 11:25:16 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.23 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.24 $
     Status:           $State: Exp $
 */
 
@@ -552,7 +552,23 @@ public:
         @return the active EventSupplier
 	*/        
 	static  PG_EventSupplier* GetEventSupplier();
-        
+
+	/**
+	Set the default sibling update mode.
+	@param enable true - enable / false - disable
+	@param recursive true : the flag will also be set for all childs of the current widget
+	If enabled (the default), an Update operation will not only Update the Widget itself, but also all overlapping siblings.
+	Disabling this will gain a performance boost, but causes the overlapping parts of siblings to be overdrawn after Update operations.
+	All widgets created after setting this option will use the selected update method.
+	*/
+	static void SetUpdateOverlappingSiblings(bool update = true);
+
+	/**
+	Get the default sibling update mode.
+	@return default sibling update mode
+	*/
+	static bool GetUpdateOverlappingSiblings();
+
 	SignalXMLTag<> sigXMLTag;
 	SignalAppIdle<> sigAppIdle;
 
@@ -616,6 +632,7 @@ private:
 	static CursorMode my_mouse_mode;
 	static SDL_mutex* mutexScreen;
 	static bool disableDirtyUpdates;
+	static bool defaultUpdateOverlappingSiblings;
 };
 
 /**

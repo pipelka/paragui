@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/27 09:34:55 $
+    Update Date:      $Date: 2005/07/01 11:25:16 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.27 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.28 $
     Status:           $State: Exp $
 */
 
@@ -74,6 +74,7 @@ bool PG_Application::disableDirtyUpdates = false;
 //bool PG_Application::my_quitEventLoop = false;
 PG_EventSupplier* PG_Application::my_eventSupplier = NULL;
 PG_EventSupplier* PG_Application::my_defaultEventSupplier = NULL;
+bool PG_Application::defaultUpdateOverlappingSiblings = true;
 
 /**
 	new shutdown procedure (called at application termination
@@ -1256,6 +1257,14 @@ bool PG_Application::PumpIntoEventQueue(const SDL_Event* event) {
 	}
 
 	return processed;
+}
+
+void PG_Application::SetUpdateOverlappingSiblings(bool update) {
+	defaultUpdateOverlappingSiblings = update;
+}
+
+bool PG_Application::GetUpdateOverlappingSiblings() {
+	return defaultUpdateOverlappingSiblings;
 }
 
 /*

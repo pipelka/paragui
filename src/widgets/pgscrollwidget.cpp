@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 10:31:13 $
+    Update Date:      $Date: 2005/07/01 11:25:15 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.16 $
+    CVS/RCS Revision: $Revision: 1.1.2.17 $
     Status:           $State: Exp $
 */
 
@@ -115,6 +115,12 @@ void PG_ScrollWidget::RecalcPositions(bool bV, bool bH) {
 			my_height - (my_heightHorizontalScrollbar + my_bordersize),
 			my_width - (my_widthScrollbar+my_bordersize*2),
 			my_heightHorizontalScrollbar);
+	}
+
+	// none
+	if(!bV && !bH) {
+		my_rectHorizontalScrollbar.SetRect(0,0,0,0);
+		my_rectVerticalScrollbar.SetRect(0,0,0,0);
 	}
 
 	// scrollarea

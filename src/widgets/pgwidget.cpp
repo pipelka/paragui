@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/07/01 10:31:13 $
+   Update Date:      $Date: 2005/07/01 11:25:15 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.33 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.34 $
    Status:           $State: Exp $
  */
 
@@ -51,7 +51,9 @@ public:
 	PG_WidgetDataInternal() : modalstatus(0), inDestruct(false), inMouseLeave(false), font(NULL), dirtyUpdate(false), id(-1),
 	transparency(0), quitModalLoop(false), visible(false), hidden(false), firstredraw(true),
 	childList(NULL), haveTooltip(false), fadeSteps(10), mouseInside(false), userdata(NULL),
-	userdatasize(0), widthText(TXT_HEIGHT_UNDEF), heightText(TXT_HEIGHT_UNDEF), widgetParent(NULL), updateOverlappingSiblings(true) {};
+	userdatasize(0), widthText(TXT_HEIGHT_UNDEF), heightText(TXT_HEIGHT_UNDEF), widgetParent(NULL) {
+		updateOverlappingSiblings = PG_Application::GetUpdateOverlappingSiblings();
+	};
 
 	int modalstatus;
 	bool inDestruct;

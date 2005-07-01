@@ -230,7 +230,7 @@ bool TestWindow::handleButtonClick(PG_Button* button) {
 	if(id == 100) {
 		PG_Label* l = new PG_Label(WidgetList, PG_Rect(0,0,220,25), "");
 		l->SetAlignment(PG_Label::CENTER);
-		l->SetTextFormat("Label %i", ++label);
+		l->SetTextFormat("A very very very very long Label %i", ++label);
 		WidgetList->ScrollToWidget(l);
 		return true;
 	}
