@@ -14,6 +14,8 @@ builddoc: paragui.doxy
 
 html/index.html: builddoc
 
+html/index.xml: builddoc
+
 $(PACKAGE)doc-html-$(VERSION).tar.gz: html/index.html paragui.devhelp.gz
 	mkdir -p $(PACKAGE)doc-html-$(VERSION) ; \
 	mkdir -p $(PACKAGE)doc-html-$(VERSION)/images ; \
