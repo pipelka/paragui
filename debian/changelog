@@ -1,3 +1,9 @@
+libparagui1.1 (1.1.9-9) unstable; urgency=low
+
+  * added libsdl-image1.2 dependency
+
+ -- Alexander Pipelka <pipelka@teleweb.at>  Fri,  8 Jul 2005 10:35:20 +0200
+
 libparagui1.1 (1.1.9-8) unstable; urgency=low
 
   * disabled exceptions, rtti
