@@ -58,8 +58,9 @@ libparaguiinclude_HEADERS = \
 	ystring.h \
 	ychar.h \
 	pgeventsupplier.h \
-	pgsdleventsupplier.h 
-
+	pgsdleventsupplier.h \
+	pgtooltiphelp.h        
+        
 EXTRA_DIST = \
 	paraconfig_win32.h \
 	paraconfig_macos.h \

@@ -95,7 +95,7 @@ PlayField::~PlayField() {
 
 void PlayField::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst) {
 
-	SDL_FillRect(PG_Application::GetScreen(), (SDL_Rect*)&dst, 0);
+	SDL_FillRect(PG_Application::GetScreen(), const_cast<PG_Rect*>(&dst), 0);
 	
 	if (tickstate==0) {
 		// we draw our first line
@@ -181,7 +181,7 @@ PlayField2::~PlayField2() {
 
 void PlayField2::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst) {
 
-	SDL_FillRect(PG_Application::GetScreen(), (SDL_Rect*)&dst, 0);
+	SDL_FillRect(PG_Application::GetScreen(), const_cast<PG_Rect*>(&dst), 0);
 	
 	for (int i=0; i<3; i++)
 	{

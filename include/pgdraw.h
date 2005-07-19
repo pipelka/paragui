@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/31 20:19:00 $
+    Update Date:      $Date: 2005/07/19 16:30:22 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdraw.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.2.9 $
     Status:           $State: Exp $
 */
 
@@ -274,7 +274,7 @@ DECLSPEC void SetPixel(int x, int y, const PG_Color& c, SDL_Surface * surface);
 	This function simply replaces SDL_BlitSurface and uses PG_Rect instead of SDL_Rect.
 */
 inline void BlitSurface(SDL_Surface* srf_src, const PG_Rect& rect_src, SDL_Surface* srf_dst, const PG_Rect& rect_dst) {
-	SDL_BlitSurface(srf_src, (PG_Rect*)&rect_src, srf_dst, (PG_Rect*)&rect_dst);
+	SDL_BlitSurface(srf_src, const_cast<PG_Rect*>(&rect_src), srf_dst, const_cast<PG_Rect*>(&rect_dst));
 }
 
 /** 

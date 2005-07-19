@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 11:25:15 $
+    Update Date:      $Date: 2005/07/19 16:30:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollwidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.17 $
+    CVS/RCS Revision: $Revision: 1.1.2.18 $
     Status:           $State: Exp $
 */
 
@@ -147,8 +147,14 @@ void PG_ScrollWidget::LoadThemeStyle(const std::string& widgettype) {
 	my_objVerticalScrollbar->LoadThemeStyle(widgettype);
 	my_objHorizontalScrollbar->LoadThemeStyle(widgettype);
 
-	my_widthScrollbar = my_objVerticalScrollbar->Width();
-	my_heightHorizontalScrollbar = my_objHorizontalScrollbar->Height();
+	// if the scrollbars have currently the size 0 because they are disabled, we don't want that
+	// to be the nominal size because they would stay invisible even if they are enabled
+	if ( my_objVerticalScrollbar->Width() )
+		my_widthScrollbar = my_objVerticalScrollbar->Width();
+               
+	if ( my_objHorizontalScrollbar->Height() )
+		my_heightHorizontalScrollbar = my_objHorizontalScrollbar->Height();
+                
 	RecalcPositions(my_objVerticalScrollbar->IsVisible(), my_objHorizontalScrollbar->IsVisible());
 }
 

@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/23 19:06:58 $
+    Update Date:      $Date: 2005/07/19 16:30:23 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/gradient.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.4 $
     Status:           $State: Exp $
 */
 
@@ -141,7 +141,8 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_
 	Uint8 Rshift = format->Rshift;
 	Uint8 Gshift = format->Gshift;
 	Uint8 Bshift = format->Bshift;
-	//Uint8 Amask = format->Amask;
+	Uint32 Amask = format->Amask;
+	Uint8 Ashift = format->Ashift;
 
 	Uint8 bpp = format->BytesPerPixel;
 	Uint32 pitch = surface->pitch;
@@ -196,7 +197,8 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_
 				case 4:
 					pixel =  (r>>Rloss) << Rshift
 							   | (g>>Gloss) << Gshift
-							   | (b>>Bloss) << Bshift;
+							   | (b>>Bloss) << Bshift
+							   | ((SDL_ALPHA_OPAQUE << Ashift) & Amask);
 
 					*((Uint32 *) (bits)) = (Uint32) pixel;
 					break;

@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2005/07/19 16:30:23 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/surface.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
     Status:           $State: Exp $
 */
 
@@ -426,7 +426,7 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 
 	}
 
-    SDL_SetClipRect(surface, (SDL_Rect*)&oldclip);
+	SDL_SetClipRect(surface, const_cast<PG_Rect*>(&oldclip));
     
 	if((/*(gradient == NULL) ||*/ (blend == 0)) && bColorKey) {
 		c = uColorKey.MapRGB(background->format);

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/05/23 17:35:52 $
+   Update Date:      $Date: 2005/07/19 16:30:22 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.12 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.13 $
    Status:           $State: Exp $
  */
 
@@ -677,12 +677,14 @@ bool PG_PopupMenu::eventMouseMotion(const SDL_MouseMotionEvent *motion) {
 		itemRect.my_ypos += my_ypos;
 		if (itemRect.IsInside(p))
 			return false;
-	}
 
-	if (motion->yrel < 0  && current != start)
-		current--;
-	else if (motion->yrel > 0 && current != stop)
-		current++;
+		if (motion->yrel < 0  && current != start)
+			current--;
+		else if (motion->yrel > 0 && current != stop)
+			current++;
+	} else {
+		current = start;
+	}
 
 	if (!handleMotion(p))
 		return false;

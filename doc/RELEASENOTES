@@ -105,7 +105,19 @@ Whats new in ParaGUI 1.1.9 ?
   added. The area size is now correctly initialized so that the
   scrollbars only appear when necessary.
 - added PG_Widget::UpdateOverlappingSiblings(...)
-
+- Gradients on 32 Bit surfaces with Alpha channel now set the alpha
+  channel to fully opaque. This only has an effect if the surface has the
+  SDL_SRCALPHA flag set. The old behaviour caused the gradient to be
+  completely invisible if the flag was set.
+- A small glitch of the PopupMenu is fixed that caused the second entry
+  to be selected when it was opened.
+- A lot of C-style casts  are replaced with C++ const_casts.
+- There was yet another situation in which the ScrollWidget didn't work
+  correctly and didn't show scrollbars although it should, which I've
+  fixed.
+- And last but not least, here comes a new widget: PG_ToolTipHelp
+  It shows those nice little help messages when the mouse hovers over a
+  widget.
 
 - applied patches from Ulf Lorenz:
 - documentation updates (faq, tutorial)

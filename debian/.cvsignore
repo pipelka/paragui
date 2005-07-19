@@ -8,3 +8,4 @@ Makefile.in
 *.substvars
 files
 devhelp-book-paragui
+*.ori

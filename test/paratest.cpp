@@ -21,6 +21,7 @@
 #include "pgmenubar.h"
 #include "pgtheme.h"
 #include "pgmultilineedit.h"
+#include "pgtooltiphelp.h"
 
 #include <iostream>
 
@@ -500,14 +501,15 @@ int main(int argc, char* argv[]) {
 	PG_Button list(NULL, PG_Rect(400,450,100,30), "List", PG_Button::OK);
 	list.sigClick.connect(slot(handle_list));
 	list.Show();
+	new PG_ToolTipHelp(&list, "I'm a button");
 
 	PG_Button quit(NULL, PG_Rect(600,450,100,30), "Quit", PG_Button::CLOSE);
 	quit.sigClick.connect(slot(handle_exit), (PG_Pointer)&app);
 	quit.Show();
+	new PG_ToolTipHelp(&quit, "No! Please, don't press Quit!");
 
 	PG_Button show_wnd(NULL, PG_Rect(500,450,100,30), "Window", PG_Button::APPLY);
 	show_wnd.sigClick.connect(slot(wnd, &TestWindow::handle_show_window));
-    
 	show_wnd.Show();
 
 	PG_MultiLineEdit text(NULL, PG_Rect(resx - 300, 35, 300, 150));

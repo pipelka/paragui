@@ -22,9 +22,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:46:03 $
+    Update Date:      $Date: 2005/07/19 16:30:23 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/drawtile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -53,8 +53,8 @@ void PG_Draw::DrawTile(SDL_Surface* surface, const PG_Rect& ref, const PG_Rect& 
 	index2.x = (dx + drawrect.w + tilemap->w - 1) / tilemap->w;
 	index2.y = (dy + drawrect.h + tilemap->h - 1) / tilemap->h;
 
-	SDL_GetClipRect(surface, (SDL_Rect*)&oldclip);
-	SDL_SetClipRect(surface, (SDL_Rect*)&drawrect);
+	SDL_GetClipRect(surface, const_cast<PG_Rect*>(&oldclip));
+	SDL_SetClipRect(surface, const_cast<PG_Rect*>(&drawrect));
 
 	PG_Rect src(0,0, tilemap->w, tilemap->h);
 	PG_Rect dst = src;
@@ -69,5 +69,5 @@ void PG_Draw::DrawTile(SDL_Surface* surface, const PG_Rect& ref, const PG_Rect& 
 		}
 	}
 
-	SDL_SetClipRect(surface, (SDL_Rect*)&oldclip);
+	SDL_SetClipRect(surface, const_cast<PG_Rect*>(&oldclip));
 }

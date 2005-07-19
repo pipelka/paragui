@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 10:31:13 $
+    Update Date:      $Date: 2005/07/19 16:30:22 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.15 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.16 $
     Status:           $State: Exp $
 */
 
@@ -368,7 +368,7 @@ void PG_ThemeWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 			Uint32 c = _mid->backgroundcolor.MapRGBA(
 			               PG_Application::GetScreen()->format,
 						   255-GetTransparency());
-			SDL_FillRect(PG_Application::GetScreen(), (SDL_Rect*)&dst, c);
+			SDL_FillRect(PG_Application::GetScreen(), const_cast<PG_Rect*>(&dst), c);
 		}
 	} else if (_mid->nocache) {
 		_mid->cachesurface = CreateThemedSurface(
@@ -459,6 +459,7 @@ SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* 
 	                           Amask
 	                       );
 
+			       
 	if(SDL_MUSTLOCK(surface)) {
 		SDL_LockSurface(surface);
 	}

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 11:25:16 $
+    Update Date:      $Date: 2005/07/19 16:30:22 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.28 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.29 $
     Status:           $State: Exp $
 */
 
@@ -499,7 +499,7 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 	PG_Rect fillrect = rect;
 
 	if(!my_background || !enableBackground) {
-		SDL_FillRect(screen, (SDL_Rect*)&fillrect, my_backcolor.MapRGB(screen->format));
+		SDL_FillRect(screen, const_cast<PG_Rect*>(&fillrect), my_backcolor.MapRGB(screen->format));
 		return;
 	}
 	if(my_backmode == PG_Draw::STRETCH &&
@@ -518,11 +518,11 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 			/*PG_Draw::ScaleSurface(my_background,
 						      static_cast<Uint16>(screen->w), static_cast<Uint16>(screen->h));*/
 		}
-		SDL_GetClipRect(screen, (SDL_Rect*)&fillrect);
-		SDL_SetClipRect(screen, (SDL_Rect*)&rect);
+		SDL_GetClipRect(screen, const_cast<PG_Rect*>(&fillrect));
+		SDL_SetClipRect(screen, const_cast<PG_Rect*>(&rect));
 		SDL_SetAlpha(my_scaled_background, 0, 0);
-		SDL_BlitSurface(my_scaled_background, (SDL_Rect*)&rect, screen, (SDL_Rect*)&rect);
-		SDL_SetClipRect(screen, (SDL_Rect*)&fillrect);
+		SDL_BlitSurface(my_scaled_background, const_cast<PG_Rect*>(&rect), screen, const_cast<PG_Rect*>(&rect));
+		SDL_SetClipRect(screen, const_cast<PG_Rect*>(&fillrect));
 
 	} else {
 		SDL_SetAlpha(my_background, 0, 0);
