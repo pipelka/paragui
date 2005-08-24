@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/19 16:30:22 $
+    Update Date:      $Date: 2005/08/24 06:32:29 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgtooltiphelp.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.1 $
+    CVS/RCS Revision: $Revision: 1.1.2.2 $
     Status:           $State: Exp $
 */
 
@@ -62,7 +62,7 @@ private:
 			return interval;
 		};
 	public:
-		Ticker( int interval ) {
+		Ticker( int interval ) : ticker(0) {
 			SetTimer( interval );
 		};
 		Uint32 getTicker() {

@@ -118,7 +118,16 @@ Whats new in ParaGUI 1.1.9 ?
 - And last but not least, here comes a new widget: PG_ToolTipHelp
   It shows those nice little help messages when the mouse hovers over a
   widget.
-
+- The Tooltip-Ticker was not initialized
+- The latest changes of PG_TimerObject rendered it unusable:
+  objSingleTimer was set and immediately reset by StopTimer. I've changed
+  their order .
+- Radiobuttons had to be Grouped on construction. If they were grouped
+  later and all Radiobuttons were pressed (which is the default after
+  construction), they could not be used because a click on any
+  RadioButton was ignored since it was already pressed. I've moved the
+  check for ignoring clicks after the group check.
+ 
 - applied patches from Ulf Lorenz:
 - documentation updates (faq, tutorial)
 - PG_TimerObject fix

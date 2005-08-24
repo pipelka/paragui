@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/26 22:44:21 $
+    Update Date:      $Date: 2005/08/24 06:32:30 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.13 $
     Status:           $State: Exp $
 */
 
@@ -150,11 +150,6 @@ bool PG_RadioButton::handleButtonClick(PG_Button* button) {
 
 void PG_RadioButton::SetPressed() {
 
-	if(my_isPressed) {
-		my_widgetButton->SetPressed(true);
-		return;
-	}
-
 	PG_RadioButton* list = my_groupFirst;
 
 	while(list != NULL) {
@@ -165,6 +160,10 @@ void PG_RadioButton::SetPressed() {
 	}
 
 	my_widgetButton->SetPressed(true);
+        
+	if(my_isPressed) 
+		return;
+                
 	my_isPressed = true;
 
 	Update();

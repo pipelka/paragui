@@ -103,8 +103,8 @@ Uint32 PG_TimerObject::callbackSingleTimer(Uint32 interval) {
 
 int PG_TimerObject::SetTimer(Uint32 interval) {
 	SDL_mutexP(my_lock);
-	objSingleTimer = this;
 	StopTimer();
+	objSingleTimer = this;
 	int r = SDL_SetTimer(interval, &PG_TimerObject::callbackSingleTimer);
 	SDL_mutexV(my_lock);
 	
