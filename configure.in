@@ -12,7 +12,6 @@ SDL_VERSION=1.2.7
 
 dnl we also need libSigC++ (yeah)
 SIGC_VERSION=1.2.5
-PKG_SIGC="sigc++-1.2"
 
 dnl Set various version strings - taken gratefully from the GTk sources
 
@@ -220,7 +219,7 @@ AC_SUBST(LIBSTDCPP)
 
 dnl Check for libSigC++
 
-PKG_CHECK_MODULES(SIGC, $PKG_SIGC >= $SIGC_VERSION)
+PKG_CHECK_MODULES(SIGC, sigc++-1.2 >= $SIGC_VERSION)
 AC_SUBST(SIGC_CFLAGS)
 AC_SUBST(SIGC_LIBS)
 
