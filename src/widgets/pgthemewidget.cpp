@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/19 16:30:22 $
+    Update Date:      $Date: 2005/09/05 21:01:15 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.16 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.17 $
     Status:           $State: Exp $
 */
 
@@ -270,7 +270,7 @@ void PG_ThemeWidget::FreeSurface() {
 	}
 }
 
-void PG_ThemeWidget::SetGradient(PG_Gradient& grad) {
+void PG_ThemeWidget::SetGradient(const PG_Gradient& grad) {
 	my_gradient = grad;
 	my_has_gradient = true;
 	DeleteThemedSurface(_mid->cachesurface);

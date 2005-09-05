@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 10:31:13 $
+    Update Date:      $Date: 2005/09/05 21:01:15 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.16 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.17 $
     Status:           $State: Exp $
 */
 
@@ -154,7 +154,7 @@ public:
 	Set the background gradient
 	@param grad				a PG_Gradient structure describing the gradient
 	*/
-	void SetGradient(PG_Gradient& grad);
+	void SetGradient(const PG_Gradient& grad);
 
 	/**
 	Get the background gradient

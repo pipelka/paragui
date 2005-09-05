@@ -57,8 +57,10 @@ public:
 };
 
 //! Structure for widget gradients
-typedef struct {
+struct PG_Gradient {
 	PG_Color colors[4];	//!< array of gradient colors
-} PG_Gradient;
+	PG_Gradient() {};
+	PG_Gradient( PG_Color ul, PG_Color ur, PG_Color ll, PG_Color lr ) { colors[0] = ul; colors[1] = ur; colors[2] = ll; colors[3] = lr; };        
+};
 
 #endif // PG_COLOR_H
