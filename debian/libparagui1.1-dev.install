@@ -1,5 +1,6 @@
 usr/bin/paragui-config
 usr/lib/*.so
 usr/lib/*.la
+usr/lib/pkgconfig/paragui.pc
 usr/include/paragui/*
 usr/share/aclocal/paragui.m4
