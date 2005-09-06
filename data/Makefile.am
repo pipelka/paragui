@@ -31,7 +31,9 @@ paraguidata_DATA = \
 #	qnx.zip 
 
 EXTRA_DIST = \
+	default.theme \
 	default.zip \
+	simple.theme \
 	simple.zip
 #	qnx.zip
 
