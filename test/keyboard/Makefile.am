@@ -4,11 +4,16 @@ keyboard_SOURCES = \
 	keyboard.cpp \
 	main.cpp
 
-keyboard_LDADD = $(SDL_LIBS) -L../../src ../../src/libparagui.la $(FREETYPE_LIBS)
+keyboard_LDADD = \
+	$(SDL_LIBS) \
+	-L../../src ../../src/libparagui.la \
+	$(FREETYPE_LIBS) \
+	$(LIBSTDCPP)
 
 EXTRA_DIST = \
 	keyboard.h
 
 INCLUDES = \
 	-I$(top_srcdir)/include \
-	$(PARAGUI_CFLAGS)
+	$(SDL_CFLAGS) \
+	$(SIGC_CFLAGS)

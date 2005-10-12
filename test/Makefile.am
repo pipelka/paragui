@@ -28,7 +28,11 @@ noinst_PROGRAMS = \
 	windowresize \
 	unicodetest
 
-LFLAGS=$(SDL_LIBS) -L../src ../src/libparagui.la $(FREETYPE_LIBS)
+LFLAGS = \
+	$(SDL_LIBS) \
+	-L../src ../src/libparagui.la \
+	$(FREETYPE_LIBS)
+	$(LIBSTDCPP)
 
 # cairotest_SOURCES = cairotest.cpp
 # cairotest_LDADD = $(LFLAGS) -lcairo -lpixman
@@ -96,7 +100,10 @@ updatetest_LDADD = $(LFLAGS)
 layouttest_SOURCES = layouttest.cpp
 layouttest_LDADD = $(LFLAGS)
 
-INCLUDES = $(PARAGUI_CFLAGS) -I$(top_srcdir)/include
+INCLUDES = \
+	-I$(top_srcdir)/include \
+	$(SDL_CFLAGS) \
+	$(SIGC_CFLAGS)
 
 $(PACKAGE)-$(VERSION).tar.gz: dist
 

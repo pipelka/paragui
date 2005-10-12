@@ -49,6 +49,7 @@ Whats new in ParaGUI 1.1.9 ?
 - added PG_Application::Get/SetUpdateOverlappingSiblings
 - added devhelp debian package
 
+
 - applied patches from Sebastian:
 - PG_ListBox: fixed GetSelectedIndex()
 - PG_Widget:
@@ -127,6 +128,8 @@ Whats new in ParaGUI 1.1.9 ?
   construction), they could not be used because a click on any
   RadioButton was ignored since it was already pressed. I've moved the
   check for ignoring clicks after the group check.
+- small bugfix for the ThemeLoader
+ 
  
 - applied patches from Ulf Lorenz:
 - documentation updates (faq, tutorial)

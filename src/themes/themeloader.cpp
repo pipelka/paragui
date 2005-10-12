@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/17 12:15:30 $
+    Update Date:      $Date: 2005/10/12 10:13:37 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.10 $
     Status:           $State: Exp $
 */
 
@@ -268,7 +268,9 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 			if(tcscmp(T(atts[i]), T("name")) == 0) {
 				property->name = atts[i+1];
 			} else if(tcscmp(T(atts[i]), T("value")) == 0) {
-				sscanf(atts[i+1], "0x%08x", (unsigned int*)(&property->value));
+				unsigned int value;                        
+				sscanf(atts[i+1], "0x%08x", &value);
+				property->value = value;
 			} else {
 				std::cerr << "UNKNOWN COLOR ATTRIBUTE: " << atts[i] << std::endl;
 			}

@@ -4,11 +4,16 @@ colorselector_SOURCES = \
 	pgcolorselector.cpp \
 	main.cpp
 
-colorselector_LDADD = $(SDL_LIBS) -L../../src ../../src/libparagui.la $(FREETYPE_LIBS)
+colorselector_LDADD = \
+	$(SDL_LIBS) \
+	-L../../src ../../src/libparagui.la \
+	$(FREETYPE_LIBS) \
+	$(LIBSTDCPP)
 
 EXTRA_DIST = \
 	pgcolorselector.h
 
 INCLUDES = \
 	-I$(top_srcdir)/include \
-	$(PARAGUI_CFLAGS)
+	$(SDL_CFLAGS) \
+	$(SIGC_CFLAGS)
