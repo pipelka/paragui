@@ -22,6 +22,9 @@ ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 	INSTALL_PROGRAM += -s
 endif
 
+configure:
+        if [ -f autogen.sh ] ; then sh autogen.sh ; fi
+
 config.status: configure
 	dh_testdir
 	
