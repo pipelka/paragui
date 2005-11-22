@@ -23,7 +23,7 @@ ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
 endif
 
 configure:
-        if [ -f autogen.sh ] ; then sh autogen.sh ; fi
+	if [ -f autogen.sh ] ; then sh autogen.sh ; fi
 
 config.status: configure
 	dh_testdir
