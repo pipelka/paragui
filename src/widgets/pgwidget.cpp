@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/07/01 11:25:15 $
+   Update Date:      $Date: 2005/11/30 07:16:36 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.34 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.35 $
    Status:           $State: Exp $
  */
 
@@ -455,6 +455,17 @@ bool PG_Widget::SizeWidget(Uint16 w, Uint16 h, bool update) {
 					my_ypos,
 					(old_w > w) ? old_w : w,
 					(old_h > h) ? old_h : h);
+
+            // Fix: If you decrease the resolution of your application,
+            // you must decrease the window sizes as well. However, this
+            // code will create an out of bounds X error since x + old_w
+            // (or y + old_h) are now out of range.
+            if (my_xpos + old_w >= PG_Application::GetScreenWidth())
+                u.my_width = PG_Application::GetScreenWidth() - my_xpos;
+
+            if (my_ypos + old_h >= PG_Application::GetScreenHeight())
+                u.my_height = PG_Application::GetScreenHeight() - my_ypos;
+            
 			UpdateRect(u);
 			SDL_UpdateRects(PG_Application::GetScreen(), 1, &u);
 		}
