@@ -1,28 +1,28 @@
 /*
     ParaGUI - crossplatform widgetset
     Copyright (C) 2000,2001,2002  Alexander Pipelka
-
+ 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
-
+ 
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
-
+ 
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+ 
     Alexander Pipelka
     pipelka@teleweb.at
-
+ 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/09/05 21:01:15 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgthemewidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.17 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.18 $
     Status:           $State: Exp $
 */
 
@@ -40,25 +40,25 @@ class PG_ThemeWidgetDataInternal;
 
 /**
 	@author Alexander Pipelka
-
+ 
 	@short Base class for themed widgets
-
+ 
 	This class is the base class for all themed widgets.<br>
 	It handles various combinations of gradients and background images.
-
+ 
 	\anchor theme_PG_ThemeWidget
-
+ 
 	<h2>Theme support</h2><p>
-
+ 
 	<b>widget type:</b>		ThemeWidget (default)<br>
 	<b>object name:</b>		ThemeWidget<br>
-
+ 
 	<h3>Parent theme:</h3>
-
+ 
 	\ref theme_PG_Widget "PG_Widget" theme<br>
-
+ 
 	<h3>Theme sample:</h3>
-
+ 
 	\verbatim
 	<widget>
 		<type value="ThemeWidget"/>
@@ -92,7 +92,7 @@ public:
 	This constructor creates a themed widget without any drawing surface.
 	All drawing operations can be done via the eventBlit() callback handler.
 	*/
-	PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& style="ThemeWidget");	
+	PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& style="ThemeWidget");
 
 	/**
 	Create a new PG_ThemeWidget object
@@ -161,7 +161,7 @@ public:
 	@return the background gradient
 	*/
 	PG_Gradient GetGradient();
-	
+
 	/**
 	Display an image in the widget
 	@param filename		name of the image file to load
@@ -182,7 +182,7 @@ public:
 	a new image.
 	*/
 	bool LoadImage(const std::string& filename, const PG_Color& key);
-	
+
 	/**
 	Display an image in the widget
 	@param image		pointer to surface to display
@@ -221,9 +221,9 @@ public:
 	static void DeleteThemedSurface(SDL_Surface* surface);
 
 	void SetSimpleBackground(bool simple);
-	
+
 	void SetBackgroundColor(const PG_Color& c);
-	
+
 protected:
 
 	/** */

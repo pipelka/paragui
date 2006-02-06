@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:25 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/stretch.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.5 $
     Status:           $State: Exp $
 */
 
@@ -48,7 +48,7 @@
 	r.y = y0;
 	r.w = abs(x1 - x0) + 1;
 	r.h = abs(y1 - y0) + 1;
-
+ 
 	SDL_FillRect(dst, &r, color);
 }*/
 
@@ -112,7 +112,7 @@ inline void StretchTemplate(int x1, int x2, int y1, int y2, int yr, int yw, ST s
 		// hmm, ...
 		// i know this is a bit tricky (and maybe ugly)
 		//if((dst_pixels >= dst_cx0) && (dst_pixels <= dst_cx1)) {
-			*dst_pixels++ = *((DT)src_pixels);
+		*dst_pixels++ = *((DT)src_pixels);
 		//}
 		//else {
 		//	dst_pixels++;
@@ -487,12 +487,12 @@ void PG_Draw::CreateFilterLUT() {
 	if(bCreated) {
 		return;
 	}
-	
+
 	for (int i = -2000; i < 2001; i++) {
 		v = (double)i / 1000.0;
 		filterLUT[i + 2000] = B_spline_filter(v);
 	}
-	
+
 	bCreated = true;
 }
 
@@ -514,12 +514,12 @@ void zoom(SDL_Surface* dst, SDL_Surface* src, double fwidth) {
 	int tmp_pitch;
 	register double tmp_w, tmp_h, src_w;
 
-    if (!src || !dst)
-        return;
+	if (!src || !dst)
+		return;
 
-    if (!src->w || !src->h || !dst->w || !dst->h)
-        return;
-    
+	if (!src->w || !src->h || !dst->w || !dst->h)
+		return;
+
 	LockSurface(src);
 	LockSurface(dst);
 
@@ -749,12 +749,12 @@ void PG_Draw::InterpolatePixel(SDL_Surface* src, SDL_Surface* dest) {
 	Uint8 const *fp;
 	Uint8 *sq;
 
-    if (!src || !dest)
-        return;
+	if (!src || !dest)
+		return;
 
-    if (!src->w || !src->h || !dest->w || !dest->h)
-        return;
-    
+	if (!src->w || !src->h || !dest->w || !dest->h)
+		return;
+
 	int Dest_X = dest->w;
 	int Dest_Y = dest->h;
 	int Src_X = src->w;

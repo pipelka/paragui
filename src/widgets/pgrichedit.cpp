@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/12/01 11:28:22 $
+   Update Date:      $Date: 2006/02/06 21:24:19 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgrichedit.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.7.2.15 $
+   CVS/RCS Revision: $Revision: 1.3.6.7.2.16 $
    Status:           $State: Exp $
 */
 
@@ -70,7 +70,7 @@ void PG_RichEdit::SetAutoResize(bool bHorizontal, bool bVertical) {
 
 /*void PG_RichEdit::UpdateScrollBarsPos() {
 	//PG_WidgetList::UpdateScrollBarsPos();
-
+ 
 	//TO-DO : Value 5 is font size, witch is currently unknown ...
 	my_objVerticalScrollbar->SetLineSize(5);
 	my_objHorizontalScrollbar->SetLineSize(5);
@@ -121,14 +121,14 @@ bool PG_RichEdit::RemoveChild(PG_Widget* child) {
 void PG_RichEdit::SetText(const std::string& text) {
 	my_scrollarea->SetAreaWidth(my_LineWidth);
 	my_scrollarea->SetAreaHeight(0);
-	
+
 	my_text = text;
-		
+
 	// trim the string
-    bool bStop = false;
+	bool bStop = false;
 	char c;
 
-    while(!my_text.empty() && !bStop) {
+	while(!my_text.empty() && !bStop) {
 		c = my_text[my_text.size()-1];
 		bStop = true;
 		switch(c) {
@@ -154,17 +154,17 @@ void PG_RichEdit::ParseWords() {
 	Uint16 my_sw = 0;
 	PG_FontEngine::GetTextSize(blank, GetFont(), &my_sw);
 
-		RichWordDescription wordDescr;
-		PG_String word;
+	RichWordDescription wordDescr;
+	PG_String word;
 
-		Uint16 w, h, sw = 0;
-		int bl, ls;
-		bool space = false;
+	Uint16 w, h, sw = 0;
+	int bl, ls;
+	bool space = false;
 	int length = 0;
-	
-	do {		
-		sw = 0;		
-		space = false;		
+
+	do {
+		sw = 0;
+		space = false;
 
 		searchFrom = GetWord(searchFrom, &word, &wordDescr.my_EndMark);
 
@@ -225,13 +225,13 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, PG_String *word, Uint32 *endMark)
 			increment = 0;
 		}
 		*word = my_text.substr(searchFrom, result - searchFrom + increment);
-		
+
 		// Candid - cut too long words, if wanted
 		if (!my_AutoHorizontalResize) {
 			Uint16 width, i = word->size() - 1, w;
 			PG_FontEngine::GetTextSize(*word, GetFont(), &width);
 
-			if (width > my_width) {			
+			if (width > my_width) {
 				for (; width > my_width && i > 0; --i) {
 					PG_FontEngine::GetTextSize(word->substr(i, 1), GetFont(), &w);
 					width -= w;
@@ -239,7 +239,7 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, PG_String *word, Uint32 *endMark)
 				result -= word->size() - i + 1;
 				*word = word->substr(0, i);
 			}
-		}						
+		}
 
 		if ((Uint32)my_text[result] == my_Marks[MARK_NONBREAKABLE_SPACE]) {
 			PG_String newword;
@@ -255,11 +255,11 @@ size_t PG_RichEdit::GetWord(size_t searchFrom, PG_String *word, Uint32 *endMark)
 			Uint16 width, i = word->size() - 1, w;
 			PG_FontEngine::GetTextSize(*word, GetFont(), &width);
 
-			if (width > my_width) {			
+			if (width > my_width) {
 				for (; width > my_width && i > 0; --i) {
 					PG_FontEngine::GetTextSize(word->substr(i, 1), GetFont(), &w);
 					width -= w;
-				}				
+				}
 				*word = word->substr(0, i);
 			}
 		}
@@ -312,16 +312,14 @@ Sint32 PG_RichEdit::CompleteLines() {
 
 	if(my_AutoVerticalResize || my_AutoHorizontalResize) {
 		Uint16 w = my_width, h = my_height;
-	if (my_AutoVerticalResize) {
+		if (my_AutoVerticalResize) {
 			h = GetListHeight();
 		}
 		if(my_AutoHorizontalResize) {
 			w = GetListWidth();
-	}
+		}
 		SizeWidget(w, h, false);
-	}
-
-	else {
+	} else {
 		CheckScrollBars();
 	}
 
@@ -378,7 +376,7 @@ size_t PG_RichEdit::CompleteLine(RichLineArray::iterator actualLine, Sint32 &lin
 		if (my_objVerticalScrollbar->IsVisible())
 			linePartWidthMax = my_scrollarea->GetAreaWidth() - linePartLeft - my_objVerticalScrollbar->my_width;
 		else
-		linePartWidthMax = my_scrollarea->GetAreaWidth() - linePartLeft;
+			linePartWidthMax = my_scrollarea->GetAreaWidth() - linePartLeft;
 		if (childOnLine != widgetsOnLine.end())
 			linePartWidthMax = childOnLine->first - linePartLeft;
 		RichLinePartArray::iterator actualLinePart = actualLine->my_LineParts.insert(actualLine->my_LineParts.end(), RichLinePart(linePartLeft, linePartWidthMax));
@@ -507,15 +505,13 @@ Sint32 PG_RichEdit::CompleteLinePart(size_t searchFrom, Sint32 lineTop, Uint32 &
 			breakLine = false;
 			searchFrom = oldFind - 1;
 
-			if (w > actualLinePart->my_WidthMax) {				
-				if(my_AutoHorizontalResize) {					
+			if (w > actualLinePart->my_WidthMax) {
+				if(my_AutoHorizontalResize) {
 					searchFrom--;
-					linePartEnd = false;					
-					my_scrollarea->SetAreaWidth(lineWidth);					
-				}								
-			}
-
-			else if (actualLinePart->my_WordIndexes.size() == 0) {
+					linePartEnd = false;
+					my_scrollarea->SetAreaWidth(lineWidth);
+				}
+			} else if (actualLinePart->my_WordIndexes.size() == 0) {
 				//searchFrom++;
 				lineSpace = my_ParsedWords[searchFrom + 1].my_LineSkip;
 			}
@@ -614,7 +610,7 @@ bool PG_RichEdit::ProcessLongLine(PG_String &word, size_t &searchFrom, Uint32 ol
 	WidgetMap widgetsOnLine;
 	   
 	for (size_t ik = 0; ik < word.length(); ik++) 
-{                            
+	{                            
 	    if (word[ik] == my_FontBeginMark)        
 	    {
 	    ik += CurFont.FormatTagProc(&word[ik], 0);
@@ -651,23 +647,23 @@ bool PG_RichEdit::ProcessLongLine(PG_String &word, size_t &searchFrom, Uint32 ol
 	        searchFrom -= (word.length() - ik);  
 	        break;            
 	    }  
-}    */
+	}    */
 	return true;
 }
 
 bool PG_RichEdit::LoadText(const std::string& textfile) {
 	PG_DataContainer* text = PG_FileArchive::ReadFile(textfile);
-	
+
 	if(text == NULL) {
 		return false;
 	}
-	
+
 	// Hmm,...
 	// size() returns the number of loaded bytes. We have to terminate the text with 0.
 	// Last character will be truncated by this (i love valgrind).
 	text->data()[text->size()-1] = 0;
 	SetText(text->data());
-	
+
 	delete text;
 	return true;
 }

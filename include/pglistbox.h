@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:14 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.13 $
     Status:           $State: Exp $
 */
 
@@ -42,7 +42,7 @@ class PG_ListBoxBaseItem;
 	@author Alexander Pipelka
 	
 	@short A scrollable box that can hold any number of text items
-
+ 
 	@image html listbox.png "listbox screenshot"
 */
 
@@ -52,7 +52,9 @@ public:
 	/**
 	Signal type declaration
 	**/
-	template<class datatype = PG_Pointer> class SignalSelectItem : public PG_Signal1<PG_ListBoxBaseItem*, datatype> {};
+	template<class datatype = PG_Pointer>
+class SignalSelectItem : public PG_Signal1<PG_ListBoxBaseItem*, datatype> {}
+	;
 
 	/** */
 	PG_ListBox(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& style="ListBox");
@@ -107,12 +109,12 @@ public:
 	@param style alignment to be used for all items
 	*/
 	void SetAlignment(PG_Label::TextAlign style);
-	
+
 	/**
 	Returns the set alignment rule of this list
 	*/
 	PG_Label::TextAlign GetAlignment();
-	
+
 	/**
 	Returns the index of the last selected item
 	*/
@@ -139,7 +141,7 @@ protected:
 	bool eventMouseMotion(const SDL_MouseMotionEvent* motion);
 
 	friend class PG_ListBoxBaseItem;
-	
+
 private:
 
 	bool my_multiselect;

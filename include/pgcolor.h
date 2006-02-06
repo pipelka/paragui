@@ -1,7 +1,7 @@
 //
 // C++ Interface: pgcolor
 //
-// Description: 
+// Description:
 //
 //
 // Author: Alexander Pipelka <pipelka@pipelka.net>, (C) 2003
@@ -26,7 +26,7 @@
 	The purpose of this is to allow one to create new colors. If one is interested
 	in using predefined color constants, see pgcolors.h (note the letter "s" at the end.)
 	A PG_Color can be created from an SDL_Color, a Uint32, or RGB based system.
-
+ 
 	@author Alexander Pipelka
 */
 
@@ -59,8 +59,14 @@ public:
 //! Structure for widget gradients
 struct PG_Gradient {
 	PG_Color colors[4];	//!< array of gradient colors
-	PG_Gradient() {};
-	PG_Gradient( PG_Color ul, PG_Color ur, PG_Color ll, PG_Color lr ) { colors[0] = ul; colors[1] = ur; colors[2] = ll; colors[3] = lr; };        
+	PG_Gradient() {}
+	;
+	PG_Gradient( PG_Color ul, PG_Color ur, PG_Color ll, PG_Color lr ) {
+		colors[0] = ul;
+		colors[1] = ur;
+		colors[2] = ll;
+		colors[3] = lr;
+	};
 };
 
 #endif // PG_COLOR_H

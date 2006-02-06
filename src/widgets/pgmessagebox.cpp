@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.2.10 $
     Status:           $State: Exp $
 */
 
@@ -38,7 +38,7 @@ PG_Window(parent, r, windowtitle, MODAL) {
 	my_btnok = new PG_Button(this, btn1, btn1text);
 	my_btnok->SetID(1);
 	my_btnok->sigClick.connect(slot(*this, &PG_MessageBox::handleButton));
-	
+
 	my_btncancel = new PG_Button(this, btn2, btn2text);
 	my_btncancel->SetID(2);
 	my_btncancel->sigClick.connect(slot(*this, &PG_MessageBox::handleButton));

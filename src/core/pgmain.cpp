@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:45:41 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmain.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2.2.1 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.2 $
     Status:           $State: Exp $
 */
 #ifndef _GNU_SOURCE
@@ -34,27 +34,26 @@
 
 #include <cstdlib>
 
-int PG_main(int argc, char **argv, PG_Application *app)
-{
-    if (!app)
-        return 1;
+int PG_main(int argc, char **argv, PG_Application *app) {
+	if (!app)
+		return 1;
 
-    PG_TRY {
-        app->Run();
-    }
+	PG_TRY {
+	    app->Run();
+	}
 
-    PG_CATCH_ALL {
-        //
-        // For now it just aborts...
-        //
-        // TODO: report more information (will require adding a
-        // PG_exception class and handling the standard exceptions in a
-        // separate catch block)
-        //
-        PG_LogERR("Unhandled exception caught in PG_main! "
-                  "Aborting execution.");
-        exit(1);
-    }
+	PG_CATCH_ALL {
+	    //
+	    // For now it just aborts...
+	    //
+	    // TODO: report more information (will require adding a
+	    // PG_exception class and handling the standard exceptions in a
+	    // separate catch block)
+	    //
+	    PG_LogERR("Unhandled exception caught in PG_main! "
+	              "Aborting execution.");
+	    exit(1);
+	}
 
-    return 0;
+	return 0;
 }

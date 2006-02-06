@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/06/15 07:32:14 $
+   Update Date:      $Date: 2006/02/06 21:24:20 $
    Source File:      $Source: /sources/paragui/paragui/include/pgrichedit.h,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.13 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.14 $
    Status:           $State: Exp $
 */
 
@@ -78,14 +78,14 @@ public:
 	\param textfile relative path to the text file
 	*/
 	bool LoadText(const std::string& textfile);
-	
+
 	/**
 	Resize the widget automatically if there is not enough space.
 	@param bHorizontal resize horizontally
 	@param bVertical resize vertically
 	*/
 	void SetAutoResize(bool bHorizontal = true, bool bVertical = true);
-	
+
 	/**
 	Set default alignment.
 	*/

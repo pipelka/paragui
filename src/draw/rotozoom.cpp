@@ -22,9 +22,9 @@
     cosmetical (interface and naming) to fit the ParaGUI library.
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/31 20:19:00 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/rotozoom.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.2 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.3 $
     Status:           $State: Exp $
 */
 
@@ -40,7 +40,8 @@
 /* ---- Structures */
 
 typedef struct tColorRGBA {
-	tColorRGBA() : r(0), g(0), b(0), a(0) {};
+	tColorRGBA() : r(0), g(0), b(0), a(0) {}
+	;
 	Uint8 r;
 	Uint8 g;
 	Uint8 b;
@@ -281,7 +282,7 @@ static int zoomSurfaceY (SDL_Surface * src, SDL_Surface * dst) {
 // Rotates and zoomes 32bit RGBA/ABGR 'src' surface to 'dst' surface.
 
 static void transformSurfaceRGBA (SDL_Surface * src, SDL_Surface * dst, int cx,
-				  int cy, int isin, int icos, bool smooth) {
+                                  int cy, int isin, int icos, bool smooth) {
 	int x, y, t1, t2, dx, dy, xd, yd, sdx, sdy, ax, ay, ex, ey, sw, sh;
 	tColorRGBA c00, c01, c10, c11;
 	tColorRGBA *pc, *sp;
@@ -440,7 +441,7 @@ static void transformSurfaceRGBA (SDL_Surface * src, SDL_Surface * dst, int cx,
 // Rotates and zoomes 8bit palette/Y 'src' surface to 'dst' surface.
 
 static void transformSurfaceY (SDL_Surface * src, SDL_Surface * dst,
-			       int cx, int cy, int isin, int icos) {
+                               int cx, int cy, int isin, int icos) {
 	int x, y, dx, dy, xd, yd, sdx, sdy, ax, ay, sw, sh;
 	tColorY *pc, *sp;
 	int gap;
@@ -489,7 +490,7 @@ static void transformSurfaceY (SDL_Surface * src, SDL_Surface * dst,
 #define VALUE_LIMIT	0.001
 
 SDL_Surface* PG_Draw::RotoScaleSurface(SDL_Surface *src, double angle,
-                                 double zoom, bool smooth) {
+                                       double zoom, bool smooth) {
 	SDL_Surface *rz_src;
 	SDL_Surface *rz_dst;
 	double zoominv;
@@ -651,7 +652,7 @@ SDL_Surface* PG_Draw::RotoScaleSurface(SDL_Surface *src, double angle,
 #define VALUE_LIMIT	0.001
 
 SDL_Surface* PG_Draw::ScaleSurface(SDL_Surface *src,
-                             double zoomx, double zoomy, bool smooth) {
+                                   double zoomx, double zoomy, bool smooth) {
 	SDL_Surface *rz_src;
 	SDL_Surface *rz_dst;
 	int dstwidth, dstheight;
@@ -736,9 +737,9 @@ SDL_Surface* PG_Draw::ScaleSurface(SDL_Surface *src,
 
 void PG_Draw::BlitScale(SDL_Surface *src, SDL_Surface *dst, bool smooth) {
 	SDL_Surface *tmp = ScaleSurface(src,
-	                                   static_cast<double>(dst->w) / src->w,
-	                                   static_cast<double>(dst->h) / src->h,
-	                                   smooth);
+	                                static_cast<double>(dst->w) / src->w,
+	                                static_cast<double>(dst->h) / src->h,
+	                                smooth);
 	SDL_BlitSurface(tmp, 0, dst, 0);
 	SDL_FreeSurface(tmp);
 }

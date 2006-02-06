@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:14 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwindow.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.17 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.18 $
     Status:           $State: Exp $
 */
 
@@ -53,16 +53,16 @@ public:
 
 
 	typedef enum {
-		MODAL = 0x01,
-		SHOW_CLOSE = 0x02,
-		SHOW_MINIMIZE = 0x04,
-		DEFAULT = SHOW_CLOSE
+	    MODAL = 0x01,
+	    SHOW_CLOSE = 0x02,
+	    SHOW_MINIMIZE = 0x04,
+	    DEFAULT = SHOW_CLOSE
 	} WindowFlags;
 
 	enum {
-		IDWINDOW_CLOSE	 = PG_WIDGETID_INTERNAL + 14,
-		IDWINDOW_MINIMIZE = PG_WIDGETID_INTERNAL + 15,
-		IDWINDOW_RESTORE = PG_WIDGETID_INTERNAL + 15
+	    IDWINDOW_CLOSE	 = PG_WIDGETID_INTERNAL + 14,
+	    IDWINDOW_MINIMIZE = PG_WIDGETID_INTERNAL + 15,
+	    IDWINDOW_RESTORE = PG_WIDGETID_INTERNAL + 15
 	};
 
 	/**
@@ -120,7 +120,7 @@ public:
 	void SetTitle(const std::string& title, PG_Label::TextAlign alignment = PG_Label::CENTER);
 
 	void SetText(const std::string& text);
-	
+
 	/**
 	get window title
 	@return	pointer to the window title string
@@ -146,12 +146,12 @@ public:
 	@param icon		pointer to imagedata (SDL_Surface)
 	*/
 	void SetIcon(SDL_Surface* icon);
-	
+
 	/**
 	Make window handle / ignore dragging
 	*/
 	void SetMoveable(bool moveable = true);
-	
+
 	SignalWindowClose sigClose;
 	SignalWindowMinimize sigMinimize;
 	SignalWindowRestore sigRestore;
@@ -205,7 +205,7 @@ private:
 	bool my_moveable;
 
 private: // disable the copy operators
-	
+
 	PG_Window(const PG_Window&);
 	PG_Window& operator=(const PG_Window&);
 

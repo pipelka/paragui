@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/07/01 10:31:13 $
+   Update Date:      $Date: 2006/02/06 21:24:19 $
    Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollarea.h,v $
-   CVS/RCS Revision: $Revision: 1.1.2.12 $
+   CVS/RCS Revision: $Revision: 1.1.2.13 $
    Status:           $State: Exp $
 */
 
@@ -48,8 +48,10 @@
 class DECLSPEC PG_ScrollArea : public PG_Widget {
 public:
 
-	class SignalAreaChangedHeight : public PG_Signal2<PG_ScrollArea*, Uint16> {};
-	class SignalAreaChangedWidth : public PG_Signal2<PG_ScrollArea*, Uint16> {};
+class SignalAreaChangedHeight : public PG_Signal2<PG_ScrollArea*, Uint16> {}
+	;
+class SignalAreaChangedWidth : public PG_Signal2<PG_ScrollArea*, Uint16> {}
+	;
 
 	/**
 	Create a scrollarea widget.
@@ -142,18 +144,18 @@ public:
 	bool RemoveChild(PG_Widget* child);
 
 	PG_Widget* GetFirstInList();
-	
+
 	/**
 	Automatically adjusts the parent's size to the actual scroll area size;
 	@param bRemove adjusts size when removing a child
 	@param bAdd adjusts size when adding a child
 	*/
 	void SetResizeParent(bool bRemove, bool bAdd);
-	
+
 protected:
 
 	void eventSizeWidget(Uint16 w, Uint16 h);
-	
+
 	PG_Rect my_area;
 
 	bool my_shiftx;

@@ -1,28 +1,28 @@
 /*
     ParaGUI - crossplatform widgetset
     Copyright (C) 2000,2001,2002  Alexander Pipelka
-
+ 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
-
+ 
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
-
+ 
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+ 
     Alexander Pipelka
     pipelka@teleweb.at
-
+ 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/09/05 21:01:15 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgthemewidget.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.7.2.17 $
+    CVS/RCS Revision: $Revision: 1.3.6.7.2.18 $
     Status:           $State: Exp $
 */
 
@@ -38,12 +38,13 @@ static PG_SurfaceCache my_SurfaceCache;
 
 class PG_ThemeWidgetDataInternal {
 public:
-	PG_ThemeWidgetDataInternal() : 
-	cachesurface(NULL),
-	backgroundcolor(128,128,128),
-	freeimage(false),
-	simplebackground(false),
-	nocache(false) {};
+	PG_ThemeWidgetDataInternal() :
+			cachesurface(NULL),
+			backgroundcolor(128,128,128),
+			freeimage(false),
+			simplebackground(false),
+	nocache(false) {}
+	;
 
 	SDL_Surface* cachesurface;
 	PG_Color backgroundcolor;
@@ -64,9 +65,9 @@ PG_ThemeWidget::PG_ThemeWidget(PG_Widget* parent, const PG_Rect& r, bool bCreate
 
 void PG_ThemeWidget::Init(const std::string& style) {
 	SetDirtyUpdate(true);
-	
+
 	_mid = new PG_ThemeWidgetDataInternal;
-	
+
 	my_backgroundFree = false;
 	my_background = NULL;
 	my_blendLevel = 0;
@@ -80,14 +81,14 @@ void PG_ThemeWidget::Init(const std::string& style) {
 }
 
 PG_ThemeWidget::~PG_ThemeWidget() {
-	
+
 	// free surfaces
 	FreeSurface();
 	FreeImage();
-	
+
 	// remove the cachesurface
 	DeleteThemedSurface(_mid->cachesurface);
-	
+
 	// delete internal data
 	delete _mid;
 }
@@ -100,7 +101,7 @@ void PG_ThemeWidget::LoadThemeStyle(const std::string& widgettype) {
 }
 
 void PG_ThemeWidget::LoadThemeStyle(const std::string& widgettype, const std::string& objectname) {
-	
+
 	PG_Theme* t = PG_Application::GetTheme();
 
 	if(my_srfObject == NULL) {
@@ -120,11 +121,11 @@ void PG_ThemeWidget::LoadThemeStyle(const std::string& widgettype, const std::st
 	if(!font.empty()) {
 		SetFontName(font);
 	}
-	
+
 	if(fontsize > 0) {
 		SetFontSize(fontsize);
 	}
-	
+
 	if(fontstyle >= 0) {
 		SetFontStyle(fontstyle);
 	}
@@ -138,7 +139,7 @@ void PG_ThemeWidget::LoadThemeStyle(const std::string& widgettype, const std::st
 	PG_Gradient* g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient);
 
 	if(g) {
-		SetGradient(*g);		
+		SetGradient(*g);
 	}
 
 	Uint8 trans = GetTransparency();
@@ -198,7 +199,7 @@ bool PG_ThemeWidget::SetBackground(const std::string& filename, PG_Draw::BkMode 
 
 	Uint32 c = colorkey.MapRGB(my_background->format);
 	SDL_SetColorKey(my_background, SDL_SRCCOLORKEY, c);
-	 
+
 	if(my_srfObject == NULL) {
 		CreateSurface();
 	}
@@ -315,7 +316,7 @@ bool PG_ThemeWidget::LoadImage(const std::string& filename, const PG_Color& key)
 		SDL_SetColorKey(my_image, SDL_SRCCOLORKEY, key);
 		return true;
 	}
-	
+
 	return false;
 }
 
@@ -344,11 +345,11 @@ void PG_ThemeWidget::CreateSurface(Uint16 w, Uint16 h) {
 	PG_Rect r(my_xpos, my_ypos, w, h);
 
 	_mid->cachesurface = CreateThemedSurface(
-	                      r,
-	                      my_has_gradient ? &my_gradient : 0,
-	                      my_background,
-	                      my_backgroundMode,
-	                      my_blendLevel);
+	                         r,
+	                         my_has_gradient ? &my_gradient : 0,
+	                         my_background,
+	                         my_backgroundMode,
+	                         my_blendLevel);
 }
 
 void PG_ThemeWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& dst) {
@@ -367,16 +368,16 @@ void PG_ThemeWidget::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 		if(GetTransparency() < 255) {
 			Uint32 c = _mid->backgroundcolor.MapRGBA(
 			               PG_Application::GetScreen()->format,
-						   255-GetTransparency());
+			               255-GetTransparency());
 			SDL_FillRect(PG_Application::GetScreen(), const_cast<PG_Rect*>(&dst), c);
 		}
 	} else if (_mid->nocache) {
 		_mid->cachesurface = CreateThemedSurface(
-		                      *this,
-		                      my_has_gradient ? &my_gradient : 0,
-		                      my_background,
-		                      my_backgroundMode,
-		                      my_blendLevel);
+		                         *this,
+		                         my_has_gradient ? &my_gradient : 0,
+		                         my_background,
+		                         my_backgroundMode,
+		                         my_blendLevel);
 		PG_Widget::eventBlit(_mid->cachesurface, src, dst);
 		DeleteThemedSurface(_mid->cachesurface);
 		_mid->cachesurface = NULL;
@@ -459,7 +460,7 @@ SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* 
 	                           Amask
 	                       );
 
-			       
+
 	if(SDL_MUSTLOCK(surface)) {
 		SDL_LockSurface(surface);
 	}
@@ -474,7 +475,7 @@ SDL_Surface* PG_ThemeWidget::CreateThemedSurface(const PG_Rect& r, PG_Gradient* 
 			SDL_SetColorKey(surface, SDL_SRCCOLORKEY, 0);
 		}
 	}
-	
+
 	if(SDL_MUSTLOCK(surface)) {
 		SDL_UnlockSurface(surface);
 	}

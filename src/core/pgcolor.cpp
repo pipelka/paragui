@@ -1,7 +1,7 @@
 //
 // C++ Implementation: pgcolor
 //
-// Description: 
+// Description:
 //
 //
 // Author: Alexander Pipelka <pipelka@pipelka.net>, (C) 2003
@@ -34,7 +34,7 @@ PG_Color& PG_Color::operator=(const SDL_Color& c) {
 	r = c.r;
 	g = c.g;
 	b = c.b;
-	
+
 	return *this;
 }
 
@@ -42,10 +42,10 @@ PG_Color& PG_Color::operator=(Uint32 c) {
 	r = (c >> 16) & 0xFF;
 	g = (c >> 8) & 0xFF;
 	b = c & 0xFF;
-	
+
 	return *this;
 }
 
 PG_Color::operator Uint32() const {
-	return (r << 16) | (g << 8) | b; 
+	return (r << 16) | (g << 8) | b;
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.14 $
     Status:           $State: Exp $
 */
 
@@ -57,7 +57,7 @@ struct PG_FontDataInternal;
 
 /**
 	@short font description class
-
+ 
 	This class defines the parameters of a font (size, style, ...)
 */
 class DECLSPEC PG_Font {
@@ -65,10 +65,10 @@ public:
 
 	//! Font styles
 	typedef enum {
-		NORMAL = 0x00,
-		BOLD = 0x01,
-		ITALIC = 0x02,
-		UNDERLINE = 0x04
+	    NORMAL = 0x00,
+	    BOLD = 0x01,
+	    ITALIC = 0x02,
+	    UNDERLINE = 0x04
 	} Style;
 
 	/**
@@ -82,7 +82,7 @@ public:
 	/**
 	*/
 	virtual ~PG_Font();
-	
+
 	/**
 	*/
 	int GetFontAscender();
@@ -108,7 +108,7 @@ public:
 	@return PG_Color class containing the current color
 	*/
 	PG_Color GetColor();
-	
+
 	/**
 	Set the transparency of the font
 	@param a font alpha value
@@ -120,7 +120,7 @@ public:
 	@return font alpha value
 	*/
 	int GetAlpha();
-	
+
 	/**
 	Set the size of the font
 	@param s new font size
@@ -140,7 +140,7 @@ public:
 	/**
 	*/
 	Style GetStyle();
-	
+
 	/**
 	Set the name (filename) of the font
 	@param fontfile name of the new fontfile.
@@ -154,7 +154,7 @@ public:
 	@return the filename of the font
 	*/
 	const std::string& GetName();
-	
+
 	void SetIndex(int index);
 
 	int GetIndex();
@@ -194,7 +194,7 @@ public:
 	@return true on success
 	*/
 	static bool RenderText(SDL_Surface *Surface, const PG_Rect& ClipRect, int BaseLineX, int BaseLineY, const PG_String& Text, PG_Font* ParamIn);
-	
+
 	static bool RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int BaseLineX, int BaseLineY, const PG_String& Text, PG_Font* ParamIn);
 
 	/**
@@ -229,8 +229,8 @@ private:
 
 	class FONT_ITEM {
 	public:
-		FONT_ITEM() : memdata(NULL) {
-		};
+		FONT_ITEM() : memdata(NULL) {}
+		;
 
 		virtual ~FONT_ITEM();
 

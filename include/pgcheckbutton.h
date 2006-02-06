@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:14 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgcheckbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.2.8 $
     Status:           $State: Exp $
 */
 
@@ -39,7 +39,7 @@
 	@author Alexander Pipelka
  
 	@short A single check button.
-
+ 
 	@image html pgcheckbutton.png "pgcheckbutton screenshot"
 */
 

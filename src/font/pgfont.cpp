@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/02/15 15:28:21 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
     Status:           $State: Exp $
 */
 
@@ -86,9 +86,9 @@ void PG_FontEngine::FontEngineError(FT_Error error) {
 	PG_FontFaceCacheItem* CacheItem = LoadFontFace(
 	                                      Param->GetName(),
 	                                      Param->GetSize());
-
+ 
 	Param->SetFaceCache(CacheItem);
-
+ 
 	return (Param->GetFaceCache() != NULL);
 }*/
 
@@ -187,104 +187,102 @@ inline void BlitTemplate(DT pixels, SDL_Surface* Surface, FT_Bitmap *Bitmap, int
 			// Get the pixel
 			color = *((DT) (dst_pixels));
 			switch(Surface->format->BytesPerPixel) {
-			default:
-				// get the RGBA values
-				rv = (color & Rmask) >> Rshift;
-				r = (rv << Rloss) + (rv >> Rloss8);
-				gv = (color & Gmask) >> Gshift;
-				g = (gv << Gloss) + (gv >> Gloss8);
-				bv = (color & Bmask) >> Bshift;
-				b = (bv << Bloss) + (bv >> Bloss8);
-				if(Amask) {
-					av = (color & Amask) >> Ashift;
-					a = (av << Aloss) + (av >> Aloss8);
-				} else
-					a = SDL_ALPHA_OPAQUE;
+				default:
+					// get the RGBA values
+					rv = (color & Rmask) >> Rshift;
+					r = (rv << Rloss) + (rv >> Rloss8);
+					gv = (color & Gmask) >> Gshift;
+					g = (gv << Gloss) + (gv >> Gloss8);
+					bv = (color & Bmask) >> Bshift;
+					b = (bv << Bloss) + (bv >> Bloss8);
+					if(Amask) {
+						av = (color & Amask) >> Ashift;
+						a = (av << Aloss) + (av >> Aloss8);
+					} else
+						a = SDL_ALPHA_OPAQUE;
 
-				//SDL_GetRGBA(color, format, &r, &g, &b, &a);
+					//SDL_GetRGBA(color, format, &r, &g, &b, &a);
 
-				// calculate new RGBA values
-				if(v == 255) {
-					r = cr;
-					g = cg;
-					b = cb;
-				}
-				else {
-					//r += ((cr - r) * v) / 255;
-					//g += ((cg - g) * v) / 255;
-					//b += ((cb - b) * v) / 255;
-					r += ((cr - r) * v) >> 8;
-					g += ((cg - g) * v) >> 8;
-					b += ((cb - b) * v) >> 8;
-				}
+					// calculate new RGBA values
+					if(v == 255) {
+						r = cr;
+						g = cg;
+						b = cb;
+					} else {
+						//r += ((cr - r) * v) / 255;
+						//g += ((cg - g) * v) / 255;
+						//b += ((cb - b) * v) / 255;
+						r += ((cr - r) * v) >> 8;
+						g += ((cg - g) * v) >> 8;
+						b += ((cb - b) * v) >> 8;
+					}
 
-				// if the destination pixel is full transparent
-				// use the pixel shading as alpha
-				if(a == 0) {
-					a = v;
-				}
+					// if the destination pixel is full transparent
+					// use the pixel shading as alpha
+					if(a == 0) {
+						a = v;
+					}
 
-				// get the destination color
-				color = (r >> Rloss) << Rshift
-					| (g >> Gloss) << Gshift
-					| (b >> Bloss) << Bshift
-	        	    | ((a >> Aloss) << Ashift & Amask);
-				// Set the pixel
-				*((DT) (dst_pixels)) = color;
-				break;
-			
-			case 3:																								
-				cr = (fc.r << format->Rshift) >> 16 & 0xff;
-				cg = (fc.g << format->Gshift) >> 8 & 0xff;				
-				cb = fc.b << format->Bshift & 0xff;
-				
-				if (v == 255) {
-					r = cr;
-					g = cg;
-					b = cb;
-				}
-				// calculate new RGB values
-				else {
-					b = *(dst_pixels);
-					g = *(dst_pixels+1);
-					r = *(dst_pixels+2);
-					r += ((cr - r) * v) >> 8;
-					g += ((cg - g) * v) >> 8;
-					b += ((cb - b) * v) >> 8;
-				}								
- 								
-				*dst_pixels = b;
-				*(dst_pixels + 1) = g;
-				*(dst_pixels + 2) = r;
-				break;
-			
-			case 1:
-				SDL_GetRGBA(color, format, &r, &g, &b, &a);
+					// get the destination color
+					color = (r >> Rloss) << Rshift
+					        | (g >> Gloss) << Gshift
+					        | (b >> Bloss) << Bshift
+					        | ((a >> Aloss) << Ashift & Amask);
+					// Set the pixel
+					*((DT) (dst_pixels)) = color;
+					break;
 
-				// calculate new RGBA values
-				if(v == 255) {
-					r = cr;
-					g = cg;
-					b = cb;
-				}
-				else {
-					//r += ((cr - r) * v) / 255;
-					//g += ((cg - g) * v) / 255;
-					//b += ((cb - b) * v) / 255;
-					r += ((cr - r) * v) >> 8;
-					g += ((cg - g) * v) >> 8;
-					b += ((cb - b) * v) >> 8;
-				}
+				case 3:
+					cr = (fc.r << format->Rshift) >> 16 & 0xff;
+					cg = (fc.g << format->Gshift) >> 8 & 0xff;
+					cb = fc.b << format->Bshift & 0xff;
 
-				// if the destination pixel is full transparent
-				// use the pixel shading as alpha
-				if(a == 0) {
-					a = v;
-				}
- 				color = SDL_MapRGBA(format, r,g,b, a);
-				*((DT) (dst_pixels)) = color;
-				break;			
-			}			
+					if (v == 255) {
+						r = cr;
+						g = cg;
+						b = cb;
+					}
+					// calculate new RGB values
+					else {
+						b = *(dst_pixels);
+						g = *(dst_pixels+1);
+						r = *(dst_pixels+2);
+						r += ((cr - r) * v) >> 8;
+						g += ((cg - g) * v) >> 8;
+						b += ((cb - b) * v) >> 8;
+					}
+
+					*dst_pixels = b;
+					*(dst_pixels + 1) = g;
+					*(dst_pixels + 2) = r;
+					break;
+
+				case 1:
+					SDL_GetRGBA(color, format, &r, &g, &b, &a);
+
+					// calculate new RGBA values
+					if(v == 255) {
+						r = cr;
+						g = cg;
+						b = cb;
+					} else {
+						//r += ((cr - r) * v) / 255;
+						//g += ((cg - g) * v) / 255;
+						//b += ((cb - b) * v) / 255;
+						r += ((cr - r) * v) >> 8;
+						g += ((cg - g) * v) >> 8;
+						b += ((cb - b) * v) >> 8;
+					}
+
+					// if the destination pixel is full transparent
+					// use the pixel shading as alpha
+					if(a == 0) {
+						a = v;
+					}
+					color = SDL_MapRGBA(format, r,g,b, a);
+					*((DT) (dst_pixels)) = color;
+					break;
+			}
 
 		}
 		src_pixels -= xw;
@@ -343,8 +341,8 @@ bool PG_FontEngine::BlitFTBitmap(SDL_Surface *Surface, FT_Bitmap *Bitmap, int Po
 	if((x1 <= x0) || (y1 <= y0)) {
 		return false;
 	}
-	
-	switch(Surface->format->BytesPerPixel) {						
+
+	switch(Surface->format->BytesPerPixel) {
 		case 1:
 		case 3:
 			BlitTemplate((Uint8*)Surface->pixels, Surface, Bitmap, PosX, PosY, x0, x1, y0, y1, Param);
@@ -470,7 +468,7 @@ bool PG_FontEngine::BlitFTBitmap(SDL_Surface *Surface, FT_Bitmap *Bitmap, int Po
 						// Q: What the hell should do this ?
 						// A: This allows for alpha
 						// rendering of text. // Neo
-					
+
 						if (Param->Alpha != 255)
 							a = (a * Param->Alpha) / 255;
 
@@ -526,8 +524,8 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 
 	if(SDL_MUSTLOCK(Surface)) {
 		SDL_LockSurface(Surface);
-	}		
-	
+	}
+
 	Uint32 c0;
 
 	//Go thu text and draw characters
@@ -578,10 +576,10 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 			und_rect.w = BaseLineX - OldBaseLineX;
 
 			SDL_FillRect(
-				Surface,
-				&und_rect,
-				font->GetColor().MapRGB(Surface->format)
-				);
+			    Surface,
+			    &und_rect,
+			    font->GetColor().MapRGB(Surface->format)
+			);
 		}
 	}
 
@@ -594,8 +592,8 @@ bool PG_FontEngine::RenderText(SDL_Surface *Surface, PG_Rect *ClipRect, int Base
 
 	if(SDL_MUSTLOCK(Surface)) {
 		SDL_UnlockSurface(Surface);
-	}		
-	
+	}
+
 	return true;
 }
 

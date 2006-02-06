@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/02/17 15:39:05 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.21 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.22 $
     Status:           $State: Exp $
 */
 
@@ -40,8 +40,8 @@ PG_Button::SignalButtonClick<> PG_Button::sigGlobalClick;
 class PG_ButtonStateData {
 public:
 	PG_ButtonStateData() : srf(NULL), srf_icon(NULL), bordersize(1), transparency(0),
-		background(NULL), backMode(PG_Draw::TILE), backBlend(0) {
-	};
+	background(NULL), backMode(PG_Draw::TILE), backBlend(0) {}
+	;
 
 	SDL_Surface* srf;
 	SDL_Surface* srf_icon;
@@ -57,8 +57,8 @@ class PG_ButtonDataInternal : public std::map<PG_Button::STATE, PG_ButtonStateDa
 public:
 
 	PG_ButtonDataInternal() : free_icons(false), isPressed(false), togglemode(false), state(PG_Button::UNPRESSED), pressShift(1),
-	iconindent(3), behaviour( PG_Button::SIGNALONRELEASE | PG_Button::MSGCAPTURE ) {
-	};
+	iconindent(3), behaviour( PG_Button::SIGNALONRELEASE | PG_Button::MSGCAPTURE ) {}
+	;
 
 	bool free_icons;
 	bool isPressed;
@@ -83,7 +83,7 @@ PG_Button::PG_Button(PG_Widget* parent, const PG_Rect& r, const std::string& tex
 PG_Button::~PG_Button() {
 	FreeSurfaces();
 	FreeIcons();
-	
+
 	delete _mid;
 }
 
@@ -185,7 +185,7 @@ void PG_Button::LoadThemeStyle(const std::string& widgettype, const std::string&
 	t->GetProperty(widgettype, objectname, PG_PropStr::transparency0, (*_mid)[UNPRESSED].transparency);
 	t->GetProperty(widgettype, objectname, PG_PropStr::transparency1, (*_mid)[PRESSED].transparency);
 	t->GetProperty(widgettype, objectname, PG_PropStr::transparency2, (*_mid)[HIGHLITED].transparency);
-	
+
 	t->GetProperty(widgettype, objectname, PG_PropStr::iconindent, _mid->iconindent);
 
 	const std::string& s = t->FindString(widgettype, objectname, PG_PropStr::label);
@@ -257,7 +257,7 @@ void PG_Button::eventMouseLeave() {
 	if(_mid->state == HIGHLITED || !(_mid->behaviour & MSGCAPTURE) ) {
 		(_mid->togglemode && _mid->isPressed) ? _mid->state = PRESSED : _mid->state = UNPRESSED;
 	}
-	
+
 	Update();
 	PG_Widget::eventMouseLeave();
 }
@@ -269,18 +269,18 @@ bool PG_Button::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 
 	if(button->button == 1) {
 		_mid->state = PRESSED;
-		
+
 		if ( _mid->behaviour & MSGCAPTURE ) {
 			SetCapture();
 		}
 
 		Update();
-		
+
 		if ( _mid->behaviour & SIGNALONCLICK ) {
 			sigGlobalClick(this);
 			sigClick(this);
 		}
-		
+
 		return true;
 	}
 
@@ -301,14 +301,14 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 		if (!_mid->togglemode || !_mid->isPressed) {
 			_mid->state = UNPRESSED;
 		}
-		
+
 		if ( _mid->behaviour & MSGCAPTURE )
 			ReleaseCapture();
-			
+
 		Update();
 		return false;
 	}
-	
+
 	if(_mid->togglemode) {
 		if(!_mid->isPressed) {
 			_mid->state = PRESSED;
@@ -324,14 +324,14 @@ bool PG_Button::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 
 	if ( _mid->behaviour & MSGCAPTURE )
 		ReleaseCapture();
-		
+
 	Update();
 
 	if ( _mid->behaviour & SIGNALONRELEASE ) {
 		sigGlobalClick(this);
 		sigClick(this);
 	}
-		
+
 	return true;
 }
 
@@ -459,8 +459,7 @@ void PG_Button::SetShift(int pixelshift) {
 }
 
 
-void PG_Button::SetBehaviour( int behaviour )
-{
+void PG_Button::SetBehaviour( int behaviour ) {
 	_mid->behaviour = behaviour;
 }
 
@@ -520,32 +519,32 @@ void PG_Button::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 	surface = &((*_mid)[UNPRESSED].srf);
 	if(*surface == NULL) {
 		FreeSurfaces();
-	
+
 		eventButtonSurface(surface, UNPRESSED, w, h);
 		if(*surface) {
 			SDL_SetAlpha(*surface, SDL_SRCALPHA, 255-(*_mid)[UNPRESSED].transparency);
 		}
-	
+
 		surface = &((*_mid)[PRESSED].srf);
 		eventButtonSurface(surface, PRESSED, w, h);
 		if(*surface) {
 			SDL_SetAlpha(*surface, SDL_SRCALPHA, 255-(*_mid)[PRESSED].transparency);
 		}
-	
+
 		surface = &((*_mid)[HIGHLITED].srf);
 		eventButtonSurface(surface, HIGHLITED, w, h);
 		if(*surface) {
 			SDL_SetAlpha(*surface, SDL_SRCALPHA, 255-(*_mid)[HIGHLITED].transparency);
 		}
 	}
-	
+
 	// get the right surface for the current state
 	t = (*_mid)[_mid->state].transparency;
 	srf = (*_mid)[_mid->state].srf;
 
 	// blit it
 	PG_Application::LockScreen();
-	
+
 	if(t != 255) {
 		SDL_SetAlpha(srf, SDL_SRCALPHA, 255-t);
 		PG_Draw::BlitSurface(srf, src, PG_Application::GetScreen(), dst);
@@ -631,7 +630,7 @@ Uint8 PG_Button::GetBlendLevel(STATE mode) {
 
 void PG_Button::SetSizeByText(int Width, int Height, const std::string& Text) {
 	Width += 2 * (*_mid)[UNPRESSED].bordersize + _mid->pressShift;
-	
+
 	SDL_Surface* srf = (*_mid)[UNPRESSED].srf_icon;
 
 	if (srf == NULL) {
@@ -647,8 +646,7 @@ void PG_Button::SetSizeByText(int Width, int Height, const std::string& Text) {
 		if (!PG_FontEngine::GetTextSize(my_text, GetFont(), &w, &h, &baselineY)) {
 			return;
 		}
-    	}
-	else {
+	} else {
 		PG_String ytext = Text;
 		if (!PG_FontEngine::GetTextSize(ytext, GetFont(), &w, &h, &baselineY)) {
 			return;
@@ -656,10 +654,10 @@ void PG_Button::SetSizeByText(int Width, int Height, const std::string& Text) {
 	}
 
 	Uint16 dx = srf->w + Width;
-	
+
 	my_width = (srf->w > w) ? dx : w + dx;
 	my_height = PG_MAX(srf->h, h + baselineY) + Height;
-		
+
 	eventSizeWidget(my_width, my_height);
 }
 

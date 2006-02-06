@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ychar.h,v 1.1.2.4 2005/02/15 15:28:21 braindead Exp $
+ * $Id: ychar.h,v 1.1.2.5 2006/02/06 21:24:19 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2005/02/15 15:28:21 $
+ *  $Date: 2006/02/06 21:24:19 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.4 $
+ *  $Revision: 1.1.2.5 $
  *  $Source: /sources/paragui/paragui/include/Attic/ychar.h,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -37,41 +37,41 @@ typedef unsigned char byte;
 
 class DECLSPEC YChar {
 public:
-  YChar();
-  YChar(const uint32);
-  YChar(const int);
-  YChar(const char);
-  YChar(const char *) throw(std::domain_error);
-  YChar(const std::string) throw(std::domain_error);
-  
-  YChar lower() const;
-  YChar upper() const;
-  YChar title() const;
-  int digitValue() const throw(std::domain_error);
-  int hexDigitValue() const throw(std::domain_error);
-  
-  bool isNull() const;
-  bool isAsciiLetter() const;
-    
-  int bytes() const;
-  std::string utf8() const;
-  
-  static int getNumberOfContinuingOctents(byte)  throw(std::domain_error);
-  static YChar fromUtf8(const char *) throw(std::domain_error);
-  static YChar fromUtf8(const std::string) throw(std::domain_error);
-  
-  //operator char();
-  operator uint32() const;
-  
-  friend bool operator==(const YChar &, const YChar &);
-  friend bool operator==(const YChar &, const char &);
-  friend bool operator==(const char &, const YChar &);
-  friend bool operator==(const YChar &, const int &);
-  friend bool operator==(const int &, const YChar &);
-  friend std::ostream & operator<<( std::ostream &, YChar);
+	YChar();
+	YChar(const uint32);
+	YChar(const int);
+	YChar(const char);
+	YChar(const char *) throw(std::domain_error);
+	YChar(const std::string) throw(std::domain_error);
+
+	YChar lower() const;
+	YChar upper() const;
+	YChar title() const;
+	int digitValue() const throw(std::domain_error);
+	int hexDigitValue() const throw(std::domain_error);
+
+	bool isNull() const;
+	bool isAsciiLetter() const;
+
+	int bytes() const;
+	std::string utf8() const;
+
+	static int getNumberOfContinuingOctents(byte)  throw(std::domain_error);
+	static YChar fromUtf8(const char *) throw(std::domain_error);
+	static YChar fromUtf8(const std::string) throw(std::domain_error);
+
+	//operator char();
+	operator uint32() const;
+
+	friend bool operator==(const YChar &, const YChar &);
+	friend bool operator==(const YChar &, const char &);
+	friend bool operator==(const char &, const YChar &);
+	friend bool operator==(const YChar &, const int &);
+	friend bool operator==(const int &, const YChar &);
+	friend std::ostream & operator<<( std::ostream &, YChar);
 
 private:
-    uint32 ucs4;
+	uint32 ucs4;
 };
 
 bool operator==(const YChar &, const YChar &);

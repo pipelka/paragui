@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 10:31:13 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollarea.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.15 $
+    CVS/RCS Revision: $Revision: 1.1.2.16 $
     Status:           $State: Exp $
 */
 
@@ -30,11 +30,9 @@
 #include "pglog.h"
 
 PG_ScrollArea::PG_ScrollArea(PG_Widget* parent, const PG_Rect& r) : PG_Widget(parent, r),
-my_shiftx(false), my_shifty(false), my_AddResizeParent(false), my_RemoveResizeParent(false) {
-}
+my_shiftx(false), my_shifty(false), my_AddResizeParent(false), my_RemoveResizeParent(false) {}
 
-PG_ScrollArea::~PG_ScrollArea() {
-}
+PG_ScrollArea::~PG_ScrollArea() {}
 
 void PG_ScrollArea::ScrollTo(Uint16 x, Uint16 y) {
 	if (my_area.x == x && my_area.y == y)
@@ -99,7 +97,7 @@ void PG_ScrollArea::ScrollToWidget(PG_Widget* widget, bool bVertical) {
 
 	Uint16 ypos = 0;
 	Uint16 xpos = 0;
-	
+
 	if(bVertical) {
 		// widget within visible area, no need to scroll
 		if(widget->y >= my_ypos && widget->y+widget->h <= my_ypos+my_height) {
@@ -110,8 +108,7 @@ void PG_ScrollArea::ScrollToWidget(PG_Widget* widget, bool bVertical) {
 		if(my_area.h > my_height && ypos > my_area.h - my_height) {
 			ypos = my_area.h - my_height;
 		}
-	}
-	else {
+	} else {
 		// widget within visible area, no need to scroll
 		if(widget->x >= my_xpos && widget->x+widget->w <= my_xpos+my_width) {
 			return;
@@ -170,7 +167,7 @@ bool PG_ScrollArea::RemoveChild(PG_Widget* child) {
 	if(w != my_area.w) {
 		my_area.w = w;
 		sigAreaChangedWidth(this, my_area.w);
-		
+
 		if(my_RemoveResizeParent) {
 			GetParent()->SizeWidget(my_area.w, GetParent()->my_height);
 		}
@@ -194,12 +191,12 @@ void PG_ScrollArea::RemoveAll() {
 		return;
 	}
 	GetChildList()->clear();
-	
+
 	if(my_shiftx) {
 		my_area.w = 0;
 		sigAreaChangedWidth(this, 0);
 	}
-	
+
 	if(my_shifty) {
 		my_area.h = 0;
 		sigAreaChangedHeight(this, 0);
@@ -221,7 +218,7 @@ void PG_ScrollArea::DeleteAll() {
 	for(; list != NULL; ) {
 		PG_Widget* w = list;
 		list = list->next();
-		w->SetVisible(false);		
+		w->SetVisible(false);
 		delete w;
 	}
 	my_area.w = 0;

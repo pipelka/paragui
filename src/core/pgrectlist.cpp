@@ -11,7 +11,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
-
+ 
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/30 06:56:02 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2.2.12 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.13 $
     Status:           $State: Exp $
 */
 
@@ -34,39 +34,39 @@
 #include <algorithm>
 
 PG_RectList::PG_RectList() :
-my_first(NULL),
-my_last(NULL),
+		my_first(NULL),
+		my_last(NULL),
 my_count(0) {}
 
 PG_RectList::~PG_RectList() {}
 
 /*PG_RectList PG_RectList::Intersect(PG_Rect* rect, PG_Rect* first, PG_Rect* last) {
 	PG_RectList result;
-
+ 
 	if(first == NULL) {
 		return result;
 	}
-
+ 
 	//PG_Widget* testwidget;
 	PG_Rect* testrect;
-
+ 
 	// loop through all rects
 	for(PG_Widget* i = static_cast<PG_Widget*>(first); i != last; i = static_cast<PG_Widget*>(i->next)) {
-
+ 
 		// get the next rectangle to test
 		//testwidget = (*i).second;
-
+ 
 		if(!i->IsVisible() || i->IsHidden()) {
 			continue;
 		}
-
+ 
 		testrect = i->GetClipRect();
 		if(rect->OverlapRect(*testrect)) {
 			// append the matching rectangle
 			result.Add(new PG_Rect(*i));
 		}
 	}
-
+ 
 	return result;
 }*/
 
@@ -102,13 +102,12 @@ void PG_RectList::Add(PG_Widget* rect, bool front) {
 		index = my_last->index;
 	}
 	index++;
-	
+
 	if(front) {
 		if(my_first != NULL) {
 			my_first->my_prev = rect;
 			rect->index = my_first->index-1;
-		}
-		else {
+		} else {
 			rect->index = index;
 		}
 		rect->my_next = my_first;
@@ -121,8 +120,7 @@ void PG_RectList::Add(PG_Widget* rect, bool front) {
 		my_first = rect;
 		rect->my_prev = NULL;
 		rect->my_next = NULL;
-	}
-	else {
+	} else {
 		my_last->my_next = rect;
 		rect->my_next = NULL;
 		rect->my_prev = my_last;
@@ -204,7 +202,7 @@ void PG_RectList::Blit(const PG_Rect& rect, PG_Widget* start, PG_Widget* end) {
 		if(!rect.OverlapRect(*cr)) {
 			continue;
 		}
-		
+
 		PG_Rect c = cr->IntersectRect(rect);
 		SDL_SetClipRect(screen, &c);
 

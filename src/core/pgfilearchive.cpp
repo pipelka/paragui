@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/30 07:10:21 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14.2.10 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.11 $
     Status:           $State: Exp $
 */
 
@@ -60,8 +60,7 @@ PG_FileArchive::PG_FileArchive() {
 		SDL_image_obj = SDL_LoadObject(SDLIMAGE_LIB);
 		if(SDL_image_obj == NULL) {
 			PG_LogMSG("SDL_image not found! Only bmp images can be loaded!");
-		}
-		else {
+		} else {
 			IMG_Load_RW_FUNC = (IMG_Load_RW_FT)SDL_LoadFunction(SDL_image_obj, "IMG_Load_RW");
 			if(IMG_Load_RW_FUNC == NULL) {
 				PG_LogERR("Unable to load IMG_Load_RW function. SDL_image disabled!");
@@ -78,7 +77,7 @@ PG_FileArchive::~PG_FileArchive() {
 	if(my_instance_count == 0) {
 		return;
 	}
-	
+
 	// decrement instance count
 	my_instance_count--;
 
@@ -105,6 +104,7 @@ std::string *PG_FileArchive::PathToPlatform(const std::string& path) {
 		return newpath;
 
 #ifdef __MACOS__
+
 	while( (pos = newpath->find(":", pos)) != std::string::npos) {
 #else
 	while( (pos = newpath->find("/", pos)) != std::string::npos) {
@@ -136,22 +136,22 @@ char **PG_FileArchive::EnumerateFiles(const std::string& dir) {
 
 PG_FileList* PG_FileArchive::GetFileList(const std::string& dir, const std::string& wildcard) {
 	char **tempList = EnumerateFiles(dir);
-	
+
 	if( tempList == NULL ) {
 		return NULL;
 	}
 
 	PG_FileList* retVal = new PG_FileList;
-	
+
 	for( char** i = tempList; *i != NULL; i++) {
 		if(fnmatch(wildcard.c_str(), *i, FNM_PATHNAME) == 0) {
 			retVal->push_back(std::string(*i));
 		}
 	}
-	
+
 	// Clean up.
 	PHYSFS_freeList(tempList);
-	
+
 	return retVal;
 }
 
@@ -190,15 +190,15 @@ const char* PG_FileArchive::GetWriteDir() {
 PG_File* PG_FileArchive::OpenFile(const std::string& filename, Mode mode) {
 	PHYSFS_file* file = 0;
 	switch(mode) {
-	case READ:
-		file = PHYSFS_openRead(filename.c_str());
-		break;
-	case WRITE:
-		file = PHYSFS_openWrite(filename.c_str());
-		break;
-	case APPEND:
-		file = PHYSFS_openAppend(filename.c_str());
-		break;
+		case READ:
+			file = PHYSFS_openRead(filename.c_str());
+			break;
+		case WRITE:
+			file = PHYSFS_openWrite(filename.c_str());
+			break;
+		case APPEND:
+			file = PHYSFS_openAppend(filename.c_str());
+			break;
 	}
 	if(file == NULL) {
 		return NULL;
@@ -210,17 +210,17 @@ PG_File* PG_FileArchive::OpenFile(const std::string& filename, Mode mode) {
 SDL_RWops* PG_FileArchive::OpenFileRWops(const std::string& filename, Mode mode) {
 	SDL_RWops* file = NULL;
 	switch(mode) {
-	case READ:
-		file = PHYSFSRWOPS_openRead(filename.c_str());
-		break;
-	case WRITE:
-		file = PHYSFSRWOPS_openWrite(filename.c_str());
-		break;
-	case APPEND:
-		file = PHYSFSRWOPS_openAppend(filename.c_str());
-		break;
+		case READ:
+			file = PHYSFSRWOPS_openRead(filename.c_str());
+			break;
+		case WRITE:
+			file = PHYSFSRWOPS_openWrite(filename.c_str());
+			break;
+		case APPEND:
+			file = PHYSFSRWOPS_openAppend(filename.c_str());
+			break;
 	}
-	
+
 	return file;
 }
 
@@ -236,13 +236,12 @@ bool PG_FileArchive::SetWriteDir(const std::string& dir) {
 }
 
 bool PG_FileArchive::SetSaneConfig(const std::string& organization,
-				   const std::string& appName,
-				  const std::string& archiveExt,
-				  bool includeCdRoms,
-				  bool archivesFirst)
-{
+                                   const std::string& appName,
+                                   const std::string& archiveExt,
+                                   bool includeCdRoms,
+                                   bool archivesFirst) {
 	return PHYSFS_setSaneConfig(organization.c_str(), appName.c_str(), archiveExt.c_str(),
-				    includeCdRoms, archivesFirst) == 1;
+	                            includeCdRoms, archivesFirst) == 1;
 }
 
 
@@ -301,8 +300,7 @@ SDL_Surface* PG_FileArchive::LoadSurface(const std::string& filename, bool useke
 
 	if(IMG_Load_RW_FUNC != NULL) {
 		surface = IMG_Load_RW_FUNC(rw, 1);
-	}
-	else {
+	} else {
 		surface = SDL_LoadBMP_RW(rw, 1);
 	}
 
@@ -310,7 +308,7 @@ SDL_Surface* PG_FileArchive::LoadSurface(const std::string& filename, bool useke
 		PG_LogWRN("Failed to load imagedata from '%s' !", filename.c_str());
 		return NULL;
 	}
-	
+
 	if(surface == NULL) {
 		PG_LogERR("Unable to load imagedata from '%s'", filename.c_str());
 		PG_LogERR("PhysFS reported: '%s'", PG_FileArchive::GetLastError());
@@ -324,10 +322,10 @@ SDL_Surface* PG_FileArchive::LoadSurface(const std::string& filename, bool useke
 	if(convert) {
 		SDL_Surface* tmpsrf = NULL;
 		if (surface->flags & SDL_SRCALPHA)
-			tmpsrf = SDL_DisplayFormatAlpha(surface);			
+			tmpsrf = SDL_DisplayFormatAlpha(surface);
 		else
 			tmpsrf = SDL_DisplayFormat(surface);
-			
+
 		if(tmpsrf) {
 			SDL_FreeSurface(surface);
 			surface = tmpsrf;
@@ -365,27 +363,27 @@ char** PG_FileArchive::GetSearchPath() {
 
 PG_FileList* PG_FileArchive::GetSearchPathList() {
 	char **tempList = PHYSFS_getSearchPath();
-	
+
 	if( tempList == NULL ) {
 		return NULL;
 	}
-	
+
 	PG_FileList* retVal = NULL;
-	
+
 	// Scan through to get the length of the listing to get the proper vector size.
 	Uint32 size = 0;
 	for(; tempList[ size ] != NULL; ++size) {}
-	
+
 	// Now we're ready to initialize everything.
 	retVal = new std::vector< std::string >;
 	retVal->reserve( size );
 	for( Uint32 i = 0; i < size; ++i ) {
 		retVal->push_back(std::string(tempList[ i ]));
 	}
-	
+
 	// Clean up.
 	PHYSFS_freeList(tempList);
-	
+
 	return retVal;
 }
 

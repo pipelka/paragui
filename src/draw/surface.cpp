@@ -1,30 +1,30 @@
 /*
     ParaGUI - crossplatform widgetset
     surface - surface creation and manipulation functions
-
+ 
     Copyright (C) 2000,2001,2002  Alexander Pipelka
-
+ 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
-
+ 
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
-
+ 
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+ 
     Alexander Pipelka
     pipelka@teleweb.at
-
+ 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/19 16:30:23 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/surface.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
     Status:           $State: Exp $
 */
 
@@ -39,15 +39,15 @@ SDL_Surface* PG_Draw::CreateRGBSurface(Uint16 w, Uint16 h, int flags) {
 		PG_LogWRN("CreateRGBSurface() failed: current display surface invalid or n/a.");
 		return NULL;
 	}
-	
+
 	return SDL_CreateRGBSurface (
-				flags,
-				w, h,
-				screen->format->BitsPerPixel,
-				screen->format->Rmask,
-				screen->format->Gmask,
-				screen->format->Bmask,
-				0);
+	           flags,
+	           w, h,
+	           screen->format->BitsPerPixel,
+	           screen->format->Rmask,
+	           screen->format->Gmask,
+	           screen->format->Bmask,
+	           0);
 }
 
 static void Draw3TileH(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint8 blend = 0) {
@@ -70,8 +70,7 @@ static void Draw3TileH(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uin
 
 	if(h == src->h) {
 		temp = src;
-	}
-	else {
+	} else {
 		temp = PG_Draw::ScaleSurface(src, srcrect);
 	}
 
@@ -135,8 +134,7 @@ static void Draw3TileV(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uin
 
 	if(w == src->w) {
 		temp = src;
-	}
-	else {
+	} else {
 		temp = PG_Draw::ScaleSurface(src, srcrect);
 	}
 
@@ -195,8 +193,7 @@ static void DrawTileSurface(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst
 
 	if(blend > 0) {
 		SDL_SetAlpha(src, SDL_SRCALPHA, 255-blend);
-	}
-	else {
+	} else {
 		SDL_SetAlpha(src, 0, 0);
 	}
 
@@ -204,7 +201,7 @@ static void DrawTileSurface(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst
 	srcrect.my_height = src->h;
 	dstrect.my_width = src->w;
 	dstrect.my_height = src->h;
-	
+
 	SDL_SetClipRect(dst, &r);
 	for(int y=0; y<yc; y++) {
 		for(int x=0; x<xc; x++) {
@@ -251,15 +248,15 @@ static void Draw9Tile(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint
 
 		// create stripe surface
 		src_stripe[i] = SDL_CreateRGBSurface(
-						SDL_SWSURFACE,
-						srcrect.w,
-						srcrect.h,
-						32, //src->format->BitsPerPixel,
-						0, //src->format->Rmask,
-						0, //src->format->Gmask,
-						0, //src->format->Bmask,
-						0 //src->format->Amask
-						);
+		                    SDL_SWSURFACE,
+		                    srcrect.w,
+		                    srcrect.h,
+		                    32, //src->format->BitsPerPixel,
+		                    0, //src->format->Rmask,
+		                    0, //src->format->Gmask,
+		                    0, //src->format->Bmask,
+		                    0 //src->format->Amask
+		                );
 
 		// copy stripe
 		PG_Draw::BlitSurface(src, srcrect, src_stripe[i], dstrect);
@@ -274,15 +271,15 @@ static void Draw9Tile(SDL_Surface* src, const PG_Rect& r, SDL_Surface* dst, Uint
 	for(i=0; i<3; i++) {
 		// create dest. stripe
 		dst_stripe[i] = SDL_CreateRGBSurface(
-						SDL_SWSURFACE,
-						dstrect.w,
-						dstrect.h,
-						32, //src->format->BitsPerPixel,
-						0, //src->format->Rmask,
-						0, //src->format->Gmask,
-						0, //src->format->Bmask,
-						0 //src->format->Amask
-						);
+		                    SDL_SWSURFACE,
+		                    dstrect.w,
+		                    dstrect.h,
+		                    32, //src->format->BitsPerPixel,
+		                    0, //src->format->Rmask,
+		                    0, //src->format->Gmask,
+		                    0, //src->format->Bmask,
+		                    0 //src->format->Amask
+		                );
 
 		// 3TILEH the source to the dest. stripe
 		Draw3TileH(src_stripe[i], dstrect, dst_stripe[i], blend);
@@ -323,11 +320,11 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 	bool bColorKey = false;
 	PG_Color uColorKey;
 	Uint32 c;
-    PG_Rect oldclip;
-		
+	PG_Rect oldclip;
+
 	// check if we have anything to do
 	if (!surface || !r.h || !r.w)
-        	return;
+		return;
 
 	// draw the gradient first
 	if((background == NULL) || (background && (blend > 0))) {
@@ -344,9 +341,9 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 
 	if(!background)
 		return;
-	
+
 	if (!background->w || !background->h)
-            return;
+		return;
 
 	//int yc;
 	//int xc;
@@ -355,29 +352,29 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 
 	bColorKey = (background->flags & SDL_SRCCOLORKEY) != 0;
 	Uint8 rc,gc,bc;
-	
+
 	SDL_GetRGB(background->format->colorkey, background->format, &rc, &gc, &bc);
 	uColorKey = (Uint32)((rc << 16) | (gc << 8) | bc);
-	
+
 	if(((gradient == NULL) || (blend == 0)) && bColorKey) {
 		SDL_SetColorKey(background, 0, 0);
 	}
 
-    SDL_GetClipRect(surface, &oldclip);
-	
+	SDL_GetClipRect(surface, &oldclip);
+
 	switch(bkmode) {
 
-		//
-		// BKMODE_TILE
-		//
+			//
+			// BKMODE_TILE
+			//
 
 		case TILE:
 			DrawTileSurface(background, r, surface, blend);
 			break;
 
-		//
-		// BKMODE_STRETCH
-		//
+			//
+			// BKMODE_STRETCH
+			//
 
 		case STRETCH:
 			// stretch the background to fit the surface
@@ -400,25 +397,25 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 			SDL_FreeSurface(temp);
 			break;
 
-		//
-		// BKMODE_3TILEH
-		//
+			//
+			// BKMODE_3TILEH
+			//
 
 		case TILE3H:
 			Draw3TileH(background, r, surface, blend);
 			break;
 
-		//
-		// BKMODE_3TILEV
-		//
+			//
+			// BKMODE_3TILEV
+			//
 
 		case TILE3V:
 			Draw3TileV(background, r, surface, blend);
 			break;
 
-		//
-		// BKMODE_9TILE
-		//
+			//
+			// BKMODE_9TILE
+			//
 
 		case TILE9:
 			Draw9Tile(background, r, surface, blend);
@@ -427,7 +424,7 @@ void PG_Draw::DrawThemedSurface(SDL_Surface* surface, const PG_Rect& r, PG_Gradi
 	}
 
 	SDL_SetClipRect(surface, const_cast<PG_Rect*>(&oldclip));
-    
+
 	if((/*(gradient == NULL) ||*/ (blend == 0)) && bColorKey) {
 		c = uColorKey.MapRGB(background->format);
 		SDL_SetColorKey(background, SDL_SRCCOLORKEY, c);

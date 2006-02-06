@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.12 $
     Status:           $State: Exp $
 */
 
@@ -44,7 +44,7 @@ THEME_WIDGET* THEME_THEME::FindWidget(const std::string& widgettype) {
 	if(i == widget.end()) {
 		return NULL;
 	}
-	
+
 	return (*i).second;
 }
 
@@ -91,7 +91,7 @@ void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& 
 	if(n == -1) {
 		return;
 	}
-	
+
 	prop = n;
 }
 
@@ -106,7 +106,7 @@ void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& 
 	if(n == -1) {
 		return;
 	}
-	
+
 	prop = (Uint8)n;
 }
 
@@ -121,7 +121,7 @@ void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& 
 	if(n == -1) {
 		return;
 	}
-	
+
 	prop = (n == 1);
 }
 
@@ -136,7 +136,7 @@ void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& 
 	if(n == -1) {
 		return;
 	}
-	
+
 	prop = (int)n;
 }
 
@@ -151,7 +151,7 @@ void THEME_THEME::GetProperty(const std::string& widgettype, const std::string& 
 	if(n == -1) {
 		return;
 	}
-	
+
 	prop = (PG_Draw::BkMode)n;
 }
 
@@ -239,7 +239,7 @@ inline THEME_OBJECT* THEME_WIDGET::FindObject(const std::string& objectname) {
 	if(i == object.end()) {
 		return NULL;
 	}
-	
+
 	return (*i).second;
 }
 
@@ -268,7 +268,7 @@ THEME_OBJECT::~THEME_OBJECT() {
 		strings[i] = NULL;
 	}
 	strings.clear();
-	
+
 	delete font;
 }
 
@@ -284,7 +284,7 @@ SDL_Surface* THEME_OBJECT::FindSurface(const std::string& name) {
 
 PG_Gradient* THEME_OBJECT::FindGradient(const std::string& name) {
 	MAP_GRADIENT::iterator result = gradient.find(name);
-	
+
 	if(result == gradient.end()) {
 		return NULL;
 	}

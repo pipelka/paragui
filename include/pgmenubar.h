@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:14 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmenubar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.10 $
     Status:           $State: Exp $
 */
 
@@ -80,12 +80,13 @@ protected:
 	typedef struct {
 		PG_Button* button; //!< pointer to the PG_Button object showed in the bar
 		PG_PopupMenu* popupmenu; //!< pointer to the linked PG_PopupMenu object
-	} MenuBarItem;
+	}
+	MenuBarItem;
 
 	std::vector<MenuBarItem*> ItemList;
 
 	Uint16 my_btnOffsetY;
-        
+
 	bool leaveButton ( PG_Pointer last );
 	bool enterButton ( PG_Pointer last );
 

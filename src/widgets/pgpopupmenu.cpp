@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/07/19 16:30:22 $
+   Update Date:      $Date: 2006/02/06 21:24:19 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgpopupmenu.cpp,v $
-   CVS/RCS Revision: $Revision: 1.3.6.4.2.13 $
+   CVS/RCS Revision: $Revision: 1.3.6.4.2.14 $
    Status:           $State: Exp $
  */
 
@@ -54,14 +54,14 @@ needRecalc(true) {
 }
 
 PG_PopupMenu::MenuItem::MenuItem(PG_PopupMenu *parent, const std::string& caption, PG_PopupMenu *submenu)
-: myFlags(MIF_SUBMENU),
-myParent(parent),
-mySubMenu(submenu),
-myId(-1),
-sNormal(0),
-sSelected(0),
-sDisabled(0),
-selected(false),
+		: myFlags(MIF_SUBMENU),
+		myParent(parent),
+		mySubMenu(submenu),
+		myId(-1),
+		sNormal(0),
+		sSelected(0),
+		sDisabled(0),
+		selected(false),
 needRecalc(true) {
 	initItem( caption );
 }
@@ -72,15 +72,15 @@ void PG_PopupMenu::MenuItem::initItem( const std::string& caption ) {
 	my_xpos = my_ypos = my_height = my_width = 0;
 	myPoint.x = myPoint.y = 0;
 
-        
+
 	std::string::size_type tabPos = caption.find('\t');
 	if ( tabPos != std::string::npos && tabPos < caption.length()-1 ) {
 		myCaption  = caption.substr(0,tabPos);
 		myRightCaption = caption.substr(tabPos+1 );
-	} else {                
+	} else {
 		myCaption = caption;
 	}
-                        
+
 	measureItem(this);
 	needRecalc = false;
 
@@ -111,35 +111,35 @@ bool PG_PopupMenu::MenuItem::measureItem(PG_Rect* rect, bool full) {
 
 		return true;
 	}
-	
+
 	Uint16 w,h;
 
 	if ( myRightCaption.length()  ) {
 		PG_Widget::GetTextSize(
-			w, h,
-			myCaption,
-			myParent->GetFont());
+		    w, h,
+		    myCaption,
+		    myParent->GetFont());
 
 		rect->w = w;
 		rect->h = h;
-                
+
 		PG_Widget::GetTextSize(
-			w, h,
-			myRightCaption,
-			myParent->GetFont());
+		    w, h,
+		    myRightCaption,
+		    myParent->GetFont());
 
 		rect->w = rect->w + w + myParent->minTabWidth;
 		if ( h > rect->h )
 			rect->h = h;
-	} else {        
+	} else {
 		PG_Widget::GetTextSize(
-			w, h,
-			myCaption,
-			myParent->GetFont());
+		    w, h,
+		    myCaption,
+		    myParent->GetFont());
 
 		rect->w = w;
 		rect->h = h;
-	}                
+	}
 
 	//+++
 	//    TTF_SizeText(myFont, myCaption.c_str(),
@@ -176,17 +176,17 @@ bool PG_PopupMenu::MenuItem::renderSurface(SDL_Surface *canvas, SDL_Surface **te
 
 	if ( myFlags & MIF_SEPARATOR ) {
 		PG_Draw::DrawLine(canvas, blitRect.x, blitRect.y + 1, blitRect.x + myParent->maxItemWidth(), blitRect.y + 1, myParent->GetFont()->GetColor(), myParent->separatorLineWidth );
-	} else {        
+	} else {
 		myParent->SetFontColor(*tcol);
 		if ( myRightCaption.length()  ) {
 			Uint16 tw,th;
 
 			PG_Widget::GetTextSize( tw, th, myRightCaption, myParent->GetFont());
-		
+
 			PG_FontEngine::RenderText(canvas, blitRect, blitRect.x + myParent->maxItemWidth() - tw, blitRect.y+myParent->GetFontAscender(), myRightCaption, myParent->GetFont());
 		}
 		PG_FontEngine::RenderText(canvas, blitRect, blitRect.x, blitRect.y+myParent->GetFontAscender(), myCaption, myParent->GetFont());
-		
+
 	}
 	//SDL_BlitSurface(*text, NULL, canvas, &blitRect);
 
@@ -305,8 +305,8 @@ PG_PopupMenu& PG_PopupMenu::addMenuItem(const std::string& caption,
 }
 
 PG_PopupMenu& PG_PopupMenu::addMenuItem(const std::string& caption,
-				int ID,
-				MenuItem::MI_FLAGS flags) {
+                                        int ID,
+                                        MenuItem::MI_FLAGS flags) {
 
 	MenuItem* item = new MenuItem(this, caption, ID, flags);
 	appendItem(item);
@@ -330,16 +330,16 @@ PG_PopupMenu& PG_PopupMenu::addMenuItem(const std::string& caption,
                                         void *data,
                                         MenuItem::MI_FLAGS flags) {
 	MenuItem    *item = new MenuItem(this, caption, ID, flags);
-
+ 
 	appendItem(item);
-
+ 
 	if (action) {
 		if (actions[ID])
 			//TODO: an exception here??
 			PG_LogWRN("Duplicate action ID %d - Replacing old value", ID);
 		actions[ID] = action;
 	};
-
+ 
 	return *this;
 }*/
 
@@ -369,7 +369,7 @@ void PG_PopupMenu::trackMenu(int x, int y) {
 	openMenu( x, y );
 	buttonDown = PG_Application::GetEventSupplier()->GetMouseState( x,y ) & SDL_BUTTON_LEFT;
 }
-                
+
 void PG_PopupMenu::openMenu(int x, int y) {
 	if (x >= 0 && y >= 0) {
 		if (x != my_xpos && y != my_ypos)
@@ -378,18 +378,18 @@ void PG_PopupMenu::openMenu(int x, int y) {
 
 	x = my_xpos;
 	y = my_ypos;
-	
+
 	if(x + my_width >= PG_Application::GetScreenWidth()) {
-		x = PG_Application::GetScreenWidth() - my_width;		
+		x = PG_Application::GetScreenWidth() - my_width;
 	}
 
 	if(y + my_height >= PG_Application::GetScreenHeight()) {
-		y = PG_Application::GetScreenHeight() - my_height;		
+		y = PG_Application::GetScreenHeight() - my_height;
 	}
 
 	if (x != my_xpos || y != my_ypos)
 		MoveWidget(x, y);
-	
+
 	Show();
 }
 
@@ -533,10 +533,10 @@ void PG_PopupMenu::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect
 				statesel = 2;
 
 			PG_Draw::DrawThemedSurface(surface, itemRect,
-			                  miGradients[statesel],
-			                  miBackgrounds[statesel],
-			                  miBkModes[statesel],
-			                  miBlends[statesel]);
+			                           miGradients[statesel],
+			                           miBackgrounds[statesel],
+			                           miBkModes[statesel],
+			                           miBlends[statesel]);
 
 			switch(statesel) {
 				case 0:
@@ -812,7 +812,7 @@ void PG_PopupMenu::eventShow() {
 	if (tracking) {
 		SetCapture();
 	}
-	
+
 	current = start;
 }
 
@@ -879,12 +879,12 @@ bool PG_PopupMenu::SetMenuItemSlot(int id, MenuItem::MenuItemSlot slot, PG_Point
 	MII it;
 	PG_PopupMenu::MenuItem* item;
 	int itid;
-	
+
 	it=items.begin();
 	while(it!=items.end()) {
-		
+
 		itid=(*it)->getId();
-		
+
 		if(id==itid) {
 			item=*it;
 			item->sigSelectMenuItem.connect(slot, clientdata);

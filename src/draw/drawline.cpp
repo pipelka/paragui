@@ -22,9 +22,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/02/28 18:49:06 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/drawline.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.2 $
+    CVS/RCS Revision: $Revision: 1.3.8.3 $
     Status:           $State: Exp $
 */
 
@@ -93,8 +93,7 @@ void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const PG_Color& c, Uint
 }
 
 void octant0(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 deltax, Uint32 deltay,
-             int xdirection, const PG_Color& color, Uint8 width, int pixelflag)
-{
+             int xdirection, const PG_Color& color, Uint8 width, int pixelflag) {
 	int deltay2;
 	int error;
 	int deltay2deltax2;	/* delta y2 - deltax2 */
@@ -125,8 +124,7 @@ void octant0(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 deltax, Uint32 d
 } /* end of the function */
 
 void octant1(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 deltax, Uint32 deltay,
-             int xdirection, const PG_Color& color, Uint8 width, int pixelflag)
-{
+             int xdirection, const PG_Color& color, Uint8 width, int pixelflag) {
 	int deltax2;
 	int error;
 	int deltax2deltay2;	/* delta x2 - deltay2 */
@@ -163,9 +161,9 @@ void PG_Draw::DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Ui
 	int temp;
 	int pixelflag;
 
-    if (!width || !surface)
-        return;
-    
+	if (!width || !surface)
+		return;
+
 	pixelflag=0;
 
 	/* swap y0 with y1 if y0 is greater than y1 */

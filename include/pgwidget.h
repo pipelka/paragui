@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 10:31:13 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.30 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.31 $
     Status:           $State: Exp $
 */
 
@@ -84,14 +84,14 @@ public:
 
 	//! Keyevent actions
 	typedef enum {
-		ACT_ACTIVATE,	//!< Widget got the input focus
-		ACT_DEACTIVATE,	//!< Widget has lost the input focus
-		ACT_OK,	//!< Widget action event (e.g. button press on a PG_Button object)
-		ACT_CANCEL,	//!< Widget cancel-action
-		ACT_LEFT,	//!< Cursor left was pressed
-		ACT_RIGHT,	//!< Cursor right was pressed
-		ACT_UP,	//!< Cursor up was pressed
-		ACT_DOWN	//!< Cursor down was pressed
+	    ACT_ACTIVATE,	//!< Widget got the input focus
+	    ACT_DEACTIVATE,	//!< Widget has lost the input focus
+	    ACT_OK,	//!< Widget action event (e.g. button press on a PG_Button object)
+	    ACT_CANCEL,	//!< Widget cancel-action
+	    ACT_LEFT,	//!< Cursor left was pressed
+	    ACT_RIGHT,	//!< Cursor right was pressed
+	    ACT_UP,	//!< Cursor up was pressed
+	    ACT_DOWN	//!< Cursor down was pressed
 	} KeyAction;
 
 	/**
@@ -250,7 +250,7 @@ public:
 	@return	true if the event was sucessfully processed
 
 	ProcessEvent asks the widget to process a given event. It also asks its
-    parent and, if bModal is true, its children.
+	   parent and, if bModal is true, its children.
 	*/
 	virtual bool ProcessEvent(const SDL_Event* event, bool bModal = false);
 
@@ -421,7 +421,7 @@ public:
 	   @return pointer to a PG_RectList object
 	*/
 	static PG_RectList* GetWidgetList();
-	
+
 	/**
 	   Set the name for the widget
 	   @param name	Name of the widget - size of the name is defined in PG_NAMESIZE
@@ -709,7 +709,7 @@ public:
 	bool WillQuitModal();
 
 	void StopQuitModal();
-	
+
 	/**
 	Set the dirty update mode
 	@param bDirtyUpdate true - enable / false - disable
@@ -719,7 +719,7 @@ public:
 	If you encounter problems with activated dirty updates simple disable it.
 	*/
 	void SetDirtyUpdate(bool bDirtyUpdate);
-	
+
 	/**
 	Set the sibling update mode.
 	@param enable true - enable / false - disable
@@ -728,19 +728,19 @@ public:
 	Disabling this will gain a performance boost, but causes the overlapping parts of siblings to be overdrawn after Update operations
 	*/
 	void UpdateOverlappingSiblings( bool enable, bool recursive = true );
-	
+
 	/**
 	return if the dirty update mode is enabled
 	@return true - dirty updates enabled
 	*/
 	bool GetDirtyUpdate();
-	
+
 	/**
 		eventhandler for mouse movements.
 		This overrideable handler is called everytime the mouse cursor is leaving the widget area.
 	*/
 	virtual void eventMouseLeave();
-	
+
 	/**
 		eventhandler for mouse movements.
 		This overrideable handler is called everytime the mouse cursor is entering the widget area.
@@ -748,7 +748,7 @@ public:
 	virtual void eventMouseEnter();
 
 	void SetHidden(bool hidden);
-	
+
 	bool IsHidden();
 
 	/**
@@ -757,13 +757,17 @@ public:
 		The specified status will be returned by the RunModal method
 	*/
 	void SetModalStatus(int status);
-	
+
 	void EnableReceiver(bool enable, bool bRecursive = false);
 
-	template<class datatype = PG_Pointer> class SignalMouseEnter : public PG_Signal0<datatype> {};
+	template<class datatype = PG_Pointer>
+class SignalMouseEnter : public PG_Signal0<datatype> {}
+	;
 
-	template<class datatype = PG_Pointer> class SignalMouseLeave : public PG_Signal0<datatype> {};
-	
+	template<class datatype = PG_Pointer>
+class SignalMouseLeave : public PG_Signal0<datatype> {}
+	;
+
 	SignalMouseEnter<> sigMouseEnter;
 
 	SignalMouseLeave<> sigMouseLeave;
@@ -796,7 +800,7 @@ protected:
 		@param msg pointer to a MSG_MESSAGE structure
 		@return this eventhandler should return "true" if the message was proccessed.
 		This messagehandler can be overridden to perform custom operations.
-	*/	
+	*/
 	//bool eventMessage(MSG_MESSAGE* msg);
 
 	/**

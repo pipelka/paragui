@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgslider.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.2.7 $
     Status:           $State: Exp $
 */
 
@@ -40,7 +40,7 @@ PG_Slider::PG_Slider(PG_Widget* parent, const PG_Rect& r, ScrollDirection direct
 	// connect signals
 	sigScrollPos.connect(sigSlideEnd.slot());
 	sigScrollTrack.connect(sigSlide.slot());
-	
+
 	LoadThemeStyle(style);
 	SetPosition(scroll_min);
 }
@@ -120,8 +120,7 @@ void PG_Slider::RecalcPositions() {
 				if(position[i].w > 2*my_bordersize) {
 					position[i].w -= 2*my_bordersize;
 				}
-			}
-			else {
+			} else {
 				position[i].y += my_bordersize;
 				if(position[i].h > 2*my_bordersize) {
 					position[i].h -= 2*my_bordersize;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsingleton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -33,7 +33,8 @@
 #ifndef PG_SINGLETON_H
 #define PG_SINGLETON_H
 
-template< class T > class PG_Singleton {
+template< class T >
+class PG_Singleton {
 public:
 	static T& GetInstance() {
 		static T obj;
@@ -41,11 +42,9 @@ public:
 	}
 
 protected:
-	PG_Singleton() {
-	}
-	
-	~PG_Singleton() {
-	}
+	PG_Singleton() {}
+
+	~PG_Singleton() {}
 
 private:
 	PG_Singleton(const T&);

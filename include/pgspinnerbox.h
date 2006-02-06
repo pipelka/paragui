@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgspinnerbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.2.12 $
     Status:           $State: Exp $
 */
 
@@ -64,11 +64,13 @@ public:
 	/**
 	Signal type declaration
 	**/
-	template<class datatype> class SignalChange : public PG_Signal2<PG_SpinnerBox*, datatype> {};
+	template<class datatype>
+class SignalChange : public PG_Signal2<PG_SpinnerBox*, datatype> {}
+	;
 
 	enum {
-		IDSPINNERBOX_UP = PG_WIDGETID_INTERNAL + 12,
-		IDSPINNERBOX_DOWN = PG_WIDGETID_INTERNAL + 13
+	    IDSPINNERBOX_UP = PG_WIDGETID_INTERNAL + 12,
+	    IDSPINNERBOX_DOWN = PG_WIDGETID_INTERNAL + 13
 	};
 
 	/**
@@ -120,7 +122,7 @@ private:
 	PG_MaskEdit* m_pEditBox;
 
 	PG_Button* m_pButtonUp;
-	
+
 	PG_Button* m_pButtonDown;
 
 	int m_iMinValue;

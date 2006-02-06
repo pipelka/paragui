@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgprogressbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -35,7 +35,7 @@ PG_ProgressBar::PG_ProgressBar(PG_Widget* parent, const PG_Rect& r, const std::s
 
 	my_percentCurrent = 0;
 	my_drawPercentage = true;
-	
+
 	my_colorText.r = 0xFF;
 	my_colorText.g = 0xFF;
 	my_colorText.b = 0xFF;
@@ -130,16 +130,16 @@ void PG_ProgressBar::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 			sprintf(buf, "%i%%", (int)my_percentCurrent);
 		else
 			sprintf(buf, my_text.c_str(), (int)my_percentCurrent);
-		
+
 		Uint16 w, h;
 		GetTextSize(w,h, buf);
 
 		// !! textrectangle can be bigger than the widget
 		int x = (my_width - w)/2;
 		int y = (my_height - h)/2;
-		
+
 		DrawText(x, y, buf);
-		
+
 		delete[] buf;
 	}
 }

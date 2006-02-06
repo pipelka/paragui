@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.16 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.17 $
     Status:           $State: Exp $
 */
 
@@ -41,14 +41,13 @@ PG_WidgetList::PG_WidgetList(PG_Widget* parent, const PG_Rect& r, const std::str
 	LoadThemeStyle(style);
 }
 
-PG_WidgetList::~PG_WidgetList() {
-}
+PG_WidgetList::~PG_WidgetList() {}
 
 void PG_WidgetList::AddChild(PG_Widget* w) {
 	if(w == NULL) {
 		return;
 	}
-		
+
 	if (my_objVerticalScrollbar == NULL || my_objHorizontalScrollbar == NULL || my_scrollarea == NULL) {
 		PG_Widget::AddChild(w);
 		return;

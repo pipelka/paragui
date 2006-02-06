@@ -32,7 +32,7 @@ PG_Font::PG_Font(const std::string& fontfile, int size, int index) {
 	my_internaldata->style = NORMAL;
 
 	my_internaldata->FaceCache = PG_FontEngine::LoadFontFace(fontfile, size, index);
-	
+
 	if(my_internaldata->FaceCache == NULL) {
 		PG_LogERR("Unable to create font (name=\"%s\", size=\"%i\", index=\"%i\"", fontfile.c_str(), size, index);
 	}
@@ -44,17 +44,17 @@ PG_Font::~PG_Font() {
 
 int PG_Font::GetFontAscender() {
 	return my_internaldata->FaceCache ?
-		FT_CEIL(FT_MulFix(my_internaldata->FaceCache->Face->ascender, my_internaldata->FaceCache->Face->size->metrics.y_scale)) : 0;
+	       FT_CEIL(FT_MulFix(my_internaldata->FaceCache->Face->ascender, my_internaldata->FaceCache->Face->size->metrics.y_scale)) : 0;
 }
 
 int PG_Font::GetFontDescender() {
 	return my_internaldata->FaceCache ?
-		FT_CEIL(FT_MulFix(my_internaldata->FaceCache->Face->descender, my_internaldata->FaceCache->Face->size->metrics.y_scale)) : 0;
+	       FT_CEIL(FT_MulFix(my_internaldata->FaceCache->Face->descender, my_internaldata->FaceCache->Face->size->metrics.y_scale)) : 0;
 }
 
 int PG_Font::GetFontHeight() {
 	return my_internaldata->FaceCache ?
-		FT_CEIL(FT_MulFix(my_internaldata->FaceCache->Face->height, my_internaldata->FaceCache->Face->size->metrics.y_scale)) : 0;
+	       FT_CEIL(FT_MulFix(my_internaldata->FaceCache->Face->height, my_internaldata->FaceCache->Face->size->metrics.y_scale)) : 0;
 }
 
 void PG_Font::SetColor(const PG_Color& c) {
@@ -64,7 +64,7 @@ void PG_Font::SetColor(const PG_Color& c) {
 PG_Color PG_Font::GetColor() {
 	return my_internaldata->color;
 }
-	
+
 void PG_Font::SetAlpha(int a) {
 	my_internaldata->alpha = a;
 }
@@ -72,7 +72,7 @@ void PG_Font::SetAlpha(int a) {
 int PG_Font::GetAlpha() {
 	return my_internaldata->alpha;
 }
-	
+
 void PG_Font::SetStyle(Style s) {
 	my_internaldata->style = s;
 }
@@ -80,19 +80,19 @@ void PG_Font::SetStyle(Style s) {
 PG_Font::Style PG_Font::GetStyle() {
 	return my_internaldata->style;
 }
-	
+
 bool PG_Font::SetName(const std::string& fontfile) {
 	my_internaldata->name = fontfile;
 	my_internaldata->FaceCache = PG_FontEngine::LoadFontFace(
-			fontfile,
-			GetSize(),
-			GetIndex());
-	
+	                                 fontfile,
+	                                 GetSize(),
+	                                 GetIndex());
+
 	if(my_internaldata->FaceCache == NULL) {
 		PG_LogERR("Unable to create font (name=\"%s\", size=\"%i\", index=\"%i\"",
-			GetName().c_str(),
-			GetSize(),
-			GetIndex());
+		          GetName().c_str(),
+		          GetSize(),
+		          GetIndex());
 	}
 
 	return (my_internaldata->FaceCache != NULL);
@@ -105,16 +105,16 @@ const std::string& PG_Font::GetName() {
 void PG_Font::SetSize(int s) {
 	my_internaldata->size = s;
 	my_internaldata->FaceCache = PG_FontEngine::LoadFontFace(
-			GetName(),
-			GetSize(),
-			GetIndex());
-	
-	
+	                                 GetName(),
+	                                 GetSize(),
+	                                 GetIndex());
+
+
 	if(my_internaldata->FaceCache == NULL) {
 		PG_LogERR("Unable to create font (name=\"%s\", size=\"%i\", index=\"%i\"",
-			GetName().c_str(),
-			GetSize(),
-			GetIndex());
+		          GetName().c_str(),
+		          GetSize(),
+		          GetIndex());
 	}
 
 }

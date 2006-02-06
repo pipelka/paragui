@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/30 13:34:29 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.12 $
+    CVS/RCS Revision: $Revision: 1.1.2.13 $
     Status:           $State: Exp $
 */
 
@@ -51,7 +51,7 @@ class DECLSPEC PG_ScrollWidget : public PG_ThemeWidget  {
 public:
 
 	enum {
-		IDWIDGETLIST_VSCROLL = PG_WIDGETID_INTERNAL + 10, IDWIDGETLIST_HSCROLL
+	    IDWIDGETLIST_VSCROLL = PG_WIDGETID_INTERNAL + 10, IDWIDGETLIST_HSCROLL
 	};
 
 	/**
@@ -97,9 +97,9 @@ public:
 	PG_Widget* GetFirstInList();
 
 	virtual void DeleteAll();
-	
+
 	virtual void RemoveAll();
-	
+
 	void AddChild(PG_Widget* child);
 
 	/**
@@ -115,7 +115,7 @@ public:
 	Get x offset of current scroll position.
 	*/
 	Uint16 GetScrollPosX();
-	
+
 	/**
 	Get y offset of current scroll position.
 	*/

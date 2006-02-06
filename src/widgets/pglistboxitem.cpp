@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/02/15 09:23:09 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.5.4.1.2.11 $
+    CVS/RCS Revision: $Revision: 1.5.4.1.2.12 $
     Status:           $State: Exp $
 */
 
@@ -36,9 +36,9 @@
 PG_ListBoxItem::PG_ListBoxItem(PG_Widget* parent, int height, const std::string& text, SDL_Surface* icon, void* userdata, const std::string& style) : PG_ListBoxBaseItem(parent, height, userdata) {
 	my_srfHover = NULL;
 	my_srfSelected = NULL;
-	
+
 	my_srfIcon = icon;
-	
+
 	for(int i=0; i<3; i++) {
 		my_background[i] = NULL;
 		my_bkmode[i] = PG_Draw::TILE;
@@ -73,26 +73,25 @@ void PG_ListBoxItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 
 	if(my_srfHover == NULL) {
 		my_srfHover = PG_ThemeWidget::CreateThemedSurface(
-						  PG_Rect(0, 0, my_width, my_height),
-						  my_gradient[2],
-						  my_background[2],
-						  my_bkmode[2],
-						  my_blend[2]);
+		                  PG_Rect(0, 0, my_width, my_height),
+		                  my_gradient[2],
+		                  my_background[2],
+		                  my_bkmode[2],
+		                  my_blend[2]);
 	}
-	
+
 	if(my_srfSelected == NULL) {
 		my_srfSelected = PG_ThemeWidget::CreateThemedSurface(
-							 PG_Rect(0, 0, my_width, my_height),
-							 my_gradient[1],
-							 my_background[1],
-							 my_bkmode[1],
-							 my_blend[1]);
+		                     PG_Rect(0, 0, my_width, my_height),
+		                     my_gradient[1],
+		                     my_background[1],
+		                     my_bkmode[1],
+		                     my_blend[1]);
 	}
 
 	if(my_selected) {
 		PG_Widget::eventBlit(my_srfSelected, src, dst);
-	}
-	else if(my_hover) {
+	} else if(my_hover) {
 		PG_Widget::eventBlit(my_srfHover, src, dst);
 	}
 
@@ -116,11 +115,14 @@ void PG_ListBoxItem::LoadThemeStyle(const std::string& widgettype, const std::st
 	t->GetProperty(widgettype, objectname, PG_PropStr::backmode2, my_bkmode[2]);
 
 	g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient0);
-	if(g) my_gradient[0] = g;
+	if(g)
+		my_gradient[0] = g;
 	g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient1);
-	if(g) my_gradient[1] = g;
+	if(g)
+		my_gradient[1] = g;
 	g = t->FindGradient(widgettype, objectname, PG_PropStr::gradient2);
-	if(g) my_gradient[2] = g;
+	if(g)
+		my_gradient[2] = g;
 
 	PG_Color fontcolor(0xFFFFFF);
 	t->GetColor(widgettype, objectname, PG_PropStr::textcolor, fontcolor);

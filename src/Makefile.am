@@ -29,6 +29,7 @@ INCLUDES = \
 	-I$(top_srcdir)/include
 
 style_cvs:
+	dirs="draw font themes core widgets" ; for dir in $(SUBDIRS) ; do cd $$dir && make style_cvs && cd .. ; done
 	astyle --style=kr --indent=tab=4 --indent-switches *.cpp
 
 style_personal:

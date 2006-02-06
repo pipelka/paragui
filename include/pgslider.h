@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgslider.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.2.10 $
     Status:           $State: Exp $
 */
 
@@ -38,12 +38,12 @@
 
 /** @class PG_Slider
 	@author Alexander Pipelka
-
+ 
 	@image html pgslider_horz.png "horizontal slider screenshot"
 	@image html pgslider_vert.png "vertical slider screenshot"
  
 	@short Provides a slider.
-
+ 
 	Usually used to get user input for a value where the range is known and fixed. 
 	The position of the slider is tied to an interger value which changes as the user 
 	moves the slider.
@@ -56,11 +56,15 @@ public:
 	/**
 	Signal type declaration
 	**/
-	template<class datatype> class SignalSlide : public PG_Signal2<PG_ScrollBar*, datatype> {};
+	template<class datatype>
+class SignalSlide : public PG_Signal2<PG_ScrollBar*, datatype> {}
+	;
 
-	template<class datatype> class SignalSlideEnd : public PG_Signal2<PG_ScrollBar*, datatype> {};
+	template<class datatype>
+class SignalSlideEnd : public PG_Signal2<PG_ScrollBar*, datatype> {}
+	;
 
-	/** 
+	/**
 	 Contructor of the PG_Slider class
 	 @param parent	pointer to the parent widget or NULL
 	 @param r	position of the PG_Image widget

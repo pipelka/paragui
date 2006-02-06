@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2004/03/02 20:19:04 $
+   Update Date:      $Date: 2006/02/06 21:24:20 $
    Source File:      $Source: /sources/paragui/paragui/src/draw/pgpoint.cpp,v $
-   CVS/RCS Revision: $Revision: 1.1.4.3 $
+   CVS/RCS Revision: $Revision: 1.1.4.4 $
    Status:           $State: Exp $
 */
 
@@ -30,8 +30,6 @@
 
 PG_Point PG_Point::null;
 
-PG_Point::PG_Point() : x(0), y(0) {
-}
+PG_Point::PG_Point() : x(0), y(0) {}
 
-PG_Point::PG_Point(Sint16 _x, Sint16 _y) : x(_x), y(_y) {
-}
+PG_Point::PG_Point(Sint16 _x, Sint16 _y) : x(_x), y(_y) {}

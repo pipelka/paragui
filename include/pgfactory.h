@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfactory.h,v $
-    CVS/RCS Revision: $Revision: 1.8.2.5 $
+    CVS/RCS Revision: $Revision: 1.8.2.6 $
     Status:           $State: Exp $
 */
 
@@ -41,7 +41,8 @@
 
 class PG_Widget;
 
-template< class T, class PT = PG_Widget > class PG_FactoryObject {
+template< class T, class PT = PG_Widget >
+class PG_FactoryObject {
 public:
 	static T* CreateObject(PT* parent) {
 		return new T(parent);
@@ -55,51 +56,54 @@ public:
 template<class H>
 class PG_FactoryHolder : public PG_Singleton< PG_FactoryHolder<H> > {
 public:
-	
+
 	typedef PG_Widget* (*CREATEFN)(PG_Widget* parent);
-	
-	template< class T, class PT > static void RegisterClass(const H& classname) {
+
+	template< class T, class PT >
+	static void RegisterClass(const H& classname) {
 		PG_Singleton< PG_FactoryHolder<H> >::GetInstance().RegisterCreateFn(classname, (CREATEFN)&PG_FactoryObject<T, PT>::CreateObject);
 	}
-		
-	template< class T > static void RegisterClass(const H& classname) {
+
+	template< class T >
+	static void RegisterClass(const H& classname) {
 		PG_Singleton< PG_FactoryHolder<H> >::GetInstance().RegisterCreateFn(classname, (CREATEFN)&PG_FactoryObject<T>::CreateObject);
 	}
 
-	template< class T > static void RegisterClass0(const H& classname) {
+	template< class T >
+	static void RegisterClass0(const H& classname) {
 		PG_Singleton< PG_FactoryHolder<H> >::GetInstance().RegisterCreateFn(classname, (CREATEFN)&PG_FactoryObject<T>::CreateObject0);
 	}
 
 	static PG_Widget* CreateObject(const H& classname, PG_Widget* parent = NULL) {
 		CREATEFN create = PG_Singleton< PG_FactoryHolder<H> >::GetInstance().creator_map[classname];
-		
+
 		if(create == NULL) {
 			return NULL;
 		}
-		
+
 		return create(parent);
 	}
 
 	static PG_Widget* CreateObject0(const H& classname, PG_Widget* parent = NULL) {
 		CREATEFN create = PG_Singleton< PG_FactoryHolder<H> >::GetInstance().creator_map[classname];
-		
+
 		if(create == NULL) {
 			return NULL;
 		}
-		
+
 		return create(parent);
 	}
-	
+
 protected:
-	
+
 	inline void RegisterCreateFn(const H& classname, CREATEFN fn) {
 		creator_map[classname] = fn;
 	}
-	
+
 	std::map< H, CREATEFN > creator_map;
-	
+
 	friend class PG_Singleton< PG_FactoryHolder<H> >;
-	
+
 };
 
 typedef PG_FactoryHolder<std::string> PG_Factory;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/theme_priv.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
     Status:           $State: Exp $
 */
 
@@ -103,8 +103,10 @@ struct pg_hashstr {
 #if PG_VERSIONNUM(__GNUC__, __GNUC_MINOR__, 0) >= PG_VERSIONNUM(3, 1, 0)
 		return __gnu_cxx::hash<const char *>()(s1.c_str());
 #else
+
 		return hash<const char *>()(s1.c_str());
 #endif
+
 	}
 };
 #endif
@@ -127,10 +129,12 @@ public:
 	std::vector<THEME_STRING*> strings;
 
 #ifdef HASH_MAP_INC
+
 	typedef STL_MAP<std::string, THEME_FILENAME*, pg_hashstr> MAP_FILENAME;
 	typedef STL_MAP<std::string, THEME_GRADIENT*, pg_hashstr> MAP_GRADIENT;
 	typedef STL_MAP<std::string, THEME_PROPERTY*, pg_hashstr> MAP_PROPERTY;
 #else
+
 	typedef std::map<std::string, THEME_FILENAME*> MAP_FILENAME;
 	typedef std::map<std::string, THEME_GRADIENT*> MAP_GRADIENT;
 	typedef std::map<std::string, THEME_PROPERTY*> MAP_PROPERTY;
@@ -153,8 +157,10 @@ public:
 	std::string type;
 
 #ifdef HASH_MAP_INC
+
 	typedef STL_MAP<std::string, THEME_OBJECT*, pg_hashstr> MAP_OBJECT;
 #else
+
 	typedef std::map<std::string, THEME_OBJECT*> MAP_OBJECT;
 #endif
 
@@ -197,8 +203,10 @@ public:
 	std::string email;
 
 #ifdef HASH_MAP_INC
+
 	typedef STL_MAP<std::string, THEME_WIDGET*, pg_hashstr> MAP_WIDGET;
 #else
+
 	typedef std::map<std::string, THEME_WIDGET*> MAP_WIDGET;
 #endif
 

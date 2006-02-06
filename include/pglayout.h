@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:14 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pglayout.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.7 $
     Status:           $State: Exp $
 */
 
@@ -42,17 +42,17 @@
 /**
 	@author Ales Teska
 	@short XML layout loading functions.
-
+ 
 	This namespace contains various functions responsible for
 	loading XML widget layouts.
 */
 
 class PG_XMLTag {
 public:
-	
+
 	PG_XMLTag(const char* n, const char** a);
 	~PG_XMLTag();
-	
+
 	const char* name;
 	const char**atts;
 };

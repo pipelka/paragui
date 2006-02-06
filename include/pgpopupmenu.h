@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgpopupmenu.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.15 $
     Status:           $State: Exp $
 */
 
@@ -64,10 +64,10 @@
  *       w2k.
  * @todo keyboard handling (accelerators, ESC/ENTER & arrows)
  */
- 
+
 class DECLSPEC PG_PopupMenu : public PG_ThemeWidget {
 public:
-	
+
 	/**
 	 * @author Marek Habersack
 	 *
@@ -84,19 +84,21 @@ public:
 	 * @todo better separator code
 	 * @todo icon drawing
 	 */
-	class DECLSPEC MenuItem : public PG_Rect, public PG_MessageObject {
+class DECLSPEC MenuItem : public PG_Rect, public PG_MessageObject {
 	public: // types
 		enum MI_FLAGS {
-			MIF_NONE = 0,
-			MIF_DISABLED = 0x01,
-			MIF_SEPARATOR = 0x02,
-			MIF_SUBMENU = 0x04
+		    MIF_NONE = 0,
+		    MIF_DISABLED = 0x01,
+		    MIF_SEPARATOR = 0x02,
+		    MIF_SUBMENU = 0x04
 		};
-	
+
 		/**
 		Signal type declaration
 		**/
-		template<class datatype = PG_Pointer> class SignalSelectMenuItem : public PG_Signal1<MenuItem*, datatype> {};
+		template<class datatype = PG_Pointer>
+	class SignalSelectMenuItem : public PG_Signal1<MenuItem*, datatype> {}
+		;
 
 		SignalSelectMenuItem<> sigSelectMenuItem;
 
@@ -104,26 +106,26 @@ public:
 
 	public: // methods
 		MenuItem(PG_PopupMenu *parent,
-				 const std::string& caption,
-				 int id,
-				 MI_FLAGS flags);
+		         const std::string& caption,
+		         int id,
+		         MI_FLAGS flags);
 		MenuItem(PG_PopupMenu *parent,
-				 const std::string& caption,
-				 PG_PopupMenu *submenu);
+		         const std::string& caption,
+		         PG_PopupMenu *submenu);
 		~MenuItem();
-	
+
 		bool measureItem(PG_Rect* rect,  bool full = false);
 		bool isPointInside(int x, int y);
 		inline void moveTo(int x, int y);
-	
+
 		inline SDL_Surface* getNormal() const;
 		inline SDL_Surface* getDisabled() const;
 		inline SDL_Surface* getSelected() const;
-	
+
 		bool paintNormal(SDL_Surface *canvas, PG_Color* tcol, PG_Color* scol = NULL);
 		bool paintDisabled(SDL_Surface *canvas, PG_Color* tcol, PG_Color* scol = NULL);
 		bool paintSelected(SDL_Surface *canvas, PG_Color* tcol, PG_Color* scol = NULL);
-	
+
 		inline void disable();
 		inline void enable();
 		inline bool isDisabled() const;
@@ -134,37 +136,37 @@ public:
 		inline bool isSeparator() const;
 		inline bool isSubMenu() const;
 		inline bool isMute() const;
-	
+
 		inline int Width() const;
 		inline int Height() const;
-	
+
 		inline int getId() const;
 		inline PG_PopupMenu *getSubMenu() const;
-	
+
 		inline const PG_String& getCaption() const;
-	
+
 		inline operator PG_Point const&() const;
-	
+
 	private: // methods
 		DLLLOCAL void initItem( const std::string& caption );
 		DLLLOCAL bool renderSurface(SDL_Surface *canvas, SDL_Surface **text, PG_Color* tcol, PG_Color* scol = 0);
 		DLLLOCAL bool isValidRect();
-	
+
 	protected: // data
 		unsigned      myFlags;
 		PG_String     myCaption;
-		PG_String     myRightCaption; 
+		PG_String     myRightCaption;
 		PG_PopupMenu *myParent;
-	
+
 		PG_PopupMenu *mySubMenu;
 		int           myId;
-	
+
 		SDL_Surface  *sNormal;
 		SDL_Surface  *sSelected;
 		SDL_Surface  *sDisabled;
-	
+
 		bool          selected;
-	
+
 	private: // data
 		bool          needRecalc;
 		PG_Point      myPoint;
@@ -172,16 +174,16 @@ public:
 
 #ifndef DOXYGEN_SKIP
 class item_with_id : public std::unary_function<MenuItem*, bool> {
-	int id;
+		int id;
 
-public:
-	explicit item_with_id(int i)
-			: id(i) {}
+	public:
+		explicit item_with_id(int i)
+				: id(i) {}
 
-	bool operator() (const MenuItem* const mi) const {
-		return mi->getId() == id;
-	}
-};
+		bool operator() (const MenuItem* const mi) const {
+			return mi->getId() == id;
+		}
+	};
 #endif // DOXYGEN_SKIP
 
 public: // methods
@@ -189,7 +191,9 @@ public: // methods
 	/**
 	Signal type declaration
 	**/
-	template<class datatype = PG_Pointer> class SignalSelectMenuItem : public PG_Signal1<MenuItem*, datatype> {};
+	template<class datatype = PG_Pointer>
+class SignalSelectMenuItem : public PG_Signal1<MenuItem*, datatype> {}
+	;
 
 	PG_PopupMenu(PG_Widget *parent,
 	             int x, int y,
@@ -217,18 +221,18 @@ public: // methods
 	 *
 	 */
 	PG_PopupMenu& addMenuItem(const std::string& caption,
-				int ID,
-				MenuItem::MenuItemSlot,
-				PG_Pointer data = NULL,
-				MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
+	                          int ID,
+	                          MenuItem::MenuItemSlot,
+	                          PG_Pointer data = NULL,
+	                          MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
 
 	PG_PopupMenu& addMenuItem(const std::string& caption,
-				int ID,
-				MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
+	                          int ID,
+	                          MenuItem::MI_FLAGS flags = MenuItem::MIF_NONE);
 
 	PG_PopupMenu& addMenuItem(const std::string& caption,
-				PG_PopupMenu *sub,
-				MenuItem::MI_FLAGS flags = MenuItem::MIF_SUBMENU);
+	                          PG_PopupMenu *sub,
+	                          MenuItem::MI_FLAGS flags = MenuItem::MIF_SUBMENU);
 
 	/**
 	 * @return a reference to this menu
@@ -258,7 +262,7 @@ public: // methods
 	void trackMenu(int x = -1, int y = -1);
 	void openMenu(int x = -1, int y = -1);
 
-        
+
 	SignalSelectMenuItem<> sigSelectMenuItem;
 
 protected: // methods
@@ -314,12 +318,12 @@ protected: // data
 	int                   xPadding;
 	int                   yPadding;
 
-	/** if a menu entry has a right justified component 
-            ( e.g. "save\tctrl-s" ), this is the minimum space for the tab  */
-	int                  minTabWidth;                
+	/** if a menu entry has a right justified component
+	           ( e.g. "save\tctrl-s" ), this is the minimum space for the tab  */
+	int                  minTabWidth;
 
-	int                  separatorLineWidth;                
-        
+	int                  separatorLineWidth;
+
 private: // data
 	PG_Rect               captionRect;
 	PG_Rect               actionRect;

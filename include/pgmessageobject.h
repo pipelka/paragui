@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:14 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.13 $
     Status:           $State: Exp $
 */
 
@@ -54,18 +54,38 @@ public:
 	/**
 	Signal type declaration
 	**/
-	template<class datatype = PG_Pointer> class SignalActive : public PG_Signal2<PG_MessageObject*, const SDL_ActiveEvent*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalKeyDown : public PG_Signal2<PG_MessageObject*, const SDL_KeyboardEvent*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalKeyUp : public PG_Signal2<PG_MessageObject*, const SDL_KeyboardEvent*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalMouseMotion : public PG_Signal2<PG_MessageObject*, const SDL_MouseMotionEvent*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalMouseButtonDown : public PG_Signal2<PG_MessageObject*, const SDL_MouseButtonEvent*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalMouseButtonUp : public PG_Signal2<PG_MessageObject*, const SDL_MouseButtonEvent*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalQuit : public PG_Signal1<PG_MessageObject*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalSysWM : public PG_Signal2<PG_MessageObject*, const SDL_SysWMEvent*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalVideoResize : public PG_Signal2<PG_MessageObject*, const SDL_ResizeEvent*, datatype> {};
-        
-	template<class datatype = PG_Pointer> class SignalDelete : public PG_Signal1<const PG_MessageObject*, datatype> {};
-	
+	template<class datatype = PG_Pointer>
+class SignalActive : public PG_Signal2<PG_MessageObject*, const SDL_ActiveEvent*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalKeyDown : public PG_Signal2<PG_MessageObject*, const SDL_KeyboardEvent*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalKeyUp : public PG_Signal2<PG_MessageObject*, const SDL_KeyboardEvent*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalMouseMotion : public PG_Signal2<PG_MessageObject*, const SDL_MouseMotionEvent*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalMouseButtonDown : public PG_Signal2<PG_MessageObject*, const SDL_MouseButtonEvent*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalMouseButtonUp : public PG_Signal2<PG_MessageObject*, const SDL_MouseButtonEvent*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalQuit : public PG_Signal1<PG_MessageObject*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalSysWM : public PG_Signal2<PG_MessageObject*, const SDL_SysWMEvent*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalVideoResize : public PG_Signal2<PG_MessageObject*, const SDL_ResizeEvent*, datatype> {}
+	;
+
+	template<class datatype = PG_Pointer>
+class SignalDelete : public PG_Signal1<const PG_MessageObject*, datatype> {}
+	;
+
 	/**
 	Creates a PG_MessageObject
 	*/

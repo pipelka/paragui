@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:14 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrect.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
     Status:           $State: Exp $
 */
 
@@ -55,7 +55,7 @@ public:
 	Initializes the created PG_Rect object with x/y postions and width/height
 	*/
 	PG_Rect(Sint16 x = 0, Sint16 y = 0, Uint16 w = 0, Uint16 h = 0);
-	
+
 	/**
 	Create a new PG_Rect from a reference
 	@param	src	reference rectangle
@@ -94,7 +94,7 @@ public:
 	PG_Rect& operator =(const SDL_Rect& src);
 
 	PG_Rect& operator =(const PG_Rect& src);
-	
+
 	/**
 	*/
 	PG_Rect operator / (PG_Rect& b);
@@ -188,7 +188,7 @@ public:
 	inline bool OverlapRect(PG_Rect* p) {
 		return OverlapRect(*p, *this);
 	}
-	
+
 	/**
 	Get the next Rectangle from the list
 	Moves to the next rectangle in the list
@@ -196,7 +196,7 @@ public:
 	inline PG_Widget* next() {
 		return my_next;
 	}
-	
+
 	/**
 	Get the previous Rectangle from the list
 	Moves to the previous rectangle in the list
@@ -212,13 +212,13 @@ public:
 	Uint16& my_width;
 
 	Uint16& my_height;
-	
+
 	Uint32 index;
 
 	static PG_Rect null;
 
 protected:
-	
+
 	PG_Widget* my_next;
 
 	PG_Widget* my_prev;

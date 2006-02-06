@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/08/24 06:32:30 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgradiobutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.14 $
     Status:           $State: Exp $
 */
 
@@ -112,7 +112,7 @@ bool PG_RadioButton::eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetBut
 	Uint16 my;
 	if(my_groupFirst != NULL) {
 
-		if(my_widgetButton->button == 4) {		
+		if(my_widgetButton->button == 4) {
 			while(list->my_groupNext != NULL) {
 				if(list->my_groupNext == this) {
 					mx = (Uint16)(list->my_xpos + 0.5 + ((my_widgetButton->x * 1.0 - list->my_xpos) / list->my_groupNext->my_width) * list->my_width);
@@ -121,12 +121,12 @@ bool PG_RadioButton::eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetBut
 					break;
 				}
 				list = list->my_groupNext;
-			}									
+			}
 			return true;
 		}
 
-		if(my_widgetButton->button == 5) {		
-			do {				
+		if(my_widgetButton->button == 5) {
+			do {
 				if(list == this && list->my_groupNext != NULL) {
 					mx = (Uint16)(list->my_groupNext->my_xpos + 0.5 + ((my_widgetButton->x * 1.0 - list->my_groupNext->my_xpos) / list->my_width) * list->my_groupNext->my_width);
 					my = list->my_groupNext->my_ypos + list->my_groupNext->my_height / 2;
@@ -136,10 +136,10 @@ bool PG_RadioButton::eventMouseButtonUp(const SDL_MouseButtonEvent* my_widgetBut
 				list = list->my_groupNext;
 			} while(list != NULL);
 			return true;
-		}		
+		}
 	}
 
-	SetPressed();	
+	SetPressed();
 	return true;
 }
 
@@ -160,10 +160,10 @@ void PG_RadioButton::SetPressed() {
 	}
 
 	my_widgetButton->SetPressed(true);
-        
-	if(my_isPressed) 
+
+	if(my_isPressed)
 		return;
-                
+
 	my_isPressed = true;
 
 	Update();
@@ -215,5 +215,5 @@ void PG_RadioButton::SetSizeByText(int Width, int Height, const std::string& Tex
 
 	my_widgetLabel->MoveWidget(my_widgetButton->my_width, 0);
 	SizeWidget(my_widgetButton->my_width + my_widgetLabel->my_width + Width, PG_MAX(my_widgetButton->my_height + Height, my_widgetLabel->my_height));
-	my_widgetButton->MoveWidget(0, (my_height - my_widgetButton->my_height) >> 1);	
+	my_widgetButton->MoveWidget(0, (my_height - my_widgetButton->my_height) >> 1);
 }

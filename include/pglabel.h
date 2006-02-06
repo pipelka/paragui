@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pglabel.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.11 $
     Status:           $State: Exp $
 */
 
@@ -49,11 +49,11 @@ public:
 
 	// Text alignment
 	typedef enum {
-		LEFT,
-		CENTER,
-		RIGHT
+	    LEFT,
+	    CENTER,
+	    RIGHT
 	} TextAlign;
-	
+
 	/** Only constructor
 	@param parent			Parent widget.
 	@param r				Rectangle to draw in, relative to parent.
@@ -81,7 +81,7 @@ public:
 	SDL_Surface* SetIcon(SDL_Surface* icon);
 
 	SDL_Surface* GetIcon();
-	
+
 	/**
 	Set the text indentation
 	@param	indent		number of pixels for text indentation

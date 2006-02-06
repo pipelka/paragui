@@ -38,14 +38,14 @@ void PG_MenuBar::Add(const std::string& text, PG_PopupMenu* menu, Uint16 indent,
 		GetTextSize(width, height, text);
 		width += 6;
 	}
-	
+
 	last = new MenuBarItem;
 
 	last->button = new PG_Button(
-				this,
-				PG_Rect(xpos, my_btnOffsetY, width, my_height - my_btnOffsetY*2),
-				text, -1,
-				my_style);
+	                   this,
+	                   PG_Rect(xpos, my_btnOffsetY, width, my_height - my_btnOffsetY*2),
+	                   text, -1,
+	                   my_style);
 
 	last->button->SetBehaviour( PG_Button::SIGNALONCLICK );
 	last->button->SetFontSize(GetFontSize());
@@ -59,8 +59,7 @@ void PG_MenuBar::Add(const std::string& text, PG_PopupMenu* menu, Uint16 indent,
 	ItemList.push_back(last);
 }
 
-bool PG_MenuBar::leaveButton( PG_Pointer last )
-{
+bool PG_MenuBar::leaveButton( PG_Pointer last ) {
 	MenuBarItem* item = static_cast<MenuBarItem*>(last);
 	if( my_active ) {
 		if ( my_active->IsMouseInside() ) {
@@ -69,12 +68,11 @@ bool PG_MenuBar::leaveButton( PG_Pointer last )
 			my_active->Hide();
 			my_active = NULL;
 		}
-	}      
+	}
 	return true;
 }
 
-bool PG_MenuBar::enterButton( PG_Pointer last )
-{
+bool PG_MenuBar::enterButton( PG_Pointer last ) {
 	MenuBarItem* item = static_cast<MenuBarItem*>(last);
 	int x, y;
 	if ( PG_Application::GetEventSupplier()->GetMouseState(x,y) & SDL_BUTTON_LEFT ) {

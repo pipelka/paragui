@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/12 08:03:10 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.10 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.11 $
     Status:           $State: Exp $
 */
 
@@ -102,7 +102,8 @@ bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 		return false;
 	}
 
-	while(SDL_PeepEvents(&e, 1, SDL_GETEVENT, SDL_MOUSEMOTIONMASK) > 0);
+	while(SDL_PeepEvents(&e, 1, SDL_GETEVENT, SDL_MOUSEMOTIONMASK) > 0)
+		;
 
 	bool rc = false;
 
@@ -117,7 +118,8 @@ bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 			break;
 
 		case SDL_KEYUP:
-			rc = eventKeyUp(&event->key) || sigKeyUp(this, &event->key);;
+			rc = eventKeyUp(&event->key) || sigKeyUp(this, &event->key);
+			;
 			break;
 
 		case SDL_MOUSEMOTION:
@@ -257,14 +259,14 @@ void PG_MessageObject::ReleaseInputFocus() {
 
 /*SDL_Event PG_MessageObject::WaitEvent(Uint32 delay) {
 	static SDL_Event event;
-
+ 
 	while(SDL_PollEvent(&event) == 0) {
 		//		eventIdle();
 		if(delay > 0) {
 			SDL_Delay(delay);
 		}
 	}
-
+ 
 	return event;
 }*/
 
@@ -273,15 +275,15 @@ void PG_MessageObject::ReleaseInputFocus() {
 
 /*bool PG_MessageObject::RemoveObject(PG_MessageObject* obj) {
 	vector<PG_MessageObject*>::iterator list = objectList.begin();
-
+ 
 	// search the object
 	list = find(objectList.begin(), objectList.end(), obj);
-
+ 
 	// check if object was found
 	if(list == objectList.end()) {
 		return false;
 	}
-
+ 
 	// mark object for removal
 	*list = NULL;
 	

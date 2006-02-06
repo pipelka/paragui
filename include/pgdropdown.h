@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdropdown.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.18 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.19 $
     Status:           $State: Exp $
 */
 
@@ -58,10 +58,12 @@ public:
 	/**
 	Signal type declaration
 	**/
-	template<class datatype = PG_Pointer> class SignalSelectItem : public PG_Signal1<PG_ListBoxBaseItem*, datatype> {};
+	template<class datatype = PG_Pointer>
+class SignalSelectItem : public PG_Signal1<PG_ListBoxBaseItem*, datatype> {}
+	;
 
 	enum {
-		IDDROPDOWN_BOX = PG_WIDGETID_INTERNAL + 11
+	    IDDROPDOWN_BOX = PG_WIDGETID_INTERNAL + 11
 	};
 
 	/**
@@ -137,8 +139,8 @@ public:
 	Select the first item
 	*/
 	void SelectFirstItem();
-	
-	
+
+
 	/**
 	Returns the index of the last selected item.
 	*/
@@ -176,7 +178,7 @@ public:
 	void AddChild(PG_Widget* child);
 
 	SignalSelectItem<> sigSelectItem;
-	
+
 	PG_LineEdit::SignalEditBegin<> sigEditBegin;
 	PG_LineEdit::SignalEditEnd<> sigEditEnd;
 	PG_LineEdit::SignalEditReturn<> sigEditReturn;

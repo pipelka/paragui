@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 10:31:13 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.22 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.23 $
     Status:           $State: Exp $
 */
 
@@ -32,9 +32,8 @@
 #include "pglistboxitem.h"
 
 PG_DropDown::PG_DropDown(PG_Widget* parent, const PG_Rect& r, int id, const std::string& style) : PG_Widget(parent, r),
-// needed for AddChild() evaluation - H. C.
-my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
-{
+		// needed for AddChild() evaluation - H. C.
+my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL) {
 	PG_Rect rect(0, 0, r.my_width - r.my_height, r.my_height);
 
 	SetID(id);
@@ -62,11 +61,10 @@ my_EditBox(NULL), my_DropButton(NULL), my_DropList(NULL)
 }
 
 
-bool PG_DropDown::onDropListDeletion( const PG_MessageObject* dropList )
-{
-	if ( dropList == my_DropList ) 
-		my_DropList = NULL;        
-	return true;                
+bool PG_DropDown::onDropListDeletion( const PG_MessageObject* dropList ) {
+	if ( dropList == my_DropList )
+		my_DropList = NULL;
+	return true;
 }
 
 
@@ -82,9 +80,8 @@ void PG_DropDown::LoadThemeStyle(const std::string& style) {
 
 void PG_DropDown::AddChild(PG_Widget* child) {
 	if (my_EditBox == NULL || my_DropButton == NULL || my_DropList == NULL) {
-		PG_Widget::AddChild(child);	
-	}
-	else {
+		PG_Widget::AddChild(child);
+	} else {
 		my_DropList->AddChild(child);
 		//my_DropList->SizeWidget(my_width, my_DropList->GetListHeight() + my_DropList->GetBorderSize()*2);
 	}
@@ -94,13 +91,13 @@ void PG_DropDown::AddChild(PG_Widget* child) {
 void PG_DropDown::AddItem(const std::string& text, void* userdata, Uint16 height) {
 	Uint16 h = height;
 	static PG_String ytext = "A";
-	
+
 	if(height == 0) {
-	    PG_FontEngine::GetTextSize(ytext, GetFont(), NULL, NULL, NULL, NULL, &h);
-	    h += 2;
+		PG_FontEngine::GetTextSize(ytext, GetFont(), NULL, NULL, NULL, NULL, &h);
+		h += 2;
 	}
-	
-	new PG_ListBoxItem(this, h, text, NULL, userdata);	
+
+	new PG_ListBoxItem(this, h, text, NULL, userdata);
 	//my_DropList->SizeWidget(my_width, my_DropList->GetListHeight() + my_DropList->GetBorderSize()*2);
 }
 
@@ -208,11 +205,11 @@ void PG_DropDown::SelectPrevItem() {
 
 void PG_DropDown::SelectItem(const int n) {
 	int i;
-	
+
 	my_DropList->SelectFirstItem();
-	
+
 	for (i=0; i < n; i++)
-	  my_DropList->SelectNextItem();
+		my_DropList->SelectNextItem();
 }
 
 int PG_DropDown::GetSelectedItemIndex() {

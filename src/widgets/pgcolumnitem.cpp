@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcolumnitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
     Status:           $State: Exp $
 */
 
@@ -32,7 +32,7 @@ PG_ColumnItem::PG_ColumnItem(PG_Widget* parent, Uint32 columns, Uint16 height, v
 	SetUserData(userdata);
 	my_columncount = columns;
 	static PG_String YEmpty;
-	
+
 	my_columnwidth.reserve(columns);
 	my_columntext.reserve(columns);
 

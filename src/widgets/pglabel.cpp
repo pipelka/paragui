@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/30 17:48:57 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglabel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
     Status:           $State: Exp $
 */
 
@@ -35,7 +35,7 @@
 #include "propstrings_priv.h"
 
 PG_Label::PG_Label(PG_Widget* parent, const PG_Rect& r, const std::string& text, const std::string& style) :
-PG_Widget(parent, r),
+		PG_Widget(parent, r),
 my_indent(0) {
 
 	my_alignment = LEFT;
@@ -130,7 +130,7 @@ void PG_Label::SetAlignment(TextAlign a) {
 
 SDL_Surface* PG_Label::SetIcon(SDL_Surface* icon) {
 
-	if((icon != my_srfIcon)  && my_freeicon){
+	if((icon != my_srfIcon)  && my_freeicon) {
 		PG_Application::UnloadSurface(my_srfIcon);
 	}
 
@@ -142,7 +142,7 @@ SDL_Surface* PG_Label::SetIcon(SDL_Surface* icon) {
 }
 
 SDL_Surface* PG_Label::SetIcon(const std::string& filename) {
-	if(my_freeicon){
+	if(my_freeicon) {
 		PG_Application::UnloadSurface(my_srfIcon);
 	}
 
@@ -173,24 +173,22 @@ void PG_Label::SetSizeByText(int Width, int Height, const std::string& Text) {
 
 	Uint16 w,h;
 	int baselineY;
-	
+
 	if(Text.empty()) {
 		if (!PG_FontEngine::GetTextSize(my_text, GetFont(), &w, &h, &baselineY)) {
 			return;
 		}
-	}
-	else {
+	} else {
 		PG_String ytext = Text;
 		if (!PG_FontEngine::GetTextSize(ytext, GetFont(), &w, &h, &baselineY)) {
 			return;
 		}
 	}
-	
+
 
 	if (GetIcon()->w > w) {
 		my_width = GetIcon()->w + my_indent + Width;
-	}
-	else {
+	} else {
 		my_width = w + GetIcon()->w + my_indent + Width;
 	}
 	my_height = PG_MAX(GetIcon()->h, h + baselineY) + Height + baselineY;

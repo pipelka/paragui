@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:14 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgradiobutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
     Status:           $State: Exp $
 */
 
@@ -59,7 +59,9 @@ public:
 	/**
 	Signal type declaration
 	**/
-	template<class datatype = PG_Pointer> class SignalButtonClick : public PG_Signal2<PG_RadioButton*, datatype> {};
+	template<class datatype = PG_Pointer>
+class SignalButtonClick : public PG_Signal2<PG_RadioButton*, datatype> {}
+	;
 
 	/** */
 	PG_RadioButton(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& text = PG_NULLSTR, PG_RadioButton* firstOfGroup = NULL, int id = -1, const std::string& style="RadioButton");

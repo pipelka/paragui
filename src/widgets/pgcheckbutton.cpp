@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/11/17 21:34:21 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcheckbutton.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.2.5 $
     Status:           $State: Exp $
 */
 
@@ -30,8 +30,7 @@
 #include "pgbutton.h"
 
 PG_CheckButton::PG_CheckButton(PG_Widget* parent, const PG_Rect& r, const std::string& text, int id, const std::string& style)
-        : PG_RadioButton(parent, r, text, NULL, id)
-{
+		: PG_RadioButton(parent, r, text, NULL, id) {
 	LoadThemeStyle(style);
 	my_widgetButton->LoadThemeStyle(style, "CheckKnob");
 

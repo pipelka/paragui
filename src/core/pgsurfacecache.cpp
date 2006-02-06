@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgsurfacecache.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.4.2.4 $
+    CVS/RCS Revision: $Revision: 1.2.4.4.2.5 $
     Status:           $State: Exp $
 */
 
@@ -112,61 +112,61 @@ void PG_SurfaceCache::Cleanup() {
 
 void PG_SurfaceCache::CreateKey(std::string &key, Uint16 w, Uint16 h,
                                 PG_Gradient* gradient, SDL_Surface* background,
-								PG_Draw::BkMode bkmode, Uint8 blend) {
+                                PG_Draw::BkMode bkmode, Uint8 blend) {
 	char tmpkey[256];
 	char colorkey[10];
 	int i=0;
 
 	assert(w != 0 && h != 0);
-	
+
 	sprintf(tmpkey, "%04x%04x%08lx%01i%01i",
-		w, h,
-		reinterpret_cast<unsigned long>(background),
-		bkmode,
-		blend);
-		
+	        w, h,
+	        reinterpret_cast<unsigned long>(background),
+	        bkmode,
+	        blend);
+
 	if(gradient != NULL) {
 		for(i=0; i<4; i++) {
 			sprintf(colorkey, "%02x%02x%02x",
-				gradient->colors[i].r,
-				gradient->colors[i].g,
-				gradient->colors[i].b
-				);
-				
+			        gradient->colors[i].r,
+			        gradient->colors[i].g,
+			        gradient->colors[i].b
+			       );
+
 			strcat(tmpkey, colorkey);
 		}
 	}
 
 	key = tmpkey;
 
-/*	int i=0;
-	// length needed for key is:
-	// 1 byte for gradient/no gradient
-	// 3*4 bytes for gradient
-	// 2*2 bytes for size
-	// 4 bytes for background ptr
-	// 1 byte for bkmode
-	// 1 byte for blend
-	// == 23 bytes
-	char *tmpkey;
-	tmpkey = new char[24];
-	if(gradient) {
-		tmpkey[0] = '\1';
-		for(i=0; i<4; i++) {
-			tmpkey[1+i*3] = gradient->colors[i].r;
-			tmpkey[2+i*3] = gradient->colors[i].g;
-			tmpkey[3+i*3] = gradient->colors[i].b;
+	/*	int i=0;
+		// length needed for key is:
+		// 1 byte for gradient/no gradient
+		// 3*4 bytes for gradient
+		// 2*2 bytes for size
+		// 4 bytes for background ptr
+		// 1 byte for bkmode
+		// 1 byte for blend
+		// == 23 bytes
+		char *tmpkey;
+		tmpkey = new char[24];
+		if(gradient) {
+			tmpkey[0] = '\1';
+			for(i=0; i<4; i++) {
+				tmpkey[1+i*3] = gradient->colors[i].r;
+				tmpkey[2+i*3] = gradient->colors[i].g;
+				tmpkey[3+i*3] = gradient->colors[i].b;
+			}
+		} else {
+			for(i=0; i<13; i++) {
+				tmpkey[i] = '\0';
+			}
 		}
-	} else {
-		for(i=0; i<13; i++) {
-			tmpkey[i] = '\0';
-		}
-	}
-
-	sprintf(tmpkey+13, "%2c%2c%4c%c%c", w, h,
-	        (unsigned int)background,  bkmode, blend);
-
-	key = string(tmpkey, 24);*/
+	 
+		sprintf(tmpkey+13, "%2c%2c%4c%c%c", w, h,
+		        (unsigned int)background,  bkmode, blend);
+	 
+		key = string(tmpkey, 24);*/
 }
 
 pg_surface_cache_t* PG_SurfaceCache::FindByKey(const std::string &key) {

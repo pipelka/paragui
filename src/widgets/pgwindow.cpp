@@ -20,20 +20,20 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/30 07:10:21 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwindow.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.17 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.18 $
     Status:           $State: Exp $
 */
 
 #include "pgwindow.h"
 #include "pgapplication.h"
 #include "pgtheme.h"
-#include "pgbutton.h" 
+#include "pgbutton.h"
 
-PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const std::string& windowtext, WindowFlags flags, const std::string& style, int heightTitlebar) 
-: PG_ThemeWidget(parent, r), my_heightTitlebar(heightTitlebar), my_moveMode(false), 
-	my_showCloseButton((flags & PG_Window::SHOW_CLOSE) != 0), my_showMinimizeButton((flags & PG_Window::SHOW_MINIMIZE) != 0), my_moveable(true) {
+PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const std::string& windowtext, WindowFlags flags, const std::string& style, int heightTitlebar)
+		: PG_ThemeWidget(parent, r), my_heightTitlebar(heightTitlebar), my_moveMode(false),
+my_showCloseButton((flags & PG_Window::SHOW_CLOSE) != 0), my_showMinimizeButton((flags & PG_Window::SHOW_MINIMIZE) != 0), my_moveable(true) {
 
 	my_titlebar = new PG_ThemeWidget(this, PG_Rect(0, 0, my_width, my_heightTitlebar), style);
 	my_titlebar->EnableReceiver(false);
@@ -48,7 +48,7 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const std::string& win
 	my_buttonClose = new PG_Button(my_titlebar);
 	my_buttonClose->SetID(IDWINDOW_CLOSE);
 	my_buttonClose->sigClick.connect(slot(*this, &PG_Window::handleButtonClick));
-	
+
 	my_buttonMinimize = new PG_Button(my_titlebar);
 	my_buttonMinimize->SetID(IDWINDOW_MINIMIZE);
 	my_buttonMinimize->sigClick.connect(slot(*this, &PG_Window::handleButtonClick));
@@ -63,8 +63,7 @@ PG_Window::PG_Window(PG_Widget* parent, const PG_Rect& r, const std::string& win
 	}
 }
 
-PG_Window::~PG_Window() {
-}
+PG_Window::~PG_Window() {}
 
 void PG_Window::SetText(const std::string& text) {
 	my_labelTitle->SetText(text);
@@ -110,7 +109,7 @@ void PG_Window::LoadThemeStyle(const std::string& widgettype) {
 	PG_Color c = my_labelTitle->GetFontColor();
 	t->GetColor(widgettype, "Titlebar", "textcolor", c);
 	SetTitlebarColor(c);
-	
+
 	t->GetProperty(widgettype, "Titlebar", "showclosebutton", my_showCloseButton);
 	my_buttonClose->LoadThemeStyle(widgettype, "CloseButton");
 
@@ -123,7 +122,7 @@ void PG_Window::LoadThemeStyle(const std::string& widgettype) {
 	if(my_showMinimizeButton) {
 		my_buttonMinimize->Show();
 	}
-	
+
 	RecalcPositions();
 }
 
@@ -155,7 +154,7 @@ void PG_Window::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rect& d
 bool PG_Window::eventMouseButtonDown(const SDL_MouseButtonEvent* button) {
 	if (!my_moveable)
 		return false;
-	
+
 	PG_Rect ta(*this);
 	ta.my_width = my_titlebar->w;
 	ta.my_height = my_titlebar->h;
@@ -246,13 +245,13 @@ bool PG_Window::eventMouseMotion(const SDL_MouseMotionEvent* motion) {
 
 bool PG_Window::handleButtonClick(PG_Button* button) {
 	switch(button->GetID()) {
-		// close window
+			// close window
 		case IDWINDOW_CLOSE:
 			Hide();
 			sigClose(this);
 			break;
 
-		// minimize window
+			// minimize window
 		case IDWINDOW_MINIMIZE:
 			Hide();
 			sigMinimize(this);
@@ -276,7 +275,7 @@ PG_Color PG_Window::GetTitlebarColor() {
 void PG_Window::SetIcon(const std::string& filename) {
 	my_labelTitle->SetIcon(filename);
 }
-	
+
 void PG_Window::SetIcon(SDL_Surface* icon) {
 	my_labelTitle->SetIcon(icon);
 }
@@ -289,7 +288,7 @@ void PG_Window::SetTitlebarHeight(Uint8 height) {
 	my_heightTitlebar = height;
 	RecalcPositions();
 }
-	
+
 Uint8 PG_Window::GetTitlebarHeight() {
 	return my_heightTitlebar;
 }

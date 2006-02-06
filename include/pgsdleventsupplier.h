@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/23 17:35:52 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgsdleventsupplier.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -89,7 +89,7 @@ public:
 
 	/**
 	Get the current mouse position.
-	
+
 	@param x current mouse x position
 	@param y current mouse y position
 	@return bitmap of pressed mouse buttons

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/14 19:46:51 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.21 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.22 $
     Status:           $State: Exp $
 */
 
@@ -47,16 +47,16 @@ class PG_ButtonDataInternal;
 	@author Alexander Pipelka
  
 	@short Button that uses themes.
-
+ 
 	@image html pgbutton.png "button screenshot"
-
-
+ 
+ 
 	Several predefined button IDs exist. All of them are associated with
 	default icons used automatically when the given ID is assigned to a
 	button:
-
+ 
 	@image html button_ok_icon.png "PG_Button::OK"
-
+ 
 	@image html button_yes_icon.png "PG_Button::YES"
 	@image html button_no_icon.png "PG_Button::NO"
 	@image html button_apply_icon.png "PG_Button::APPLY"
@@ -129,40 +129,42 @@ public:
 	Standard button IDs
 	*/
 	enum {
-		OK = 0x80000001,
-		YES = 0x80000002,
-		NO = 0x80000003,
-		APPLY = 0x80000004,
-		CANCEL = 0x80000005,
-		CLOSE = 0x80000006,
-		HELP = 0x80000007
+	    OK = 0x80000001,
+	    YES = 0x80000002,
+	    NO = 0x80000003,
+	    APPLY = 0x80000004,
+	    CANCEL = 0x80000005,
+	    CLOSE = 0x80000006,
+	    HELP = 0x80000007
 	};
 
 	/**
 	Button states
 	**/
 	typedef enum {
-		PRESSED,
-		UNPRESSED,
-		HIGHLITED
+	    PRESSED,
+	    UNPRESSED,
+	    HIGHLITED
 	} STATE;
-	
+
 	/**
 	Behaviour of the button. The default button captures the messages and fires on mouse button
 	release. This can be changed with these flags.
 	*/
 	typedef enum {
-		MSGCAPTURE      = 0x00000001,
-		SIGNALONCLICK   = 0x00000002,
-		SIGNALONRELEASE = 0x00000004
-	} BEHAVIOUR;	
-			       
+	    MSGCAPTURE      = 0x00000001,
+	    SIGNALONCLICK   = 0x00000002,
+	    SIGNALONRELEASE = 0x00000004
+	} BEHAVIOUR;
+
 
 	/**
 	Signal type declaration
 	**/
-	template<class datatype = PG_Pointer> class SignalButtonClick : public PG_Signal1<PG_Button*, datatype> {};
-	
+	template<class datatype = PG_Pointer>
+class SignalButtonClick : public PG_Signal1<PG_Button*, datatype> {}
+	;
+
 	/**
 	Constructor for the PG_Button class
 	@param parent	pointer to the parent widget or NULL
@@ -244,7 +246,7 @@ public:
 	@return a pointer to an SDL_Surface for the given icon
 	*/
 	SDL_Surface* GetIcon(STATE num);
-	
+
 	/**
 	Set the distance between the left border of the button and the icon
 	@param indent spacing between widget border and icon
@@ -271,19 +273,19 @@ public:
 	*/
 	void SetToggle(bool bToggle);
 
-	/** 
+	/**
 	If the button is a toggle button you can modify the status of the button
 	with this function
 	*/
 	void SetPressed(bool pressed);
 
-	/** 
+	/**
 	Set the transparency of the button
 	@param t the transparency you want to assign
 	@param bRecursive if set to true, apply the transparency to all child widgets
 	*/
 	void SetTransparency(Uint8 t, bool bRecursive = false);
-	
+
 	/**
 	Set the transparency for the single button states
 	@param norm the transparency of the normal (unpressed) state
@@ -298,7 +300,7 @@ public:
 	 */
 	void SetShift(int pixelshift);
 
-	/**  
+	/**
 	Determine whether a given button is pressed. This can either mean
 	that the user is clicking the button in the case of a push button, 
 	or that the button is toggled in the case of a toggle button.
@@ -311,7 +313,7 @@ public:
 	@param blend blend-level
 	@param mode one of BTN_STATE_NORMAL, BTN_STATE_PRESSED, BTN_STATE_HIGH
 	This function sets the blend level of gradient and background image.
-	
+
 	If the blend-level is 0 only the background image is visible.
 	At a level of 255 only the gradient is visible.
 	*/
@@ -340,7 +342,7 @@ public:
 
 
 	SignalButtonClick<> sigClick;
-	
+
 	static SignalButtonClick<> sigGlobalClick;
 
 protected:

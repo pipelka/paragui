@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/27 09:34:55 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgscrollbar.h,v $
-    CVS/RCS Revision: $Revision: 1.3.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.2.12 $
     Status:           $State: Exp $
 */
 
@@ -87,24 +87,28 @@ public:
 
 	//! ScrollbarType
 	typedef enum {
-		VERTICAL,	//!< vertical scrollbar
-		HORIZONTAL	//!< horizontal scrollbar
+	    VERTICAL,	//!< vertical scrollbar
+	    HORIZONTAL	//!< horizontal scrollbar
 	} ScrollDirection;
 
 	//! Widget ID's
 	enum {
-		IDSCROLLBAR_UP = PG_WIDGETID_INTERNAL + 1,		//!<ID Scrollbar Button "up"
-		IDSCROLLBAR_DOWN = PG_WIDGETID_INTERNAL + 2,	//!< ID Scrollbar Button "down"
-		IDSCROLLBAR_LEFT = PG_WIDGETID_INTERNAL + 3,		//!< ID Scrollbar Button "left"
-		IDSCROLLBAR_RIGHT = PG_WIDGETID_INTERNAL + 4,	//!< ID Scrollbar Button "right"
-		IDSCROLLBAR_DRAG = PG_WIDGETID_INTERNAL + 5		//!< ID Scrollbar Button "drag"
+	    IDSCROLLBAR_UP = PG_WIDGETID_INTERNAL + 1,		//!<ID Scrollbar Button "up"
+	    IDSCROLLBAR_DOWN = PG_WIDGETID_INTERNAL + 2,	//!< ID Scrollbar Button "down"
+	    IDSCROLLBAR_LEFT = PG_WIDGETID_INTERNAL + 3,		//!< ID Scrollbar Button "left"
+	    IDSCROLLBAR_RIGHT = PG_WIDGETID_INTERNAL + 4,	//!< ID Scrollbar Button "right"
+	    IDSCROLLBAR_DRAG = PG_WIDGETID_INTERNAL + 5		//!< ID Scrollbar Button "drag"
 	};
 
 	/**
 	Signal type declaration
 	**/
-	template<class datatype> class SignalScrollPos : public PG_Signal2<PG_ScrollBar*, datatype> {};
-	template<class datatype> class SignalScrollTrack : public PG_Signal2<PG_ScrollBar*, datatype> {};
+	template<class datatype>
+class SignalScrollPos : public PG_Signal2<PG_ScrollBar*, datatype> {}
+	;
+	template<class datatype>
+class SignalScrollTrack : public PG_Signal2<PG_ScrollBar*, datatype> {}
+	;
 
 	/**  */
 	PG_ScrollBar(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, ScrollDirection direction = VERTICAL, int id = -1, const std::string& style="Scrollbar");
@@ -137,7 +141,7 @@ public:
 
 	SignalScrollPos<long> sigScrollPos;
 	SignalScrollTrack<long> sigScrollTrack;
-	
+
 protected:
 
 	/**  */
@@ -174,7 +178,7 @@ protected:
 	     \li \c position[1] is the position of the second button ( right / lower )
 	     \li \c position[2] is the position of the sliding area
 	     \li \c position[3] is the position of the slider
-	*/     
+	*/
 	PG_Rect position[4];
 
 	ScrollDirection sb_direction;
@@ -184,7 +188,7 @@ protected:
 	friend class ScrollButton;
 
 private:
-	
+
 	PG_ScrollBar(const PG_ScrollBar&);
 
 	PG_ScrollBar& operator=(PG_ScrollBar&);

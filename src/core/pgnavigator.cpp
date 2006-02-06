@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/03/13 13:45:45 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgnavigator.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.6.3.2.2 $
+    CVS/RCS Revision: $Revision: 1.2.6.3.2.3 $
     Status:           $State: Exp $
 */
 
@@ -123,9 +123,9 @@ PG_Widget* PG_Navigator::GotoPrev() {
 }
 
 PG_Widget* PG_Navigator::FindWidget(PG_Widget* from, PG_Point ref, bool absx, bool absy, int xmode, int ymode) {
-    if (!from)
-        return NULL;
-    
+	if (!from)
+		return NULL;
+
 	int i_x = 0;
 	int i_y = 0;
 	int my_x = ref.x;

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfile.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.6 $
     Status:           $State: Exp $
 */
 
@@ -78,19 +78,19 @@ public:
 	int write(void *buffer, unsigned int bytestowrite);
 
 	//! write bytes to the stream
-	/*! 
+	/*!
 	\param buffer buffer to write
 	\return number of bytes written
 	*/
 	int write(std::string &buffer);
-	
+
 	//! write bytes to the stream
-	/*! 
+	/*!
 	\param buffer buffer to write
 	\return number of bytes written
 	*/
 	int write(const char *buffer);
-	
+
 	/**
 	read records from the stream
 	@param buffer	buffer to fill
@@ -99,7 +99,7 @@ public:
 	@return number of records read
 	*/
 	int read(void *buffer, unsigned int objSize, unsigned int objCount);
-	
+
 	/**
 	write records to the stream
 	@param buffer	buffer to write
@@ -114,20 +114,20 @@ public:
 	@return true if we touched the end of the file.
 	*/
 	bool eof();
-	
+
 	/**
 	get the current position in the file stream
 	@return current file stream position
 	*/
 	int tell();
-	
+
 	/**
 	set the file pointer to a given position
 	@param pos position to set
 	@return true on success
 	*/
 	bool seek(int pos);
-	
+
 	/**
 	return the length of the file (in bytes)
 	@return length of the file
@@ -138,10 +138,10 @@ public:
 	get a single character from the file
 	*/
 	char getc();
-	
+
 	/**
 	read a line from the file.
-	
+
 	This function reads a CR/LF terminated line of text from the file.
 	Any trailing carriage return and linefeed characters will be skipped.
 	*/
@@ -154,7 +154,7 @@ public:
 	characters will be added.
 	*/
 	void putline(const std::string& line);
-	
+
 private:
 
 	void* file;

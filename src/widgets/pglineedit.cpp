@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/08 21:28:48 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglineedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.16 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.17 $
     Status:           $State: Exp $
 */
 
@@ -46,8 +46,7 @@ PG_LineEdit::PG_LineEdit(PG_Widget* parent, const PG_Rect& r, const std::string&
 	LoadThemeStyle(style);
 }
 
-PG_LineEdit::~PG_LineEdit() {
-}
+PG_LineEdit::~PG_LineEdit() {}
 
 void PG_LineEdit::eventBlit(SDL_Surface* surface, const PG_Rect& src, const PG_Rect& dst) {
 	PG_ThemeWidget::eventBlit(surface, src, dst);
@@ -184,11 +183,11 @@ bool PG_LineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 	PG_Application::TranslateNumpadKeys(&key_copy);
 	// from now, we use key_copy which was copied or translated from key
 
-    //
-    // Maybe it would be a good idea to support the windoze CUI keyboard
-    // bindings as well?
-    //  /grendel, Nov 06
-    //
+	//
+	// Maybe it would be a good idea to support the windoze CUI keyboard
+	// bindings as well?
+	//  /grendel, Nov 06
+	//
 	if(key_copy.keysym.mod & KMOD_CTRL) {
 		// Handle std emacs bindings
 		switch(key_copy.keysym.sym) {
@@ -260,7 +259,7 @@ bool PG_LineEdit::eventKeyDown(const SDL_KeyboardEvent* key) {
 				return true;
 
 			default:
-				goto handleModKeys;				
+				goto handleModKeys;
 		}
 	}
 
@@ -402,14 +401,14 @@ bool PG_LineEdit::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 
 void PG_LineEdit::InsertChar(const PG_Char& c) {
 	if (my_cursorPosition < my_maximumLength) {
-/*#ifdef ENABLE_UNICODE
-		my_text.insert(my_cursorPosition, *c);
-#else
-		char buffer[2];
-		buffer[0] = *c;
-		buffer[1] = '\0';
-		my_text.insert(my_cursorPosition, buffer);
-#endif*/
+		/*#ifdef ENABLE_UNICODE
+				my_text.insert(my_cursorPosition, *c);
+		#else
+				char buffer[2];
+				buffer[0] = *c;
+				buffer[1] = '\0';
+				my_text.insert(my_cursorPosition, buffer);
+		#endif*/
 		my_text.insert(my_cursorPosition, 1, c);
 		SetCursorPos(++my_cursorPosition);
 	}
@@ -492,7 +491,7 @@ void PG_LineEdit::LoadThemeStyle(const std::string& widgettype) {
 	if(widgettype != "LineEdit") {
 		LoadThemeStyle("LineEdit");
 	}
-	
+
 	// load custom values
 	PG_ThemeWidget::LoadThemeStyle(widgettype, "LineEdit");
 	LoadThemeStyle(widgettype, "LineEdit");

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/10/12 10:13:37 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/src/themes/themeloader.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.11 $
     Status:           $State: Exp $
 */
 
@@ -212,8 +212,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 		for(i=0; atts[i]; i += 2) {
 			if(tcscmp(T(atts[i]), T("name")) == 0) {
 				font->name = atts[i+1];
-			}
-			else if(tcscmp(T(atts[i]), T("value")) == 0) {
+			} else if(tcscmp(T(atts[i]), T("value")) == 0) {
 				font->name = atts[i+1];
 				font->value = atts[i+1];
 			} else if(tcscmp(T(atts[i]), T("size")) == 0) {
@@ -268,7 +267,7 @@ void parseObjectProps(PARSE_INFO* info, const XML_Char* prop, const XML_Char** a
 			if(tcscmp(T(atts[i]), T("name")) == 0) {
 				property->name = atts[i+1];
 			} else if(tcscmp(T(atts[i]), T("value")) == 0) {
-				unsigned int value;                        
+				unsigned int value;
 				sscanf(atts[i+1], "0x%08x", &value);
 				property->value = value;
 			} else {
@@ -411,7 +410,7 @@ PG_Theme* PG_Theme::Load(const std::string& xmltheme) {
 	if(PG_FileArchive::Exists(filename)) {
 		const char* path = PG_FileArchive::GetRealDir(filename);
 		char sep = PG_FileArchive::GetDirSeparator()[0];
-		
+
 		std::string fullpath = (std::string)path;
 		if(fullpath[fullpath.size()-1] != sep) {
 			fullpath += sep;

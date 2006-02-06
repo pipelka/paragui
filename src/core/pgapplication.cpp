@@ -15,14 +15,14 @@
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+ 
     Alexander Pipelka
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/19 16:30:22 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.29 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.30 $
     Status:           $State: Exp $
 */
 
@@ -86,8 +86,8 @@ void PARAGUI_ShutDownCode() {
 }
 
 
-PG_Application::PG_Application() 
-: my_quitEventLoop(false), emergencyQuit(false), enableAppIdleCalls(false) {
+PG_Application::PG_Application()
+		: my_quitEventLoop(false), emergencyQuit(false), enableAppIdleCalls(false) {
 
 	// set UTF8 encoding if UNICODE support is enabled
 	// we use the "C" locale because it's hard to get the current locale setting
@@ -104,12 +104,13 @@ PG_Application::PG_Application()
 
 	atexit(PARAGUI_ShutDownCode);
 
-/* We need to kludge a bit for keyboards work under windows */
-/* we'll call SDL_RegisterApp right before SDL_Init()       */
-/* Pete Shinners, Feb 1, 2001                               */
+	/* We need to kludge a bit for keyboards work under windows */
+	/* we'll call SDL_RegisterApp right before SDL_Init()       */
+	/* Pete Shinners, Feb 1, 2001                               */
 
 #ifdef WIN32
 #ifndef __GNUC__
+
 	SDL_RegisterApp("ParaGUI", 0, GetModuleHandle(NULL));
 #endif
 #endif
@@ -131,7 +132,7 @@ PG_Application::PG_Application()
 	my_backmode = PG_Draw::TILE;
 	my_defaultEventSupplier = new PG_SDLEventSupplier;
 	my_eventSupplier = my_defaultEventSupplier;
-	
+
 	// add our base dir to the searchpath
 	AddArchive(GetBaseDir());
 }
@@ -139,13 +140,13 @@ PG_Application::PG_Application()
 PG_Application::~PG_Application() {
 	// shutdown log (before deleting all the widgets)
 	PG_LogConsole::Done();
-	
+
 	// remove remaining widgets
 	Shutdown();
-	
+
 	pGlobalApp = NULL;
-        delete my_defaultEventSupplier;
-        my_defaultEventSupplier = NULL;
+	delete my_defaultEventSupplier;
+	my_defaultEventSupplier = NULL;
 
 	// remove all archives from PG_FileArchive
 	PG_FileArchive::RemoveAllArchives();
@@ -194,8 +195,7 @@ void PG_Application::EnableAppIdleCalls(bool enable) {
 	enableAppIdleCalls = enable;
 }
 
-bool PG_Application::GetAppIdleCallsEnabled()
-{
+bool PG_Application::GetAppIdleCallsEnabled() {
 	return enableAppIdleCalls;
 }
 
@@ -206,7 +206,7 @@ void PG_Application::RunEventLoop() {
 	my_quitEventLoop = false;
 
 	FlushEventQueue();
-	
+
 	while(!my_quitEventLoop) {
 		ClearOldMousePosition();
 
@@ -229,16 +229,14 @@ void PG_Application::RunEventLoop() {
 }
 
 
-void PG_Application::SetEventSupplier( PG_EventSupplier* eventSupplier )
-{
+void PG_Application::SetEventSupplier( PG_EventSupplier* eventSupplier ) {
 	if ( eventSupplier )
 		my_eventSupplier = eventSupplier;
-	else 
+	else
 		my_eventSupplier = my_defaultEventSupplier;
 }
 
-PG_EventSupplier* PG_Application::GetEventSupplier()
-{
+PG_EventSupplier* PG_Application::GetEventSupplier() {
 	return my_eventSupplier;
 }
 
@@ -253,7 +251,7 @@ void PG_Application::ClearOldMousePosition() {
 	}
 
 	SDL_BlitSurface(my_mouse_backingstore, NULL, GetScreen(), &my_mouse_position);
-    
+
 	return;
 }
 
@@ -279,16 +277,16 @@ void PG_Application::DrawCursor(bool update) {
 		vertical.my_xpos = my_mouse_position.my_xpos;
 	} else {
 		vertical.my_xpos = my_mouse_position.my_xpos + my_mouse_pointer->w + dx;
-	}	
+	}
 
 	// calculate horizontal update rect
-	PG_Rect horizontal(my_mouse_position.my_xpos, 0, my_mouse_pointer->w + abs(dx), abs(dy));	
+	PG_Rect horizontal(my_mouse_position.my_xpos, 0, my_mouse_pointer->w + abs(dx), abs(dy));
 	if(dy >= 0) {
 		horizontal.my_ypos = my_mouse_position.my_ypos;
 	} else {
 		horizontal.my_ypos = my_mouse_position.my_ypos + my_mouse_pointer->h + dy;
 	}
-	
+
 	// clipping
 	if(vertical.my_xpos + vertical.my_width > screen->w) {
 		if(vertical.my_xpos >= screen->w) {
@@ -314,19 +312,19 @@ void PG_Application::DrawCursor(bool update) {
 			horizontal.my_ypos = screen->h - 1;
 		}
 		horizontal.my_height = screen->h - horizontal.my_ypos;
-	}		
+	}
 
 	my_mouse_position.my_xpos = x;
 	my_mouse_position.my_ypos = y;
 	my_mouse_position.my_width = my_mouse_pointer->w;
 	my_mouse_position.my_height = my_mouse_pointer->h;
-	
+
 	// backup current cursor area
 	if(my_mouse_backingstore == NULL) {
 		my_mouse_backingstore = PG_Draw::CreateRGBSurface(my_mouse_pointer->w, my_mouse_pointer->h);
 	}
 	SDL_BlitSurface(GetScreen(), &my_mouse_position, my_mouse_backingstore, NULL);
-	
+
 	// draw cursor
 	SDL_BlitSurface(my_mouse_pointer, 0, screen, &my_mouse_position);
 
@@ -343,11 +341,11 @@ void PG_Application::Quit() {
 /**  */
 bool PG_Application::eventKeyDown(const SDL_KeyboardEvent* key) {
 	SDLKey ckey = PG_LogConsole::GetConsoleKey();
-	
+
 	if(ckey == 0) {
 		return false;
 	}
-	
+
 	if (key->keysym.sym == ckey) {
 		PG_LogConsole::Update();
 		PG_LogConsole::Toggle();
@@ -368,9 +366,9 @@ bool PG_Application::eventKeyUp(const SDL_KeyboardEvent* key) {
 }
 
 bool PG_Application::eventResize(const SDL_ResizeEvent* event) {
-        if (!event)
-                return false;
-        
+	if (!event)
+		return false;
+
 	screen = SDL_SetVideoMode(
 	             event->w, event->h,
 	             screen->format->BitsPerPixel,
@@ -437,9 +435,9 @@ PG_Application::CursorMode PG_Application::ShowCursor(CursorMode mode) {
 
 /**  */
 SDL_Surface* PG_Application::SetScreen(SDL_Surface* surf) {
-        if (!surf)
-                return PG_Application::screen;
-        
+	if (!surf)
+		return PG_Application::screen;
+
 	PG_Application::screen = surf;
 
 	//glMode = (surf->flags & SDL_OPENGLBLIT);
@@ -458,8 +456,8 @@ bool PG_Application::SetBackground(const std::string& filename, PG_Draw::BkMode 
 	if (filename.empty()) {
 		return false;
 	}
-        
-	if ( !SetBackground ( LoadSurface(filename), mode, true )) 
+
+	if ( !SetBackground ( LoadSurface(filename), mode, true ))
 		PG_LogWRN("Failed to load '%s'",(char*)filename.c_str());
 
 	return false;
@@ -485,7 +483,7 @@ bool PG_Application::SetBackground(SDL_Surface* surface, PG_Draw::BkMode mode, b
 
 	RedrawBackground(PG_Rect(0,0,screen->w,screen->h));
 	PG_Widget::GetWidgetList()->Blit();
-	if(!GetBulkMode() ) 
+	if(!GetBulkMode() )
 		SDL_UpdateRect(screen,0,0,GetScreen()->w,GetScreen()->h);
 	return true;
 }
@@ -503,11 +501,11 @@ void PG_Application::RedrawBackground(const PG_Rect& rect) {
 		return;
 	}
 	if(my_backmode == PG_Draw::STRETCH &&
-	   (my_background->w != screen->w ||
-	    my_background->h != screen->h)) {
-		if(my_scaled_background && 
-		   (my_scaled_background->w != screen->w ||
-		    my_scaled_background->h != screen->h)) {
+	        (my_background->w != screen->w ||
+	         my_background->h != screen->h)) {
+		if(my_scaled_background &&
+		        (my_scaled_background->w != screen->w ||
+		         my_scaled_background->h != screen->h)) {
 			UnloadSurface(my_scaled_background); // size mismatch
 			my_scaled_background = NULL;
 		}
@@ -639,7 +637,7 @@ PG_Theme* PG_Application::LoadTheme(const std::string& xmltheme, bool asDefault,
 		PG_LogDBG("'"PARAGUI_THEMEDIR"' added to searchpath");
 	}
 
-#else	
+#else
 
 	if(AddArchive("./")) {
 		PG_LogDBG("'./' added to searchpath");
@@ -694,7 +692,7 @@ PG_Theme* PG_Application::LoadTheme(const std::string& xmltheme, bool asDefault,
 			// Destroyed scaled background if present
 			SDL_FreeSurface(my_scaled_background);
 			my_scaled_background = 0;
-		}		
+		}
 	} else {
 
 		PG_LogWRN("Failed to load !");
@@ -734,7 +732,7 @@ void PG_Application::SetBulkMode(bool bulk) {
 
 void PG_Application::Shutdown() {
 	DeleteBackground();
-	
+
 	// destroy still existing objects
 	PG_Widget* list = PG_Widget::GetWidgetList()->first();
 
@@ -755,7 +753,7 @@ void PG_Application::Shutdown() {
 	delete DefaultFont;
 	DefaultFont = NULL;
 
-	// remove cursor backing store	
+	// remove cursor backing store
 	UnloadSurface(my_mouse_backingstore);
 	my_mouse_backingstore = NULL;
 }
@@ -868,7 +866,7 @@ static PG_Widget *FindInChildObjects(PG_RectList *RectList, const std::string& N
 	if(Name.empty()) {
 		return NULL;
 	}
-    
+
 	PG_Widget* list = RectList->first();
 
 	while(list != NULL) {
@@ -900,8 +898,8 @@ static inline PG_Widget *FindInChildObjects(PG_RectList *RectList, int id) {
 	}
 
 	if (id < 0)
-            return 0;
-    
+		return 0;
+
 	PG_Widget* list = RectList->first();
 
 	while(list != NULL) {
@@ -914,7 +912,7 @@ static inline PG_Widget *FindInChildObjects(PG_RectList *RectList, int id) {
 		if(result != NULL) {
 			return result;
 		}
-        
+
 		retWidget = FindInChildObjects(list->GetChildList(), id);
 		if (retWidget != NULL) {
 			return retWidget;
@@ -927,11 +925,11 @@ static inline PG_Widget *FindInChildObjects(PG_RectList *RectList, int id) {
 }
 
 PG_Widget* PG_Application::GetWidgetByName(const std::string& Name) {
-        return (FindInChildObjects(PG_Widget::GetWidgetList(), Name));
+	return (FindInChildObjects(PG_Widget::GetWidgetList(), Name));
 }
 
 PG_Widget *PG_Application::GetWidgetById(int id) {
-        return (FindInChildObjects(PG_Widget::GetWidgetList(), id));
+	return (FindInChildObjects(PG_Widget::GetWidgetList(), id));
 }
 
 void PG_Application::SetFontColor(const PG_Color& Color) {
@@ -987,13 +985,13 @@ void PG_Application::EnableBackground(bool enable) {
 }
 
 void PG_Application::DeleteBackground() {
- 	enableBackground = false;
+	enableBackground = false;
 
- 	if(my_scaled_background) {
- 		// Destroyed scaled background if present
- 		SDL_FreeSurface(my_scaled_background);
- 		my_scaled_background = 0;
- 	}
+	if(my_scaled_background) {
+		// Destroyed scaled background if present
+		SDL_FreeSurface(my_scaled_background);
+		my_scaled_background = 0;
+	}
 	if(my_freeBackground && my_background) {
 		UnloadSurface(my_background);
 		my_freeBackground = false;

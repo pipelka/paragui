@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/01 11:28:22 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistboxbaseitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.8 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.9 $
     Status:           $State: Exp $
 */
 
@@ -38,7 +38,7 @@ PG_ListBoxBaseItem::PG_ListBoxBaseItem(PG_Widget* parent, Uint16 height, void* u
 	if (parent != NULL) {
 		SetIndent(GetParent()->GetIndent());
 		SetAlignment(GetParent()->GetAlignment());
-	}		
+	}
 }
 
 PG_ListBoxBaseItem::~PG_ListBoxBaseItem() {
@@ -100,15 +100,15 @@ void PG_ListBoxBaseItem::eventHide() {
 bool PG_ListBoxBaseItem::eventMouseButtonUp(const SDL_MouseButtonEvent* button) {
 
 	if(button->button == 4 && this != PG_Label::GetParent()->GetChildList()->first()) {
-		SDL_WarpMouse(button->x, button->y - my_height);	
+		SDL_WarpMouse(button->x, button->y - my_height);
 		return true;
 	}
-	
+
 	if(button->button == 5 && this != PG_Label::GetParent()->GetChildList()->last()) {
-		SDL_WarpMouse(button->x, button->y + my_height);		
+		SDL_WarpMouse(button->x, button->y + my_height);
 		return true;
 	}
-	
+
 	if(button->button != 1) {
 		return false;
 	}

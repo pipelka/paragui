@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgdatacontainer.h,v $
-    CVS/RCS Revision: $Revision: 1.3.8.2 $
+    CVS/RCS Revision: $Revision: 1.3.8.3 $
     Status:           $State: Exp $
 */
 
@@ -44,34 +44,34 @@
 
 class DECLSPEC PG_DataContainer {
 public:
-	
+
 	/**
 		Constructor
 		@param size	number of bytes to allocate
-	
+
 		Creates a container which can hold "size" number of bytes.
 	*/
 	PG_DataContainer(Uint32 size);
-	
+
 	/**
 		Destructor
-	
+
 		Deletes the object and frees to allocated memory.
 	*/
 	virtual ~PG_DataContainer();
-	
+
 	/**
 		return the number of bytes allocated by the container
 		@return number of bytes allocated
 	*/
 	Uint32 size();
-	
+
 	/**
 		access to the internal data
 		@return pointer to allocated memory
 	*/
 	char* data();
-	
+
 private:
 
 	char* my_data;

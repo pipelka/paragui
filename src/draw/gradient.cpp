@@ -1,30 +1,30 @@
 /*
     ParaGUI - crossplatform widgetset
     gradient - gradient drawing functions
-
+ 
     Copyright (C) 2000,2001,2002  Alexander Pipelka
-
+ 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
-
+ 
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
-
+ 
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-
+ 
     Alexander Pipelka
     pipelka@teleweb.at
-
+ 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/19 16:30:23 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/gradient.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.5 $
     Status:           $State: Exp $
 */
 
@@ -69,14 +69,14 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_
 	Sint32 w = rect.my_width;
 	Sint32 h = rect.my_height;
 
-    if (!surface)
-            return;
+	if (!surface)
+		return;
 
 	if(w == 0 || h == 0)
-            return;
+		return;
 
-    if (w > surface->w || h > surface->h)
-            return;
+	if (w > surface->w || h > surface->h)
+		return;
 
 	Uint32 c1 = ul.MapRGB(surface->format);
 	Uint32 c2 = ur.MapRGB(surface->format);
@@ -102,7 +102,7 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_
 
 	if(SDL_MUSTLOCK(surface)) {
 		SDL_LockSurface(surface);
-	}		
+	}
 
 	// color space vectors
 	v00 = ((ur.r - ul.r) * 256) / w;
@@ -149,7 +149,7 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_
 	Uint8* bits = ((Uint8 *) surface->pixels) + (rect.y + oy)* pitch + (rect.x + ox)* bpp;
 	Uint32 y_pitch = pitch*drawrect.h - bpp;
 	register Uint32 pixel = 0;
-	
+
 	for (register Sint32 x = 0; x < drawrect.w; x++) {
 
 		yr = (r2 - r1) / h;
@@ -174,17 +174,17 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_
 
 				case 2:
 					pixel =  (r>>Rloss) << Rshift
-							   | (g>>Gloss) << Gshift
-							   | (b>>Bloss) << Bshift;
+					         | (g>>Gloss) << Gshift
+					         | (b>>Bloss) << Bshift;
 
 					*((Uint16 *) (bits)) = (Uint16) pixel;
 					break;
 
 				case 3: {
 						pixel =  (r>>Rloss) << Rshift
-								   | (g>>Gloss) << Gshift
-								   | (b>>Bloss) << Bshift;
-	
+						         | (g>>Gloss) << Gshift
+						         | (b>>Bloss) << Bshift;
+
 						Uint8 ri = (pixel >> surface->format->Rshift) & 0xFF;
 						Uint8 gi = (pixel >> surface->format->Gshift) & 0xFF;
 						Uint8 bi = (pixel >> surface->format->Bshift) & 0xFF;
@@ -196,9 +196,9 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_
 
 				case 4:
 					pixel =  (r>>Rloss) << Rshift
-							   | (g>>Gloss) << Gshift
-							   | (b>>Bloss) << Bshift
-							   | ((SDL_ALPHA_OPAQUE << Ashift) & Amask);
+					         | (g>>Gloss) << Gshift
+					         | (b>>Bloss) << Bshift
+					         | ((SDL_ALPHA_OPAQUE << Ashift) & Amask);
 
 					*((Uint32 *) (bits)) = (Uint32) pixel;
 					break;
@@ -224,5 +224,5 @@ void PG_Draw::DrawGradient(SDL_Surface * surface, const PG_Rect& rect, const PG_
 
 	if(SDL_MUSTLOCK(surface)) {
 		SDL_UnlockSurface(surface);
-	}		
+	}
 }

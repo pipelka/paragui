@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/02/15 14:12:51 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.6 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.7 $
     Status:           $State  
 */
 
@@ -50,7 +50,9 @@ public:
 	std::string	Text;
 
 	PG_LogMessage_t(PG_LOG_LEVEL _id, const char* txt)
-		: Id(_id), TimeStamp(time(0)) {Text = txt;}
+			: Id(_id), TimeStamp(time(0)) {
+		Text = txt;
+	}
 
 }
 ;
@@ -164,10 +166,10 @@ void PG_LogConsole::Done() {
 	}
 	PG_LogMessages.clear();
 
-    if (PG_LogWindow) {
-        delete PG_LogWindow;
-    	PG_LogWindow = NULL;
-    }
+	if (PG_LogWindow) {
+		delete PG_LogWindow;
+		PG_LogWindow = NULL;
+	}
 }
 
 void PG_LogConsole::Update() {

@@ -14,7 +14,7 @@
 #define RTTI_ENABLED 1
 
 /* Define if the exception handling is enabled in your compiler */
-#undef EXCEPTIONS_ENABLED 
+#undef EXCEPTIONS_ENABLED
 
 /* Define if mpatrol memory profiler support is enabled */
 /* #undef MPATROL_ENABLED */
@@ -58,4 +58,4 @@
 /* Version number of package */
 #define VERSION "1.1.8"
 
-#endif 
+#endif

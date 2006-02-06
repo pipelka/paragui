@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/04/22 12:29:24 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsurfacecache.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -61,67 +61,67 @@ public:
 
 	virtual ~PG_SurfaceCache();
 
-    /** Create a fairly unique key for a given surface.
-        
-      @param    key         the key will be returned here
-      @param    w           width of the surface
-      @param    h           height of the surface
-      @param    gradient    is added to the key if non-zero
-      @param    background  the surface for the key
-      @param    bkmode      see explanation
-      @param    blend       see explanation
+	/** Create a fairly unique key for a given surface.
+	    
+	  @param    key         the key will be returned here
+	  @param    w           width of the surface
+	  @param    h           height of the surface
+	  @param    gradient    is added to the key if non-zero
+	  @param    background  the surface for the key
+	  @param    bkmode      see explanation
+	  @param    blend       see explanation
 
-      This function has the task of creating a unique key to a given
-      surface. This is done by simply writing all parameters one after
-      the other, but the implementation may change in future versions.
-      Therefore, the parameters are not really neccessary. However, to ensure
-      that the created keys are unique, you should use the parameters.
-      */
+	  This function has the task of creating a unique key to a given
+	  surface. This is done by simply writing all parameters one after
+	  the other, but the implementation may change in future versions.
+	  Therefore, the parameters are not really neccessary. However, to ensure
+	  that the created keys are unique, you should use the parameters.
+	  */
 	void CreateKey(std::string &key, Uint16 w, Uint16 h,
 	               PG_Gradient* gradient, SDL_Surface* background,
 	               PG_Draw::BkMode bkmode, Uint8 blend);
 
-    /** Find the surface to a given key .
+	/** Find the surface to a given key .
 
-        @param  key the key whose surface is searched
-        @return the surface or NULL if no surfac was found
-      */
+	    @param  key the key whose surface is searched
+	    @return the surface or NULL if no surfac was found
+	  */
 	SDL_Surface* FindSurface(const std::string &key);
 
-    /** Add a surface to the list.
-        
-        @param  key     the key associated with the surface
-        @param  surface the surface you want to add to the cache
-        @return the surface from the cache
+	/** Add a surface to the list.
+	    
+	    @param  key     the key associated with the surface
+	    @param  surface the surface you want to add to the cache
+	    @return the surface from the cache
 
-        \warning If you add a surface whose key already exists and which is
-        different from the surface in the cache, your surface will be quietly
-        deleted. So NEVER touch a surface again after you have added it to the
-        cache. ALWAYS use the returned pointer instead.
+	    \warning If you add a surface whose key already exists and which is
+	    different from the surface in the cache, your surface will be quietly
+	    deleted. So NEVER touch a surface again after you have added it to the
+	    cache. ALWAYS use the returned pointer instead.
 
-        This behaviour has a slight drawback if you add a surface the
-        second time, because then the surface is not deleted...
-      */
+	    This behaviour has a slight drawback if you add a surface the
+	    second time, because then the surface is not deleted...
+	  */
 	SDL_Surface* AddSurface(const std::string &key, SDL_Surface* surface);
 
-    /** Deletes a surface from the list
+	/** Deletes a surface from the list
 
-        @param  surface             the surface to be deleted
-        @param  bDeleteIfNotExists  if set to true, the surface is deleted
-                                    when the reference counter reaches 0
+	    @param  surface             the surface to be deleted
+	    @param  bDeleteIfNotExists  if set to true, the surface is deleted
+	                                when the reference counter reaches 0
 
-        This function reduces the reference counter of the surface. If the
-        counter reaches 0 and the bool parameter is set, the surface is freed.
-      */
+	    This function reduces the reference counter of the surface. If the
+	    counter reaches 0 and the bool parameter is set, the surface is freed.
+	  */
 	void DeleteSurface(SDL_Surface* surface, bool bDeleteIfNotExists = true);
 
-    /** Increase the reference counter of a surface
-        
-        @param  key the key of the surface
-      */
+	/** Increase the reference counter of a surface
+	    
+	    @param  key the key of the surface
+	  */
 	void IncRef(const std::string &key);
 
-    /** Removes all surfaces from the cache */
+	/** Removes all surfaces from the cache */
 	void Cleanup();
 
 private:

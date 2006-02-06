@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/08/24 06:32:29 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgtooltiphelp.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -55,7 +55,7 @@ class PG_LineEdit;
 class DECLSPEC PG_ToolTipHelp: public SigC::Object {
 private:
 
-	class Ticker: public PG_TimerObject {
+class Ticker: public PG_TimerObject {
 		volatile Uint32 ticker;
 		Uint32 eventTimer(Uint32 interval) {
 			++ticker;

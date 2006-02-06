@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 11:27:13 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.18 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.19 $
     Status:           $State: Exp $
 */
 
@@ -42,15 +42,14 @@ my_selectedItem(NULL), my_alignment(PG_Label::LEFT) {
 	EnableScrollBar(false, PG_ScrollBar::HORIZONTAL);
 }
 
-PG_ListBox::~PG_ListBox() {
-}
+PG_ListBox::~PG_ListBox() {}
 
 void PG_ListBox::AddChild(PG_Widget* item) {
 	if(item == NULL) {
-        return;
+		return;
 	}
 
-	item->SizeWidget(Width(), item->Height());	
+	item->SizeWidget(Width(), item->Height());
 
 	PG_WidgetList::AddChild(item);
 
@@ -183,7 +182,7 @@ void PG_ListBox::GetSelectedItems(std::vector<PG_ListBoxBaseItem*>& items) {
 	for(PG_Widget* i = list->first(); i != NULL; i = i->next()) {
 		PG_ListBoxBaseItem* item = static_cast<PG_ListBoxBaseItem*>(i);
 		if (item->IsSelected()) {
-			items.push_back(item);	
+			items.push_back(item);
 		}
 	}
 }
@@ -194,12 +193,12 @@ Uint16 PG_ListBox::GetIndent() {
 
 void PG_ListBox::SetAlignment(PG_Label::TextAlign style) {
 	my_alignment = style;
-	
+
 	PG_RectList* list = my_scrollarea->GetChildList();
 	if(list == NULL) {
 		return;
 	}
-	
+
 	for(PG_Widget* i = list->first(); i != NULL; i = i->next()) {
 		static_cast<PG_ListBoxBaseItem*>(i)->SetAlignment(style);
 	}

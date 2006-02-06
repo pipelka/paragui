@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pglineedit.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.13 $
     Status:           $State: Exp $
 */
 
@@ -55,9 +55,15 @@ public:
 	/**
 	Signal type declaration
 	**/
-	template<class datatype = PG_Pointer> class SignalEditBegin : public PG_Signal1<PG_LineEdit*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalEditEnd : public PG_Signal1<PG_LineEdit*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalEditReturn : public PG_Signal1<PG_LineEdit*, datatype> {};
+	template<class datatype = PG_Pointer>
+class SignalEditBegin : public PG_Signal1<PG_LineEdit*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalEditEnd : public PG_Signal1<PG_LineEdit*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalEditReturn : public PG_Signal1<PG_LineEdit*, datatype> {}
+	;
 
 	/** */
 	PG_LineEdit(PG_Widget* parent, const PG_Rect& r = PG_Rect::null, const std::string& style="LineEdit", int maximumLength = 1000000);
@@ -149,7 +155,7 @@ protected:
 
 	/** */
 	virtual void InsertChar(const PG_Char& c);
-		
+
 	/** */
 	virtual void DeleteChar(Uint16 pos);
 
@@ -203,15 +209,15 @@ private:
 	DLLLOCAL void DrawTextCursor();
 
 	DLLLOCAL Uint16 GetCursorXPos();
-	
+
 	DLLLOCAL PG_String GetDrawText();
-	
+
 	DLLLOCAL int GetCursorPosFromScreen(int x, int y);
 
 	DLLLOCAL bool IsValidKey(PG_Char c);
 
 	std::string my_buffer;
-	
+
 	int my_startMark;
 
 	int my_endMark;

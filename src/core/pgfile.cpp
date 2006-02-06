@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/30 07:10:21 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfile.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.4.2.4 $
+    CVS/RCS Revision: $Revision: 1.1.6.4.2.5 $
     Status:           $State: Exp $
 */
 
@@ -47,7 +47,7 @@ int PG_File::write(void *buffer, unsigned int bytestowrite) {
 }
 
 int PG_File::write(std::string &buffer) {
-  	return write(const_cast<char*>(buffer.c_str()), 1, buffer.length());
+	return write(const_cast<char*>(buffer.c_str()), 1, buffer.length());
 }
 
 int PG_File::write(const char *buffer) {
@@ -80,13 +80,13 @@ int PG_File::fileLength() {
 
 char PG_File::getc() {
 	char buffer = 0;
-	
+
 	if(read(&buffer, 1) == 1) {
 		return buffer;
 	}
 	return 0;
 }
-	
+
 std::string PG_File::getline() {
 	std::string result;
 	char c = 0;
@@ -98,14 +98,14 @@ std::string PG_File::getline() {
 		}
 		c = getc();
 	}
-	
+
 	return result;
 }
 
 void PG_File::putline(const std::string& line) {
 	// write characters
 	write((void*)line.c_str(), line.size());
-	
+
 	// write CR (LF?)
 	write((void*)"\n", strlen("\n"));
 }

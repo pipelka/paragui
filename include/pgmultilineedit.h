@@ -3,8 +3,8 @@
 	Header file for the PG_MultiLineEdit class.
 */
 
-#ifndef PG_MULTI_LINE_EDIT 
-#define PG_MULTI_LINE_EDIT 
+#ifndef PG_MULTI_LINE_EDIT
+#define PG_MULTI_LINE_EDIT
 
 #include "pglineedit.h"
 #include "pgscrollbar.h"
@@ -15,11 +15,11 @@ class DECLSPEC PG_MultiLineEdit : public PG_LineEdit {
 public:
 
 	PG_MultiLineEdit(PG_Widget* parent, const PG_Rect& r, const std::string& style="LineEdit", int maximumLength = 1000000);
-	virtual void SetText(const std::string& new_text);	
+	virtual void SetText(const std::string& new_text);
 
-    void SetCursorPos(int p);
+	void SetCursorPos(int p);
 
-    void SetVPosition(int line);
+	void SetVPosition(int line);
 
 protected:
 
@@ -41,7 +41,7 @@ protected:
 
 private:
 
-    DLLLOCAL void FindWordRight();
+	DLLLOCAL void FindWordRight();
 
 	DLLLOCAL void FindWordLeft();
 
@@ -67,15 +67,15 @@ private:
 
 	std::vector<PG_String> my_textdata;
 
-    PG_ScrollBar* my_vscroll;
+	PG_ScrollBar* my_vscroll;
 
-    int my_firstLine;
+	int my_firstLine;
 
-    int my_mark;
+	int my_mark;
 
-    bool my_isCursorAtEOL;
+	bool my_isCursorAtEOL;
 
-    bool my_allowHiddenCursor;	
+	bool my_allowHiddenCursor;
 };
 
 #endif // PG_MULTI_LINE_EDIT

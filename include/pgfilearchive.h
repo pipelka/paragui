@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/15 07:32:15 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.8 $
     Status:           $State: Exp $
 */
 
@@ -56,9 +56,9 @@ public:
 
 	//! File open mode
 	enum Mode {
-		READ, //!< Open file for reading
-		WRITE, //!< Open file for writing
-		APPEND //!< Open file for writing, appending data to the end of the file
+	    READ, //!< Open file for reading
+	    WRITE, //!< Open file for writing
+	    APPEND //!< Open file for writing, appending data to the end of the file
 	};
 
 	PG_FileArchive();
@@ -94,7 +94,7 @@ public:
 
 	 \note The caller is responsible for freeing the array and the
 	 entries within the array. (FreeList)
-	
+
 	 \return the file list
 	*/
 	static char **GetSearchPath();
@@ -117,7 +117,7 @@ public:
 
 	 \note The caller is responsible for freeing the array and the
 	 directories within the array.
-	
+
 	 \param dir directory to list files in
 	 \return the file list
 	*/
@@ -147,19 +147,19 @@ public:
 
 	static const char* GetLastError();
 	//! Create a new directory
-	/*! 
+	/*!
 	  This function tries to create a directory in the application
 	  write directory, if any. 
 	\param dir directory name
 	*/
-	static bool MakeDir(const std::string& dir); 
+	static bool MakeDir(const std::string& dir);
 
 	//! Set write directory
-	/*! 
+	/*!
 	  This function sets the write directory to use.
 	  \param dir directory name
 	*/
-	static bool SetWriteDir(const std::string& dir); 
+	static bool SetWriteDir(const std::string& dir);
 
 	//! convert a path from UNIX to system dependent format
 	/*!
@@ -172,13 +172,13 @@ public:
 	static std::string *PathToPlatform(const std::string& path);
 
 	//! Get the application base directory
-	/*! 
+	/*!
 	  \return the application base directory
 	*/
 	static const char* GetBaseDir();
 
 	//! Get the users home directory
-	/*! 
+	/*!
 	  This functions tries to find the users home directory. If it can't
 	  find it, it returns a directory relative to the application
 	  base directory.
@@ -187,7 +187,7 @@ public:
 	static const char* GetUserDir();
 
 	//! Get the designated write directory
-	/*! 
+	/*!
 	  This function returns the directory which is opened for writing,
 	  if any.  
 	  \return the directory opened for writing
@@ -195,7 +195,7 @@ public:
 	static const char* GetWriteDir();
 
 	//! Setup a sane config for a typical application
-	/*! 
+	/*!
 	  This function is a convenience function which tries to open / create
 	  a directory in USERHOME/.organization/appName/ and add it as the write directory,
 	  add the base directory to the load path, optionally adds mounted cdroms
@@ -211,11 +211,11 @@ public:
 	  \return true for success, false for failure
 	*/
 	static bool SetSaneConfig(const std::string& organization,
-				  const std::string& appName,
-				  const std::string& archiveExt = PG_NULLSTR,
-				  bool includeCdRoms = false,
-				  bool archivesFirst = true);
-	
+	                          const std::string& appName,
+	                          const std::string& archiveExt = PG_NULLSTR,
+	                          bool includeCdRoms = false,
+	                          bool archivesFirst = true);
+
 	/**
 	   Open a file from the archive
 	   @param filename name of the file to open
@@ -223,7 +223,7 @@ public:
 	   @return pointer to newly created PG_File object or NULL
 	*/
 	static PG_File* OpenFile(const std::string& filename, Mode mode = READ);
-	  
+
 	/**
 	   Open a file from the archive
 	   @param filename name of the file to open
@@ -231,7 +231,7 @@ public:
 	   @return pointer SDL_RWops structure
 	*/
 	static SDL_RWops* OpenFileRWops(const std::string& filename, Mode mode = READ);
-	  
+
 	//! Open and read a file from the archive
 	/*!
 	  This is a utility function which opens and reads a file in one step.
@@ -241,7 +241,7 @@ public:
 	  or 0 if the file doesn't exist or was empty
 	*/
 	static PG_DataContainer* ReadFile(const std::string& filename);
-	
+
 	/**
 	Load a surface (image) from the archive
 	all loaded surface will be cached
@@ -261,7 +261,7 @@ public:
 	@return pointer to loaded SDL_Surface or NULL
 	*/
 	static SDL_Surface* LoadSurface(const std::string& filename, bool usekey, Uint32 colorkey, bool convert = false);
-	
+
 	/**
 	Removes the surface from the cache
 	@param surface pointer to the SDL_Surface to remove
@@ -283,30 +283,30 @@ public:
 
 	//! Get the names of all registered archives
 	/*!
-	
+
 		This function returns a vector of strings containing the names
 		of all currently registered archives (Added via AddArchive)
-	
+
 	\note The caller owns the returned vector and is responsible for deleting the returned structure.
-	
+
 	\return the file list
 	*/
 	static PG_FileList* GetSearchPathList();
-	
-	
+
+
 	//! Get the names of all files in a directory
 	/*!
-	
+
 		This function returns a vector of strings containing the names
 		of all files in the specified directory.
-	
+
 	\note The caller owns the returned vector and is responsible for deleting the returned structure.
 	\param dir directory to list files in
 	\param wildcard wildcard for file pattern matching
 	\return the file list
 	*/
 	static PG_FileList* GetFileList(const std::string& dir, const std::string& wildcard="*");
-	
+
 private:
 
 	static Uint32 my_instance_count;

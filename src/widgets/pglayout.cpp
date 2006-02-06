@@ -175,7 +175,7 @@ PG_ScrollBar::ScrollDirection PG_Layout::GetParamScrollDirection(const char **So
 		case 0:
 			r = PG_ScrollBar::VERTICAL;
 			break;
-			
+
 		case 1:
 			r = PG_ScrollBar::HORIZONTAL;
 			break;
@@ -707,8 +707,8 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		                        parent,
 		                        Rect,
 		                        PG_Layout::GetParamStr(atts, "text"),
-								PG_Layout::GetParamInt(atts, "id"),
-								PG_Layout::GetParamStr(atts, "style"));
+		                        PG_Layout::GetParamInt(atts, "id"),
+		                        PG_Layout::GetParamStr(atts, "style"));
 
 		XMLParser->ParentObject = Widget;
 
@@ -937,7 +937,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		                             Rect,
 		                             (const char*)PG_Layout::GetParamStr(atts, "text"),
 		                             (PG_RadioButton *)PG_Application::GetWidgetByName(PG_Layout::GetParamStr(atts, "group")),
-									 0);
+		                             0);
 
 		XMLParser->ParentObject = Widget;
 
@@ -954,7 +954,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		                             parent,
 		                             Rect,
 		                             PG_Layout::GetParamStr(atts, "text"),
-									 0);
+		                             0);
 
 		XMLParser->ParentObject = Widget;
 
@@ -1113,7 +1113,7 @@ static void XMLStartDoc(void *userData, const char *name, const char **atts) {
 		PG_XMLTag* n = new PG_XMLTag(name, atts);
 		PG_Application::GetApp()->sigXMLTag(n);
 	}
-	
+
 	PG_LogWRN("Unknown tag `%s` in section %d !",name,XMLParser->Section);
 	return;
 }
@@ -1132,20 +1132,19 @@ static void XMLEndDoc(void *userData, const char *name) {
 	if ((XMLParser->EndTagFlags & ENDTAGFLAG_OBJECT) != 0) {
 		if (((XMLParser->InhTagFlags & INHTAGFLAG_ADDWIDGET) != 0) && ((XMLParser->EndTagFlags & ENDTAGFLAG_WIDGETLIST) == 0)) {
 			//WidgetToAdd = XMLParser->ParentObject;
-//			goto object_end;
+			//			goto object_end;
 		}
 
 		if ((XMLParser->InhTagFlags & INHTAGFLAG_HIDE) == 0) {
 			if(XMLParser->ParentObject->GetParent() == NULL) {
 				XMLParser->ParentObject->Show();
 			}
-		}
-		else {
+		} else {
 			XMLParser->ParentObject->Hide();
 		}
 
-//object_end:
-//		XMLParser->ParentObject->AddText("", true);
+		//object_end:
+		//		XMLParser->ParentObject->AddText("", true);
 	}
 
 	RestoreUserData(XMLParser);
@@ -1247,12 +1246,12 @@ bool PG_Layout::Load(PG_Widget* parent, const std::string& filename, void (* Wor
 PG_XMLTag::PG_XMLTag(const char* n, const char** a) {
 	// fill in name
 	name = strdup(name);
-	
+
 	if(a == NULL) {
 		atts = NULL;
 		return;
 	}
-	
+
 	// get size of arry
 	const char** a0 = a;
 	int s=0;
@@ -1260,11 +1259,11 @@ PG_XMLTag::PG_XMLTag(const char* n, const char** a) {
 		a0++;
 		s++;
 	}
-	
+
 	// alloc array of pointers
 	atts = (const char**)malloc((s+1)*sizeof(char*));
 	a0 = atts;
-	
+
 	// copy strings to new array
 	while(*a != NULL) {
 		*a0 = strdup(*a);
@@ -1278,16 +1277,16 @@ PG_XMLTag::~PG_XMLTag() {
 	if(name != NULL) {
 		free((void*)name);
 	}
-	
+
 	if(atts == NULL) {
 		return;
 	}
-	
+
 	const char** a = atts;
 	while(*a) {
 		free((void*)*a);
 		a++;
 	}
-	
+
 	free((void*)atts);
 }

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/05/31 20:19:00 $
+    Update Date:      $Date: 2006/02/06 21:24:20 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.13 $
     Status:           $State: Exp $
 */
 
@@ -33,7 +33,7 @@
 	a ParaGUI enabled application. It includes all dependend
 	headers (SDL,...) and defines some macros used by many
 	other files.
-
+ 
 	@author Alexander Pipelka
 */
 
@@ -127,27 +127,27 @@
 // Replacement for strdup
 //
 #ifndef HAVE_STRDUP
-	extern "C" {
+extern "C" {
 	char* strdup(const char* s);
-	}
+}
 #endif
 
 //
 // Replacement for fnmatch
 //
 #ifndef HAVE_FNMATCH
-	extern "C" {
+extern "C" {
 	/* Bits set in the FLAGS argument to `fnmatch'.  */
-	#define	FNM_PATHNAME	(1 << 0) /* No wildcard can ever match `/'.  */
+#define	FNM_PATHNAME	(1 << 0) /* No wildcard can ever match `/'.  */
 	#define	FNM_NOESCAPE	(1 << 1) /* Backslashes don't quote special chars.  */
 	#define	FNM_PERIOD	(1 << 2) /* Leading `.' is matched only explicitly.  */
 	#define	__FNM_FLAGS	(FNM_PATHNAME|FNM_NOESCAPE|FNM_PERIOD)
-	
+
 	/* Value returned by `fnmatch' if STRING does not match PATTERN.  */
-	#define	FNM_NOMATCH	1
-	
+#define	FNM_NOMATCH	1
+
 	int fnmatch(const char *, const char *, int);
-	}
+}
 #else
 	#include <fnmatch.h>
 #endif

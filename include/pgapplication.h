@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/07/01 11:25:16 $
+    Update Date:      $Date: 2006/02/06 21:24:19 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.24 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.25 $
     Status:           $State: Exp $
 */
 
@@ -99,22 +99,26 @@ public:
 
 	//! Cursor mode
 	typedef enum {
-		QUERY, //!< Used to query the current mode
-		NONE,  //!< Show no cursor at all
-		HARDWARE, //!< Use hardware (standard SDL) cursor
-		SOFTWARE //!< Use ParaGUI software cursor (when possible)
+	    QUERY, //!< Used to query the current mode
+	    NONE,  //!< Show no cursor at all
+	    HARDWARE, //!< Use hardware (standard SDL) cursor
+	    SOFTWARE //!< Use ParaGUI software cursor (when possible)
 	} CursorMode;
 
 	enum {
-		IDAPPLICATION = PG_WIDGETID_INTERNAL + 100
+	    IDAPPLICATION = PG_WIDGETID_INTERNAL + 100
 	};
 
 	/**
 	Signal type declaration
 	**/
-	
-	template<class datatype = PG_Pointer> class SignalXMLTag : public PG_Signal1<PG_XMLTag*, datatype> {};
-	template<class datatype = PG_Pointer> class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {};
+
+	template<class datatype = PG_Pointer>
+class SignalXMLTag : public PG_Signal1<PG_XMLTag*, datatype> {}
+	;
+	template<class datatype = PG_Pointer>
+class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
+	;
 
 	/**  */
 	PG_Application();
@@ -254,7 +258,7 @@ public:
 	*/
 	static void FlipPage();
 
-	/** 
+	/**
 	Outputs some information about the current video target (only with
 	DEBUG enabled)
 	*/
@@ -293,17 +297,17 @@ public:
 
 	void DeleteBackground();
 
-    /**
-    Set AppIdleCalls
+	/**
+	Set AppIdleCalls
 
-    @param enable whether to enable or disable AppIdleCalls
-    If you enable AppIdleCalls, the PGApplication object will emit
-    a sigAppIdle signal whenever no events are in the queue and sleep
-    for a short interval (this is the behaviour inherited from
-    PG_MessageObject). However, if you disable it, the object will just
-    call SDL_WaitEvent(). Enable this if you know something to do in
-    idle periods and don't forget to connect the sigAppIdle signal then.
-    */
+	@param enable whether to enable or disable AppIdleCalls
+	If you enable AppIdleCalls, the PGApplication object will emit
+	a sigAppIdle signal whenever no events are in the queue and sleep
+	for a short interval (this is the behaviour inherited from
+	PG_MessageObject). However, if you disable it, the object will just
+	call SDL_WaitEvent(). Enable this if you know something to do in
+	idle periods and don't forget to connect the sigAppIdle signal then.
+	*/
 	void EnableAppIdleCalls(bool enable = true);
 
 	/**
@@ -390,7 +394,7 @@ public:
 	@return pointer to the requested widget or 0 if failed
 	*/
 	static PG_Widget *GetWidgetById(int id);
-    
+
 	/**
 	Set default font color
 	@param	Color PG_Color class contains color information (RGB)
@@ -455,7 +459,7 @@ public:
 	  \sa PG_ShowCursor, PG_DrawCursor
 	*/
 	static void SetCursor(SDL_Surface *image);
-	
+
 	//! Update the graphical mouse cursor
 	/*!
 	  This will redraw the graphical curser pointer, if enabled. You
@@ -463,7 +467,7 @@ public:
 	  @param update true if you want to "Update" the screen content immediately.
 	*/
 	static void DrawCursor(bool update = true);
-	
+
 	//! Set or query the type of mouse cursor to use.
 	/*!
 	  This function is used to set or query the type of mouse cursor used.
@@ -479,12 +483,12 @@ public:
 	 Dirty updates are usually used to speed up blitting. However, it can cause
 	 problems with 'semitransparent' widgets.
 	\param disable disable ditry updates
-	
+
 	\note All widgets created after this call wont use the dirty update anymore.
 	Widgets created before will still use this mode if enabled.
 	*/
 	static void DisableDirtyUpdates(bool disable);
-	
+
 	//! Check if the 'dirty update' mode is disabled globally
 	/*!
 	\return true - if the 'dirty update' mode is disabled globally
@@ -492,14 +496,14 @@ public:
 	static bool GetDirtyUpdatesDisabled();
 
 	static PG_Application* GetApp();
-	
+
 	static PG_Font* DefaultFont;
 
-    /**
-    Get the behaviour concerning empty queues (see EnableAppIdleCalls())
-    
-    @return the current behaviour of the application object
-    */
+	/**
+	Get the behaviour concerning empty queues (see EnableAppIdleCalls())
+
+	@return the current behaviour of the application object
+	*/
 	bool GetAppIdleCallsEnabled();
 
 	//! Flush the event queue
@@ -511,13 +515,13 @@ public:
 	*/
 	static void FlushEventQueue();
 
-    //!Reblit the old mouse position
-    /**
-    If software cursors are enabled and you move the mouse, the old
-    location has to be refreshed somehow with the underlying graphics.
-    This is done by this function. Note that bulkmode has to be
-    disabled for this function to be called.
-    */
+	//!Reblit the old mouse position
+	/**
+	If software cursors are enabled and you move the mouse, the old
+	location has to be refreshed somehow with the underlying graphics.
+	This is done by this function. Note that bulkmode has to be
+	disabled for this function to be called.
+	*/
 	static void ClearOldMousePosition();
 
 	/**
@@ -534,23 +538,23 @@ public:
 	@return true - the message was processed by the framework
 	*/
 	bool PumpIntoEventQueue(const SDL_Event* event);
-        
-       
-	/**        
+
+
+	/**
 	Registers a new source for obtaining SDL_Event objects from. This source will
 	be used in all event loops in Paragui.
-	
+
 	@param eventSupplier the new event source. 
 	Paragui will not delete this object. If NULL is passed, Paragui will obtain 
 	its events directly from SDL 
-	*/        
-	static void SetEventSupplier( PG_EventSupplier* eventSupplier );                
+	*/
+	static void SetEventSupplier( PG_EventSupplier* eventSupplier );
 
-	/**        
+	/**
 	Returns the EventSupplier that's currently active. \see SetEventSupplier
-        
-        @return the active EventSupplier
-	*/        
+	       
+	       @return the active EventSupplier
+	*/
 	static  PG_EventSupplier* GetEventSupplier();
 
 	/**
@@ -596,7 +600,7 @@ protected:
 
 	/** */
 	virtual void eventIdle();
-	
+
 	bool my_quitEventLoop;
 
 private:
@@ -610,7 +614,7 @@ private:
 	static SDL_Surface* my_scaled_background;
 	static PG_Color my_backcolor;
 	static PG_Draw::BkMode my_backmode;
-	
+
 	static PG_Theme* my_Theme;
 
 	//static std::string app_path;
@@ -641,7 +645,7 @@ private:
 	@param argv array of arguments (from main)
 	@param app the PG_Application object
 	@return status code.
-
+ 
 	This function is an encapsulation of app->Run().
 	It also handles exceptions (if enabled).
 */
