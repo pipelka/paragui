@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2005/07/19 16:30:22 $
+   Update Date:      $Date: 2006/02/12 19:07:32 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgtooltiphelp.cpp,v $
-   CVS/RCS Revision: $Revision: 1.1.2.1 $
+   CVS/RCS Revision: $Revision: 1.1.2.2 $
    Status:           $State: Exp $
  */
 
@@ -67,6 +67,11 @@ bool PG_ToolTipHelp :: onIdle(  ) {
 
 	if ( status != counting )
 		return false;
+
+	if ( status == counting && !parentWidget->IsMouseInside() ) {
+		status = off;
+		return false;
+	}
 
 	if ( ticker->getTicker() > lastTick + 10 ) {
 		if ( status < shown ) {

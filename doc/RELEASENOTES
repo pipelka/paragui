@@ -129,6 +129,19 @@ Whats new in ParaGUI 1.1.9 ?
   RadioButton was ignored since it was already pressed. I've moved the
   check for ignoring clicks after the group check.
 - small bugfix for the ThemeLoader
+- new widget PG_PropertyEditor
+  The primary enhancement is a new widget PG_PropertyEditor with some
+  associated classes which is for editing all kinds of properties in
+  tabular form. You have probably all seen this kind of dialog in RAD
+  tools like Visual Basic or other applications. And I wanted to have one
+  in ASC myself, so here is a generic implementation.
+- PG_DropDown prevents the drop-down-list to move out of the window. 
+- bugfix in PG_ToolTipHelp
+- PG_Widget::RunModal now also calls the PG_Application's Idle-Handler.
+  While this is a semantic change to the Idle-Handler, it's very useful
+  in my opinion.
+- PG_MessageObject doesn't filter any mouse events any more, as this is
+  done (and much better :) ) in the EventSupplier.
  
  
 - applied patches from Ulf Lorenz:

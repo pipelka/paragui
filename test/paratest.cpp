@@ -23,6 +23,13 @@
 #include "pgmultilineedit.h"
 #include "pgtooltiphelp.h"
 
+#include "pgpropertyeditor.h"
+#include "pgpropertyfield_checkbox.h"
+#include "pgpropertyfield_integer.h"
+#include "pgpropertyfield_intdropdown.h"
+#include "pgpropertyfield_string.h"
+
+
 #include <iostream>
 
 #define RESX 800
@@ -31,22 +38,22 @@
 using namespace SigC;
 
 void Splash() {
-    PG_ThemeWidget splash(NULL, PG_Rect(100,100,600,400), true);
-    PG_ThemeWidget splash1(&splash, PG_Rect(10,10,580,380));
-    PG_ThemeWidget splash2(&splash1, PG_Rect(10,10,560,340));
-    PG_Label l(&splash2, PG_Rect(10,10,540,320), "I'm a splash screen");
-    l.SetAlignment(PG_Label::CENTER);
-        
-    splash.Show();
-    SDL_Delay(5000);
-    splash.Hide();
+	PG_ThemeWidget splash(NULL, PG_Rect(100,100,600,400), true);
+	PG_ThemeWidget splash1(&splash, PG_Rect(10,10,580,380));
+	PG_ThemeWidget splash2(&splash1, PG_Rect(10,10,560,340));
+	PG_Label l(&splash2, PG_Rect(10,10,540,320), "I'm a splash screen");
+	l.SetAlignment(PG_Label::CENTER);
+
+	splash.Show();
+	SDL_Delay(5000);
+	splash.Hide();
 }
 
 bool handle_popup(PG_Pointer clientdata) {
 	PG_PopupMenu* pop = (PG_PopupMenu*)clientdata;
 
 	pop->trackMenu(10, 10);
-	
+
 	return true;
 }
 
@@ -60,13 +67,12 @@ bool handle_toggle(PG_Pointer clientdata) {
 	PG_Button* b = (PG_Button*)clientdata;
 	if (b->GetPressed()) {
 		PG_LogMSG("Button pressed");
-	}
-	else {
+	} else {
 		PG_LogMSG("Button released");
 	}
 	return true;
 }
-	
+
 
 bool hande_slideIndent(PG_ScrollBar* s, long pos, PG_Pointer data)  {
 	PG_DropDown* drop = static_cast<PG_DropDown*>(data);
@@ -78,8 +84,8 @@ bool hande_slideIndent(PG_ScrollBar* s, long pos, PG_Pointer data)  {
 
 class MySliderLabel : public PG_Label {
 public:
-	MySliderLabel(PG_Widget* parent, const PG_Rect& r, char* text) : PG_Label(parent,r,text) {
-	};
+	MySliderLabel(PG_Widget* parent, const PG_Rect& r, char* text) : PG_Label(parent,r,text) {}
+	;
 
 	bool handler_slider(long data) {
 		SetTextFormat("%i", (int)data);
@@ -93,9 +99,11 @@ class TestWindow : public PG_Window {
 public:
 
 	TestWindow(PG_Widget* parent, const PG_Rect& r, char* windowtext);
-	virtual ~TestWindow() {};
+	virtual ~TestWindow() {}
+	;
 
-	void Dummy() {};
+	void Dummy() {}
+	;
 
 	/** a new style callback member */
 	bool handle_show_window() {
@@ -126,23 +134,22 @@ private:
 	PG_WidgetList* WidgetList;
 	PG_Button* b;
 };
-	
+
 
 TestWindow::TestWindow(PG_Widget* parent, const PG_Rect& r, char* windowtext) :
-PG_Window(parent, r, windowtext, DEFAULT)
-{
+PG_Window(parent, r, windowtext, DEFAULT) {
 	WidgetList = new PG_WidgetList(this, PG_Rect(30, 40, 220, 250));
 	WidgetList->SetDirtyUpdate(false);
 	WidgetList->SetTransparency(0);
 	WidgetList->SetBackground("default/wnd_close.bmp", PG_Draw::TILE, 0xFF);
 	WidgetList->SetBackgroundBlend(0);
-			
+
 	WidgetList->EnableScrollBar(true, PG_ScrollBar::HORIZONTAL);
-		
+
 	(new PG_Button(this, PG_Rect(260,130,110,30), "<< ADD", 100))->sigClick.connect(slot(*this, &TestWindow::handleButtonClick));
-	
+
 	(new PG_Button(this, PG_Rect(260,165,110,30), ">> REMOVE", 101))->sigClick.connect(slot(*this, &TestWindow::handleButtonClick));
-	
+
 	b = new PG_Button(WidgetList, PG_Rect(0,0, 400,50), "YES", PG_Button::YES);
 	b->SetTransparency(128,128,128);
 	b->SetFontName("qnx/font.ttf");
@@ -163,7 +170,7 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	progress->SetName("MyProgressBar");
 	progress->SetID(1001);
 	progress->SetFontAlpha(128);
-		
+
 	PG_ScrollBar* scroll = new PG_ScrollBar(this, PG_Rect(415,90,20,150));
 	scroll->SetID(1);
 	scroll->sigScrollPos.connect(slot(*this, &TestWindow::handleScrollPos));
@@ -188,15 +195,15 @@ PG_Window(parent, r, windowtext, DEFAULT)
 	//drop->AddItem("Item 6");
 }
 
-bool TestWindow::handleScrollPos(PG_ScrollBar* widget, long data){
+bool TestWindow::handleScrollPos(PG_ScrollBar* widget, long data) {
 	int id = widget->GetID();
 
-	if(id == 1){
+	if(id == 1) {
 		progress->SetProgress(data);
 		return true;
 	}
 
-	if(id == 2){
+	if(id == 2) {
 		SetTransparency((unsigned char)data);
 		Update();
 		return true;
@@ -208,12 +215,12 @@ bool TestWindow::handleScrollPos(PG_ScrollBar* widget, long data){
 bool TestWindow::handleScrollTrack(PG_ScrollBar* widget, long data) {
 	int id = widget->GetID();
 
-	if(id == 1){
+	if(id == 1) {
 		progress->SetProgress(data);
 		return true;
 	}
 
-	if(id == 2){
+	if(id == 2) {
 		SetTransparency((unsigned char)data);
 		Update();
 		return true;
@@ -227,7 +234,7 @@ bool TestWindow::handleButtonClick(PG_Button* button) {
 	int id = button->GetID();
 
 	PG_Window::handleButtonClick(button);
-	
+
 	if(id == 100) {
 		PG_Label* l = new PG_Label(WidgetList, PG_Rect(0,0,220,25), "");
 		l->SetAlignment(PG_Label::CENTER);
@@ -242,16 +249,16 @@ bool TestWindow::handleButtonClick(PG_Button* button) {
 		if(w != NULL) {
 			delete w;
 		}
-		
+
 		return true;
 	}
-	
+
 	return false;
 }
 
 bool handle_menu_click(PG_PopupMenu::MenuItem* item, PG_Pointer clientdata) {
 	std::cout << "menu item '" << item->getId() << "' (\""
-		<< item->getCaption().c_str() << "\") clicked" << std::endl;
+	<< item->getCaption().c_str() << "\") clicked" << std::endl;
 
 	switch (item->getId()) {
 		case 5:
@@ -279,13 +286,82 @@ void PrintChildObjects(PG_RectList *RectList, char *TabSpace) {
 	while(list != NULL) {
 		PG_LogMSG("%s %s", TabSpace, list->GetName().c_str());
 
-		sprintf(tab,"  %s",TabSpace);	
+		sprintf(tab,"  %s",TabSpace);
 		PrintChildObjects(list->GetChildList(), tab);
 
 		list = list->next();
 	}
-    
+
 }
+
+
+struct MyStruct {
+	MyStruct() : number(0), anotherInt(1), noyes(false), yesno(false),limitednumber(8) {}
+	;
+
+	int number;
+	short int anotherInt;
+	bool noyes;
+	bool yesno;
+	std::string string;
+	std::string password;
+	int limitednumber;
+}
+myStruct;
+
+const char* myStructNames[] = { "First", "Second", "Last", NULL
+                              };
+
+
+class PropertyEditorWindow : public PG_Window {
+private:
+	PG_PropertyEditor* propertyEditor;
+
+	bool ok() {
+		if ( propertyEditor->Apply() ) {
+			QuitModal();
+
+			return true;
+		} else
+			return false;
+	}
+
+public:
+	PropertyEditorWindow( PG_Widget* parent, MyStruct& structure ) : PG_Window( parent, PG_Rect( 50, 50, 300, 400 ), "Properties") {
+		propertyEditor = new PG_PropertyEditor( this, PG_Rect( 10, GetTitlebarHeight() + 5, Width() - 20, Height() - GetTitlebarHeight() - 50 ), "PropertyEditor", 50 );
+		propertyEditor->SetTransparency(255);
+
+		new PG_PropertyField_Integer<int>( propertyEditor , "Integer", &structure.number );
+		new PG_PropertyField_IntDropDown<short int>( propertyEditor, "Select", &structure.anotherInt, myStructNames );
+		new PG_PropertyField_Checkbox<bool>( propertyEditor, "Activate?", &structure.yesno );
+		new PG_PropertyField_Checkbox<bool>( propertyEditor, "Activate?", &structure.noyes, true );
+		new PG_PropertyField_String<std::string>( propertyEditor, "Name", &structure.string );
+
+		PG_PropertyField_String<std::string>* sp = new PG_PropertyField_String<std::string>( propertyEditor, "Secret", &structure.password );
+		sp->SetPassHidden('*');
+
+		PG_PropertyField_Integer<int>* ip = new PG_PropertyField_Integer<int>( propertyEditor , "Integer (0-10)", &structure.limitednumber );
+		ip->SetRange(0,10);
+
+		for ( int i = 0; i < 10; ++i )
+			new PG_PropertyField_Integer<int>( propertyEditor , "Dummy", i );
+
+
+		PG_Button* ok = new PG_Button( this, PG_Rect( Width() - 100, Height() - 40, 90, 30), "OK" );
+		ok->sigClick.connect( SigC::slot( *this, &PropertyEditorWindow::ok ));
+	};
+};
+
+bool EditProperties() {
+	PropertyEditorWindow PropertyEditor(NULL, myStruct );
+	PropertyEditor.Show();
+	PropertyEditor.RunModal();
+	return true;
+}
+
+
+
+
 
 bool handle_list() {
 
@@ -307,10 +383,10 @@ int main(int argc, char* argv[]) {
 	int bpp = 0;
 
 	int resx = RESX, resy = RESY;
-	
+
 	// construct the application object
 	PG_Application app;
-		
+
 	for(int c=1; c<argc; c++) {
 
 		if(argv[c][0] != '-') {
@@ -333,36 +409,36 @@ int main(int argc, char* argv[]) {
 		if(strcmp(argv[c], "-bpp") == 0) {
 			bpp = atoi(argv[++c]);
 		}
-		
+
 		if(strcmp(argv[c], "-x") == 0) {
-		        resx = atoi(argv[++c]);
+			resx = atoi(argv[++c]);
 		}
-		
+
 		if(strcmp(argv[c], "-y") == 0) {
-		        resy = atoi(argv[++c]);
+			resy = atoi(argv[++c]);
 		}
 	}
 
 	Uint32 start_ticks = SDL_GetTicks();
 
 	if(!app.LoadTheme(theme)) {
-	    PG_LogERR("Unable to load theme \"%s\"", theme);
-	    return -1;
+		PG_LogERR("Unable to load theme \"%s\"", theme);
+		return -1;
 	}
 
 	PG_LogMSG("Loaded theme in %i ms", SDL_GetTicks() - start_ticks);
 
-        if(!app.InitScreen(resx, resy, bpp, flags)){
-                printf("Resolution %dx%d not supported\n", resx, resy);
-                exit(-1);
-        }
-                                                                                                                    
-        PG_LogMSG("screen initialized after %i ms", SDL_GetTicks() - start_ticks);
-	
+	if(!app.InitScreen(resx, resy, bpp, flags)) {
+		printf("Resolution %dx%d not supported\n", resx, resy);
+		exit(-1);
+	}
+
+	PG_LogMSG("screen initialized after %i ms", SDL_GetTicks() - start_ticks);
+
 	app.SetCursor(app.GetTheme()->FindSurface("Pointer", "Pointer", "normal"));
 
 	//Splash();
-	
+
 	PG_Color color(255,255,255);
 
 	PG_LogMSG("creating 'wnd' after %i ms", SDL_GetTicks() - start_ticks);
@@ -372,21 +448,21 @@ int main(int argc, char* argv[]) {
 	wnd.SetTransparency(0);
 	wnd.SetName("WindowOne");
 	wnd.SetID(100);
-	
+
 	PG_LogMSG("creating 'wnd1' after %i ms", SDL_GetTicks() - start_ticks);
 
 	TestWindow wnd1(NULL, PG_Rect(50,50,500,300), "My 2nd Testwindow");
 	wnd1.SetTransparency(0);
 	wnd1.SetName("WindowTwo");
 	wnd1.SetID(101);
-	
+
 	// create 2 radiobutton groups
 	PG_RadioButton radio1(NULL, PG_Rect(50,0,200,25), "RadioButton 1");
 	PG_RadioButton radio2(NULL, PG_Rect(50,25,200,25), "RadioButton 2", &radio1);
 	PG_RadioButton radio3(NULL, PG_Rect(50,50,200,25), "RadioButton 3", &radio1);
 	radio3.SetSizeByText();
 	radio1.SetAlignment(PG_Label::RIGHT);
-	
+
 	PG_RadioButton radio4(NULL, PG_Rect(50,90,200,25), "RadioButton 4");
 	PG_RadioButton radio5(NULL, PG_Rect(50,115,200,25), "RadioButton 5", &radio4);
 	PG_RadioButton radio6(NULL, PG_Rect(50,140,200,25), "RadioButton 6", &radio4);
@@ -395,30 +471,30 @@ int main(int argc, char* argv[]) {
 	PG_PopupMenu popmenu(NULL, 425, 140, "My Menu");
 	PG_PopupMenu submenu(NULL, 425, 140, "My SubMenu");
 	PG_PopupMenu subsubmenu(NULL, 425, 140, "");
-	
+
 	submenu.sigSelectMenuItem.connect(slot(handle_menu_click), NULL);
 	subsubmenu.sigSelectMenuItem.connect(slot(handle_menu_click), NULL);
 
 	subsubmenu.addMenuItem("Mordor", 1).
-	    addMenuItem("Minas Morgul", 2).
-		addMenuItem("Orodruin", 3);
-		
+	addMenuItem("Minas Morgul", 2).
+	addMenuItem("Orodruin", 3);
+
 	submenu.addMenuItem("Grendel", 1).
-		addMenuItem("Beowulf", 2).
-		addMenuItem("Hrothgar", 3).
-        addMenuItem("Long ago", &subsubmenu);
-		
-    popmenu.addMenuItem("Tasty", 1, slot(handle_menu_click)).
-        addMenuItem("Even tastier", 2, slot(handle_menu_click)).
-        addMenuItem("I'm third here...", 3, slot(handle_menu_click)).
-        addMenuItem("And I'm fourth", 4, slot(handle_menu_click)).
-		addMenuItem("Saga", &submenu).
-        addSeparator().
-        addMenuItem("Open Window", 5, slot(handle_menu_click), &wnd).
-        addMenuItem("Quit", 6, slot(handle_menu_click), &app);
-    
+	addMenuItem("Beowulf", 2).
+	addMenuItem("Hrothgar", 3).
+	addMenuItem("Long ago", &subsubmenu);
+
+	popmenu.addMenuItem("Tasty", 1, slot(handle_menu_click)).
+	addMenuItem("Even tastier", 2, slot(handle_menu_click)).
+	addMenuItem("I'm third here...", 3, slot(handle_menu_click)).
+	addMenuItem("And I'm fourth", 4, slot(handle_menu_click)).
+	addMenuItem("Saga", &submenu).
+	addSeparator().
+	addMenuItem("Open Window", 5, slot(handle_menu_click), &wnd).
+	addMenuItem("Quit", 6, slot(handle_menu_click), &app);
+
 	popmenu.disableItem(2);
-	
+
 	PG_MenuBar menubar(NULL, PG_Rect(resx-300, 0, 300, 30));
 	menubar.Add("PopMe 2", &popmenu);
 
@@ -429,11 +505,11 @@ int main(int argc, char* argv[]) {
 	menubar.Add("Edit", &editmenu);
 
 	menubar.Show();
-	
+
 	radio1.Show();
 	radio2.Show();
 	radio3.Show();
-	
+
 	radio4.Show();
 	radio5.Show();
 	radio6.Show();
@@ -447,7 +523,7 @@ int main(int argc, char* argv[]) {
 	edit.SetMask("###.###.###.###");
 	edit.SetValidKeys("1234567890");
 	edit.Show();
-	
+
 	// our new label with the callback member
 	MySliderLabel slider_label(NULL, PG_Rect(360, 250, 50,20), "5");
 	slider_label.Show();
@@ -470,7 +546,7 @@ int main(int argc, char* argv[]) {
 	spin.Show();
 
 	PG_DropDown drop(NULL, PG_Rect(50, 280, 300,25));
-	
+
 	//<obsolete>
 	drop.AddItem("Under construction");
 	drop.AddItem("Item 1");
@@ -497,7 +573,23 @@ int main(int argc, char* argv[]) {
 	toggle.sigClick.connect(slot(handle_toggle), (PG_Pointer)&toggle);
 	toggle.SetToggle(true);
 	toggle.Show();
-	
+
+
+	PG_DropDown dropper( NULL, PG_Rect(100, 450, 100, 30 ));
+	const int dropperItemNum = 10;
+	for ( int i = 1; i <= dropperItemNum; ++i ) {
+		char buf[100];
+		sprintf( buf, "%d / %d", i, dropperItemNum - i );
+		dropper.AddItem( buf );
+	}
+	dropper.AddItem("LastLine");
+	dropper.Show();
+
+	PG_Button props(NULL, PG_Rect(300,450,100,30), "Properties");
+	props.sigClick.connect(slot(EditProperties));
+	props.Show();
+
+
 	PG_Button list(NULL, PG_Rect(400,450,100,30), "List", PG_Button::OK);
 	list.sigClick.connect(slot(handle_list));
 	list.Show();
@@ -515,48 +607,48 @@ int main(int argc, char* argv[]) {
 	PG_MultiLineEdit text(NULL, PG_Rect(resx - 300, 35, 300, 150));
 	text.SetText("Once upon a time, in a galaxy far far away...\n...\n...\n...\n...\n...\n...\nand they lived happily till once upon a time, in a galaxy far far away...\n[INSERT STORY HERE]");
 	text.Show();
-	
+
 	// show the testwindow
 	wnd.Show();
 	wnd1.Show();
-	
+
 	PG_LogMSG("app ready after %i ms", SDL_GetTicks() - start_ticks);
 	app.ShowCursor(PG_Application::SOFTWARE);
 
 	PG_LogMSG("testing the widget finding methods");
 	PG_Widget *tmp;
-	
+
 	tmp = PG_Application::GetWidgetByName("WindowOne");
 	if (tmp)
-	    PG_LogMSG("'WindowOne' found by name (id %d)", tmp->GetID());
-	    
+		PG_LogMSG("'WindowOne' found by name (id %d)", tmp->GetID());
+
 	tmp = PG_Application::GetWidgetById(100);
 	if (tmp)
-	    PG_LogMSG("'100' found by ID (name '%s')", tmp->GetName().c_str());
-	    
+		PG_LogMSG("'100' found by ID (name '%s')", tmp->GetName().c_str());
+
 	tmp = PG_Application::GetWidgetById(101);
 	if (tmp)
-	    PG_LogMSG("'101' found by ID (name '%s')", tmp->GetName().c_str());
+		PG_LogMSG("'101' found by ID (name '%s')", tmp->GetName().c_str());
 
 	PG_LogMSG("testing the child finding methods");
 	tmp = wnd.FindChild("MyProgressBar");
 	if (tmp)
-	    PG_LogMSG("sought for 'MyProgressBar' and found it (id '%d')",
-	              tmp->GetID());
+		PG_LogMSG("sought for 'MyProgressBar' and found it (id '%d')",
+		          tmp->GetID());
 	tmp = wnd.FindChild(1001);
 	if (tmp)
-	    PG_LogMSG("sought for '1001' and found it (name '%s')", tmp->GetName().c_str());
+		PG_LogMSG("sought for '1001' and found it (name '%s')", tmp->GetName().c_str());
 
 	if(!bTestMode) {
 		// Enter main loop
 		app.Run();
 		return EXIT_SUCCESS;
 	}
-	
+
 	PG_LogMSG("Starting benchmark ... Wait");
 	start_ticks = SDL_GetTicks();
 	int iter = 500;
-	
+
 	for(int i=0; i<iter; i++) {
 		PG_Widget::UpdateScreen();
 	}
@@ -564,6 +656,6 @@ int main(int argc, char* argv[]) {
 	int ticks = SDL_GetTicks() - start_ticks;
 	PG_LogMSG("did %i iterations in %i ms", iter, ticks);
 	PG_LogMSG("~%2.2fms per iteration", (float)ticks/(float)iter);
-	
-	return EXIT_SUCCESS;	
+
+	return EXIT_SUCCESS;
 }

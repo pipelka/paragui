@@ -32,7 +32,8 @@ libpgwidgets_la_SOURCES = \
 	pgmultilineedit.cpp \
 	propstrings_priv.h \
 	propstrings_priv.cpp \
-	pgtooltiphelp.cpp
+	pgtooltiphelp.cpp \
+	pgpropertyeditor.cpp
 
 libpgwidgets_la_LIBADD = \
 	$(SIGC_LIBS)

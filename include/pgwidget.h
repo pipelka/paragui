@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/02/12 19:07:37 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.31 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.32 $
     Status:           $State: Exp $
 */
 
@@ -661,7 +661,7 @@ public:
 	Set the clipping rectangle for the object
 	@param r clipping rectangle
 	*/
-	void SetClipRect(PG_Rect& r);
+	void SetClipRect( const PG_Rect& r);
 
 	/**
 	Get the current clipping rectangle

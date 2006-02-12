@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/02/12 19:07:33 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.11 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.12 $
     Status:           $State: Exp $
 */
 
@@ -84,7 +84,6 @@ void PG_MessageObject::EnableReceiver(bool enable) {
 /** message dispatcher */
 
 bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
-	SDL_Event e;
 
 	// check if we are able to process messages
 	if(!my_canReceiveMessages) {
@@ -101,9 +100,6 @@ bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 	if((captureObject != NULL) && (captureObject != this)) {
 		return false;
 	}
-
-	while(SDL_PeepEvents(&e, 1, SDL_GETEVENT, SDL_MOUSEMOTIONMASK) > 0)
-		;
 
 	bool rc = false;
 

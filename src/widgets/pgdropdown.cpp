@@ -20,16 +20,19 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/02/12 19:07:32 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgdropdown.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.23 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.24 $
     Status:           $State: Exp $
 */
+
+#include <algorithm>
 
 #include "pgdropdown.h"
 #include "pglog.h"
 #include "pglistbox.h"
 #include "pglistboxitem.h"
+#include "pgapplication.h"
 
 PG_DropDown::PG_DropDown(PG_Widget* parent, const PG_Rect& r, int id, const std::string& style) : PG_Widget(parent, r),
 		// needed for AddChild() evaluation - H. C.
@@ -101,6 +104,7 @@ void PG_DropDown::AddItem(const std::string& text, void* userdata, Uint16 height
 	//my_DropList->SizeWidget(my_width, my_DropList->GetListHeight() + my_DropList->GetBorderSize()*2);
 }
 
+
 void PG_DropDown::RemoveAll() {
 	if ( my_DropList )
 		my_DropList->RemoveAll();
@@ -129,7 +133,15 @@ bool PG_DropDown::handleButtonClick(PG_Button* button) {
 	if(my_DropList->IsVisible()) {
 		my_DropList->Hide();
 	} else {
-		my_DropList->MoveRect(my_xpos, my_ypos+my_height);
+		PG_Rect pos = *my_DropList;
+		pos.x = my_xpos;
+		pos.y = my_ypos+my_height;
+
+		pos.w = std::min( int(my_DropList->my_width), PG_Application::GetScreenWidth() - pos.x );
+		pos.h = std::min( int(my_DropList->my_height), PG_Application::GetScreenHeight() - pos.y);
+
+		my_DropList->MoveWidget( pos );
+
 		my_DropList->Show();
 	}
 

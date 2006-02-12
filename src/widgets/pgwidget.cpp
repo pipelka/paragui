@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/02/06 21:24:19 $
+   Update Date:      $Date: 2006/02/12 19:07:31 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.36 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.37 $
    Status:           $State: Exp $
  */
 
@@ -1451,9 +1451,17 @@ int PG_Widget::RunModal() {
 
 	// run while in modal mode
 	while(!_mid->quitModalLoop) {
-		if(PG_Application::GetEventSupplier()->WaitEvent(&event) != 1) {
-			SDL_Delay(10);
-			continue;
+		if( PG_Application::GetApp()->GetAppIdleCallsEnabled () ) {
+			if ( PG_Application::GetEventSupplier()->PollEvent(&event) == 0) {
+				PG_Application::GetApp()->sigAppIdle( this );
+				SDL_Delay(1);
+				continue;
+			}
+		} else {
+			if( PG_Application::GetEventSupplier()->WaitEvent(&event) != 1) {
+				SDL_Delay(10);
+				continue;
+			}
 		}
 		PG_Application::ClearOldMousePosition();
 		ProcessEvent(&event, true);
@@ -1538,7 +1546,7 @@ void PG_Widget::SetTransparency(Uint8 t, bool bRecursive) {
 	}
 }
 
-void PG_Widget::SetClipRect(PG_Rect& r) {
+void PG_Widget::SetClipRect( const PG_Rect& r) {
 	_mid->rectClip = r;
 }
 

@@ -454,5 +454,16 @@
 		</object>
 	</widget>    
 
+	<widget>
+		<type value="PropertyEditor"/>
+		<object>
+			<name value="Button"/>
+			<filename name="iconup" value="default/drop_down.bmp" colorkey="0x000000FF"/>
+		</object>
+		<object>
+			<name value="ListBox"/>
+			<property name="bordersize" value="1"/>
+		</object>
+	</widget>
         
 </theme>

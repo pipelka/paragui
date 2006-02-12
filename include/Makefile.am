@@ -59,7 +59,14 @@ libparaguiinclude_HEADERS = \
 	ychar.h \
 	pgeventsupplier.h \
 	pgsdleventsupplier.h \
-	pgtooltiphelp.h        
+	pgtooltiphelp.h \
+	pgpropertyeditor.h \
+	pgpropertyeditor_linefield.h \
+	pgpropertyfield_checkbox.h \
+	pgpropertyfield_intdropdown.h  \
+	pgpropertyfield_integer.h \
+	pgpropertyfield_string.h
+
         
 EXTRA_DIST = \
 	paraconfig_win32.h \
