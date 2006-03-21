@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/02/12 19:07:31 $
+   Update Date:      $Date: 2006/03/21 12:00:28 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.37 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.38 $
    Status:           $State: Exp $
  */
 
@@ -1598,6 +1598,9 @@ void PG_Widget::DrawHLine(int x, int y, int w, const PG_Color& color) {
 	y += my_ypos;
 
 	if((y < _mid->rectClip.y) || (y >= (_mid->rectClip.y+_mid->rectClip.h))) {
+		if(my_srfObject == NULL) {
+			PG_Application::UnlockScreen();
+		}
 		return;
 	}
 
@@ -1609,6 +1612,9 @@ void PG_Widget::DrawHLine(int x, int y, int w, const PG_Color& color) {
 	int wl = (x1-x0);
 
 	if(wl <= 0) {
+		if(my_srfObject == NULL) {
+			PG_Application::UnlockScreen();
+		}
 		return;
 	}
 
@@ -1638,6 +1644,9 @@ void PG_Widget::DrawVLine(int x, int y, int h, const PG_Color& color) {
 	y += my_ypos;
 
 	if((x < _mid->rectClip.x) || (x >= (_mid->rectClip.x+_mid->rectClip.w))) {
+		if(my_srfObject == NULL) {
+			PG_Application::UnlockScreen();
+		}
 		return;
 	}
 
@@ -1649,6 +1658,9 @@ void PG_Widget::DrawVLine(int x, int y, int h, const PG_Color& color) {
 	int hl = (y1-y0);
 
 	if(hl <= 0) {
+		if(my_srfObject == NULL) {
+			PG_Application::UnlockScreen();
+		}
 		return;
 	}
 

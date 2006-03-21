@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/03/21 12:00:28 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.17 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.18 $
     Status:           $State: Exp $
 */
 
@@ -53,7 +53,7 @@ void PG_WidgetList::AddChild(PG_Widget* w) {
 		return;
 	}
 
-	w->MoveRect(0, w->my_ypos + my_scrollarea->GetAreaHeight());
+	w->MoveRect(w->my_xpos, w->my_ypos + my_scrollarea->GetAreaHeight());
 	my_scrollarea->AddChild(w);
 }
 
