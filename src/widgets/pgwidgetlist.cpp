@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/03/21 12:00:28 $
+    Update Date:      $Date: 2006/04/26 09:41:52 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidgetlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.18 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.19 $
     Status:           $State: Exp $
 */
 
@@ -121,4 +121,23 @@ void PG_WidgetList::PageUp() {
 void PG_WidgetList::PageDown() {
 	my_scrollarea->ScrollTo(my_scrollarea->GetScrollPosX(), my_scrollarea->GetScrollPosY() + my_height );
 	CheckScrollBars();
+}
+
+void PG_WidgetList::InsertAfter(PG_Widget* widget, PG_Widget* after) {
+	
+	my_scrollarea->InsertAfter(widget, after);
+
+	// reposition widgets
+	Uint16 y = my_ypos - GetScrollPosY();
+	Uint16 h = 0;
+	for(PG_Widget* list = GetFirstInList() ; list != NULL; list = list->next()) {
+		list->MoveRect(list->x, y);
+		h += list->Height();
+		y += list->Height();
+	}
+
+	// new scrollarea height
+	my_scrollarea->SetAreaHeight(h);
+
+	Update();
 }

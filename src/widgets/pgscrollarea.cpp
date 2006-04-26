@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/04/26 09:41:52 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgscrollarea.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.16 $
+    CVS/RCS Revision: $Revision: 1.1.2.17 $
     Status:           $State: Exp $
 */
 
@@ -62,6 +62,32 @@ void PG_ScrollArea::ScrollTo(Uint16 x, Uint16 y) {
 	}
 
 	Update();
+}
+
+void PG_ScrollArea::InsertAfter(PG_Widget* child, PG_Widget* after) {
+	PG_Widget::InsertAfter(child, after);
+	child->MoveRect(child->x - my_area.x, child->y - my_area.y);
+
+	if(child->x+child->w+my_area.x-my_xpos > my_area.w) {
+		my_area.w = child->x+child->w+my_area.x-my_xpos;
+		sigAreaChangedWidth(this, my_area.w);
+
+		if(my_AddResizeParent) {
+			GetParent()->SizeWidget(my_area.w + GetParent()->GetBorderSize()*2, GetParent()->my_height);
+		}
+	}
+	if(child->y+child->h+my_area.y-my_ypos > my_area.h) {
+		my_area.h = child->y+child->h+my_area.y-my_ypos;
+		sigAreaChangedHeight(this, my_area.h);
+
+		if(my_AddResizeParent) {
+			GetParent()->SizeWidget(GetParent()->my_width, my_area.h + GetParent()->GetBorderSize()*2);
+		}
+	}
+
+	if(IsVisible()) {
+		child->Show();
+	}
 }
 
 void PG_ScrollArea::AddChild(PG_Widget* child) {

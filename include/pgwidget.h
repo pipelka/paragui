@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/12 19:07:37 $
+    Update Date:      $Date: 2006/04/26 09:41:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.32 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.33 $
     Status:           $State: Exp $
 */
 
@@ -241,6 +241,8 @@ public:
 	@param child	the widget to add
 	*/
 	virtual void AddChild(PG_Widget* child);
+
+	virtual void InsertAfter(PG_Widget* child, PG_Widget* after);
 
 	/**
 	Process a native PG_ event

@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ystring.cpp,v 1.1.2.6 2006/02/06 21:24:20 braindead Exp $
+ * $Id: ystring.cpp,v 1.1.2.7 2006/04/26 09:41:52 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2006/02/06 21:24:20 $
+ *  $Date: 2006/04/26 09:41:52 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.6 $
+ *  $Revision: 1.1.2.7 $
  *  $Source: /sources/paragui/paragui/src/ystring/Attic/ystring.cpp,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -322,9 +322,12 @@ YString YString::substr(YString::size_type index, YString::size_type len) const 
 		len = length() - index;
 	if (len == 0)
 		return "";
+
 	YString::size_type end = len - 1;
-	if (index >=length() || index < 0 ||
-	        end >= length()  || end < 0) {
+	YString::size_type length = YString::length();
+
+	if (index >= length || index < 0 ||
+	        end >= length  || end < 0) {
 		PG_THROW(std::out_of_range("the provided character index/substring length is out of range"));
 		return "";
 	}
@@ -345,20 +348,23 @@ YString YString::fromUtf8(const std::string& utf8) throw(std::domain_error) {
 	}
 
 	YString::size_type currentOctet = 0;
+	YString::size_type utf8len = utf8.length();
+	YChar c;
+
 	do {
 		YString::size_type noOctets = 1 + YChar::getNumberOfContinuingOctents(utf8[currentOctet]);
 		if(noOctets == 0) {
 			break;
 		}
-		YChar c;
 		PG_TRY {
-		    c = YChar::fromUtf8(utf8.substr(currentOctet, noOctets));
+			c = YChar::fromUtf8(utf8.substr(currentOctet, noOctets));
 		} PG_CATCH (std::domain_error, e) {
 			PG_THROW(e);
 		}
 		buff += c;
 		currentOctet += noOctets;
-	} while (currentOctet < utf8.length());
+	} while (currentOctet < utf8len);
+
 	return buff;
 }
 

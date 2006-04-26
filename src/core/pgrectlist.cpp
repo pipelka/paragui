@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/04/26 09:41:52 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgrectlist.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.2.2.13 $
+    CVS/RCS Revision: $Revision: 1.1.6.2.2.14 $
     Status:           $State: Exp $
 */
 
@@ -86,6 +86,37 @@ PG_Widget* PG_RectList::IsInside(const PG_Point& p) {
 	}
 
 	return NULL;
+}
+
+bool PG_RectList::InsertAfter(PG_Widget* widget, PG_Widget* after) {
+	if(widget == NULL || after == NULL) {
+		return false;
+	}
+
+	// append
+	if(after->next() == NULL) {
+		after->my_next = widget;
+		widget->my_next = NULL;
+		widget->my_prev = after;
+		my_last = widget;
+	}
+	// in between
+	else {
+		widget->my_next = after->next();
+		widget->my_prev = after;
+		after->my_next = widget;
+	}
+	my_count++;
+	
+	ReIndex();
+	return true;
+}
+
+void PG_RectList::ReIndex() {
+	Uint32 index = 2^31;
+	for(PG_Widget* list = first(); list != NULL; list = list->next()) {
+		list->index = index++;
+	}
 }
 
 void PG_RectList::Add(PG_Widget* rect, bool front) {

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/04/26 09:41:52 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/stretch.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.5 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
     Status:           $State: Exp $
 */
 
@@ -187,6 +187,78 @@ inline void RectStretchTemplate(SDL_Surface* src_surface, ST src, int xs1, int y
 
 }
 
+inline void StretchTemplate8to16(int x1, int x2, int y1, int y2, int yr, int yw, Uint8* src_pixels, Uint16* dst_pixels, Uint32* lut) {
+	int dx, dy, e, d, dx2;
+
+	register Uint8 p;
+	register Uint8 pr;
+	register Uint8 pg;
+	register Uint8 pb;
+	register Uint16 r;
+
+	dx = (x2 - x1);
+	dy = (y2 - y1);
+
+	dy <<= 1;
+	e = dy - dx;
+	dx2 = dx << 1;
+
+	for (d = 0; d < dx; d++) {
+		p = lut[*src_pixels];
+
+		// RED: 5 BITS
+		pr = p >> 3;
+	
+		// GREEN: 6 BITS
+		pg = p >> 2;
+	
+		// BLUE: 5 BITS
+		pb = p >> 3;
+	
+		r = pr << 11 | pg << 5 | pb;
+		*dst_pixels++ = r;
+
+		while (e >= 0) {
+			src_pixels++;
+			e -= dx2;
+		}
+
+		e += dy;
+	}
+}
+
+inline void StretchTemplate24to16(int x1, int x2, int y1, int y2, int yr, int yw, Uint8* src_pixels, Uint16* dst_pixels, Uint32* lut) {
+	int dx, dy, e, d, dx2;
+
+	register Uint8 pr;
+	register Uint8 pg;
+	register Uint8 pb;
+	register Uint32 r;
+
+	dx = (x2 - x1);
+	dy = (y2 - y1);
+
+	dy <<= 1;
+	e = dy - dx;
+	dx2 = dx << 1;
+
+	for (d = 0; d < dx; d++) {
+		pr = lut[*(src_pixels)] >> 3;
+		pg = lut[*(src_pixels+1)] >> 2;
+		pb = lut[*(src_pixels+2)] >> 3;
+
+		r = pr << 11 | pg << 5 | pb;
+		*dst_pixels++ = r;
+
+		while (e >= 0) {
+			src_pixels+=3;
+			e -= dx2;
+		}
+
+		e += dy;
+	}
+}
+
 inline void StretchTemplate24to32(int x1, int x2, int y1, int y2, int yr, int yw, Uint8* src_pixels, Uint32* dst_pixels, Uint32* lut) {
 	int dx, dy, e, d, dx2;
 
@@ -217,6 +289,84 @@ inline void StretchTemplate24to32(int x1, int x2, int y1, int y2, int yr, int yw
 
 		e += dy;
 	}
+}
+
+inline void RectStretch8to16(SDL_Surface* src_surface, Uint8* src, int xs1, int ys1, int xs2, int ys2, SDL_Surface* dst_surface, Uint16* dst, int xd1, int yd1, int xd2, int yd2, Uint32* lutVOI) {
+	int dx, dy, e, d, dx2;
+	int sx, sy;
+	dx = abs((int)(yd2 - yd1));
+	dy = abs((int)(ys2 - ys1));
+	sx = sign(yd2 - yd1);
+	sy = sign(ys2 - ys1);
+	e = (dy << 1)-dx;
+	dx2 = dx << 1;
+	dy <<= 1;
+
+	Uint16 src_pitch = src_surface->pitch;
+	Uint16 dst_pitch = dst_surface->pitch;
+
+	int src_bpp = src_surface->format->BytesPerPixel;
+	int dst_bpp = dst_surface->format->BytesPerPixel;
+
+	SDL_Rect clip;
+	SDL_GetClipRect(dst_surface, &clip);
+
+	register long src_pixels = ((long)src + ys1 * src_pitch + xs1 * src_bpp);
+	register long dst_pixels = ((long)dst + yd1 * dst_pitch + xd1 * dst_bpp);
+	register Uint32* lut = lutVOI;
+
+	for (d = 0; (d <= dx) && (yd1 < dst_surface->h) && (ys1 < src_surface->h); d++) {
+		StretchTemplate8to16(xd1, xd2, xs1, xs2, ys1, yd1, (Uint8*)src_pixels, (Uint16*)dst_pixels, lut);
+
+		while (e >= 0) {
+			src_pixels += src_pitch;
+			ys1++;
+			e -= dx2;
+		}
+		dst_pixels += dst_pitch;
+		yd1++;
+		e += dy;
+	}
+
+}
+
+inline void RectStretch24to16(SDL_Surface* src_surface, Uint8* src, int xs1, int ys1, int xs2, int ys2, SDL_Surface* dst_surface, Uint16* dst, int xd1, int yd1, int xd2, int yd2, Uint32* lutVOI) {
+	int dx, dy, e, d, dx2;
+	int sx, sy;
+	dx = abs((int)(yd2 - yd1));
+	dy = abs((int)(ys2 - ys1));
+	sx = sign(yd2 - yd1);
+	sy = sign(ys2 - ys1);
+	e = (dy << 1)-dx;
+	dx2 = dx << 1;
+	dy <<= 1;
+
+	Uint16 src_pitch = src_surface->pitch;
+	Uint16 dst_pitch = dst_surface->pitch;
+
+	int src_bpp = src_surface->format->BytesPerPixel;
+	int dst_bpp = dst_surface->format->BytesPerPixel;
+
+	SDL_Rect clip;
+	SDL_GetClipRect(dst_surface, &clip);
+
+	register long src_pixels = ((long)src + ys1 * src_pitch + xs1 * src_bpp);
+	register long dst_pixels = ((long)dst + yd1 * dst_pitch + xd1 * dst_bpp);
+	register Uint32* lut = lutVOI;
+
+	for (d = 0; (d <= dx) && (yd1 < dst_surface->h) && (ys1 < src_surface->h); d++) {
+		StretchTemplate24to16(xd1, xd2, xs1, xs2, ys1, yd1, (Uint8*)src_pixels, (Uint16*)dst_pixels, lut);
+
+		while (e >= 0) {
+			src_pixels += src_pitch;
+			ys1++;
+			e -= dx2;
+		}
+		dst_pixels += dst_pitch;
+		yd1++;
+		e += dy;
+	}
+
 }
 
 inline void RectStretch24to32(SDL_Surface* src_surface, Uint8* src, int xs1, int ys1, int xs2, int ys2, SDL_Surface* dst_surface, Uint32* dst, int xd1, int yd1, int xd2, int yd2, Uint32* lutVOI) {
@@ -282,9 +432,14 @@ void PG_Draw::RectStretch(SDL_Surface* src_surface, int xs1, int ys1, int xs2, i
 
 		case 2:
 			switch (src_bpp) {
-
+				case 1:
+					RectStretch8to16(src_surface, (Uint8*)src_surface->pixels, xs1, ys1, xs2, ys2, dst_surface, (Uint16*)dst_surface->pixels, xd1, yd1, xd2, yd2, lutVOI);
+					break;				
 				case 2:
 					RectStretchTemplate(src_surface, (Uint16*)src_surface->pixels, xs1, ys1, xs2, ys2, dst_surface, (Uint16*)dst_surface->pixels, xd1, yd1, xd2, yd2, NULL);
+					break;
+				case 3:
+					RectStretch24to16(src_surface, (Uint8*)src_surface->pixels, xs1, ys1, xs2, ys2, dst_surface, (Uint16*)dst_surface->pixels, xd1, yd1, xd2, yd2, lutVOI);
 					break;
 			}
 			break;

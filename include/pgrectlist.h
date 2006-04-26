@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/04/26 09:41:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrectlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
     Status:           $State: Exp $
 */
 
@@ -64,6 +64,14 @@ public:
 		This functions adds the widget to the back of the list.
 	*/
 	void Add(PG_Widget* rect, bool front = false);
+
+	/**
+		add a widget to the list
+		@param widget pointer to the widget to be inserted
+		@param after widget will be inserted after this
+		This functions adds the widget to the list.
+	*/
+	bool InsertAfter(PG_Widget* widget, PG_Widget* after);
 
 	/**
 		remove a widget from the list
@@ -136,6 +144,8 @@ public:
 	inline Uint32 size() {
 		return my_count;
 	}
+
+	void ReIndex();
 
 protected:
 

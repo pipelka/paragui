@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/04/26 09:41:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidgetlist.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.16 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.17 $
     Status:           $State: Exp $
 */
 
@@ -88,6 +88,16 @@ public:
 	Scroll one page down
 	*/
 	void PageDown();
+
+	/**
+	Insert a widget after an other one
+	@param widget widget being inserted
+	@param after insert position
+	@return true on success
+	This function will insert a widget into the list
+	after the specified one.
+	*/
+	void InsertAfter(PG_Widget* widget, PG_Widget* after);
 
 	void AddChild(PG_Widget* child);
 

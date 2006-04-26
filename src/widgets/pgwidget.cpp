@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/03/21 12:00:28 $
+   Update Date:      $Date: 2006/04/26 09:41:52 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.38 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.39 $
    Status:           $State: Exp $
  */
 
@@ -306,6 +306,27 @@ void PG_Widget::AddChild(PG_Widget * child) {
 	}
 
 	_mid->childList->Add(child);
+}
+
+void PG_Widget::InsertAfter(PG_Widget* child, PG_Widget* after) {
+	if (!child)
+		return;
+
+	// remove our new child from previous lists
+	if(child->GetParent()) {
+		child->GetParent()->RemoveChild(child);
+	} else {
+		child->RemoveFromWidgetList();
+	}
+
+	child->MoveRect(child->my_xpos + my_xpos, child->my_ypos + my_ypos);
+	child->_mid->widgetParent = this;
+
+	if (_mid->childList == NULL) {
+		_mid->childList = new PG_RectList;
+	}
+
+	_mid->childList->InsertAfter(child, after);
 }
 
 bool PG_Widget::MoveWidget(int x, int y, bool update) {
@@ -1459,7 +1480,6 @@ int PG_Widget::RunModal() {
 			}
 		} else {
 			if( PG_Application::GetEventSupplier()->WaitEvent(&event) != 1) {
-				SDL_Delay(10);
 				continue;
 			}
 		}

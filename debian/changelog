@@ -1,3 +1,10 @@
+libparagui1.1 (1.1.9-13) unstable; urgency=low
+
+  * added PG_WidgetList::InsertAfter
+  * various smaller fixes
+
+ -- Alexander Pipelka <pipelka@bms-austria.com>  Wed, 26 Apr 2006 11:40:57 +0200
+
 libparagui1.1 (1.1.9-12) unstable; urgency=low
 
   * fixed debian rules file

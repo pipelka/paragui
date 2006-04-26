@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/04/26 09:41:52 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.30 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.31 $
     Status:           $State: Exp $
 */
 
@@ -246,6 +246,10 @@ void PG_Application::ClearOldMousePosition() {
 		return;
 	}
 
+	if(!my_mouse_pointer || my_mouse_mode != SOFTWARE) {
+		return;
+	}
+
 	if(GetBulkMode() || my_mouse_backingstore==NULL) {
 		return;
 	}
@@ -258,7 +262,7 @@ void PG_Application::ClearOldMousePosition() {
 void PG_Application::DrawCursor(bool update) {
 	int x, y;
 
-	if(!my_mouse_pointer || my_mouse_mode != SOFTWARE) {
+	if(!my_mouse_pointer || my_mouse_mode != SOFTWARE || my_mouse_mode == NONE) {
 		return;
 	}
 	if(SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE) {

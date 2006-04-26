@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/04/26 09:41:52 $
     Source File:      $Source: /sources/paragui/paragui/include/pgrect.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.12 $
     Status:           $State: Exp $
 */
 
@@ -224,6 +224,8 @@ protected:
 	PG_Widget* my_prev;
 
 	friend class PG_RectList;
+	
+	friend class PG_WidgetList;
 };
 
 #endif	// PG_RECT_H

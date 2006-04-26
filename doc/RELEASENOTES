@@ -48,6 +48,8 @@ Whats new in ParaGUI 1.1.9 ?
 - fixed "test/dropdown2" bug (proper resize of scrollarea von RemoveAll)
 - added PG_Application::Get/SetUpdateOverlappingSiblings
 - added devhelp debian package
+- added PG_WidgetList::InsertAfter
+- various smaller fixes
 
 
 - applied patches from Sebastian:

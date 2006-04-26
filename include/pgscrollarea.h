@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/02/06 21:24:19 $
+   Update Date:      $Date: 2006/04/26 09:41:52 $
    Source File:      $Source: /sources/paragui/paragui/include/Attic/pgscrollarea.h,v $
-   CVS/RCS Revision: $Revision: 1.1.2.13 $
+   CVS/RCS Revision: $Revision: 1.1.2.14 $
    Status:           $State: Exp $
 */
 
@@ -138,6 +138,8 @@ class SignalAreaChangedWidth : public PG_Signal2<PG_ScrollArea*, Uint16> {}
 	SignalAreaChangedHeight sigAreaChangedHeight;
 
 	SignalAreaChangedWidth sigAreaChangedWidth;
+
+	void InsertAfter(PG_Widget* child, PG_Widget* after);
 
 	void AddChild(PG_Widget* child);
 
