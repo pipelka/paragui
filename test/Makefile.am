@@ -109,6 +109,7 @@ $(PACKAGE)-$(VERSION).tar.gz: dist
 
 EXTRA_DIST = \
 	dblbuffer.xml \
+	dblbuffer-gp2x.xml \
 	pokus.xml \
 	icon.bmp \
 	paratest.dev

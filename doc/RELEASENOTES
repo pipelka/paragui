@@ -50,6 +50,7 @@ Whats new in ParaGUI 1.1.9 ?
 - added devhelp debian package
 - added PG_WidgetList::InsertAfter
 - various smaller fixes
+- support for the GP2X personal entertainment player
 
 
 - applied patches from Sebastian:

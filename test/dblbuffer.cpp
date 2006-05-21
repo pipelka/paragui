@@ -136,9 +136,17 @@ int main(int argc, char *argv[])
 	PG_Application app;
 
 	numsprites = NUM_SPRITES;
+	
+#ifdef PARAGUI_GP2X
+	videoflags = SDL_SWSURFACE;
+	width = 320;
+	height = 240;
+#else
 	videoflags = SDL_SWSURFACE|SDL_DOUBLEBUF | SDL_ANYFORMAT;
 	width = 640;
 	height = 480;
+#endif
+
 	video_bpp = 16;
 	while ( argc > 1 ) {
 		--argc;
@@ -189,7 +197,13 @@ int main(int argc, char *argv[])
 	app.SetBulkMode(true);
 	app.LoadTheme("default");
 
+#ifdef PARAGUI_GP2X
+	app.SetFontSize(10);
+	app.LoadLayout("dblbuffer-gp2x.xml");
+#else
 	app.LoadLayout("dblbuffer.xml");
+#endif
+
 	app.SetCursor(app.GetTheme()->FindSurface("Pointer", "Pointer", "normal"));
 	app.ShowCursor(PG_Application::SOFTWARE);
 

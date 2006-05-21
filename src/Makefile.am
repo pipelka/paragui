@@ -1,6 +1,6 @@
-SUBDIRS = $(PHYSFS_SUBDIR) $(EXPAT_SUBDIR) draw font themes core widgets ystring
+SUBDIRS = $(PHYSFS_SUBDIR) $(EXPAT_SUBDIR) draw font themes core widgets ystring gp2x
 
-DIST_SUBDIRS = draw font themes core widgets expat physfs ystring
+DIST_SUBDIRS = draw font themes core widgets expat physfs ystring gp2x
 
 lib_LTLIBRARIES = libparagui.la
 
@@ -21,6 +21,7 @@ libparagui_la_LIBADD = \
 	./widgets/libpgwidgets.la \
 	./themes/libtheme.la \
 	./ystring/libystring.la \
+	./gp2x/libpggp2x.la \
 	$(LIBSTDCPP)
 
 INCLUDES = \

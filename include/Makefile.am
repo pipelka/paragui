@@ -65,7 +65,9 @@ libparaguiinclude_HEADERS = \
 	pgpropertyfield_checkbox.h \
 	pgpropertyfield_intdropdown.h  \
 	pgpropertyfield_integer.h \
-	pgpropertyfield_string.h
+	pgpropertyfield_string.h \
+	gp2xevents.h \
+	gp2xapplication.h
 
         
 EXTRA_DIST = \

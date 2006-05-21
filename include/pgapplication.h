@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/05/21 18:03:33 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.25 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.26 $
     Status:           $State: Exp $
 */
 
@@ -151,7 +151,7 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 	it will return immediately and a thread processing events is started.
 	CAUTION: Threaded eventloops are unsuported under Win32 (windows specific behavior)
 	*/
-	void Run();
+	virtual void Run();
 
 	/**
 	Run the modal message pump. This function will exit when the main window was closed.
