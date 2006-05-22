@@ -9,6 +9,10 @@
 #include "pgcheckbutton.h"
 #include "pgtheme.h"
 
+#ifdef PARAGUI_GP2X
+#include "gp2xevents.h"
+#endif
+
 #include <ctime>
 #include <cctype>
 
@@ -200,6 +204,10 @@ int main(int argc, char *argv[])
 #ifdef PARAGUI_GP2X
 	app.SetFontSize(10);
 	app.LoadLayout("dblbuffer-gp2x.xml");
+	
+	GP2X_Events* gp2x_events = new GP2X_Events;
+	app.SetEventSupplier(gp2x_events);
+	gp2x_events->start();
 #else
 	app.LoadLayout("dblbuffer.xml");
 #endif
@@ -330,5 +338,10 @@ int main(int argc, char *argv[])
 		PG_LogMSG("%2.2f frames per second",
 					((double)frames*1000)/(now-then));
 	}
+
+#ifdef PARAGUI_GP2X
+	gp2x_events->stop();
+#endif
+
 	return(0);
 }
