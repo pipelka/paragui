@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/04/26 09:41:52 $
+   Update Date:      $Date: 2006/05/22 11:01:46 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.39 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.40 $
    Status:           $State: Exp $
  */
 
@@ -272,10 +272,14 @@ void PG_Widget::eventMouseLeave() {
 }
 
 /**  */
-void PG_Widget::eventShow() {}
+void PG_Widget::eventShow() {
+    sigShow();
+}
 
 /**  */
-void PG_Widget::eventHide() {}
+void PG_Widget::eventHide() {
+    sigHide();
+}
 
 /**  */
 PG_Point PG_Widget::ClientToScreen(int sx, int sy) {

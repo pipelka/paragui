@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/05/22 11:01:46 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmessagebox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.2.11 $
     Status:           $State: Exp $
 */
 
@@ -90,5 +90,8 @@ bool PG_MessageBox::handleButton(PG_Button* button) {
 	//Set Buttonflag to ButtonID
 	SetModalStatus(button->GetID());
 	QuitModal();
+	
+	sigButton(this, button->GetID());
+
 	return true;
 }

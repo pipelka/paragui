@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/05/22 11:01:46 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsignals.h,v $
-    CVS/RCS Revision: $Revision: 1.8.2.7 $
+    CVS/RCS Revision: $Revision: 1.8.2.8 $
     Status:           $State: Exp $
 */
 
@@ -42,6 +42,10 @@ typedef void* PG_Pointer;
 template<class datatype = PG_Pointer>
 class PG_Signal0 : public SigC::Signal0<bool> {
 public:
+
+	SigC::Connection connect(const SigC::Slot0<bool>& s) {
+		return SigC::Signal0<bool>::connect(s);
+	};
 
 	SigC::Connection connect(const SigC::Slot1<bool, datatype>& s, datatype data) {
 		return SigC::Signal0<bool>::connect(bind(s, data));

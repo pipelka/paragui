@@ -45,12 +45,15 @@ Whats new in ParaGUI 1.1.9 ?
 - fixed a race condition in PG_TimerObject
 - fixed a bug in PG_Application::Shutdown
 - added devhelp support to html documentation
-- fixed "test/dropdown2" bug (proper resize of scrollarea von RemoveAll)
+- fixed "test/dropdown2" bug (proper resize of scrollarea on RemoveAll)
 - added PG_Application::Get/SetUpdateOverlappingSiblings
 - added devhelp debian package
 - added PG_WidgetList::InsertAfter
 - various smaller fixes
 - support for the GP2X personal entertainment player
+- new signal PG_MessageBox::sigButton
+- added missing constructor in PG_Signal0
+- added PG_Widget::signal[Show|Hide] signals
 
 
 - applied patches from Sebastian:
