@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/04/27 08:03:01 $
+    Update Date:      $Date: 2006/05/28 19:03:52 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.32 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.33 $
     Status:           $State: Exp $
 */
 
@@ -208,22 +208,17 @@ void PG_Application::RunEventLoop() {
 	FlushEventQueue();
 
 	while(!my_quitEventLoop) {
-		ClearOldMousePosition();
-
-		if(enableAppIdleCalls) {
-			if ( my_eventSupplier->PollEvent(&event) == 0) {
+		if(enableAppIdleCalls && my_eventSupplier->PollEvent(&event) == 0) {
 				eventIdle();
-			} else {
-				PumpIntoEventQueue(&event);
-			}
-		} else {
-			if(my_eventSupplier->WaitEvent(&event) != 1) {
+				continue;
+		} 
+        if(!enableAppIdleCalls && my_eventSupplier->WaitEvent(&event) != 1) {
 				SDL_Delay(10);
 				continue;
-			}
-			PumpIntoEventQueue(&event);
 		}
 
+		ClearOldMousePosition();
+		PumpIntoEventQueue(&event);
 		DrawCursor();
 	}
 }

@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/05/22 11:01:46 $
+   Update Date:      $Date: 2006/05/28 19:03:52 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.40 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.41 $
    Status:           $State: Exp $
  */
 
@@ -1472,6 +1472,8 @@ int PG_Widget::RunModal() {
 	SDL_Event event;
 	_mid->quitModalLoop = false;
 
+    PG_Application::DrawCursor();
+
 	//PG_Application::FlushEventQueue();
 
 	// run while in modal mode
@@ -1492,6 +1494,8 @@ int PG_Widget::RunModal() {
 		PG_Application::DrawCursor();
 	}
 
+    PG_Application::ClearOldMousePosition();
+    
 	return _mid->modalstatus;
 }
 

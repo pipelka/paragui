@@ -153,6 +153,7 @@ Whats new in ParaGUI 1.1.9 ?
 - applied patches from Ulf Lorenz:
 - documentation updates (faq, tutorial)
 - PG_TimerObject fix
+- cursor draw fixes
 
 
 ----------------------------
