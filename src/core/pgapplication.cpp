@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/05/28 19:03:52 $
+    Update Date:      $Date: 2006/06/04 08:24:17 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.33 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.34 $
     Status:           $State: Exp $
 */
 
@@ -75,6 +75,7 @@ bool PG_Application::disableDirtyUpdates = false;
 PG_EventSupplier* PG_Application::my_eventSupplier = NULL;
 PG_EventSupplier* PG_Application::my_defaultEventSupplier = NULL;
 bool PG_Application::defaultUpdateOverlappingSiblings = true;
+bool PG_Application::my_cursor_drawn = false;
 
 /**
 	new shutdown procedure (called at application termination
@@ -250,6 +251,7 @@ void PG_Application::ClearOldMousePosition() {
 	}
 
 	SDL_BlitSurface(my_mouse_backingstore, NULL, GetScreen(), &my_mouse_position);
+	my_cursor_drawn = false;
 
 	return;
 }
@@ -322,7 +324,13 @@ void PG_Application::DrawCursor(bool update) {
 	if(my_mouse_backingstore == NULL) {
 		my_mouse_backingstore = PG_Draw::CreateRGBSurface(my_mouse_pointer->w, my_mouse_pointer->h);
 	}
-	SDL_BlitSurface(GetScreen(), &my_mouse_position, my_mouse_backingstore, NULL);
+
+	// occuring bug with timers: cursor is drawn twice, so on second draw the
+	// cursor image is stored as background, leading to much fun. :(
+	if (!my_cursor_drawn) {
+		SDL_BlitSurface(GetScreen(), &my_mouse_position, my_mouse_backingstore, NULL);
+	}
+	my_cursor_drawn = true;
 
 	// draw cursor
 	SDL_BlitSurface(my_mouse_pointer, 0, screen, &my_mouse_position);
@@ -332,6 +340,7 @@ void PG_Application::DrawCursor(bool update) {
 		SDL_UpdateRects(screen, 3, rects);
 	}
 }
+
 void PG_Application::Quit() {
 	sigQuit(this);
 	SDL_Event event;

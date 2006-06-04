@@ -154,7 +154,7 @@ Whats new in ParaGUI 1.1.9 ?
 - documentation updates (faq, tutorial)
 - PG_TimerObject fix
 - cursor draw fixes
-
+- proper drawing of the cursor within PG_TimerObject events
 
 ----------------------------
 Whats new in ParaGUI 1.1.8 ?

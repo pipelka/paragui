@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/05/21 18:03:33 $
+    Update Date:      $Date: 2006/06/04 08:24:17 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.26 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.27 $
     Status:           $State: Exp $
 */
 
@@ -634,6 +634,7 @@ private:
 	static SDL_Surface* my_mouse_backingstore;
 	static PG_Rect my_mouse_position;
 	static CursorMode my_mouse_mode;
+	static bool my_cursor_drawn;
 	static SDL_mutex* mutexScreen;
 	static bool disableDirtyUpdates;
 	static bool defaultUpdateOverlappingSiblings;
