@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/06/07 05:56:06 $
+    Update Date:      $Date: 2006/06/07 06:07:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.35 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.36 $
     Status:           $State: Exp $
 */
 
@@ -35,6 +35,7 @@
 #include "pgeventsupplier.h"
 #include "pgsdleventsupplier.h"
 
+#include "SDL_getenv.h"
 #include <iostream>
 #include <cstring>
 #include <cassert>
@@ -97,6 +98,9 @@ PG_Application::PG_Application()
 #ifdef ENABLE_UNICODE
 	setlocale(LC_CTYPE, "C.UTF-8");
 #endif
+
+	// workaround for XGL
+	putenv("XLIB_SKIP_ARGB_VISUALS=1");
 
 	if(pGlobalApp != NULL) {
 		PG_LogWRN("PG_Application Object already exists !");

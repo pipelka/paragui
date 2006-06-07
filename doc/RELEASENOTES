@@ -54,6 +54,7 @@ Whats new in ParaGUI 1.1.9 ?
 - new signal PG_MessageBox::sigButton
 - added missing constructor in PG_Signal0
 - added PG_Widget::signal[Show|Hide] signals
+- added workaround for XGL (XLIB_SKIP_ARGB_VISUALS=1)
 
 
 - applied patches from Sebastian:
