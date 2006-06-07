@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/06/07 09:36:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pgbutton.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.22 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.23 $
     Status:           $State: Exp $
 */
 
@@ -336,7 +336,7 @@ class SignalButtonClick : public PG_Signal1<PG_Button*, datatype> {}
 
 	/**
 	Set the behaviour of the button. 
-	@param behaviour bitmapped field, see #BUTTONMODE
+	@param behaviour bitmapped field, see #BEHAVIOUR
 	*/
 	void SetBehaviour( int behaviour );
 

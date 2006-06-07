@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/05/28 19:03:52 $
+   Update Date:      $Date: 2006/06/07 09:36:41 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.41 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.42 $
    Status:           $State: Exp $
  */
 
@@ -1501,6 +1501,7 @@ int PG_Widget::RunModal() {
 
 bool PG_Widget::eventQuitModal(int id, PG_MessageObject* widget, unsigned long data) {
 	_mid->quitModalLoop = true;
+	PG_Application::WakeUp();
 	return true;
 }
 

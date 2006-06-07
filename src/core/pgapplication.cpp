@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/06/07 06:07:19 $
+    Update Date:      $Date: 2006/06/07 09:36:41 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.36 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.37 $
     Status:           $State: Exp $
 */
 
@@ -58,10 +58,7 @@ SDL_Surface* PG_Application::screen = NULL;
 //std::string PG_Application::app_path = "";
 PG_Theme* PG_Application::my_Theme = NULL;
 bool PG_Application::bulkMode = false;
-//bool PG_Application::glMode = false;
-//bool PG_Application::emergencyQuit = false;
 bool PG_Application::enableBackground = true;
-//bool PG_Application::enableAppIdleCalls = false;
 SDL_Surface *PG_Application::my_mouse_pointer = NULL;
 SDL_Surface *PG_Application::my_mouse_backingstore = NULL;
 PG_Rect PG_Application::my_mouse_position = PG_Rect(0,0,0,0);
@@ -72,11 +69,11 @@ SDL_Surface* PG_Application::my_scaled_background = NULL;
 PG_Color PG_Application::my_backcolor;
 PG_Draw::BkMode PG_Application::my_backmode = PG_Draw::TILE;
 bool PG_Application::disableDirtyUpdates = false;
-//bool PG_Application::my_quitEventLoop = false;
 PG_EventSupplier* PG_Application::my_eventSupplier = NULL;
 PG_EventSupplier* PG_Application::my_defaultEventSupplier = NULL;
 bool PG_Application::defaultUpdateOverlappingSiblings = true;
 bool PG_Application::my_cursor_drawn = false;
+bool PG_Application::my_pauseEventLoop = false;
 
 /**
 	new shutdown procedure (called at application termination
@@ -196,6 +193,27 @@ void PG_Application::Run() {
 	RunEventLoop();
 }
 
+void PG_Application::Pause() {
+	my_pauseEventLoop = true;
+	WakeUp();
+}
+
+void PG_Application::Resume() {
+	my_pauseEventLoop = false;
+	WakeUp();
+}
+
+void PG_Application::WakeUp() {
+	SDL_Event e;
+	e.type = SDL_USEREVENT;
+	e.user.type = SDL_USEREVENT;
+	e.user.code = 0;
+	e.user.data1 = NULL;
+	e.user.data2 = NULL;
+
+	SDL_PushEvent(&e);
+}
+
 void PG_Application::EnableAppIdleCalls(bool enable) {
 	enableAppIdleCalls = enable;
 }
@@ -213,6 +231,12 @@ void PG_Application::RunEventLoop() {
 	FlushEventQueue();
 
 	while(!my_quitEventLoop) {
+	
+		if(my_pauseEventLoop) {
+			SDL_Delay(10);
+			continue;
+		}
+
 		if(enableAppIdleCalls && my_eventSupplier->PollEvent(&event) == 0) {
 				eventIdle();
 				continue;
@@ -257,8 +281,10 @@ void PG_Application::ClearOldMousePosition() {
 	// Refuse to draw the background back twice. After all, once it is redrawn,
 	// the mouse cursor is gone, and it fixes some potential bugs where an old
 	// background is stored while the whole screen was redrawn.
-	if (my_cursor_drawn)
+	if (my_cursor_drawn) {
 		SDL_BlitSurface(my_mouse_backingstore, NULL, GetScreen(), &my_mouse_position);
+	}
+
 	my_cursor_drawn = false;
 
 	return;
@@ -348,7 +374,6 @@ void PG_Application::DrawCursor(bool update) {
 		SDL_UpdateRects(screen, 3, rects);
 	}
 }
-
 void PG_Application::Quit() {
 	sigQuit(this);
 	SDL_Event event;

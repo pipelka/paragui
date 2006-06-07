@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/06/07 09:36:41 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgtooltiphelp.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.3 $
+    CVS/RCS Revision: $Revision: 1.1.2.4 $
     Status:           $State: Exp $
 */
 
@@ -50,7 +50,7 @@ class PG_LineEdit;
  The ToolTipHelp will delete itself when the parent widget is deleted. 
  It is also safe to delete the ToolTipHelp object manually prior to deleting the widget. 
  
- @ToDo Query the cursor size and position the help so it doesn't overlap with large cursors
+ @todo Query the cursor size and position the help so it doesn't overlap with large cursors
 */
 class DECLSPEC PG_ToolTipHelp: public SigC::Object {
 private:

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/12 19:07:33 $
+    Update Date:      $Date: 2006/06/07 09:36:41 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgmessageobject.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.12 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.13 $
     Status:           $State: Exp $
 */
 
@@ -142,6 +142,10 @@ bool PG_MessageObject::ProcessEvent(const SDL_Event* event) {
 			rc = eventResize(&event->resize) || sigVideoResize(this, &event->resize);
 			break;
 
+		case SDL_USEREVENT:
+			rc = eventUserEvent(&event->user) || sigUserEvent(this, &event->user);
+			break;
+
 		default:
 			rc = false;
 			break;
@@ -196,6 +200,10 @@ bool PG_MessageObject::eventSysWM(const SDL_SysWMEvent* syswm) {
 	return false;
 }
 
+
+bool PG_MessageObject::eventUserEvent(const SDL_UserEvent* event) {
+	return false;
+}
 
 bool PG_MessageObject::eventResize(const SDL_ResizeEvent* event) {
 	return false;

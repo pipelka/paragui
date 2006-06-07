@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/06/07 09:36:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pgmessageobject.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.14 $
     Status:           $State: Exp $
 */
 
@@ -84,6 +84,10 @@ class SignalVideoResize : public PG_Signal2<PG_MessageObject*, const SDL_ResizeE
 
 	template<class datatype = PG_Pointer>
 class SignalDelete : public PG_Signal1<const PG_MessageObject*, datatype> {}
+	;
+
+	template<class datatype = PG_Pointer>
+class SignalUserEvent : public PG_Signal2<const PG_MessageObject*, const SDL_UserEvent*, datatype> {}
 	;
 
 	/**
@@ -161,8 +165,9 @@ class SignalDelete : public PG_Signal1<const PG_MessageObject*, datatype> {}
 	SignalSysWM<> sigSysWM;
 	SignalVideoResize<> sigVideoResize;
 	SignalQuit<> sigQuit;
-
 	SignalDelete<> sigDelete;
+	SignalUserEvent<> sigUserEvent;
+
 protected:
 
 	/**
@@ -275,14 +280,14 @@ protected:
 	virtual bool eventResize(const SDL_ResizeEvent* event);
 
 	/**
-	Overridable Eventhandler for a SDL_SysUserEvent message.
+	Overridable Eventhandler for a SDL_UserEvent message.
 	The default implementation returns 'false' which indicates that this message is not processed by this object.
 
-	@param event SDL_SysUserEvent message
+	@param event SDL_UserEvent message
 
 	@return Notifies the message pump if this message is processed by this object or it should be routed to the next message receiver.
 	*/
-	//virtual bool eventMessage(MSG_MESSAGE* msg);
+	virtual bool eventUserEvent(const SDL_UserEvent* event);
 
 	/** */
 	virtual void eventInputFocusLost(PG_MessageObject* newfocus);

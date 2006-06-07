@@ -55,6 +55,8 @@ Whats new in ParaGUI 1.1.9 ?
 - added missing constructor in PG_Signal0
 - added PG_Widget::signal[Show|Hide] signals
 - added workaround for XGL (XLIB_SKIP_ARGB_VISUALS=1)
+- added Pause/Resume functions for the PG_Application main eventloop
+- added PG_Application::WakeUp (to wake up any sleeping event loops)
 
 
 - applied patches from Sebastian:

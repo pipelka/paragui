@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/06/04 08:24:17 $
+    Update Date:      $Date: 2006/06/07 09:36:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.27 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.28 $
     Status:           $State: Exp $
 */
 
@@ -147,11 +147,29 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 
 	/**
 	Run the applications main eventloop.
-	If theaded is false this function will exit when the eventloop quits (MSG_QUIT). If threaded is true
-	it will return immediately and a thread processing events is started.
-	CAUTION: Threaded eventloops are unsuported under Win32 (windows specific behavior)
+	If theaded is false this function will exit when the eventloop quits (MSG_QUIT)
 	*/
 	virtual void Run();
+
+	/**
+	Pause the applications main eventloop.
+	Sometimes it's necessary to pause event processing. Think of custom eventhandlers
+	doing multithreaded eventloops.
+	*/
+	static void Pause();
+	
+	/**
+	Resume the applications main eventloop.
+	Resume the previously paused eventloop.
+	*/
+	static void Resume();
+
+	/**
+	Wake up sleeping eventloops.
+	This call simply sends a custom SDL_Event to force message processing.
+	*/
+	
+	static void WakeUp();
 
 	/**
 	Run the modal message pump. This function will exit when the main window was closed.
@@ -559,8 +577,7 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 
 	/**
 	Set the default sibling update mode.
-	@param enable true - enable / false - disable
-	@param recursive true : the flag will also be set for all childs of the current widget
+	@param update true - enable / false - disable
 	If enabled (the default), an Update operation will not only Update the Widget itself, but also all overlapping siblings.
 	Disabling this will gain a performance boost, but causes the overlapping parts of siblings to be overdrawn after Update operations.
 	All widgets created after setting this option will use the selected update method.
@@ -602,6 +619,8 @@ protected:
 	virtual void eventIdle();
 
 	bool my_quitEventLoop;
+
+	static bool my_pauseEventLoop;
 
 private:
 

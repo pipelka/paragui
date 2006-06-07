@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/05/22 11:01:46 $
+    Update Date:      $Date: 2006/06/07 09:36:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pgsignals.h,v $
-    CVS/RCS Revision: $Revision: 1.8.2.8 $
+    CVS/RCS Revision: $Revision: 1.8.2.9 $
     Status:           $State: Exp $
 */
 
@@ -40,7 +40,11 @@
 typedef void* PG_Pointer;
 
 template<class datatype = PG_Pointer>
-class PG_Signal0 : public SigC::Signal0<bool> {
+class PG_Signal0
+#ifndef DOXYGEN_SKIP
+ : public SigC::Signal0<bool>
+#endif
+{
 public:
 
 	SigC::Connection connect(const SigC::Slot0<bool>& s) {
@@ -54,7 +58,11 @@ public:
 };
 
 template<class P1, class datatype = PG_Pointer>
-class PG_Signal1 : public SigC::Signal1<bool, P1> {
+class PG_Signal1
+#ifndef DOXYGEN_SKIP
+ : public SigC::Signal1<bool, P1>
+#endif
+{
 	static bool sig_convert0(SigC::Slot0<bool>& s, P1 p1) {
 		return s();
 	}
@@ -82,7 +90,11 @@ public:
 
 
 template<class P1, class P2, class datatype = PG_Pointer>
-class PG_Signal2 : public SigC::Signal2<bool, P1, P2> {
+class PG_Signal2
+#ifndef DOXYGEN_SKIP
+ : public SigC::Signal2<bool, P1, P2>
+#endif
+{
 
 	static bool sig_convert_p2( SigC::Slot1<bool, P2>& s, P1 p1, P2 p2) {
 		return s(p2);

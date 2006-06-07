@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/06/07 09:36:41 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.15 $
     Status:           $State: Exp $
 */
 
@@ -217,6 +217,7 @@ private:
 	Load a font face from the archive
 	@param filename fontfile to load (truetype)
 	@param fontsize size of the face in pixels
+	@param index currently unused
 	@return pointer to the loaded PG_FontFaceCacheItem
 	*/
 	static PG_FontFaceCacheItem* LoadFontFace(const std::string& filename, FT_F26Dot6 fontsize, int index = 0);
