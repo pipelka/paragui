@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/06/07 11:09:29 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pglistbox.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.4.2.19 $
+    CVS/RCS Revision: $Revision: 1.3.6.4.2.20 $
     Status:           $State: Exp $
 */
 
@@ -51,8 +51,14 @@ void PG_ListBox::AddChild(PG_Widget* item) {
 
 	item->SizeWidget(Width(), item->Height());
 
+	// resize all widgets in the list
+	for(PG_Widget* list = GetFirstInList() ; list != NULL; list = list->next()) {
+		list->SizeWidget(my_scrollarea->Width(), list->Height());
+	}
+	
 	PG_WidgetList::AddChild(item);
 
+	my_objVerticalScrollbar->BringToFront();
 	item->SetID(my_scrollarea->GetChildList()->size() - 1);
 }
 
