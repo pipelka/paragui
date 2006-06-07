@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/06/04 08:24:17 $
+    Update Date:      $Date: 2006/06/07 05:56:06 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.34 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.35 $
     Status:           $State: Exp $
 */
 
@@ -250,7 +250,11 @@ void PG_Application::ClearOldMousePosition() {
 		return;
 	}
 
-	SDL_BlitSurface(my_mouse_backingstore, NULL, GetScreen(), &my_mouse_position);
+	// Refuse to draw the background back twice. After all, once it is redrawn,
+	// the mouse cursor is gone, and it fixes some potential bugs where an old
+	// background is stored while the whole screen was redrawn.
+	if (my_cursor_drawn)
+		SDL_BlitSurface(my_mouse_backingstore, NULL, GetScreen(), &my_mouse_position);
 	my_cursor_drawn = false;
 
 	return;

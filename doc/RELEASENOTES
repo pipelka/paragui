@@ -156,6 +156,11 @@ Whats new in ParaGUI 1.1.9 ?
 - cursor draw fixes
 - proper drawing of the cursor within PG_TimerObject events
 
+
+- applied patches from Andrea Paternesi:
+- automake variable patch
+
+
 ----------------------------
 Whats new in ParaGUI 1.1.8 ?
 ----------------------------

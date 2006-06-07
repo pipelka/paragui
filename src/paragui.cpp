@@ -20,12 +20,13 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/06/07 05:56:06 $
     Source File:      $Source: /sources/paragui/paragui/src/paragui.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.4 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.5 $
     Status:           $State: Exp $
 */
 
+#include <config.h>
 #include "pginfo.h"
 #include "paragui.h"
 #include "pglog.h"

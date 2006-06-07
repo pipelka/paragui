@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/06/07 05:56:06 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.13 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.14 $
     Status:           $State: Exp $
 */
 
@@ -45,12 +45,6 @@
 //
 #include "SDL.h"
 #include "SDL_thread.h"
-
-//
-// undefine PACKAGE, VERSION (collision with others)
-//
-#undef PACKAGE
-#undef VERSION
 
 #define PG_VERSIONNUM(X, Y, Z) ((X)*10000 + (Y)*100 + (Z))
 
