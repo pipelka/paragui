@@ -1,0 +1,82 @@
+/* include/paraconfig_gnu.h.in.  Generated from configure.in by autoheader.  */
+
+/* Define to 1 if Unicode support is enabled. */
+#undef ENABLE_UNICODE
+
+/* Define if exceptions are enabled */
+#undef EXCEPTIONS_ENABLED
+
+/* Define to 1 if you have the <dlfcn.h> header file. */
+#undef HAVE_DLFCN_H
+
+/* Define to 1 if you have the <ext/hash_map> header file. */
+#undef HAVE_EXT_HASH_MAP
+
+/* Define to 1 if you have the `fnmatch' function. */
+#undef HAVE_FNMATCH
+
+/* Define to 1 if you have the <hash_map> header file. */
+#undef HAVE_HASH_MAP
+
+/* Define to 1 if you have the <inttypes.h> header file. */
+#undef HAVE_INTTYPES_H
+
+/* Define to 1 if you have the `jpeg' library (-ljpeg). */
+#undef HAVE_LIBJPEG
+
+/* Define to 1 if you have the `png' library (-lpng). */
+#undef HAVE_LIBPNG
+
+/* Define to 1 if you have the `tiff' library (-ltiff). */
+#undef HAVE_LIBTIFF
+
+/* Define to 1 if you have the <memory.h> header file. */
+#undef HAVE_MEMORY_H
+
+/* Define to 1 if you have the <stdint.h> header file. */
+#undef HAVE_STDINT_H
+
+/* Define to 1 if you have the <stdlib.h> header file. */
+#undef HAVE_STDLIB_H
+
+/* Define to 1 if you have the `strdup' function. */
+#undef HAVE_STRDUP
+
+/* Define to 1 if you have the <strings.h> header file. */
+#undef HAVE_STRINGS_H
+
+/* Define to 1 if you have the <string.h> header file. */
+#undef HAVE_STRING_H
+
+/* Define to 1 if you have the `strtok' function. */
+#undef HAVE_STRTOK
+
+/* Define to 1 if you have the <sys/stat.h> header file. */
+#undef HAVE_SYS_STAT_H
+
+/* Define to 1 if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define to 1 if you have the <unistd.h> header file. */
+#undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the `vsnprintf' function. */
+#undef HAVE_VSNPRINTF
+
+/* Define if we enabled mpatrol */
+#undef MPATROL_ENABLED
+
+/* Define to 1 if you want support for the GP2X platform. */
+#undef PARAGUI_GP2X
+
+/* default directory for themes */
+#undef PARAGUI_THEMEDIR
+
+/* Define if we enabled runtime type infos */
+#undef RTTI_ENABLED
+
+/* SDL_image shared library */
+#undef SDLIMAGE_LIB
+
+/* Define to 1 if you have the ANSI C header files. */
+#undef STDC_HEADERS
