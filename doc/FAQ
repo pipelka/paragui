@@ -25,6 +25,7 @@ is incomplete, send a mail. ;)
     3.2. I use PG_TimerObjects, but my timers always stop working. What
          has happened?
     3.3. I get strange segfaults using valgrind and PG_TimerObject.
+    3.4. SetIcon doesn't work.
 
 
 4. Special problems
@@ -199,6 +200,17 @@ AFAIR, this may also happen in theory under certain, very exotic
 conditions (all of them including very fast timers and/or very slow
 processing). However, most likely this bug will not pop up under normal
 circumstances.
+
+
+3.4. SetIcon doesn't work
+
+Typically, SetIcon does work, but physfs (used by paragui to access all
+files) doesn't search in the correct directory. As a quick hack, inserting
+before the SetIcon call the line
+
+PG_FileArchive::AddArchive("path_to_icon_image");
+
+should help (or you put the icon where the rest of the theme resides).
 
 ---------------------------------------------------------------------
 
