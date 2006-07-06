@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/07/06 06:06:10 $
     Source File:      $Source: /sources/paragui/paragui/src/font/pgfont.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.12 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.13 $
     Status:           $State: Exp $
 */
 
@@ -342,6 +342,14 @@ bool PG_FontEngine::BlitFTBitmap(SDL_Surface *Surface, FT_Bitmap *Bitmap, int Po
 		return false;
 	}
 
+	// always lock surfaces before drawing!
+	if (SDL_MUSTLOCK(Surface)) {
+		if (SDL_LockSurface(Surface) < 0) {
+			PG_LogWRN("Unable to lock surface for drawing!");
+			return false;
+		}
+	}
+
 	switch(Surface->format->BytesPerPixel) {
 		case 1:
 		case 3:
@@ -356,6 +364,10 @@ bool PG_FontEngine::BlitFTBitmap(SDL_Surface *Surface, FT_Bitmap *Bitmap, int Po
 		default:
 			PG_LogWRN("Unable to draw font: unsupported bit depth!");
 			break;
+	}
+
+	if (SDL_MUSTLOCK(Surface)) {
+		SDL_UnlockSurface(Surface);
 	}
 
 	return true;

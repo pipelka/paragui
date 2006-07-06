@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/06/07 09:36:41 $
+    Update Date:      $Date: 2006/07/06 06:06:10 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.37 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.38 $
     Status:           $State: Exp $
 */
 
@@ -832,21 +832,31 @@ void PG_Application::SetIcon(const std::string& filename) {
 		UnloadSurface(icon);
 		return;
 	}
-
-	// Set the colorkey
-	SDL_SetColorKey(icon, SDL_SRCCOLORKEY, *((Uint8 *)icon->pixels));
-
-	// Create the mask
-	pixels = (Uint8 *)icon->pixels;
+	
+	// get the memory for the mask before we do the critical operations.
 	mlen = icon->w*icon->h;
 	mask =  new Uint8[mlen/8];
-
 	if ( mask == NULL ) {
 		PG_LogWRN("Out of memory when allocating mask for icon !");
 		UnloadSurface(icon);
 		return;
 	}
 
+	if (SDL_MUSTLOCK(icon)) {
+		if (SDL_LockSurface(icon) < 0) {
+			// This should hardly happen under normal circumstances.
+			// Bail out.
+			PG_LogWRN("Failed to lock hardware surface!");
+			UnloadSurface(icon);
+			return;
+		}
+	}
+
+	// Set the colorkey
+	SDL_SetColorKey(icon, SDL_SRCCOLORKEY, *((Uint8 *)icon->pixels));
+
+	// Create the mask
+	pixels = (Uint8 *)icon->pixels;
 	memset(mask, 0, mlen/8);
 	for ( i=0; i<mlen; ) {
 		if ( pixels[i] != *pixels ) {
@@ -857,6 +867,10 @@ void PG_Application::SetIcon(const std::string& filename) {
 		if ( (i%8) != 0 ) {
 			mask[i/8] <<= 1;
 		}
+	}
+
+	if (SDL_MUSTLOCK(icon)) {
+		SDL_UnlockSurface(icon);
 	}
 
 	//Set icon
