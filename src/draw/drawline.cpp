@@ -22,13 +22,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2006/08/23 19:17:01 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/drawline.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.3 $
+    CVS/RCS Revision: $Revision: 1.3.8.4 $
     Status:           $State: Exp $
 */
 
 #include "pgdraw.h"
+#include "pglog.h"
 
 void plotpixel(SDL_Surface* surface, Uint32 x, Uint32 y, const PG_Color& c, Uint8 width, int *pixelflag) {
 	Uint32 xp, yp, xf, yf;
@@ -177,6 +178,14 @@ void PG_Draw::DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Ui
 
 	} /* end of the if */
 
+	if (SDL_MUSTLOCK(surface)) {
+		if (!SDL_LockSurface(surface)) {
+			PG_LogWRN("Unable to lock surface for drawing!");
+			return;
+		}
+	}
+			
+
 	/* handle four separate cases */
 	deltax = x1 - x0;
 	deltay = y1 - y0;
@@ -200,4 +209,7 @@ void PG_Draw::DrawLine(SDL_Surface* surface, Uint32 x0, Uint32 y0, Uint32 x1, Ui
 		} /* end of if-else */
 	} /* end of if - else */
 
+	if (SDL_MUSTLOCK(surface)) {
+		SDL_UnlockSurface(surface);
+	}
 } /* end of the function */

@@ -159,6 +159,7 @@ Whats new in ParaGUI 1.1.9 ?
 - cursor draw fixes
 - proper drawing of the cursor within PG_TimerObject events
 - surface locking fixes
+- hardware surface patches
 
 
 - applied patches from Andrea Paternesi:

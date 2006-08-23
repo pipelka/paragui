@@ -20,13 +20,14 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/04/26 09:41:52 $
+    Update Date:      $Date: 2006/08/23 19:17:01 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/stretch.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
     Status:           $State: Exp $
 */
 
 #include "pgdraw.h"
+#include "pglog.h"
 
 #include <cstdio>
 #include <cstring>
@@ -53,17 +54,21 @@
 }*/
 
 
-inline void LockSurface(SDL_Surface* s) {
+inline bool LockSurface(SDL_Surface* s) {
 	if ( SDL_MUSTLOCK(s) ) {
 		if ( SDL_LockSurface(s) < 0 )
-			return ;
+		{
+			PG_LogWRN("Unable to lock surface for drawing!");
+			return false;
+		}
 	}
+	return true;
 }
 
 inline void UnlockSurface(SDL_Surface* s) {
 	if ( SDL_MUSTLOCK(s) ) {
 		SDL_UnlockSurface(s);
-		return ;
+		return;
 	}
 }
 
@@ -412,6 +417,16 @@ void PG_Draw::RectStretch(SDL_Surface* src_surface, int xs1, int ys1, int xs2, i
 	int src_bpp = src_surface->format->BytesPerPixel;
 	int dst_bpp = dst_surface->format->BytesPerPixel;
 
+	// Important: Lock hardware surfaces
+	if (!LockSurface(src_surface)) {
+		return;
+	}
+
+	if (!LockSurface(dst_surface)) {
+		UnlockSurface(src_surface);
+		return;
+	}
+	
 	switch (dst_bpp) {
 
 		case 1:
@@ -469,6 +484,9 @@ void PG_Draw::RectStretch(SDL_Surface* src_surface, int xs1, int ys1, int xs2, i
 
 	// copy the colorkey
 	//SDL_SetColorKey(dst_surface, SDL_SRCCOLORKEY, src_surface->format->colorkey);
+	
+	UnlockSurface(src_surface);
+	UnlockSurface(dst_surface);
 }
 
 
@@ -675,12 +693,22 @@ void zoom(SDL_Surface* dst, SDL_Surface* src, double fwidth) {
 	if (!src->w || !src->h || !dst->w || !dst->h)
 		return;
 
-	LockSurface(src);
-	LockSurface(dst);
+	if (!LockSurface(src)) {
+		return;
+	}
+	
+	if (!LockSurface(dst)) {
+		UnlockSurface(dst);
+		return;
+	}
 
 	/* create intermediate image to hold horizontal zoom */
 	tmp = new_image(dst->w, src->h);
-	LockSurface(tmp);
+	if (LockSurface(tmp)) {
+		UnlockSurface(src);
+		UnlockSurface(dst);
+		return;
+	}
 
 	xscale = (double) dst->w / (double) src->w;
 	yscale = (double) dst->h / (double) src->h;
@@ -921,6 +949,15 @@ void PG_Draw::InterpolatePixel(SDL_Surface* src, SDL_Surface* dest) {
 	Uint8 *xtemp = new Uint8[Src_X];
 	signed long *xvalue = new signed long[Src_X];
 
+
+	if (!LockSurface(src)) {
+		return;
+	}
+	if (!LockSurface(dest)) {
+		UnlockSurface(src);
+		return;
+	}
+
 	fp = (Uint8*)src->pixels;
 	sq = (Uint8*)dest->pixels;
 	for (x = 0; x < Src_X; x++)
@@ -1025,6 +1062,9 @@ void PG_Draw::InterpolatePixel(SDL_Surface* src, SDL_Surface* dest) {
 			sq += dest->pitch;
 		}
 	}
+
+	UnlockSurface(src);
+	UnlockSurface(dest);
 
 	delete[] xtemp;
 	delete[] xvalue;
