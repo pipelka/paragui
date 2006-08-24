@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/06/07 09:36:41 $
+    Update Date:      $Date: 2006/08/24 10:06:03 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.28 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.29 $
     Status:           $State: Exp $
 */
 
@@ -484,7 +484,7 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 	  might need to call this if you stop the normal event loop from running.
 	  @param update true if you want to "Update" the screen content immediately.
 	*/
-	static void DrawCursor(bool update = true);
+	static void DrawCursor(bool update = true, bool force_backup = false);
 
 	//! Set or query the type of mouse cursor to use.
 	/*!

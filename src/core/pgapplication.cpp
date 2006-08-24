@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/07/06 06:06:10 $
+    Update Date:      $Date: 2006/08/24 10:06:03 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.38 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.39 $
     Status:           $State: Exp $
 */
 
@@ -241,14 +241,21 @@ void PG_Application::RunEventLoop() {
 				eventIdle();
 				continue;
 		} 
-        if(!enableAppIdleCalls && my_eventSupplier->WaitEvent(&event) != 1) {
+
+		if(!enableAppIdleCalls && my_eventSupplier->WaitEvent(&event) != 1) {
 				SDL_Delay(10);
 				continue;
 		}
 
-		ClearOldMousePosition();
+		if(!bulkMode) {
+        		ClearOldMousePosition();
+		}
+
 		PumpIntoEventQueue(&event);
-		DrawCursor();
+		
+		if(!bulkMode) {
+			DrawCursor();
+		}
 	}
 }
 
@@ -290,7 +297,7 @@ void PG_Application::ClearOldMousePosition() {
 	return;
 }
 
-void PG_Application::DrawCursor(bool update) {
+void PG_Application::DrawCursor(bool update, bool force_backup) {
 	int x, y;
 
 	if(!my_mouse_pointer || my_mouse_mode != SOFTWARE || my_mouse_mode == NONE) {
@@ -361,7 +368,10 @@ void PG_Application::DrawCursor(bool update) {
 
 	// occuring bug with timers: cursor is drawn twice, so on second draw the
 	// cursor image is stored as background, leading to much fun. :(
-	if (!my_cursor_drawn) {
+	if (force_backup || (!my_cursor_drawn && !bulkMode)) {
+		if(force_backup) {
+			PG_Widget::UpdateRect(my_mouse_position);
+		}
 		SDL_BlitSurface(GetScreen(), &my_mouse_position, my_mouse_backingstore, NULL);
 	}
 	my_cursor_drawn = true;
@@ -772,6 +782,7 @@ bool PG_Application::eventQuit(int id, PG_MessageObject* widget, unsigned long d
 
 void PG_Application::SetBulkMode(bool bulk) {
 	bulkMode = bulk;
+	my_cursor_drawn = false;
 }
 
 void PG_Application::Shutdown() {
