@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/08/23 19:17:01 $
+    Update Date:      $Date: 2006/08/25 11:41:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.35 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.36 $
     Status:           $State: Exp $
 */
 
@@ -314,7 +314,7 @@ public:
 	Update the widget's screen area
 	@param doBlit	if true a Blit() operation is done before the update
 	*/
-	void Update(bool doBlit = true);
+	virtual void Update(bool doBlit = true);
 
 	/**
 	Update a screen area

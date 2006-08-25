@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/08/25 11:41:21 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcolumnitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
     Status:           $State: Exp $
 */
 
@@ -71,6 +71,10 @@ void PG_ColumnItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rec
 		xshift = my_srfIcon->w;
 	}
 
+	PG_Rect base = *GetClipRect();
+	base.x = 0;
+	base.y = 0;
+
 	for(Uint32 i=0; i<my_columncount; i++) {
 
 		if(my_columntext[i].empty()) {
@@ -85,7 +89,8 @@ void PG_ColumnItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rec
 		if(xshift + cw > my_width) {
 			cw -=  ((xshift + cw) - my_width);
 		}
-		DrawText(xshift, (my_height - h)/2, my_columntext[i], PG_Rect(xshift, 0, cw-5, my_height));
+		PG_Rect textrect(xshift, 0, cw-5, my_height);
+		DrawText(xshift, (my_height - h)/2, my_columntext[i], base.IntersectRect(textrect));
 		xshift += my_columnwidth[i];
 	}
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/08/24 10:06:03 $
+    Update Date:      $Date: 2006/08/25 11:41:21 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.29 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.30 $
     Status:           $State: Exp $
 */
 
@@ -214,6 +214,24 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 	*/
 	inline static bool UnlockScreen() {
 		return (SDL_mutexV(mutexScreen) == 0);
+	}
+
+	/**
+	Set a lock on the event queue
+
+	@return	true - the lock was established successfully
+	*/
+	inline static bool LockEvent() {
+		return (SDL_mutexP(mutexEvent) == 0);
+	}
+
+	/**
+	Unlock the event queue
+
+	@return	true - the unlock operation was successful
+	*/
+	inline static bool UnlockEvent() {
+		return (SDL_mutexV(mutexEvent) == 0);
 	}
 
 	/**
@@ -655,6 +673,7 @@ private:
 	static CursorMode my_mouse_mode;
 	static bool my_cursor_drawn;
 	static SDL_mutex* mutexScreen;
+	static SDL_mutex* mutexEvent;
 	static bool disableDirtyUpdates;
 	static bool defaultUpdateOverlappingSiblings;
 };

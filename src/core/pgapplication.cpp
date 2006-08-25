@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/08/24 10:06:03 $
+    Update Date:      $Date: 2006/08/25 11:41:21 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.39 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.40 $
     Status:           $State: Exp $
 */
 
@@ -53,6 +53,8 @@
 #endif  // PARAGUI_THEMEDIR
 
 SDL_mutex* PG_Application::mutexScreen = NULL;
+SDL_mutex* PG_Application::mutexEvent = NULL;
+
 PG_Application* PG_Application::pGlobalApp = NULL;
 SDL_Surface* PG_Application::screen = NULL;
 //std::string PG_Application::app_path = "";
@@ -129,6 +131,8 @@ PG_Application::PG_Application()
 	screen = NULL;
 
 	mutexScreen = SDL_CreateMutex();
+	mutexEvent = SDL_CreateMutex();
+
 	my_background = NULL;
 	my_freeBackground = false;
 	my_backmode = PG_Draw::TILE;
@@ -238,17 +242,19 @@ void PG_Application::RunEventLoop() {
 		}
 
 		if(enableAppIdleCalls && my_eventSupplier->PollEvent(&event) == 0) {
-				eventIdle();
-				continue;
+			eventIdle();
+			continue;
 		} 
 
 		if(!enableAppIdleCalls && my_eventSupplier->WaitEvent(&event) != 1) {
-				SDL_Delay(10);
-				continue;
+			SDL_Delay(10);
+			continue;
 		}
 
+		LockEvent();
+
 		if(!bulkMode) {
-        		ClearOldMousePosition();
+       		ClearOldMousePosition();
 		}
 
 		PumpIntoEventQueue(&event);
@@ -256,6 +262,8 @@ void PG_Application::RunEventLoop() {
 		if(!bulkMode) {
 			DrawCursor();
 		}
+
+		UnlockEvent();
 	}
 }
 
@@ -804,6 +812,9 @@ void PG_Application::Shutdown() {
 	// destroy screen mutex
 	SDL_DestroyMutex(mutexScreen);
 
+	// destroy event mutex
+	SDL_DestroyMutex(mutexEvent);
+
 	// delete the default font
 	delete DefaultFont;
 	DefaultFont = NULL;
@@ -1287,6 +1298,7 @@ bool PG_Application::PumpIntoEventQueue(const SDL_Event* event) {
 				widget->ProcessEvent(event);
 				return true;
 			}
+
 			return true;
 
 		case SDL_MOUSEBUTTONUP:

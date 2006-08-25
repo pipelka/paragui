@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/06/07 09:36:41 $
+   Update Date:      $Date: 2006/08/25 11:41:21 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.42 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.43 $
    Status:           $State: Exp $
  */
 
@@ -1474,6 +1474,10 @@ int PG_Widget::RunModal() {
 
     PG_Application::DrawCursor();
 
+	// Unlock event queue (deadlock may happen if
+	// we were called in an event-handler)
+	PG_Application::UnlockEvent();
+
 	//PG_Application::FlushEventQueue();
 
 	// run while in modal mode
@@ -1489,12 +1493,18 @@ int PG_Widget::RunModal() {
 				continue;
 			}
 		}
+		PG_Application::LockEvent();
 		PG_Application::ClearOldMousePosition();
 		ProcessEvent(&event, true);
 		PG_Application::DrawCursor();
+		PG_Application::UnlockEvent();
 	}
 
     PG_Application::ClearOldMousePosition();
+    
+    // unlock event queue (main event look takes over
+    // control again)
+	PG_Application::UnlockEvent();
     
 	return _mid->modalstatus;
 }
