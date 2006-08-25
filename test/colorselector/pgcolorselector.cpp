@@ -171,7 +171,8 @@ void PG_ColorSelector::SetBaseColor(const PG_Color& c) {
 	g.colors[3].b = 0;
 
 	my_colorslider->SetGradient(g);
-	
+	my_colorslider->Update();
+
 	float v = my_colorslider->GetPosition();
 	
 	PG_Color r;
