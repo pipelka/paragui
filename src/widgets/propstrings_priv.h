@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/27 09:34:55 $
+    Update Date:      $Date: 2006/08/29 12:41:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/propstrings_priv.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -50,6 +50,7 @@ public:
 	static const std::string ScrollbarUp;
 	static const std::string ScrollbarV;
 	static const std::string ThemeWidget;
+	static const std::string ToolTipHelp;
 
 	static const std::string label;
 	static const std::string alignment;
@@ -93,6 +94,8 @@ public:
 	static const std::string blend2;
 	static const std::string shift;
 	static const std::string iconindent;
+	static const std::string offsetx;
+	static const std::string offsety;
 };
 
 #endif // PROPSTRINGS_PRIV_H

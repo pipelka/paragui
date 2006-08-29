@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/06/07 09:36:41 $
+    Update Date:      $Date: 2006/08/29 12:41:19 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgtooltiphelp.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.4 $
+    CVS/RCS Revision: $Revision: 1.1.2.5 $
     Status:           $State: Exp $
 */
 
@@ -57,14 +57,21 @@ private:
 
 class Ticker: public PG_TimerObject {
 		volatile Uint32 ticker;
-		Uint32 eventTimer(Uint32 interval) {
+		PG_TimerObject::ID timer_id;
+		Uint32 eventTimer(PG_TimerObject::ID id, Uint32 interval) {
+			if(id != timer_id) {
+				return interval;
+			}
 			++ticker;
 			return interval;
 		};
 	public:
 		Ticker( int interval ) : ticker(0) {
-			SetTimer( interval );
+			timer_id = AddTimer( interval );
 		};
+		~Ticker() {
+			RemoveTimer(timer_id);
+		}
 		Uint32 getTicker() {
 			return ticker;
 		};
@@ -74,10 +81,14 @@ class Ticker: public PG_TimerObject {
 
 	void startTimer();
 
+	void LoadThemeStyle(const std::string& widgettype);
+
 protected:
 	PG_Widget* parentWidget;
 	PG_TimerObject::ID id;
 	Uint32 lastTick;
+	int offset_x;
+	int offset_y;
 
 	enum { off, counting, shown } status;
 

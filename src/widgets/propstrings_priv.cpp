@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2005/06/27 09:34:55 $
+    Update Date:      $Date: 2006/08/29 12:41:19 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/propstrings_priv.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -44,6 +44,7 @@ const std::string PG_PropStr::ScrollbarRight = "ScrollbarRight";
 const std::string PG_PropStr::ScrollbarUp = "ScrollbarUp";
 const std::string PG_PropStr::ScrollbarV = "ScrollbarV";
 const std::string PG_PropStr::ThemeWidget = "ThemeWidget";
+const std::string PG_PropStr::ToolTipHelp = "ToolTipHelp";
 
 const std::string PG_PropStr::label = "label";
 const std::string PG_PropStr::alignment = "alignment";
@@ -89,3 +90,5 @@ const std::string PG_PropStr::blend1 = "blend1";
 const std::string PG_PropStr::blend2 = "blend2";
 const std::string PG_PropStr::shift = "shift";
 const std::string PG_PropStr::iconindent = "iconindent";
+const std::string PG_PropStr::offsetx = "offsetx";
+const std::string PG_PropStr::offsety = "offsety";

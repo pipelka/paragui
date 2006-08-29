@@ -443,6 +443,11 @@
 	<widget>
 		<type value="ToolTipHelp"/>
 		<object>
+			<name value="ToolTipHelp"/>
+			<property name="offsetx" value="16"/>
+			<property name="offsety" value="32"/>
+		</object>
+		<object>
 			<name value="LineEdit"/>
 			<color name="textcolor" value="0x00000000"/>
 			<property name="blend" value="0"/>

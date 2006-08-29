@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/02/12 19:07:32 $
+   Update Date:      $Date: 2006/08/29 12:41:19 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgtooltiphelp.cpp,v $
-   CVS/RCS Revision: $Revision: 1.1.2.2 $
+   CVS/RCS Revision: $Revision: 1.1.2.3 $
    Status:           $State: Exp $
  */
 
@@ -33,8 +33,8 @@
 #include "pgwidget.h"
 #include "pglineedit.h"
 #include "pgtooltiphelp.h"
-
-
+#include "pgtheme.h"
+#include "propstrings_priv.h"
 
 PG_LineEdit* PG_ToolTipHelp::toolTipLabel = NULL;
 PG_ToolTipHelp::Ticker* PG_ToolTipHelp::ticker = NULL;
@@ -53,9 +53,19 @@ PG_ToolTipHelp :: PG_ToolTipHelp( PG_Widget* parent, const std::string& text, in
 
 	parent->sigDelete.connect( SigC::slot( *this, &PG_ToolTipHelp::onParentDelete ));
 
+	offset_x = 5;
+	offset_y = 10;
+
+	LoadThemeStyle(style);
+
 	SetText( text );
 }
 
+void PG_ToolTipHelp::LoadThemeStyle(const std::string& widgettype) {
+	PG_Theme* t = PG_Application::GetTheme();
+	t->GetProperty(PG_PropStr::ToolTipHelp, PG_PropStr::ToolTipHelp, PG_PropStr::offsetx, offset_x);
+	t->GetProperty(PG_PropStr::ToolTipHelp, PG_PropStr::ToolTipHelp, PG_PropStr::offsety, offset_y);
+}
 
 void PG_ToolTipHelp :: SetText( const std::string& text ) {
 	my_text = text;
@@ -77,7 +87,7 @@ bool PG_ToolTipHelp :: onIdle(  ) {
 		if ( status < shown ) {
 			int x, y;
 			PG_Application::GetEventSupplier()->GetMouseState( x,y );
-			ShowHelp( PG_Point(x+5,y+10) );
+			ShowHelp( PG_Point(x + offset_x, y + offset_y) );
 			status = shown;
 		}
 		return true;
