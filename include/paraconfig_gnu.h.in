@@ -3,6 +3,9 @@
 /* Define to 1 if Unicode support is enabled. */
 #undef ENABLE_UNICODE
 
+/* Define to 1 if you want to include the builtin colortable. */
+#undef ENABLE_PGCOLORS
+
 /* Define if exceptions are enabled */
 #undef EXCEPTIONS_ENABLED
 

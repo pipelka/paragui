@@ -15,6 +15,9 @@
 /* Define if UNICODE support is enabled */
 //#define ENABLE_UNICODE
 
+/* Define if you want to include the builtin colortable */
+#define ENABLE_PGCOLORS
+
 /* Define if you have the SDL_image library */
 #define HAVE_SDLIMAGE 1
 

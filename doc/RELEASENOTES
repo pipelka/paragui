@@ -59,7 +59,11 @@ Whats new in ParaGUI 1.1.9 ?
 - added PG_Application::WakeUp (to wake up any sleeping event loops)
 - added eventloop locking functions (LockEvent() / UnlockEvent())
 - PG_ColumnItem clipping fixes
-
+- added PG_Thread class (a generic threading object)
+- modal eventloops now honour the "SDL_QUIT" signal
+- added configure option to exclude the PG_Colors colortable
+  this will save some memory if the colortable isn't needed
+  
 
 - applied patches from Sebastian:
 - PG_ListBox: fixed GetSelectedIndex()

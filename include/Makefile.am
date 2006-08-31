@@ -67,7 +67,8 @@ libparaguiinclude_HEADERS = \
 	pgpropertyfield_integer.h \
 	pgpropertyfield_string.h \
 	gp2xevents.h \
-	gp2xapplication.h
+	gp2xapplication.h \
+	pgthread.h
 
         
 EXTRA_DIST = \

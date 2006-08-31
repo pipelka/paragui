@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/08/25 11:41:21 $
+   Update Date:      $Date: 2006/08/31 12:46:05 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.43 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.44 $
    Status:           $State: Exp $
  */
 
@@ -1505,7 +1505,12 @@ int PG_Widget::RunModal() {
     // unlock event queue (main event look takes over
     // control again)
 	PG_Application::UnlockEvent();
-    
+
+	// post quit event    
+    if(event.type == SDL_QUIT) {
+    	PG_Application::GetApp()->Quit();
+    }
+
 	return _mid->modalstatus;
 }
 
@@ -1513,6 +1518,11 @@ bool PG_Widget::eventQuitModal(int id, PG_MessageObject* widget, unsigned long d
 	_mid->quitModalLoop = true;
 	PG_Application::WakeUp();
 	return true;
+}
+
+bool PG_Widget::eventQuit(int id, PG_MessageObject* widget, unsigned long data) {
+	QuitModal();
+	return false;
 }
 
 const PG_String& PG_Widget::GetText() {
