@@ -1,8 +1,14 @@
+libparagui1.1 (1.1.9-15) unstable; urgency=low
+
+  * added missing dependency (libtiff4-dev)
+
+ -- Alexander Pipelka <pipelka@bms-austria.com>  Fri,  8 Sep 2006 13:08:15 +0200
+
 libparagui1.1 (1.1.9-14) unstable; urgency=low
 
   * rebuild
 
- -- Alexander Pipelka <pipelka@localhost.localdomain>  Wed,  6 Sep 2006 11:19:41 +0200
+ -- Alexander Pipelka <pipelka@bms-austria.com>  Wed,  6 Sep 2006 11:19:41 +0200
 
 libparagui1.1 (1.1.9-13) unstable; urgency=low
 
