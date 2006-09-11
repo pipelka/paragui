@@ -27,6 +27,7 @@
 */
 
 #include "pgthread.h"
+#include "pglog.h"
 
 PG_Thread::PG_Thread() : my_thread(NULL), my_running(false) {
 	my_mutex = SDL_CreateMutex();
@@ -43,7 +44,7 @@ bool PG_Thread::Start() {
 	}
 	
 	my_running = true;
-	my_thread = SDL_CreateThread(&PG_Thread::static_pgthread_main, this);
+	my_thread = SDL_CreateThread(&PG_Thread::static_pgthread_main, (void*)this);
 	
 	return true;
 }
@@ -57,9 +58,9 @@ bool PG_Thread::Stop() {
 	my_running = false;
 	SDL_mutexV(my_mutex);
 
-	int* status;
-	SDL_WaitThread(my_thread, status);
-	return (*status == 1);
+	int status = 0;
+	SDL_WaitThread(my_thread, &status);
+	return (status == 1);
 }
 
 int PG_Thread::static_pgthread_main(void* data) {
@@ -74,9 +75,9 @@ int PG_Thread::static_pgthread_main(void* data) {
 bool PG_Thread::IsRunning() {
 	bool r;
 	
-	SDL_mutexP(my_mutex);
+	//SDL_mutexP(my_mutex);
 	r = my_running;
-	SDL_mutexV(my_mutex);
+	//SDL_mutexV(my_mutex);
 	
 	return r;
 }
