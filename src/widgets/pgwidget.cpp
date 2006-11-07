@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/08/31 12:46:05 $
+   Update Date:      $Date: 2006/11/07 13:56:19 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.44 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.45 $
    Status:           $State: Exp $
  */
 
@@ -1508,7 +1508,9 @@ int PG_Widget::RunModal() {
 
 	// post quit event    
     if(event.type == SDL_QUIT) {
+    	PG_LogDBG("sending SDL_QUIT from modal loop");
     	PG_Application::GetApp()->Quit();
+    	SetModalStatus(-100);
     }
 
 	return _mid->modalstatus;

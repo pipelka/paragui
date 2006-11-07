@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/08/25 11:41:21 $
+    Update Date:      $Date: 2006/11/07 13:56:19 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.40 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.41 $
     Status:           $State: Exp $
 */
 
@@ -394,10 +394,12 @@ void PG_Application::DrawCursor(bool update, bool force_backup) {
 }
 void PG_Application::Quit() {
 	sigQuit(this);
+	eventQuit(-1, this, 0);
+
 	SDL_Event event;
 	event.type = SDL_QUIT;
 	SDL_PushEvent(&event);
-	//eventQuit(0, this, 0);
+
 }
 
 /**  */
