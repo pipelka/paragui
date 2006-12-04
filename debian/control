@@ -34,7 +34,7 @@ Description: Development files for the widget set library
  Homepage: http://www.paragui.org
 
 Package: devhelp-book-paragui
-Dection: documentation
+Section: documentation
 Architecture: any
 Depends: devhelp
 Description: ParaGUI book for the DevHelp system
