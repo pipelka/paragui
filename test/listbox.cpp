@@ -4,18 +4,6 @@
 #include "pglistboxitem.h"
 
 bool handleListBoxItem(PG_ListBoxBaseItem* item) {
-	/*static int counter = 1;
-	char text[20];
-	
-	PG_ListBox* list = item->GetParent();
-	
-	list->DeleteAll();
-	
-	for(int i=0; i<10; i++) {
-		sprintf(text,"NewItem %i", counter++);
-		new PG_ListBoxItem(list, 25, text);
-	}*/
-
 	return true;
 }
 

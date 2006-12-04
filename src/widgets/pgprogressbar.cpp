@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/12/04 12:20:50 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgprogressbar.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.6 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.7 $
     Status:           $State: Exp $
 */
 
@@ -124,12 +124,13 @@ void PG_ProgressBar::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Re
 	PG_ThemeWidget::DeleteThemedSurface(ind);
 
 	if(my_drawPercentage) {
-		buf = new char[my_text.length() + 64];
+		int bufsize = my_text.length() + 64;
+		buf = new char[bufsize];
 		// draw the percentage
 		if (my_text.length() == 0)
-			sprintf(buf, "%i%%", (int)my_percentCurrent);
+			snprintf(buf, bufsize, "%i%%", (int)my_percentCurrent);
 		else
-			sprintf(buf, my_text.c_str(), (int)my_percentCurrent);
+			snprintf(buf, bufsize, my_text.c_str(), (int)my_percentCurrent);
 
 		Uint16 w, h;
 		GetTextSize(w,h, buf);

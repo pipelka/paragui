@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2006/12/04 12:20:50 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.7 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.8 $
     Status:           $State  
 */
 
@@ -83,7 +83,8 @@ void PG_LogConsole::LogVA(PG_LOG_LEVEL id, const char *Text, va_list ap) {
 	vsnprintf(buffer, sizeof(buffer), Text, ap);
 #else
 	// ERROR PRONE!!! VC++ doesn't have vsnprintf _I think_...
-	vsprintf(buffer, Text, ap);
+	//vsprintf(buffer, Text, ap);
+	vsnprintf(buffer, sizeof(buffer), Text, ap);
 #endif
 
 	//Create new log item

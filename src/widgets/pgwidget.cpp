@@ -20,9 +20,9 @@
    pipelka@teleweb.at
  
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/11/07 13:56:19 $
+   Update Date:      $Date: 2006/12/04 12:20:50 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.45 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.46 $
    Status:           $State: Exp $
  */
 
@@ -106,7 +106,7 @@ PG_Rect(rect), my_srfObject(NULL), _mid(new PG_WidgetDataInternal) {
 
 	// ??? - How can i do this better - ???
 	char buffer[15];
-	sprintf(buffer, "Object%d", ++my_ObjectCounter);
+	snprintf(buffer, sizeof(buffer), "Object%d", ++my_ObjectCounter);
 	_mid->name = buffer;
 
 	// default border colors
@@ -1273,7 +1273,7 @@ void PG_Widget::SetTextFormat(const char* text, ...) {
 		return;
 	}
 
-	vsprintf(temp, text, ap);
+	vsnprintf(temp, sizeof(temp), text, ap);
 	SetText(temp);
 	va_end(ap);
 }

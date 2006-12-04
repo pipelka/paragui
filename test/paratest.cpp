@@ -286,7 +286,7 @@ void PrintChildObjects(PG_RectList *RectList, char *TabSpace) {
 	while(list != NULL) {
 		PG_LogMSG("%s %s", TabSpace, list->GetName().c_str());
 
-		sprintf(tab,"  %s",TabSpace);
+		snprintf(tab, sizeof(tab), "  %s", TabSpace);
 		PrintChildObjects(list->GetChildList(), tab);
 
 		list = list->next();
@@ -579,7 +579,7 @@ int main(int argc, char* argv[]) {
 	const int dropperItemNum = 10;
 	for ( int i = 1; i <= dropperItemNum; ++i ) {
 		char buf[100];
-		sprintf( buf, "%d / %d", i, dropperItemNum - i );
+		snprintf(buf, sizeof(buf), "%d / %d", i, dropperItemNum - i );
 		dropper.AddItem( buf );
 	}
 	dropper.AddItem("LastLine");

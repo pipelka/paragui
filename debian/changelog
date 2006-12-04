@@ -1,3 +1,9 @@
+libparagui1.1 (1.1.9-16) unstable; urgency=low
+
+  * replaced all sprintf's with snprintf
+
+ -- Alexander Pipelka <pipelka@celeborn.bms-austria.com>  Mon,  4 Dec 2006 13:19:38 +0100
+
 libparagui1.1 (1.1.9-15) unstable; urgency=low
 
   * added missing dependency (libtiff4-dev)
