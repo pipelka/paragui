@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/08/23 19:17:01 $
+    Update Date:      $Date: 2007/03/22 14:57:29 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/stretch.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.8 $
     Status:           $State: Exp $
 */
 
@@ -704,7 +704,7 @@ void zoom(SDL_Surface* dst, SDL_Surface* src, double fwidth) {
 
 	/* create intermediate image to hold horizontal zoom */
 	tmp = new_image(dst->w, src->h);
-	if (LockSurface(tmp)) {
+	if(!LockSurface(tmp)) {
 		UnlockSurface(src);
 		UnlockSurface(dst);
 		return;

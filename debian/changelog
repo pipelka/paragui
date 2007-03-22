@@ -1,3 +1,9 @@
+libparagui1.1 (1.1.9-17) unstable; urgency=low
+
+  * fixed PW_Draw zoom function (LockSurface bug)
+
+ -- Alexander Pipelka <pipelka@celeborn.bms-austria.com>  Thu, 22 Mar 2007 15:56:12 +0100
+
 libparagui1.1 (1.1.9-16) unstable; urgency=low
 
   * replaced all sprintf's with snprintf
