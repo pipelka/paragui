@@ -1,3 +1,9 @@
+libparagui1.1 (1.1.9-18) feisty; urgency=low
+
+  * updated stretch functions
+
+ -- Alexander Pipelka <pipelka@celeborn>  Wed, 25 Jul 2007 16:15:00 +0200
+
 libparagui1.1 (1.1.9-17) unstable; urgency=low
 
   * fixed PW_Draw zoom function (LockSurface bug)
