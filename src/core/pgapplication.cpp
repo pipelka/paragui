@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/11/07 13:56:19 $
+    Update Date:      $Date: 2007/07/25 14:00:44 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.41 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.42 $
     Status:           $State: Exp $
 */
 
@@ -247,7 +247,7 @@ void PG_Application::RunEventLoop() {
 		} 
 
 		if(!enableAppIdleCalls && my_eventSupplier->WaitEvent(&event) != 1) {
-			SDL_Delay(10);
+			SDL_Delay(200);
 			continue;
 		}
 

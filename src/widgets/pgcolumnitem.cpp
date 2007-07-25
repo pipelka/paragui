@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/08/25 11:41:21 $
+    Update Date:      $Date: 2007/07/25 14:00:44 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcolumnitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
     Status:           $State: Exp $
 */
 
@@ -70,6 +70,7 @@ void PG_ColumnItem::eventBlit(SDL_Surface* srf, const PG_Rect& src, const PG_Rec
 	if(my_srfIcon != NULL) {
 		xshift = my_srfIcon->w;
 	}
+	xshift += GetIndent();
 
 	PG_Rect base = *GetClipRect();
 	base.x = 0;

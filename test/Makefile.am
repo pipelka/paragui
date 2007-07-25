@@ -15,6 +15,7 @@ noinst_PROGRAMS = \
 	writefile \
 	stress1 \
 	stress2 \
+	stretch \
 	listbox \
 	animation \
 	dropdown \
@@ -66,6 +67,9 @@ stress1_LDADD = $(LFLAGS)
 
 stress2_SOURCES = stress2.cpp
 stress2_LDADD = $(LFLAGS)
+
+stretch_SOURCES = stretch.cpp
+stretch_LDADD = $(LFLAGS)
 
 listbox_SOURCES = listbox.cpp
 listbox_LDADD = $(LFLAGS)
