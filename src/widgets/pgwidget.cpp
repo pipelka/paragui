@@ -1,28 +1,28 @@
 /*
    ParaGUI - crossplatform widgetset
    Copyright (C) 2000,2001,2002  Alexander Pipelka
- 
+
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
    License as published by the Free Software Foundation; either
    version 2 of the License, or (at your option) any later version.
- 
+
    This library is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
    Library General Public License for more details.
- 
+
    You should have received a copy of the GNU Library General Public
    License along with this library; if not, write to the Free
    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- 
+
    Alexander Pipelka
    pipelka@teleweb.at
- 
+
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2006/12/04 12:20:50 $
+   Update Date:      $Date: 2009/03/10 12:03:52 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.46 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.47 $
    Status:           $State: Exp $
  */
 
@@ -887,13 +887,13 @@ void PG_Widget::HideAll() {
 
 /*void PG_Widget::BulkUpdate() {
 	bBulkUpdate = true;
- 
+
 	for(PG_Widget* i = widgetList.first(); i != NULL; i = i->next()) {
 		if(i->IsVisible()) {
 			i->Update();
 		}
 	}
- 
+
 	bBulkUpdate = false;
 }*/
 
@@ -1474,10 +1474,6 @@ int PG_Widget::RunModal() {
 
     PG_Application::DrawCursor();
 
-	// Unlock event queue (deadlock may happen if
-	// we were called in an event-handler)
-	PG_Application::UnlockEvent();
-
 	//PG_Application::FlushEventQueue();
 
 	// run while in modal mode
@@ -1493,20 +1489,14 @@ int PG_Widget::RunModal() {
 				continue;
 			}
 		}
-		PG_Application::LockEvent();
 		PG_Application::ClearOldMousePosition();
 		ProcessEvent(&event, true);
 		PG_Application::DrawCursor();
-		PG_Application::UnlockEvent();
 	}
 
     PG_Application::ClearOldMousePosition();
-    
-    // unlock event queue (main event look takes over
-    // control again)
-	PG_Application::UnlockEvent();
 
-	// post quit event    
+	// post quit event
     if(event.type == SDL_QUIT) {
     	PG_LogDBG("sending SDL_QUIT from modal loop");
     	PG_Application::GetApp()->Quit();

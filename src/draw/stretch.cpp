@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2007/07/25 14:00:44 $
+    Update Date:      $Date: 2009/03/10 12:03:53 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/stretch.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.10 $
     Status:           $State: Exp $
 */
 
@@ -208,37 +208,63 @@ inline void StretchTemplate8to16(int x1, int x2, int y1, int y2, int yr, int yw,
 	e = dy - dx;
 	dx2 = dx << 1;
 
-	for (d = 0; d < dx; d++) {
-		p = lut[*src_pixels];
-
-		// RED: 5 BITS
-		pr = p >> 3;
+	if(lut != NULL) {
+		for (d = 0; d < dx; d++) {
+			p = lut[*src_pixels];
 	
-		// GREEN: 6 BITS
-		pg = p >> 2;
+			// RED: 5 BITS
+			pr = p >> 3;
+		
+			// GREEN: 6 BITS
+			pg = p >> 2;
+		
+			// BLUE: 5 BITS
+			pb = p >> 3;
+		
+			r = pr << 11 | pg << 5 | pb;
+			*dst_pixels++ = r;
 	
-		// BLUE: 5 BITS
-		pb = p >> 3;
+			while (e >= 0) {
+				src_pixels++;
+				e -= dx2;
+			}
 	
-		r = pr << 11 | pg << 5 | pb;
-		*dst_pixels++ = r;
-
-		while (e >= 0) {
-			src_pixels++;
-			e -= dx2;
+			e += dy;
 		}
-
-		e += dy;
+	}
+	else {
+		for (d = 0; d < dx; d++) {
+			p = *src_pixels;
+	
+			// RED: 5 BITS
+			pr = p >> 3;
+		
+			// GREEN: 6 BITS
+			pg = p >> 2;
+		
+			// BLUE: 5 BITS
+			pb = p >> 3;
+		
+			r = pr << 11 | pg << 5 | pb;
+			*dst_pixels++ = r;
+	
+			while (e >= 0) {
+				src_pixels++;
+				e -= dx2;
+			}
+	
+			e += dy;
+		}
 	}
 }
 
 inline void StretchTemplate24to16(int x1, int x2, int y1, int y2, int yr, int yw, Uint8* src_pixels, Uint16* dst_pixels, Uint32* lut) {
 	int dx, dy, e, d, dx2;
 
-	register Uint8 pr;
-	register Uint8 pg;
-	register Uint8 pb;
-	register Uint32 r;
+	register Uint16 pr;
+	register Uint16 pg;
+	register Uint16 pb;
+	register Uint16 r;
 
 	dx = (x2 - x1);
 	dy = (y2 - y1);
@@ -249,9 +275,9 @@ inline void StretchTemplate24to16(int x1, int x2, int y1, int y2, int yr, int yw
 
 	if(lut == NULL) {
 		for (d = 0; d < dx; d++) {
-			pr = *(src_pixels+0) >> 3;
-			pg = *(src_pixels+1) >> 2;
 			pb = *(src_pixels+2) >> 3;
+			pg = *(src_pixels+1) >> 2;
+			pr = *(src_pixels+0) >> 3;
 
 			r = pr << 11 | pg << 5 | pb;
 			*dst_pixels++ = r;
@@ -267,9 +293,9 @@ inline void StretchTemplate24to16(int x1, int x2, int y1, int y2, int yr, int yw
 	}
 
 	for (d = 0; d < dx; d++) {
-		pr = lut[*(src_pixels)] >> 3;
-		pg = lut[*(src_pixels+1)] >> 2;
-		pb = lut[*(src_pixels+2)] >> 3;
+		pb = (lut[*(src_pixels+2)] & 0xFF) >> 3;
+		pg = (lut[*(src_pixels+1)] & 0xFF) >> 2;
+		pr = (lut[*(src_pixels+0)] & 0xFF) >> 3;
 
 		r = pr << 11 | pg << 5 | pb;
 		*dst_pixels++ = r;
@@ -303,7 +329,7 @@ inline void StretchTemplate32to16(int x1, int x2, int y1, int y2, int yr, int yw
 		pg = *(src_pixels+1) >> 2;
 		pb = *(src_pixels+2) >> 3;
 
-		r = pr << 11 | pg << 5 | pb;
+		r = pb << 11 | pg << 5 | pr;
 		*dst_pixels++ = r;
 
 		while (e >= 0) {

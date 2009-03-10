@@ -1,28 +1,28 @@
 /*
     ParaGUI - crossplatform widgetset
     Copyright (C) 2000,2001,2002  Alexander Pipelka
- 
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
- 
+
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- 
+
     Alexander Pipelka
     pipelka@teleweb.at
- 
+
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/08/29 12:41:19 $
+    Update Date:      $Date: 2009/03/10 12:03:53 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgtooltiphelp.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.5 $
+    CVS/RCS Revision: $Revision: 1.1.2.6 $
     Status:           $State: Exp $
 */
 
@@ -41,15 +41,15 @@ class PG_LineEdit;
 
 /**
  @author Martin Bickel
- 
+
  @short ToolTip Help for widgets
- 
- Displays ToolTip help that opens when a mouse cursor hovers over a widget. 
+
+ Displays ToolTip help that opens when a mouse cursor hovers over a widget.
  It behaves similar to a PG_Widget, but it is not derived from it
-        
- The ToolTipHelp will delete itself when the parent widget is deleted. 
- It is also safe to delete the ToolTipHelp object manually prior to deleting the widget. 
- 
+
+ The ToolTipHelp will delete itself when the parent widget is deleted.
+ It is also safe to delete the ToolTipHelp object manually prior to deleting the widget.
+
  @todo Query the cursor size and position the help so it doesn't overlap with large cursors
 */
 class DECLSPEC PG_ToolTipHelp: public SigC::Object {
@@ -109,26 +109,27 @@ protected:
 public:
 	/**
 	Create a ToolTipHelp for the given widget
-	     
+
 	It automatically enables SigIdle calls for PG_Application
 
 	       @param parent The widget for which the ToolTip Help shall be shown
-	@param text The help text 
-	       @param delay The delay in 1/10 s after which the help appears when the mouse has stopped moving 
-	@param style The theme style for the Help. Default: Widget Type = ToolTipHelp . Object Name = LineEdit 
+	@param text The help text
+	       @param delay The delay in 1/10 s after which the help appears when the mouse has stopped moving
+	@param style The theme style for the Help. Default: Widget Type = ToolTipHelp . Object Name = LineEdit
 	*/
 	PG_ToolTipHelp( PG_Widget* parent, const std::string& text, int delay = 10, const std::string &style="ToolTipHelp" );
 
+	~PG_ToolTipHelp();
 
 	/**
-	Changes the help text 
+	Changes the help text
 	*/
 	void SetText( const std::string& text );
 
 	/**
 	Show the help to be shown
-	       
-	@param pos The screen coordinates of the upper left corner 
+
+	@param pos The screen coordinates of the upper left corner
 	*/
 	void ShowHelp( const PG_Point& pos );
 

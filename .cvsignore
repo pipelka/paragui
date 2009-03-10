@@ -44,3 +44,5 @@ Doxyfile
 stamp-h1
 .settings
 configure.lineno
+.anjuta
+TODO.tasks

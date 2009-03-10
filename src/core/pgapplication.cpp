@@ -1,28 +1,28 @@
 /*
     ParaGUI - crossplatform widgetset
     Copyright (C) 2000,2001,2002  Alexander Pipelka
- 
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
- 
+
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- 
+
     Alexander Pipelka
     pipelka@teleweb.at
- 
+
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2007/07/25 14:00:44 $
+    Update Date:      $Date: 2009/03/10 12:03:52 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.42 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.43 $
     Status:           $State: Exp $
 */
 
@@ -230,12 +230,14 @@ bool PG_Application::GetAppIdleCallsEnabled() {
 
 void PG_Application::RunEventLoop() {
 	SDL_Event event;
+	bzero(&event, sizeof(SDL_Event));
+
 	my_quitEventLoop = false;
 
 	FlushEventQueue();
 
 	while(!my_quitEventLoop) {
-	
+
 		if(my_pauseEventLoop) {
 			SDL_Delay(10);
 			continue;
@@ -244,26 +246,22 @@ void PG_Application::RunEventLoop() {
 		if(enableAppIdleCalls && my_eventSupplier->PollEvent(&event) == 0) {
 			eventIdle();
 			continue;
-		} 
+		}
 
 		if(!enableAppIdleCalls && my_eventSupplier->WaitEvent(&event) != 1) {
 			SDL_Delay(200);
 			continue;
 		}
 
-		LockEvent();
-
 		if(!bulkMode) {
        		ClearOldMousePosition();
 		}
 
 		PumpIntoEventQueue(&event);
-		
+
 		if(!bulkMode) {
 			DrawCursor();
 		}
-
-		UnlockEvent();
 	}
 }
 
@@ -856,7 +854,7 @@ void PG_Application::SetIcon(const std::string& filename) {
 		UnloadSurface(icon);
 		return;
 	}
-	
+
 	// get the memory for the mask before we do the critical operations.
 	mlen = icon->w*icon->h;
 	mask =  new Uint8[mlen/8];

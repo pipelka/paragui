@@ -81,7 +81,6 @@ int main(int argc, char* argv[]) {
 	
 	SDL_Surface* src = PG_Application::LoadSurface("rgb.png");
 
-	SDL_Rect dest_rect;
 	SDL_Surface* surf = SDL_CreateRGBSurface(SDL_SWSURFACE, src->w, src->h, 24, 0,0,0,0);
 	SDL_BlitSurface(src, NULL, surf, NULL);
 

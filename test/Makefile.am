@@ -35,8 +35,8 @@ LFLAGS = \
 	$(FREETYPE_LIBS)
 	$(LIBSTDCPP)
 
-# cairotest_SOURCES = cairotest.cpp
-# cairotest_LDADD = $(LFLAGS) -lcairo -lpixman
+#cairotest_SOURCES = cairotest.cpp
+#cairotest_LDADD = $(LFLAGS) -lcairo -lpixman
 
 unicodetest_SOURCES = unicodetest.cpp
 unicodetest_LDADD = $(LFLAGS)

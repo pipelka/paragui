@@ -327,7 +327,7 @@ void PG_MultiLineEdit::CreateTextVector(bool bSetupVScroll) {
 			start = end+1;
 			last = start;
 		}
-	} while (end++ < my_text.size());
+	} while (++end < my_text.size());
 
 	// setup the scrollbar
 	if(bSetupVScroll) {
