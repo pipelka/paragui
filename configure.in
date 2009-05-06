@@ -415,7 +415,6 @@ AC_SUBST(LIBPHYSFS)
 													    
 dnl Check for other files
 AC_LANG_CPLUSPLUS
-AC_CHECK_HEADERS(hash_map ext/hash_map)
 
 dnl Check for --enable-rtti flag
 

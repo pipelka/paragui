@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/12/04 12:20:50 $
+    Update Date:      $Date: 2009/05/06 14:13:59 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgsurfacecache.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.4.2.6 $
+    CVS/RCS Revision: $Revision: 1.2.4.4.2.7 $
     Status:           $State: Exp $
 */
 
@@ -32,47 +32,19 @@
 #include <cstring>
 #include <string>
 #include <cassert>
+#include <map>
 
 #include "pgsurfacecache.h"
 #include "pglog.h"
 
-#ifdef HASH_MAP_INC
-#include HASH_MAP_INC
-#else
-#include <map>
-#endif
-
 #define MY_SURFACEMAP ((pg_surfacemap_t*)my_surfacemap)
 #define MY_SURFACEINDEX ((pg_surfacemap_index_t*)my_surfacemap_index)
 
-#ifdef HASH_MAP_INC
-
-struct pg_surface_hash {
-	size_t operator()(std::string s1) const {
-		unsigned long hash = 0;
-		for(Uint32 i = 0; i < s1.length(); i++) {
-			hash = 5*hash + s1[i];
-		}
-		return hash;
-	}
-};
-
-// Don't need custom comparision for strings.
-typedef STL_MAP<std::string, pg_surface_cache_t*, pg_surface_hash> pg_surfacemap_t;
-// Don't need custom hash or comparision functions when the key is a long.
-typedef STL_MAP<unsigned long, pg_surface_cache_t* > pg_surfacemap_index_t;
-
-typedef pg_surfacemap_t::iterator pg_surfacemap_iter_t;
-typedef pg_surfacemap_index_t::iterator pg_surfacemap_index_iter_t;
-#else
-// Don't need custom comparisions for strings.
 typedef std::map<std::string, pg_surface_cache_t*> pg_surfacemap_t;
-// Don't need a custom comparision function when the key is a long
 typedef std::map<unsigned long, pg_surface_cache_t*> pg_surfacemap_index_t;
 
 typedef pg_surfacemap_t::iterator pg_surfacemap_iter_t;
 typedef pg_surfacemap_index_t::iterator pg_surfacemap_index_iter_t;
-#endif
 
 PG_SurfaceCache::PG_SurfaceCache() {
 	my_surfacemap = (void*)new(pg_surfacemap_t);

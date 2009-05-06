@@ -34,12 +34,6 @@
 /* Define if you have the <dlfcn.h> header file.  */
 #define HAVE_DLFCN_H 1
 
-/* Define if you have the <ext/hash_map> header file.  */
-/* #undef HAVE_EXT_HASH_MAP */
-
-/* Define if you have the <hash_map> header file.  */
-/*#define HAVE_HASH_MAP 1*/
-
 /* Define if you have the jpeg library (-ljpeg).  */
 #define HAVE_LIBJPEG 1
 

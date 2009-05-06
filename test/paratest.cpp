@@ -84,7 +84,7 @@ bool hande_slideIndent(PG_ScrollBar* s, long pos, PG_Pointer data)  {
 
 class MySliderLabel : public PG_Label {
 public:
-	MySliderLabel(PG_Widget* parent, const PG_Rect& r, char* text) : PG_Label(parent,r,text) {}
+	MySliderLabel(PG_Widget* parent, const PG_Rect& r, const char* text) : PG_Label(parent,r,text) {}
 	;
 
 	bool handler_slider(long data) {
@@ -98,7 +98,7 @@ public:
 class TestWindow : public PG_Window {
 public:
 
-	TestWindow(PG_Widget* parent, const PG_Rect& r, char* windowtext);
+	TestWindow(PG_Widget* parent, const PG_Rect& r, const char* windowtext);
 	virtual ~TestWindow() {}
 	;
 
@@ -136,7 +136,7 @@ private:
 };
 
 
-TestWindow::TestWindow(PG_Widget* parent, const PG_Rect& r, char* windowtext) :
+TestWindow::TestWindow(PG_Widget* parent, const PG_Rect& r, const char* windowtext) :
 PG_Window(parent, r, windowtext, DEFAULT) {
 	WidgetList = new PG_WidgetList(this, PG_Rect(30, 40, 220, 250));
 	WidgetList->SetDirtyUpdate(false);
@@ -273,7 +273,7 @@ bool handle_menu_click(PG_PopupMenu::MenuItem* item, PG_Pointer clientdata) {
 	return true;
 }
 
-void PrintChildObjects(PG_RectList *RectList, char *TabSpace) {
+void PrintChildObjects(PG_RectList *RectList, const char *TabSpace) {
 	char tab[20];
 	strcpy(tab, TabSpace);
 

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/06/07 09:36:41 $
+    Update Date:      $Date: 2009/05/06 14:13:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfont.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.15 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.16 $
     Status:           $State: Exp $
 */
 
@@ -46,9 +46,6 @@
 #include FT_CACHE_IMAGE_H
 #include FT_CACHE_SMALL_BITMAPS_H
 
-#ifdef HASH_MAP_INC
-#include HASH_MAP_INC
-#endif
 #include <map>
 
 class PG_FontFaceCacheItem;

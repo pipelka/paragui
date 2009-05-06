@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2009/05/06 14:13:57 $
     Source File:      $Source: /sources/paragui/paragui/include/pglayout.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.7 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.8 $
     Status:           $State: Exp $
 */
 
@@ -71,13 +71,13 @@ namespace PG_Layout {
 */
 DECLSPEC bool Load(PG_Widget* parent, const std::string& filename, void (* WorkCallback)(int now, int max), void *UserSpace);
 
-DECLSPEC int GetParamInt(const char **Source, char *What);
-DECLSPEC PG_ScrollBar::ScrollDirection GetParamScrollDirection(const char **Source, char *What);
-DECLSPEC char* GetParamStr(const char **Source, char *What);
-DECLSPEC void GetParamRect(const char **Source, char *What, PG_Rect& Rect, PG_Widget* parent = NULL);
-DECLSPEC PG_Label::TextAlign GetParamAlign(const char **Source, char *What);
-DECLSPEC PG_Draw::BkMode GetParamIMode(const char **Source, char *What);
-DECLSPEC int GetParamGrad(const char **Source, char *What, PG_Gradient *grad);
+DECLSPEC int GetParamInt(const char **Source, const char *What);
+DECLSPEC PG_ScrollBar::ScrollDirection GetParamScrollDirection(const char **Source, const char *What);
+DECLSPEC char* GetParamStr(const char **Source, const char *What);
+DECLSPEC void GetParamRect(const char **Source, const char *What, PG_Rect& Rect, PG_Widget* parent = NULL);
+DECLSPEC PG_Label::TextAlign GetParamAlign(const char **Source, const char *What);
+DECLSPEC PG_Draw::BkMode GetParamIMode(const char **Source, const char *What);
+DECLSPEC int GetParamGrad(const char **Source, const char *What, PG_Gradient *grad);
 
 };
 

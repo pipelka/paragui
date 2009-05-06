@@ -36,12 +36,6 @@
 /* Define if you have the vsnprintf function.  */
 /* #undef HAVE_VSNPRINTF */
 
-/* Define if you have the <ext/hash_map> header file.  */
-/* #undef HAVE_EXT_HASH_MAP */
-
-/* Define if you have the <hash_map> header file.  */
-/* #undef HAVE_HASH_MAP */
-
 /* Define if you have the jpeg library (-ljpeg).  */
 #define HAVE_LIBJPEG 1
 

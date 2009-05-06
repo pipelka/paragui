@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/08/31 12:46:06 $
+    Update Date:      $Date: 2009/05/06 14:13:58 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.37 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.38 $
     Status:           $State: Exp $
 */
 
@@ -37,8 +37,6 @@
 #include "pgrectlist.h"
 #include "pgfont.h"
 #include "pgstring.h"
-
-#include MAP_INC
 
 class PG_Widget;
 class PG_WidgetDataInternal;

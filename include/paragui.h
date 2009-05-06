@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/06/07 05:56:06 $
+    Update Date:      $Date: 2009/05/06 14:13:57 $
     Source File:      $Source: /sources/paragui/paragui/include/paragui.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.5.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.5.2.15 $
     Status:           $State: Exp $
 */
 
@@ -74,27 +74,6 @@
 		#define DLLLOCAL
 	#endif
 #endif
-
-//
-// STL map / hash_map
-//
-#if defined(HAVE_HASH_MAP)
-	#define HASH_MAP_INC <hash_map>
-	#define MAP_INC <hash_map>
-	#define STL_MAP std::hash_map
-#elif defined(HAVE_EXT_HASH_MAP)
-	#define HASH_MAP_INC <ext/hash_map>
-	#define MAP_INC <ext/hash_map>
-	#if PG_VERSIONNUM(__GNUC__, __GNUC_MINOR__, 0) >= PG_VERSIONNUM(3, 1, 0)
-		#define STL_MAP __gnu_cxx::hash_map
-	#else
-		#define STL_MAP std::hash_map
-	#endif
-#else
-	#define MAP_INC <map>
-	#define STL_MAP std::map
-#endif
-
 
 //
 // Modelled after g++ stdc++ v3

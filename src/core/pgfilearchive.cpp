@@ -1,28 +1,28 @@
 /*
     ParaGUI - crossplatform widgetset
     Copyright (C) 2000,2001,2002  Alexander Pipelka
- 
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
- 
+
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- 
+
     Alexander Pipelka
     pipelka@teleweb.at
- 
+
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:19 $
+    Update Date:      $Date: 2009/05/06 14:13:58 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14.2.11 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.12 $
     Status:           $State: Exp $
 */
 
@@ -99,7 +99,7 @@ std::string *PG_FileArchive::PathToPlatform(const std::string& path) {
 	const char* sep = GetDirSeparator();
 	std::string::size_type pos = 0, incr;
 	newpath = new std::string(path);
-	incr = std::strlen(sep);
+	incr = ::strlen(sep);
 	if(incr == 1 && sep[0] == '/')
 		return newpath;
 
