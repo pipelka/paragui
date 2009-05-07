@@ -1,3 +1,9 @@
+libparagui1.1 (1.1.9-19ubuntu1) jaunty; urgency=low
+
+  * fixed shlib version (debian package)
+
+ -- Alexander Pipelka <pipelka@celeborn>  Thu, 07 May 2009 15:28:45 +0200
+
 libparagui1.1 (1.1.9-19) jaunty; urgency=low
 
   * removed all the ext/hash map stuff
