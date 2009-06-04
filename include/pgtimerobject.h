@@ -1,6 +1,6 @@
 /*
     ParaGUI - crossplatform widgetset
-    Copyright (C) 2000,2001,2002  Alexander Pipelka
+    Copyright (C) 2000 - 2009 Alexander Pipelka
  
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2009/06/04 10:25:08 $
     Source File:      $Source: /sources/paragui/paragui/include/pgtimerobject.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.6.2.9 $
+    CVS/RCS Revision: $Revision: 1.1.2.6.2.10 $
     Status:           $State: Exp $
 */
 

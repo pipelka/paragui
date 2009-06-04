@@ -2,7 +2,7 @@
     ParaGUI - crossplatform widgetset
     setpixel - draw a single pixel onto a surface
  
-    Copyright (C) 2000,2001,2002  Alexander Pipelka
+    Copyright (C) 2000 - 2009 Alexander Pipelka
  
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -22,9 +22,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2009/06/04 10:25:13 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/setpixel.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.2 $
+    CVS/RCS Revision: $Revision: 1.3.8.3 $
     Status:           $State: Exp $
 */
 

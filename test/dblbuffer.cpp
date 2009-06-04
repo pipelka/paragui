@@ -41,7 +41,7 @@ bool handle_toggle() {
 	return true;
 }
 
-int LoadSprite(SDL_Surface *screen, char *file)
+int LoadSprite(SDL_Surface *screen, const char *file)
 {
 	/* Load the sprite image */
 	sprite = PG_FileArchive::LoadSurface(file, false);
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
 	PG_Application app;
 
 	numsprites = NUM_SPRITES;
-	
+
 #ifdef PARAGUI_GP2X
 	videoflags = SDL_SWSURFACE;
 	width = 320;
@@ -197,14 +197,14 @@ int main(int argc, char *argv[])
 	}
 
 	PG_LogConsole::SetConsoleKey((SDLKey)0);
-	
+
 	app.SetBulkMode(true);
 	app.LoadTheme("default");
 
-#ifdef PARAGUI_GP2X
+#ifdef PG_PARAGUI_GP2X
 	app.SetFontSize(10);
 	app.LoadLayout("dblbuffer-gp2x.xml");
-	
+
 	GP2X_Events* gp2x_events = new GP2X_Events;
 	app.SetEventSupplier(gp2x_events);
 	gp2x_events->start();
@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
 		if ( sprites_visible ) {
 			SDL_FillRect(screen, NULL, background);
 		}
-		
+
 		if(bForeground) {
 			PG_Widget::BulkBlit();
 			MoveSprites(screen, background);

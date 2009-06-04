@@ -1,5 +1,7 @@
 DISTCHECK_CONFIGURE_FLAGS=--enable-internalexpat --enable-internalphysfs
 
+DISTCLEANFILES = _configs.sed
+
 SUBDIRS = include src data bindings test doc
 
 DIST_SUBDIRS = $(SUBDIRS) sdk debian

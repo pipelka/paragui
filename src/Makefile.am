@@ -22,6 +22,7 @@ libparagui_la_LIBADD = \
 	./themes/libtheme.la \
 	./ystring/libystring.la \
 	./gp2x/libpggp2x.la \
+	$(VNCSERVER_LIBS) \
 	$(LIBSTDCPP)
 
 INCLUDES = \

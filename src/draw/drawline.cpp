@@ -2,7 +2,7 @@
     ParaGUI - crossplatform widgetset
     drawline - line drawing algo
  
-    Copyright (C) 2000,2001,2002  Alexander Pipelka
+    Copyright (C) 2000 - 2009 Alexander Pipelka
  
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -22,9 +22,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/08/23 19:17:01 $
+    Update Date:      $Date: 2009/06/04 10:25:12 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/drawline.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.4 $
+    CVS/RCS Revision: $Revision: 1.3.8.5 $
     Status:           $State: Exp $
 */
 

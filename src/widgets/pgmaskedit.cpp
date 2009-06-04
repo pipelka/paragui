@@ -1,6 +1,6 @@
 /*
     ParaGUI - crossplatform widgetset
-    Copyright (C) 2000,2001,2002  Alexander Pipelka
+    Copyright (C) 2000 - 2009 Alexander Pipelka
  
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2004/12/05 19:25:10 $
+    Update Date:      $Date: 2009/06/04 10:25:16 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgmaskedit.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.8.4 $
+    CVS/RCS Revision: $Revision: 1.3.8.5 $
     Status:           $State: Exp $
 */
 

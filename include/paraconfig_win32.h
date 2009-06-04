@@ -13,43 +13,43 @@
 #endif
 
 /* Define if UNICODE support is enabled */
-//#define ENABLE_UNICODE
+#define PG_ENABLE_UNICODE 1
 
 /* Define if you want to include the builtin colortable */
-#define ENABLE_PGCOLORS
+#define PG_ENABLE_PGCOLORS 1
 
 /* Define if you have the SDL_image library */
-#define HAVE_SDLIMAGE 1
+#define PG_HAVE_SDLIMAGE 1
 
 /* Define the default path to the theme files */
-#define PARAGUI_THEMEDIR "./data"
+#define PG_PARAGUI_THEMEDIR "./data"
 
 /* Define if you have the fnmatch function.  */
-/* #undef HAVE_FNMATCH */
+/* #undef PG_HAVE_FNMATCH */
 
 /* Define if you have the strdup function.  */
-/* #undef HAVE_STRDUP */
+/* #undef PG_HAVE_STRDUP */
 
 /* Define if you have the strtok function.  */
-#define HAVE_STRTOK 1
+#define PG_HAVE_STRTOK 1
 
 /* Define if you have the vsnprintf function.  */
-/* #undef HAVE_VSNPRINTF */
+/* #undef PG_HAVE_VSNPRINTF */
 
 /* Define if you have the jpeg library (-ljpeg).  */
-#define HAVE_LIBJPEG 1
+#define PG_HAVE_LIBJPEG 1
 
 /* Define if you have the png library (-lpng).  */
-#define HAVE_LIBPNG 1
+#define PG_HAVE_LIBPNG 1
 
 /* Define if you have the tiff library (-ltiff).  */
-#define HAVE_LIBTIFF 1
+#define PG_HAVE_LIBTIFF 1
 
 /* SDL_image shared library */
-#define SDLIMAGE_LIB "sdl_image.dll"
+#define PG_SDLIMAGE_LIB "sdl_image.dll"
 
 #ifdef _MSC_VER
-#define HAVE_STRDUP 1
+#define PG_HAVE_STRDUP 1
 #endif
 
 // Some stuff needed for Win32

@@ -1,7 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT(README)
-AM_CONFIG_HEADER(config.h:config.h.in include/paraconfig_gnu.h:include/paraconfig_gnu.h.in)
+AC_INIT(paragui, 1.1.10)
 
 TOP_BUILDDIR=`pwd`
 
@@ -25,7 +24,7 @@ dnl Set various version strings - taken gratefully from the GTk sources
 
 PARAGUI_MAJOR_VERSION=1
 PARAGUI_MINOR_VERSION=1
-PARAGUI_MICRO_VERSION=9
+PARAGUI_MICRO_VERSION=10
 PARAGUI_INTERFACE_AGE=0
 PARAGUI_BINARY_AGE=0
 PARAGUI_VERSION=$PARAGUI_MAJOR_VERSION.$PARAGUI_MINOR_VERSION.$PARAGUI_MICRO_VERSION
@@ -54,6 +53,9 @@ AC_CANONICAL_TARGET
 
 dnl Setup for automake
 AM_INIT_AUTOMAKE(paragui, $PARAGUI_VERSION)
+dnl AM_CONFIG_HEADER(include/paraconfig_gnu.h:include/paraconfig_gnu.h.in)
+AC_CONFIG_HEADERS(config.h)
+AX_PREFIX_CONFIG_H(include/paraconfig_gnu.h, "PG")
 
 dnl Check for tools
 
@@ -482,6 +484,31 @@ if test "$PARAGUI_THEMEDIR" = "NONE/share/paragui"; then
 fi
 AC_DEFINE_UNQUOTED([PARAGUI_THEMEDIR], "$PARAGUI_THEMEDIR", [default directory for themes])
 
+
+dnl Check for --enable-vncserver flag
+
+VNCSERVER_LIBS=""
+
+AC_CHECK_HEADER(rfb/rfb.h, [have_vncserver_include=yes])
+AC_CHECK_LIB(vncserver, rfbUsage, have_vncserver_lib=yes)
+
+AC_ARG_ENABLE(vncserver,
+	[  --enable-vncserver      compile with or without the integrated vncserver],
+	vncserver=$enable_vncserver
+)
+AC_MSG_CHECKING([for vncserver])
+if test "x$vncserver" = xno; then
+	AC_MSG_RESULT([no])
+else
+	if test x$have_vncserver_include = xyes; then
+	    if test x$have_vncserver_lib = xyes; then
+        	AC_DEFINE([HAVE_VNCSERVER], 1, [vnc server library])
+		VNCSERVER_LIBS="-lvncserver"
+	    fi
+	fi
+	AC_MSG_RESULT([yes])
+fi
+AC_SUBST(VNCSERVER_LIBS)
 
 dnl Check for swig bindings
 

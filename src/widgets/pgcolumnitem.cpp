@@ -1,6 +1,6 @@
 /*
     ParaGUI - crossplatform widgetset
-    Copyright (C) 2000,2001,2002  Alexander Pipelka
+    Copyright (C) 2000 - 2009 Alexander Pipelka
  
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2007/07/25 14:00:44 $
+    Update Date:      $Date: 2009/06/04 10:25:15 $
     Source File:      $Source: /sources/paragui/paragui/src/widgets/pgcolumnitem.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.12 $
     Status:           $State: Exp $
 */
 

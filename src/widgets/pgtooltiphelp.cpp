@@ -1,6 +1,6 @@
 /*
    ParaGUI - crossplatform widgetset
-   Copyright (C) 2000,2001,2002  Alexander Pipelka
+   Copyright (C) 2000 - 2009 Alexander Pipelka
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -20,13 +20,11 @@
    pipelka@teleweb.at
 
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2009/03/10 12:03:52 $
+   Update Date:      $Date: 2009/06/04 10:25:17 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/Attic/pgtooltiphelp.cpp,v $
-   CVS/RCS Revision: $Revision: 1.1.2.4 $
+   CVS/RCS Revision: $Revision: 1.1.2.5 $
    Status:           $State: Exp $
  */
-
-#include <cstring>
 
 #include "pgapplication.h"
 #include "pgeventsupplier.h"
@@ -35,6 +33,8 @@
 #include "pgtooltiphelp.h"
 #include "pgtheme.h"
 #include "propstrings_priv.h"
+
+#include <cstring>
 
 PG_LineEdit* PG_ToolTipHelp::toolTipLabel = NULL;
 PG_ToolTipHelp::Ticker* PG_ToolTipHelp::ticker = NULL;

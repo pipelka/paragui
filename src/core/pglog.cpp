@@ -1,29 +1,29 @@
 /*
     ParaGUI - crossplatform widgetset
-    Copyright (C) 2000,2001,2002  Alexander Pipelka
- 
+    Copyright (C) 2000 - 2009 Alexander Pipelka
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
- 
+
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- 
+
     Alexander Pipelka
     pipelka@teleweb.at
- 
+
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/12/04 12:20:50 $
+    Update Date:      $Date: 2009/06/04 10:25:11 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.8 $
-    Status:           $State  
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.9 $
+    Status:           $State
 */
 
 #include "pgapplication.h"
@@ -79,7 +79,7 @@ void PG_LogConsole::LogVA(PG_LOG_LEVEL id, const char *Text, va_list ap) {
 		return; // Don't log this type.
 	}
 
-#ifdef HAVE_VSNPRINTF
+#ifdef PG_HAVE_VSNPRINTF
 	vsnprintf(buffer, sizeof(buffer), Text, ap);
 #else
 	// ERROR PRONE!!! VC++ doesn't have vsnprintf _I think_...
@@ -276,12 +276,15 @@ void PG_Log(PG_LOG_LEVEL id, const char *Text, ...) {
 	va_end(ap);
 }
 
-
 void PG_LogMSG(const char *fmt, ...) {
 	va_list ap;
 	va_start(ap, fmt);
 	PG_LogConsole::LogVA(PG_LOG_MSG, fmt, ap);
 	va_end(ap);
+}
+
+void PG_LogMSGV(const char *fmt, va_list ap) {
+	PG_LogConsole::LogVA(PG_LOG_MSG, fmt, ap);
 }
 
 void PG_LogERR(const char *fmt, ...) {
@@ -291,6 +294,10 @@ void PG_LogERR(const char *fmt, ...) {
 	va_end(ap);
 }
 
+void PG_LogERRV(const char *fmt, va_list ap) {
+	PG_LogConsole::LogVA(PG_LOG_ERR, fmt, ap);
+}
+
 void PG_LogWRN(const char *fmt, ...) {
 	va_list ap;
 	va_start(ap, fmt);
@@ -298,11 +305,19 @@ void PG_LogWRN(const char *fmt, ...) {
 	va_end(ap);
 }
 
+void PG_LogWRNV(const char *fmt, va_list ap) {
+	PG_LogConsole::LogVA(PG_LOG_WRN, fmt, ap);
+}
+
 void PG_LogDBG(const char *fmt, ...) {
 	va_list ap;
 	va_start(ap, fmt);
 	PG_LogConsole::LogVA(PG_LOG_DBG, fmt, ap);
 	va_end(ap);
+}
+
+void PG_LogDBGV(const char *fmt, va_list ap) {
+	PG_LogConsole::LogVA(PG_LOG_DBG, fmt, ap);
 }
 
 void PG_LogConsole::SetMaxLogLines(Uint32 max) {

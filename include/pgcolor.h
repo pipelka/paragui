@@ -1,14 +1,30 @@
-//
-// C++ Interface: pgcolor
-//
-// Description:
-//
-//
-// Author: Alexander Pipelka <pipelka@pipelka.net>, (C) 2003
-//
-// Copyright: See COPYING file that comes with this distribution
-//
-//
+/*
+    ParaGUI - crossplatform widgetset
+    Copyright (C) 2000 - 2009 Alexander Pipelka
+
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Library General Public
+    License as published by the Free Software Foundation; either
+    version 2 of the License, or (at your option) any later version.
+
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public
+    License along with this library; if not, write to the Free
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+    Alexander Pipelka
+    pipelka@teleweb.at
+
+    Last Update:      $Author: braindead $
+    Update Date:      $Date: 2009/06/04 10:25:02 $
+    Source File:      $Source: /sources/paragui/paragui/include/Attic/pgcolor.h,v $
+    CVS/RCS Revision: $Revision: 1.1.2.11 $
+    Status:           $State: Exp $
+*/
 
 #ifndef PG_COLOR_H
 #define PG_COLOR_H
@@ -20,13 +36,13 @@
 */
 
 /** @class PG_Color
- 
+
 	@short Allows for an abstraction of a particular color.
- 
+
 	The purpose of this is to allow one to create new colors. If one is interested
 	in using predefined color constants, see pgcolors.h (note the letter "s" at the end.)
 	A PG_Color can be created from an SDL_Color, a Uint32, or RGB based system.
- 
+
 	@author Alexander Pipelka
 */
 

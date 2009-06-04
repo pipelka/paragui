@@ -1,6 +1,6 @@
 /*
     ParaGUI - crossplatform widgetset
-    Copyright (C) 2000,2001,2002  Alexander Pipelka
+    Copyright (C) 2000 - 2009 Alexander Pipelka
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2009/03/10 12:03:52 $
+    Update Date:      $Date: 2009/06/04 10:25:09 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.43 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.44 $
     Status:           $State: Exp $
 */
 
@@ -40,15 +40,22 @@
 #include <cstring>
 #include <cassert>
 #include <cmath>
+#include <string.h>
 
-// usually PARAGUI_THEMEDIR is defined by the configure script
+#define VNC_DIRECT 1
+
+#ifdef PG_HAVE_VNCSERVER
+#include <rfb/rfbclient.h>
+#endif
+
+// usually PG_PARAGUI_THEMEDIR is defined by the configure script
 // or passed to the compiler. This is just a kind of last resort.
 
-#ifndef PARAGUI_THEMEDIR
+#ifndef PG_PARAGUI_THEMEDIR
 #ifdef __MACOS__
-#define PARAGUI_THEMEDIR        ""
+#define PG_PARAGUI_THEMEDIR        ""
 #else
-#define PARAGUI_THEMEDIR        "./"
+#define PG_PARAGUI_THEMEDIR        "./"
 #endif  // macintosh
 #endif  // PARAGUI_THEMEDIR
 
@@ -57,7 +64,6 @@ SDL_mutex* PG_Application::mutexEvent = NULL;
 
 PG_Application* PG_Application::pGlobalApp = NULL;
 SDL_Surface* PG_Application::screen = NULL;
-//std::string PG_Application::app_path = "";
 PG_Theme* PG_Application::my_Theme = NULL;
 bool PG_Application::bulkMode = false;
 bool PG_Application::enableBackground = true;
@@ -77,6 +83,13 @@ bool PG_Application::defaultUpdateOverlappingSiblings = true;
 bool PG_Application::my_cursor_drawn = false;
 bool PG_Application::my_pauseEventLoop = false;
 
+#ifdef PG_HAVE_VNCSERVER
+rfbScreenInfo* PG_Application::my_rfbserver = NULL;
+SDL_Surface* PG_Application::my_rfbsurface = NULL;
+bool PG_Application::my_vncactive = false;
+SDL_Thread* PG_Application::my_vncthread = NULL;
+#endif
+
 /**
 	new shutdown procedure (called at application termination
 */
@@ -94,7 +107,7 @@ PG_Application::PG_Application()
 	// we use the "C" locale because it's hard to get the current locale setting
 	// in a portableway (Win32 doesn't support nl_langinfo).
 	// The "C" locale is only set for character encoding.
-#ifdef ENABLE_UNICODE
+#ifdef PG_ENABLE_UNICODE
 	setlocale(LC_CTYPE, "C.UTF-8");
 #endif
 
@@ -144,6 +157,9 @@ PG_Application::PG_Application()
 }
 
 PG_Application::~PG_Application() {
+	// stop the vnc server (if running)
+	StopVNCServer();
+
 	// shutdown log (before deleting all the widgets)
 	PG_LogConsole::Done();
 
@@ -695,8 +711,8 @@ PG_Theme* PG_Application::LoadTheme(const std::string& xmltheme, bool asDefault,
 		PG_LogDBG("'::data:' added to searchpath");
 	}
 
-	if(PARAGUI_THEMEDIR != NULL) {
-		PG_LogDBG("'"PARAGUI_THEMEDIR"' added to searchpath");
+	if(PG_PARAGUI_THEMEDIR != NULL) {
+		PG_LogDBG("'"PG_PARAGUI_THEMEDIR"' added to searchpath");
 	}
 
 #else
@@ -725,8 +741,8 @@ PG_Theme* PG_Application::LoadTheme(const std::string& xmltheme, bool asDefault,
 
 #endif // __MACOS__
 
-	if(AddArchive(PARAGUI_THEMEDIR)) {
-		PG_LogDBG("'"PARAGUI_THEMEDIR "' added to searchpath");
+	if(AddArchive(PG_PARAGUI_THEMEDIR)) {
+		PG_LogDBG("'"PG_PARAGUI_THEMEDIR "' added to searchpath");
 	}
 
 	theme = PG_Theme::Load(xmltheme);
@@ -1345,6 +1361,294 @@ void PG_Application::SetUpdateOverlappingSiblings(bool update) {
 bool PG_Application::GetUpdateOverlappingSiblings() {
 	return defaultUpdateOverlappingSiblings;
 }
+
+#ifdef PG_HAVE_VNCSERVER
+static void vnc_log(const char* format, ...) {
+	va_list args;
+	va_start(args, format);
+
+	std::string fmt = format;
+	while(fmt[fmt.size()-1] == '\n') {
+		fmt = fmt.substr(0, fmt.size()-1);
+	}
+
+	PG_LogMSGV(fmt.c_str(), args);
+
+	va_end(args);
+}
+#endif
+
+bool PG_Application::StartVNCServer(const std::string& desktopname, bool shared, bool remotecontrol, const std::string& password) {
+#ifndef PG_HAVE_VNCSERVER
+	return false;
+#else
+
+	static std::string name = desktopname;
+	static std::string pw = password;
+
+	// create rfb server
+#ifdef VNC_DIRECT
+	my_rfbsurface = GetScreen();
+#else
+	my_rfbsurface = SDL_CreateRGBSurface(SDL_SWSURFACE, GetScreen()->w, GetScreen()->h, 15, 0x001F, 0x03E0, 0x7C00, 0);
+#endif
+
+	const char* argv[3] = { "rfb", "-passwd", pw.c_str() };
+
+	if(password.empty()) {
+		my_rfbserver = rfbGetScreen(0, NULL, my_rfbsurface->w, my_rfbsurface->h, 5, 3, my_rfbsurface->format->BytesPerPixel);
+	}
+	else {
+		int argc = 3;
+		my_rfbserver = rfbGetScreen(&argc, (char**)argv, my_rfbsurface->w, my_rfbsurface->h, 5, 3, my_rfbsurface->format->BytesPerPixel);
+	}
+	my_rfbserver->desktopName = name.c_str();
+	my_rfbserver->frameBuffer = (char*)(my_rfbsurface->pixels);
+	my_rfbserver->alwaysShared = shared ? 1 : 0;
+	if(remotecontrol) {
+		my_rfbserver->ptrAddEvent = vnc_pointerevent;
+		my_rfbserver->kbdAddEvent = vnc_keyboardevent;
+	}
+
+	PG_Widget::sigScreenUpdate.connect(slot(*this, &PG_Application::vnc_screenupdates));
+	rfbLog = &vnc_log;
+	rfbErr = &vnc_log;
+
+	rfbInitServer(my_rfbserver);
+
+#ifdef VNC_DIRECT
+	my_rfbserver->serverFormat.redMax = (1 << (8 - my_rfbsurface->format->Rloss)) - 1;
+	my_rfbserver->serverFormat.greenMax = (1 << (8 - my_rfbsurface->format->Gloss)) - 1;
+	my_rfbserver->serverFormat.blueMax = (1 << (8 - my_rfbsurface->format->Bloss)) - 1;
+	my_rfbserver->serverFormat.redShift = my_rfbsurface->format->Rshift;
+	my_rfbserver->serverFormat.greenShift = my_rfbsurface->format->Gshift;
+	my_rfbserver->serverFormat.blueShift = my_rfbsurface->format->Bshift;
+#endif
+
+	PG_Widget::UpdateScreen();
+	my_vncthread = SDL_CreateThread(vnc_thread, NULL);
+
+	return true;
+#endif
+}
+
+bool PG_Application::StopVNCServer() {
+#ifndef PG_HAVE_VNCSERVER
+	return false;
+#else
+	if(!my_vncactive) {
+		return false;
+	}
+
+	my_vncactive = false;
+	int vncstatus = 0;
+	SDL_WaitThread(my_vncthread, &vncstatus);
+
+	rfbShutdownServer(my_rfbserver, true);
+	rfbScreenCleanup(my_rfbserver);
+#ifndef VNC_DIRECT
+	SDL_FreeSurface(my_rfbsurface);
+#endif
+	my_rfbsurface = NULL;
+	my_vncthread = NULL;
+
+	return true;
+#endif
+}
+
+#ifdef PG_HAVE_VNCSERVER
+static std::map<rfbKeySym, SDLKey> vnc_kbdtable;
+
+extern "C" {
+extern rfbClientIteratorPtr rfbGetClientIteratorWithClosed(rfbScreenInfoPtr rfbScreen);
+extern rfbClientPtr rfbClientIteratorHead(rfbClientIteratorPtr i);
+}
+
+static void FillVNCKeyboardTable() {
+	static bool bFilled = false;
+
+	if(bFilled) {
+		return;
+	}
+
+	vnc_kbdtable[XK_BackSpace] = SDLK_BACKSPACE;
+	vnc_kbdtable[XK_Tab] = SDLK_TAB;
+	vnc_kbdtable[XK_Clear] = SDLK_CLEAR;
+	vnc_kbdtable[XK_Return] = SDLK_RETURN;
+	vnc_kbdtable[XK_Pause] = SDLK_PAUSE;
+	vnc_kbdtable[XK_Escape] = SDLK_ESCAPE;
+	vnc_kbdtable[XK_space] = SDLK_SPACE;
+	vnc_kbdtable[XK_Delete] = SDLK_DELETE;
+	vnc_kbdtable[XK_KP_0] = SDLK_KP0;
+	vnc_kbdtable[XK_KP_1] = SDLK_KP1;
+	vnc_kbdtable[XK_KP_2] = SDLK_KP2;
+	vnc_kbdtable[XK_KP_3] = SDLK_KP3;
+	vnc_kbdtable[XK_KP_4] = SDLK_KP4;
+	vnc_kbdtable[XK_KP_5] = SDLK_KP5;
+	vnc_kbdtable[XK_KP_6] = SDLK_KP6;
+	vnc_kbdtable[XK_KP_7] = SDLK_KP7;
+	vnc_kbdtable[XK_KP_8] = SDLK_KP8;
+	vnc_kbdtable[XK_KP_9] = SDLK_KP9;
+	vnc_kbdtable[XK_KP_Decimal] = SDLK_KP_PERIOD;
+	vnc_kbdtable[XK_KP_Divide] = SDLK_KP_DIVIDE;
+	vnc_kbdtable[XK_KP_Multiply] = SDLK_KP_MULTIPLY;
+	vnc_kbdtable[XK_KP_Subtract] = SDLK_KP_MINUS;
+	vnc_kbdtable[XK_KP_Add] = SDLK_KP_PLUS;
+	vnc_kbdtable[XK_KP_Enter] = SDLK_KP_ENTER;
+	vnc_kbdtable[XK_KP_Equal] = SDLK_KP_EQUALS;
+	vnc_kbdtable[XK_Up] = SDLK_UP;
+	vnc_kbdtable[XK_Down] = SDLK_DOWN;
+	vnc_kbdtable[XK_Right] = SDLK_RIGHT;
+	vnc_kbdtable[XK_Left] = SDLK_LEFT;
+	vnc_kbdtable[XK_Insert] = SDLK_INSERT;
+	vnc_kbdtable[XK_Home] = SDLK_HOME;
+	vnc_kbdtable[XK_End] = SDLK_END;
+	vnc_kbdtable[XK_Page_Up] = SDLK_PAGEUP;
+	vnc_kbdtable[XK_Page_Down] = SDLK_PAGEDOWN;
+	vnc_kbdtable[XK_F1] = SDLK_F1;
+	vnc_kbdtable[XK_F2] = SDLK_F2;
+	vnc_kbdtable[XK_F3] = SDLK_F3;
+	vnc_kbdtable[XK_F4] = SDLK_F4;
+	vnc_kbdtable[XK_F5] = SDLK_F5;
+	vnc_kbdtable[XK_F6] = SDLK_F6;
+	vnc_kbdtable[XK_F7] = SDLK_F7;
+	vnc_kbdtable[XK_F8] = SDLK_F8;
+	vnc_kbdtable[XK_F9] = SDLK_F9;
+	vnc_kbdtable[XK_F10] = SDLK_F10;
+	vnc_kbdtable[XK_F11] = SDLK_F11;
+	vnc_kbdtable[XK_F12] = SDLK_F12;
+	vnc_kbdtable[XK_F13] = SDLK_F13;
+	vnc_kbdtable[XK_F14] = SDLK_F14;
+	vnc_kbdtable[XK_F15] = SDLK_F15;
+	vnc_kbdtable[XK_Num_Lock] = SDLK_NUMLOCK;
+	vnc_kbdtable[XK_Caps_Lock] = SDLK_CAPSLOCK;
+	vnc_kbdtable[XK_Scroll_Lock] = SDLK_SCROLLOCK;
+	vnc_kbdtable[XK_Shift_R] = SDLK_RSHIFT;
+	vnc_kbdtable[XK_Shift_L] = SDLK_LSHIFT;
+	vnc_kbdtable[XK_Control_R] = SDLK_RCTRL;
+	vnc_kbdtable[XK_Control_L] = SDLK_LCTRL;
+	vnc_kbdtable[XK_Alt_R] = SDLK_RALT;
+	vnc_kbdtable[XK_Alt_L] = SDLK_LALT;
+	vnc_kbdtable[XK_Meta_R] = SDLK_RMETA;
+	vnc_kbdtable[XK_Meta_L] = SDLK_LMETA;
+	vnc_kbdtable[XK_Mode_switch] = SDLK_MODE;
+	vnc_kbdtable[XK_Help] = SDLK_HELP;
+	vnc_kbdtable[XK_Print] = SDLK_PRINT;
+	vnc_kbdtable[XK_Sys_Req] = SDLK_SYSREQ;
+	vnc_kbdtable[XK_Break] = SDLK_BREAK;
+
+	bFilled = true;
+}
+
+int PG_Application::vnc_thread(void* data) {
+	my_vncactive = true;
+	rfbClientIteratorPtr i;
+
+	FillVNCKeyboardTable();
+
+	while(my_vncactive) {
+		rfbCheckFds(my_rfbserver, 200*1000);
+		i = rfbGetClientIteratorWithClosed(my_rfbserver);
+
+		if(rfbClientIteratorHead(i) != NULL) {
+#ifdef VNC_DIRECT
+			PG_Application::LockScreen();
+			while(rfbProcessEvents(my_rfbserver, 0));
+			PG_Application::UnlockScreen();
+#else
+			while(rfbProcessEvents(my_rfbserver, 1000));
+#endif
+		}
+		else {
+			SDL_Delay(100);
+		}
+
+		rfbReleaseClientIterator(i);
+	}
+
+	return 0;
+}
+
+bool PG_Application::vnc_screenupdates(const PG_Rect& r) {
+	if(my_rfbsurface == NULL) {
+		return false;
+	}
+
+#ifndef VNC_DIRECT
+	SDL_Rect r1 = r;
+	SDL_BlitSurface(GetScreen(), &r1, my_rfbsurface, &r1);
+#endif
+
+	rfbMarkRectAsModified(my_rfbserver, r.x, r.y, r.x+r.w, r.y+r.h);
+
+	return true;
+}
+
+void PG_Application::vnc_pointerevent(int buttonMask, int x, int y, rfbClientPtr cl) {
+	static bool is_down = false;
+
+	SDL_Event event;
+	event.type = SDL_MOUSEMOTION;
+	event.motion.type = SDL_MOUSEMOTION;
+	event.motion.state = ((buttonMask != 0) ? SDL_PRESSED : SDL_RELEASED);
+	event.motion.x = x;
+	event.motion.y = y;
+	event.motion.xrel = 0;
+	event.motion.yrel = 0;
+	SDL_PushEvent(&event);
+
+	if(buttonMask && !is_down) {
+		event.type = (buttonMask ? SDL_MOUSEBUTTONDOWN : SDL_MOUSEBUTTONUP);
+		event.button.type = (buttonMask ? SDL_MOUSEBUTTONDOWN : SDL_MOUSEBUTTONUP);
+		event.button.button = SDL_BUTTON_LEFT;
+		event.button.state = (buttonMask ? SDL_PRESSED : SDL_RELEASED);
+		event.button.x = x;
+		event.button.y = y;
+		is_down = true;
+		SDL_PushEvent(&event);
+	}
+
+	if(buttonMask == 0 && is_down) {
+		event.type = (buttonMask ? SDL_MOUSEBUTTONDOWN : SDL_MOUSEBUTTONUP);
+		event.button.type = (buttonMask ? SDL_MOUSEBUTTONDOWN : SDL_MOUSEBUTTONUP);
+		event.button.button = SDL_BUTTON_LEFT;
+		event.button.state = (buttonMask ? SDL_PRESSED : SDL_RELEASED);
+		event.button.x = x;
+		event.button.y = y;
+		is_down = false;
+		SDL_PushEvent(&event);
+	}
+}
+
+void PG_Application::vnc_keyboardevent(rfbBool down, rfbKeySym key, rfbClientPtr cl) {
+	SDLKey k = (SDLKey)0;
+	SDLMod mod = (SDLMod)0;
+
+	if(key >= XK_a && key <= XK_z) {
+		k = (SDLKey)(SDLK_a + (key - XK_a));
+	}
+	else if(key >= XK_A && key <= XK_Z) {
+		k = (SDLKey)(SDLK_a + (key - XK_A));
+		mod = KMOD_LSHIFT;
+	}
+	else {
+		std::map<rfbKeySym, SDLKey>::iterator i = vnc_kbdtable.find(key);
+		if(i != vnc_kbdtable.end()) {
+			k = i->second;
+		}
+	}
+
+	SDL_Event event;
+	event.type = down ? SDL_KEYDOWN : SDL_KEYUP;
+	event.key.type = down ? SDL_KEYDOWN : SDL_KEYUP;
+	event.key.state = down ? SDL_PRESSED : SDL_RELEASED;
+	event.key.keysym.sym = k;
+	event.key.keysym.mod = mod;
+	event.key.keysym.unicode = key;
+
+	SDL_PushEvent(&event);
+}
+#endif
 
 /*
  * Local Variables:

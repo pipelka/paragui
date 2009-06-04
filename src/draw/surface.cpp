@@ -2,7 +2,7 @@
     ParaGUI - crossplatform widgetset
     surface - surface creation and manipulation functions
  
-    Copyright (C) 2000,2001,2002  Alexander Pipelka
+    Copyright (C) 2000 - 2009 Alexander Pipelka
  
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
@@ -22,9 +22,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/02/06 21:24:20 $
+    Update Date:      $Date: 2009/06/04 10:25:13 $
     Source File:      $Source: /sources/paragui/paragui/src/draw/surface.cpp,v $
-    CVS/RCS Revision: $Revision: 1.3.6.1.2.10 $
+    CVS/RCS Revision: $Revision: 1.3.6.1.2.11 $
     Status:           $State: Exp $
 */
 

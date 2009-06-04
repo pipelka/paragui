@@ -1,6 +1,6 @@
 /*
    ParaGUI - crossplatform widgetset
-   Copyright (C) 2000,2001,2002  Alexander Pipelka
+   Copyright (C) 2000 - 2009 Alexander Pipelka
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -20,14 +20,11 @@
    pipelka@teleweb.at
 
    Last Update:      $Author: braindead $
-   Update Date:      $Date: 2009/03/10 12:03:52 $
+   Update Date:      $Date: 2009/06/04 10:25:17 $
    Source File:      $Source: /sources/paragui/paragui/src/widgets/pgwidget.cpp,v $
-   CVS/RCS Revision: $Revision: 1.4.4.22.2.47 $
+   CVS/RCS Revision: $Revision: 1.4.4.22.2.48 $
    Status:           $State: Exp $
  */
-
-#include <cstring>
-#include <stdarg.h>
 
 #include "pgwidget.h"
 #include "pgapplication.h"
@@ -39,12 +36,16 @@
 
 #include "propstrings_priv.h"
 
+#include <cstring>
+#include <stdarg.h>
+
 #define TXT_HEIGHT_UNDEF 0xFFFF
 
 
 //bool PG_Widget::bBulkUpdate = false;
 PG_RectList PG_Widget::widgetList;
 int PG_Widget::my_ObjectCounter = 0;
+PG_Signal1<const PG_Rect&> PG_Widget::sigScreenUpdate;
 
 class PG_WidgetDataInternal {
 public:
@@ -834,6 +835,7 @@ void PG_Widget::Update(bool doBlit) {
 
 	SDL_SetClipRect(PG_Application::GetScreen(), NULL);
 	PG_Application::UnlockScreen();
+	sigScreenUpdate(_mid->rectClip);
 }
 
 /**  */
@@ -1127,12 +1129,12 @@ void PG_Widget::UpdateRect(const PG_Rect& r) {
 	widgetList.Blit(r);
 	SDL_SetClipRect(screen, NULL);
 	PG_Application::UnlockScreen();
+	sigScreenUpdate(r);
 }
 
 void PG_Widget::UpdateScreen() {
-	UpdateRect(
-	    PG_Rect(0, 0, PG_Application::GetScreenWidth(), PG_Application::GetScreenHeight())
-	);
+	PG_Rect s(0, 0, PG_Application::GetScreenWidth(), PG_Application::GetScreenHeight());
+	UpdateRect(s);
 }
 
 bool PG_Widget::IsInFrontOf(PG_Widget* widget) {
@@ -1851,6 +1853,10 @@ void PG_Widget::SetDirtyUpdate(bool bDirtyUpdate) {
 		return;
 	}
 
+	_mid->dirtyUpdate = bDirtyUpdate;
+}
+
+void PG_Widget::ForceDirtyUpdate(bool bDirtyUpdate) {
 	_mid->dirtyUpdate = bDirtyUpdate;
 }
 

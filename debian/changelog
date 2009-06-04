@@ -1,3 +1,11 @@
+libparagui1.1 (1.1.10-1) jaunty; urgency=low
+
+  * added vnc server support
+  * fixed the long staning config.h issue (no more PACKAGE already defined)
+  * copyright header updates
+
+ -- Alexander Pipelka <pipelka@celeborn>  Thu, 04 Jun 2009 12:12:19 +0200
+
 libparagui1.1 (1.1.9-19ubuntu1) jaunty; urgency=low
 
   * fixed shlib version (debian package)

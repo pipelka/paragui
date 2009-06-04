@@ -7,12 +7,12 @@
 
 void GP2X_Application::Run() {
 	GP2X_Events* eventsupplier = new GP2X_Events;
-	
+
 	SetEventSupplier(eventsupplier);
 	eventsupplier->start();
-	
+
 	PG_Application::Run();
-	
+
 	eventsupplier->stop();
 }
 

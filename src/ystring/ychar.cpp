@@ -1,5 +1,5 @@
 /************************************************************************
- * $Id: ychar.cpp,v 1.1.2.4 2006/02/06 21:24:20 braindead Exp $
+ * $Id: ychar.cpp,v 1.1.2.5 2009/06/04 10:25:17 braindead Exp $
  *
  * ------------
  * Description:
@@ -13,9 +13,9 @@
  * -----------------
  * Revision Details:    (Updated by Revision Control System)
  * -----------------
- *  $Date: 2006/02/06 21:24:20 $
+ *  $Date: 2009/06/04 10:25:17 $
  *  $Author: braindead $
- *  $Revision: 1.1.2.4 $
+ *  $Revision: 1.1.2.5 $
  *  $Source: /sources/paragui/paragui/src/ystring/Attic/ychar.cpp,v $
  *
  *  (www.arabeyes.org - under GPL License)
@@ -27,7 +27,7 @@
 
 #include "paragui.h"
 
-#ifdef ENABLE_UNICODE
+#ifdef PG_ENABLE_UNICODE
 
 #include "ychar.h"
 
@@ -227,7 +227,7 @@ YChar YChar::fromUtf8(const std::string raw) throw(std::domain_error) {
 		   Take only the least 6 significance bits of the current octet (raw[i]) and fill the created room
 		   of c.ucs4 with them.
 		   This done by AND'ing raw[i] with 00111111 and the OR'ing the result with c.ucs4.
-		   
+
 		*/
 		c.ucs4 |= raw[i] & 0x3F;
 	}
@@ -326,7 +326,7 @@ std::string YChar::utf8() const {
 
 		       |  0x80;     /*  Now, we put 10 to the left of the resulting 6 bits to get the octet and
 						                                 store it in b[i].
-						                                 This is done by OR'ing the resulting 6-bits with 10000000 (0x80) 
+						                                 This is done by OR'ing the resulting 6-bits with 10000000 (0x80)
 						                                 to get the needed 8-bits octet (010111 | 10000000 = 10010111) */
 
 		/* We stored the first 6 least significant bits, so we "throw" them away and put in their place
@@ -383,4 +383,4 @@ std::istream & operator>>( std::istream & in, YChar & c) {
 	return in;
 }
 
-#endif // ENABLE_UNICODE
+#endif // PG_ENABLE_UNICODE

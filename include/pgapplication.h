@@ -1,28 +1,28 @@
 /*
     ParaGUI - crossplatform widgetset
-    Copyright (C) 2000,2001,2002  Alexander Pipelka
- 
+    Copyright (C) 2000 - 2009 Alexander Pipelka
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
- 
+
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- 
+
     Alexander Pipelka
     pipelka@teleweb.at
- 
+
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2006/08/25 11:41:21 $
+    Update Date:      $Date: 2009/06/04 10:25:02 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.30 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.31 $
     Status:           $State: Exp $
 */
 
@@ -34,6 +34,7 @@
 #ifndef PG_APPLICATION_H
 #define PG_APPLICATION_H
 
+#include "paragui.h"
 #include "pgmessageobject.h"
 #include "pgfilearchive.h"
 #include "pgfont.h"
@@ -46,48 +47,48 @@ class PG_Widget;
 
 /**
 	@author Alexander Pipelka
- 
+
 	@short The class that represent an application in ParaGUI. It handles the main loop, screen attibutes etc.
- 
+
 	An application must have a maximum of one PG_Application. If you try to create more than one PG_Application
 	the constructor will exit your application with an console error message.
- 
+
         Every Paragui application needs to have a <code>PG_Application</code> object. The Application object is
         the controller for events, screen initialization, theme support and main loop.
         Here is an example of the steps necesary for creating a simple Paragui application that opens a 640x480
         window with a button in the middle.
- 
+
         <pre>
-        \code		
+        \code
         #include <paragui.h>
         #include <pgapplication.h>
         #include <pgbutton.h>
-        
-        
-        // Event handler for button click 
-        PARAGUI_CALLBACK(buttonHandler) { 
+
+
+        // Event handler for button click
+        PARAGUI_CALLBACK(buttonHandler) {
           cout << "Ouch !\\n";
           return true;
-        } 
-          
-        
-        int main(  int argc, char **argv ) { 
-          const int WIDTH  = 640; 
-          const int HEIGHT = 480; 
-          
-          PG_Application app; 
-          
-          app.LoadTheme("qnx");                      // Load the QNX theme 
+        }
+
+
+        int main(  int argc, char **argv ) {
+          const int WIDTH  = 640;
+          const int HEIGHT = 480;
+
+          PG_Application app;
+
+          app.LoadTheme("qnx");                      // Load the QNX theme
           app.InitScreen(640,480,16,SDL_SWSURFACE);  // SDL_SURFACE | SDL_FULLSCREEN for full screen support
- 
+
           PG_Button btnOK(NULL,0, PG_Rect((WIDTH-100)/2,(HEIGHT-20)/2,100,20),"Push me !");
- 
+
           btnOK.SetEventCallback(MSG_BUTTONCLICK,buttonHandler); // Set the event handler
-          btnOK.Show(); 
-           
-          app.Run();                                 // Application loop, exit with Esc by default 
-        } 
- 
+          btnOK.Show();
+
+          app.Run();                                 // Application loop, exit with Esc by default
+        }
+
         \endcode
         </pre>
 */
@@ -157,7 +158,7 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 	doing multithreaded eventloops.
 	*/
 	static void Pause();
-	
+
 	/**
 	Resume the applications main eventloop.
 	Resume the previously paused eventloop.
@@ -168,7 +169,7 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 	Wake up sleeping eventloops.
 	This call simply sends a custom SDL_Event to force message processing.
 	*/
-	
+
 	static void WakeUp();
 
 	/**
@@ -350,7 +351,7 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 	Set application`s window-manager icon
 
 	@param filename image file to load
-	Set icon for application`s window-manager window. You must use bitmap  
+	Set icon for application`s window-manager window. You must use bitmap
 	with sizes dividable by 8 transparent color with palete.
 	Transparent color is the color of first up-left pixel.
 	THIS FUNCTION MUST BE PROCESSED BEFORE PG_Application::InitScreen()
@@ -485,7 +486,7 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 	  \note The image will receive an additional reference and
 	  should be freed by the caller using SDL_FreeSurface when the
 	  caller is done using it.
-	  
+
 	  \note If image is zero, the hardware cursor will be
 	  restored. Note however that the cursor mode will remain at
 	  PG_CURSOR_SOFTWARE, so any subsequent calls to this function
@@ -509,7 +510,7 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 	  This function is used to set or query the type of mouse cursor used.
 	  See the documentation for PG_CURSOR_MODE for more details.
 	\param mode the new mode for the request
-	\return the previous cursor mode 
+	\return the previous cursor mode
 	*/
 	static CursorMode ShowCursor(CursorMode mode);
 
@@ -580,15 +581,15 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 	Registers a new source for obtaining SDL_Event objects from. This source will
 	be used in all event loops in Paragui.
 
-	@param eventSupplier the new event source. 
-	Paragui will not delete this object. If NULL is passed, Paragui will obtain 
-	its events directly from SDL 
+	@param eventSupplier the new event source.
+	Paragui will not delete this object. If NULL is passed, Paragui will obtain
+	its events directly from SDL
 	*/
 	static void SetEventSupplier( PG_EventSupplier* eventSupplier );
 
 	/**
 	Returns the EventSupplier that's currently active. \see SetEventSupplier
-	       
+
 	       @return the active EventSupplier
 	*/
 	static  PG_EventSupplier* GetEventSupplier();
@@ -610,6 +611,18 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 
 	SignalXMLTag<> sigXMLTag;
 	SignalAppIdle<> sigAppIdle;
+
+	/**
+	Start the integrated VNC server
+	@return true on success
+	*/
+	bool StartVNCServer(const std::string& desktopname, bool shared = true, bool remotecontrol = true, const std::string& password = "");
+
+	/**
+	Stop the integrated VNC server
+	@return true on success
+	*/
+	bool StopVNCServer();
 
 protected:
 
@@ -635,6 +648,24 @@ protected:
 
 	/** */
 	virtual void eventIdle();
+
+#ifdef PG_HAVE_VNCSERVER
+	static SDL_Surface* my_rfbsurface;
+
+	static rfbScreenInfo* my_rfbserver;
+
+	static bool my_vncactive;
+
+	static SDL_Thread* my_vncthread;
+
+	static int vnc_thread(void* data);
+
+	bool vnc_screenupdates(const PG_Rect& r);
+
+	static void vnc_pointerevent(int buttonMask, int x, int y, rfbClientPtr cl);
+
+	static void vnc_keyboardevent(rfbBool down, rfbKeySym key, rfbClientPtr cl);
+#endif
 
 	bool my_quitEventLoop;
 
@@ -684,7 +715,7 @@ private:
 	@param argv array of arguments (from main)
 	@param app the PG_Application object
 	@return status code.
- 
+
 	This function is an encapsulation of app->Run().
 	It also handles exceptions (if enabled).
 */

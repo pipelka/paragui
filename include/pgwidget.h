@@ -1,28 +1,28 @@
 /*
     ParaGUI - crossplatform widgetset
-    Copyright (C) 2000,2001,2002  Alexander Pipelka
- 
+    Copyright (C) 2000 - 2009 Alexander Pipelka
+
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Library General Public
     License as published by the Free Software Foundation; either
     version 2 of the License, or (at your option) any later version.
- 
+
     This library is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
     Library General Public License for more details.
- 
+
     You should have received a copy of the GNU Library General Public
     License along with this library; if not, write to the Free
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- 
+
     Alexander Pipelka
     pipelka@teleweb.at
- 
+
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2009/05/06 14:13:58 $
+    Update Date:      $Date: 2009/06/04 10:25:08 $
     Source File:      $Source: /sources/paragui/paragui/include/pgwidget.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.3.2.38 $
+    CVS/RCS Revision: $Revision: 1.3.6.3.2.39 $
     Status:           $State: Exp $
 */
 
@@ -43,22 +43,22 @@ class PG_WidgetDataInternal;
 
 /**
 	@author Alexander Pipelka
-	
+
 	@short Base class of all widgets.
- 
+
 	Provides graphics context and message handling functionality.
- 
+
 	\anchor theme_PG_Widget
- 
+
 	<h2>Theme support</h2><p>
- 
+
 	This class provides themeing capabilities only for subclassed widgets.<p>
- 
+
 	<b>widget type:</b>		none (managed through subclass)<br>
 	<b>object name:</b>		none (managed through subclass)<br>
- 
+
 	<h3>Theme sample:</h3>
- 
+
 	\code
 	<widget>
 		<type value="xxx"/>
@@ -227,7 +227,7 @@ public:
 	bool IsVisible();
 
 	/**
-	Get the parentwidget of a widget	
+	Get the parentwidget of a widget
 
 	@return	a pointer to the parentwidget or NULL if there is no parentwidget
 	*/
@@ -274,7 +274,7 @@ public:
 	/**
 	Find a child that is identified by the given ID.
 	@param id   the id of the child to return
-	@param recursive also search child of childs 
+	@param recursive also search child of childs
 	@return A pointer to the child with the given ID or 0 if no such child exists.
 	*/
 	PG_Widget* FindChild(int id, bool recursive = false );
@@ -282,7 +282,7 @@ public:
 	/**
 	Find a child that is identified by the given name.
 	@param name   the name of the child to return
-	@param recursive also search child of childs 
+	@param recursive also search child of childs
 	@return A pointer to the child with the given name or 0 if no such child exists.
 	*/
 	PG_Widget* FindChild(const std::string& name, bool recursive = false);
@@ -686,7 +686,7 @@ public:
 	@param x x-position where to draw
 	@param y y-position where to draw
 	@param c color of the pixel
-	
+
 	@note This function does no locking, since you will usually call it repeatedly.
 	So it is your responsibility to lock the screen before any drawing! Use
 	PG_Application::LockScreen and SDL_LockSurface in case of hardware surfaces.
@@ -728,6 +728,12 @@ public:
 	If you encounter problems with activated dirty updates simple disable it.
 	*/
 	void SetDirtyUpdate(bool bDirtyUpdate);
+
+	/**
+	Force the dirty update mode
+	@param bDirtyUpdate true - enable / false - disable
+	*/
+	void ForceDirtyUpdate(bool bDirtyUpdate);
 
 	/**
 	Set the sibling update mode.
@@ -782,8 +788,10 @@ public:
 	SignalMouseLeave<> sigMouseLeave;
 
 	SignalShow<> sigShow;
-	
+
 	SignalHide<> sigHide;
+
+	static PG_Signal1<const PG_Rect&> sigScreenUpdate;
 
 	/**
 	  	change the parent of the widget.
@@ -900,7 +908,7 @@ protected:
 
 	/**
 	array of border colors
-	     \li \c my_colorBorder[0][0] upper and left border 
+	     \li \c my_colorBorder[0][0] upper and left border
 	     \li \c my_colorBorder[1][0] lower and right border
 	     \li \c my_colorBorder[0][1] upper and left inner border (if bordersize >=2)
 	     \li \c my_colorBorder[1][1] lower and right inner border (if bordersize >=2)

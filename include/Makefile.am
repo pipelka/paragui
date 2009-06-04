@@ -1,3 +1,5 @@
+DISTCLEANFILES = paraconfig_gnu.h
+
 libparaguiincludedir = $(includedir)/paragui
 
 libparaguiinclude_HEADERS = \
@@ -73,8 +75,7 @@ libparaguiinclude_HEADERS = \
         
 EXTRA_DIST = \
 	paraconfig_win32.h \
-	paraconfig_macos.h \
-	paraconfig_gnu.h.in
+	paraconfig_macos.h
 
 style_cvs:
 	astyle --style=kr --indent=tab=4 --indent-switches *.h

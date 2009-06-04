@@ -435,6 +435,7 @@ int main(int argc, char* argv[]) {
 
 	PG_LogMSG("screen initialized after %i ms", SDL_GetTicks() - start_ticks);
 
+	app.StartVNCServer("paratest", true, true, "test");
 	app.SetCursor(app.GetTheme()->FindSurface("Pointer", "Pointer", "normal"));
 
 	//Splash();
@@ -657,5 +658,6 @@ int main(int argc, char* argv[]) {
 	PG_LogMSG("did %i iterations in %i ms", iter, ticks);
 	PG_LogMSG("~%2.2fms per iteration", (float)ticks/(float)iter);
 
+	app.StopVNCServer();
 	return EXIT_SUCCESS;
 }

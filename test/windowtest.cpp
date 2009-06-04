@@ -1,9 +1,9 @@
-#include <cstdio>
 #include "pgapplication.h"
 #include "pgthemewidget.h"
 #include "pgwindow.h"
 #include "pgmessagebox.h"
 #include "pgdropdown.h"
+#include <cstdio>
 
 class CMyWindow : public PG_Window
 
@@ -56,7 +56,7 @@ int main(int argc,char *argv[])
 		PG_Rect(90, 120, 50, 50),
 		"Ok",
 		PG_Label::CENTER);
-		
+
 	PG_DropDown* drop = new PG_DropDown(msgbox, PG_Rect(5, 60, 200,25));
 	drop->SetIndent(5);
 	drop->AddItem("Under construction");
@@ -68,14 +68,14 @@ int main(int argc,char *argv[])
 	msgbox->SetTitle("New Title");
 	msgbox->WaitForClick();
 	msgbox->Hide();
-	
+
 	app->Run();
-	
+
 	// Get rid of mywidget, msgbox, and app buttons and context
 	delete mywidget;
 	delete msgbox;
 	delete app;
-	
+
 
 	// Start the process over exactly the same
 
@@ -94,7 +94,7 @@ int main(int argc,char *argv[])
 		PG_Rect(90, 120, 50, 50),
 		"Ok",
 		PG_Label::CENTER);
-		
+
 	msgbox->Show();
 	msgbox->WaitForClick();
 
@@ -102,6 +102,6 @@ int main(int argc,char *argv[])
 	delete mywidget;
 	delete msgbox;
 	delete app;
-		
+
 	return 0;
 }
