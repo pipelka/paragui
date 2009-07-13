@@ -1,3 +1,9 @@
+libparagui1.1 (1.1.10-2) jaunty; urgency=low
+
+  * fixed shlibs version
+
+ -- Alexander Pipelka <pipelka@celeborn>  Mon, 13 Jul 2009 14:25:49 +0200
+
 libparagui1.1 (1.1.10-1) jaunty; urgency=low
 
   * added vnc server support
