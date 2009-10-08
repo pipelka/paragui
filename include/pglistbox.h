@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2009/06/04 10:25:04 $
+    Update Date:      $Date: 2009/10/08 12:52:12 $
     Source File:      $Source: /sources/paragui/paragui/include/pglistbox.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.2.2.14 $
+    CVS/RCS Revision: $Revision: 1.3.6.2.2.15 $
     Status:           $State: Exp $
 */
 
@@ -31,6 +31,8 @@
 
 #include "pgwidgetlist.h"
 #include "pglabel.h"
+
+#include <vector>
 
 class PG_ListBoxBaseItem;
 

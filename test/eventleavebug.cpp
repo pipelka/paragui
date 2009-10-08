@@ -32,7 +32,7 @@ void CentralWidget::eventMouseLeave() {
 int main(int argc, char* argv[]) {
    putenv("SDL_VIDEO_CENTERED=\"\"");
    
-   PG_Application app;
+   PG_Application app(argv[0]);
 
    if (!app.LoadTheme("default") || !app.InitScreen(800, 600, 32, SDL_SWSURFACE | SDL_NOFRAME)) {
        std::cout << "error, aborting" << std::endl;

@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
 	SDL_Event event;
 	Uint32 then, now, frames;
 
-	PG_Application app;
+	PG_Application app(argv[0]);
 
 	numsprites = NUM_SPRITES;
 

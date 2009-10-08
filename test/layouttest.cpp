@@ -5,7 +5,7 @@
 int main( int argc, char **argv ) {
 
 	// construct the application object
-	PG_Application app;
+	PG_Application app(argv[0]);
 
 	app.EnableBackground(true);
 	app.LoadTheme("default");

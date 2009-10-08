@@ -11,6 +11,8 @@
 #include "pgtheme.h"
 #include "pgstring.h"
 
+#include <vector>
+
 class DECLSPEC PG_MultiLineEdit : public PG_LineEdit {
 public:
 

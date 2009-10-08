@@ -11,7 +11,7 @@ int main( int argc, char **argv ) {
     // create custom factory. key is "unsigned long"
     typedef PG_FactoryHolder<unsigned long> MyFactory;
 
-    PG_Application app;
+    PG_Application app(argv[0]);
 
     app.LoadTheme( "default" );
     app.InitScreen( 640, 480, 0 );

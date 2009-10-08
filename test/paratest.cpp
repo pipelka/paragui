@@ -385,7 +385,7 @@ int main(int argc, char* argv[]) {
 	int resx = RESX, resy = RESY;
 
 	// construct the application object
-	PG_Application app;
+	PG_Application app(argv[0]);
 
 	for(int c=1; c<argc; c++) {
 

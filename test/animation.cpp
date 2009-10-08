@@ -229,7 +229,7 @@ Uint32 PlayField2::eventTimer(PG_TimerObject::ID id, Uint32 interval) {
 int main(int argc, char* argv[]) {
 
 	// every ParaGUI application need an application-object
-	PG_Application app;
+	PG_Application app(argv[0]);
 
 	// let us escape with "ESC"
 	app.SetEmergencyQuit(true);

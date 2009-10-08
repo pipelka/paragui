@@ -41,7 +41,7 @@ int main(int argc,char *argv[])
 	CMyWidget *mywidget;
 	PG_MessageBox *msgbox;
 
-	app=new PG_Application();
+	app=new PG_Application(argv[0]);
 	app->SetEmergencyQuit(true);
 	app->LoadTheme("simple");
 	app->InitScreen(800,600,0,SDL_SWSURFACE);
@@ -79,7 +79,7 @@ int main(int argc,char *argv[])
 
 	// Start the process over exactly the same
 
-	app=new PG_Application();
+	app=new PG_Application(argv[0]);
 	app->SetEmergencyQuit(true);
 	app->LoadTheme("simple");
 	app->InitScreen(800,600,0,SDL_SWSURFACE);

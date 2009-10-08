@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
 	int v1=23444,v2=44566;
 
 	// Create the FileArchive object
-	Arc = new PG_FileArchive();
+	Arc = new PG_FileArchive(argv[0]);
 
 	// Set the base app dir as write dir
 	Arc->SetWriteDir(PG_FileArchive::GetUserDir());

@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2009/06/04 10:25:09 $
+    Update Date:      $Date: 2009/10/08 12:52:13 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgapplication.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.22.2.44 $
+    CVS/RCS Revision: $Revision: 1.2.4.22.2.45 $
     Status:           $State: Exp $
 */
 
@@ -100,8 +100,8 @@ void PARAGUI_ShutDownCode() {
 }
 
 
-PG_Application::PG_Application()
-		: my_quitEventLoop(false), emergencyQuit(false), enableAppIdleCalls(false) {
+PG_Application::PG_Application(const char* arg0) : PG_FileArchive(arg0),
+my_quitEventLoop(false), emergencyQuit(false), enableAppIdleCalls(false) {
 
 	// set UTF8 encoding if UNICODE support is enabled
 	// we use the "C" locale because it's hard to get the current locale setting
@@ -112,7 +112,7 @@ PG_Application::PG_Application()
 #endif
 
 	// workaround for XGL
-	putenv("XLIB_SKIP_ARGB_VISUALS=1");
+	//putenv("XLIB_SKIP_ARGB_VISUALS=1");
 
 	if(pGlobalApp != NULL) {
 		PG_LogWRN("PG_Application Object already exists !");
@@ -153,7 +153,9 @@ PG_Application::PG_Application()
 	my_eventSupplier = my_defaultEventSupplier;
 
 	// add our base dir to the searchpath
-	AddArchive(GetBaseDir());
+	if(GetBaseDir() != NULL) {
+		AddArchive(GetBaseDir());
+	}
 }
 
 PG_Application::~PG_Application() {

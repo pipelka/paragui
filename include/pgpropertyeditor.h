@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2009/06/04 10:25:05 $
+    Update Date:      $Date: 2009/10/08 12:52:12 $
     Source File:      $Source: /sources/paragui/paragui/include/Attic/pgpropertyeditor.h,v $
-    CVS/RCS Revision: $Revision: 1.1.2.2 $
+    CVS/RCS Revision: $Revision: 1.1.2.3 $
     Status:           $State: Exp $
 */
 
@@ -35,6 +35,8 @@
 
 #include "paragui.h"
 #include "pgscrollwidget.h"
+
+#include <vector>
 
 /** @class PG_PropertyEditor
 	@author Martin Bickel

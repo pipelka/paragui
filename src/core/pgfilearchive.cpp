@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2009/06/04 10:25:11 $
+    Update Date:      $Date: 2009/10/08 12:52:12 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pgfilearchive.cpp,v $
-    CVS/RCS Revision: $Revision: 1.2.4.14.2.13 $
+    CVS/RCS Revision: $Revision: 1.2.4.14.2.14 $
     Status:           $State: Exp $
 */
 
@@ -44,14 +44,14 @@ static void* SDL_image_obj = NULL;
 typedef SDL_Surface* (*IMG_Load_RW_FT)(SDL_RWops* src, int freesrc);
 static IMG_Load_RW_FT IMG_Load_RW_FUNC = NULL;
 
-PG_FileArchive::PG_FileArchive() {
+PG_FileArchive::PG_FileArchive(const char* arg0) {
 
 	// increment instance count
 	my_instance_count++;
 
 	// First instance ? -> initialize PhysFS
 	if(my_instance_count == 1) {
-		if(PHYSFS_init("paragui") == 0) {
+		if(PHYSFS_init(arg0) == 0) {
 			std::cerr << "Unable to initialize PhysicsFS !" << std::endl;
 			return;
 		}

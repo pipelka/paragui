@@ -4,6 +4,9 @@
 #include "pgnavigator.h"
 
 class MyApplication : public PG_Application, public PG_Navigator {
+public:
+	MyApplication(const char* argv0) : PG_Application(argv0) {
+	}
 protected:
 	bool eventKeyDown(const SDL_KeyboardEvent* key);
 };
@@ -57,7 +60,7 @@ int main(int argc, char* argv[]) {
 	int bpp = 0;
 
 	// construct the application object
-	MyApplication app;
+	MyApplication app(argv[0]);
 	
 	for(int c=1; c<argc; c++) {
 

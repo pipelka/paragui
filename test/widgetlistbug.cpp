@@ -33,7 +33,7 @@ bool add_handler(PG_Pointer clientdata) {
 
 
 int main(int argc, char* argv[]) {
-    PG_Application app;
+    PG_Application app(argv[0]);
     app.LoadTheme("default");
     app.InitScreen(640, 480, 16, SDL_SWSURFACE);
 

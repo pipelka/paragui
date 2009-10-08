@@ -20,9 +20,9 @@
     pipelka@teleweb.at
  
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2009/06/04 10:19:05 $
+    Update Date:      $Date: 2009/10/08 12:52:12 $
     Source File:      $Source: /sources/paragui/paragui/include/pgfilearchive.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.6.2.9 $
+    CVS/RCS Revision: $Revision: 1.3.6.6.2.10 $
     Status:           $State: Exp $
 */
 
@@ -61,7 +61,7 @@ public:
 	    APPEND //!< Open file for writing, appending data to the end of the file
 	};
 
-	PG_FileArchive();
+	PG_FileArchive(const char* arg0 = NULL);
 	~PG_FileArchive();
 
 	static void Deinit();

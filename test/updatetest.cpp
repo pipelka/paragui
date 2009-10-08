@@ -18,7 +18,7 @@ class MyWindow: public PG_Window {
 
 int main(int argc,char *argv[])
 {
-	PG_Application app;
+	PG_Application app(argv[0]);
 	app.SetEmergencyQuit(true);
 	app.LoadTheme("simple");
 	app.InitScreen(800,600,0,SDL_SWSURFACE);

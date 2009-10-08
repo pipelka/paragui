@@ -26,7 +26,7 @@ int main( int argc, char **argv ) {
 
 int main( int argc, char **argv )
 {
-	PG_Application app;
+	PG_Application app(argv[0]);
 
 	// The theme must have a font that has all the glyphs we will be using mapped to
 	//  the appropriate unicode characters (Arial Unicode MS for example, it has most of

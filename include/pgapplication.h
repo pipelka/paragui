@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2009/06/04 10:25:02 $
+    Update Date:      $Date: 2009/10/08 12:52:12 $
     Source File:      $Source: /sources/paragui/paragui/include/pgapplication.h,v $
-    CVS/RCS Revision: $Revision: 1.3.6.9.2.31 $
+    CVS/RCS Revision: $Revision: 1.3.6.9.2.32 $
     Status:           $State: Exp $
 */
 
@@ -122,7 +122,7 @@ class SignalAppIdle : public PG_Signal1<PG_MessageObject*, datatype> {}
 	;
 
 	/**  */
-	PG_Application();
+	PG_Application(const char* arg0 = NULL);
 
 	/**  */
 	~PG_Application();

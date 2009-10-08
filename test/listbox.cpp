@@ -9,7 +9,7 @@ bool handleListBoxItem(PG_ListBoxBaseItem* item) {
 
 int main( int argc, char **argv )
 {
-	PG_Application app;
+	PG_Application app(argv[0]);
 	
 	app.LoadTheme( "default" );
 	

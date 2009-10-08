@@ -9,7 +9,7 @@ Submitted by: Andrew Ford <andrewhford@yahoo.com>
 
 int main( int argc, char **argv )
 {
-   PG_Application app;
+   PG_Application app(argv[0]);
    app.LoadTheme( "default" );
    app.InitScreen( 640, 480 );
 
