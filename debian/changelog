@@ -1,3 +1,9 @@
+libparagui1.1 (1.1.11-1) jaunty; urgency=low
+
+  * version 1.1.11
+
+ -- Alexander Pipelka <pipelka@celeborn>  Wed, 09 Dec 2009 13:51:31 +0100
+
 libparagui1.1 (1.1.10-2) jaunty; urgency=low
 
   * fixed shlibs version
