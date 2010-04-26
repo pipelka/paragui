@@ -20,9 +20,9 @@
     pipelka@teleweb.at
 
     Last Update:      $Author: braindead $
-    Update Date:      $Date: 2009/06/04 10:25:11 $
+    Update Date:      $Date: 2010/04/26 08:16:33 $
     Source File:      $Source: /sources/paragui/paragui/src/core/pglog.cpp,v $
-    CVS/RCS Revision: $Revision: 1.1.6.8.2.9 $
+    CVS/RCS Revision: $Revision: 1.1.6.8.2.10 $
     Status:           $State
 */
 
@@ -72,8 +72,8 @@ void PG_LogConsole::SetLogLevel(PG_LOG_LEVEL newlevel) {
 }
 
 void PG_LogConsole::LogVA(PG_LOG_LEVEL id, const char *Text, va_list ap) {
+	PG_LogMessage_t* NewMsg = NULL;
 	char buffer[1024];
-	PG_LogMessage_t* NewMsg;
 
 	if(id == PG_LOG_NONE || id > PG_LogLevel) {
 		return; // Don't log this type.
@@ -83,22 +83,23 @@ void PG_LogConsole::LogVA(PG_LOG_LEVEL id, const char *Text, va_list ap) {
 	vsnprintf(buffer, sizeof(buffer), Text, ap);
 #else
 	// ERROR PRONE!!! VC++ doesn't have vsnprintf _I think_...
-	//vsprintf(buffer, Text, ap);
-	vsnprintf(buffer, sizeof(buffer), Text, ap);
+	vsprintf(buffer, Text, ap);
 #endif
 
-	//Create new log item
-	NewMsg = new PG_LogMessage_t(id, buffer);
-
-	PG_LogMessages.push_front(NewMsg);
-
 	//Check if there aren`t too many log messages
-	while (PG_LogMessages.size() >= PG_LogMaxMessages) {
-		PG_LogMessage_t *tmp = PG_LogMessages.back();
+	if(PG_LogMessages.size() >= PG_LogMaxMessages) {
+		NewMsg = PG_LogMessages.back();
 		PG_LogMessages.pop_back();
 
-		delete tmp;
+		NewMsg->Id = id;
+		NewMsg->TimeStamp = time(0);
+		NewMsg->Text = buffer;
 	}
+	else {
+		//Create new log item
+		NewMsg = new PG_LogMessage_t(id, buffer);
+	}
+	PG_LogMessages.push_front(NewMsg);
 
 	//Print to stdout
 	if (PG_LogMethod & PG_LOGMTH_STDOUT) {
@@ -160,10 +161,10 @@ void PG_LogConsole::LogVA(PG_LOG_LEVEL id, const char *Text, va_list ap) {
 void PG_LogConsole::Done() {
 	std::list<PG_LogMessage_t*>::iterator it = PG_LogMessages.begin();
 
-	while (it!=PG_LogMessages.end()) {
+	while (it != PG_LogMessages.end()) {
 		delete *it;
-		PG_LogMessages.erase(it);
-		it = PG_LogMessages.begin();
+		it = PG_LogMessages.erase(it);
+		//it = PG_LogMessages.begin();
 	}
 	PG_LogMessages.clear();
 
