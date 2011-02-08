@@ -659,7 +659,6 @@ bindings/csharp/Makefile
 bindings/python/Makefile
 bindings/ruby/Makefile
 data/Makefile
-debian/Makefile
 doc/Makefile
 doc/paragui.doxy
 doc/html/Makefile
