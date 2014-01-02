@@ -32,8 +32,9 @@ noinst_PROGRAMS = \
 LFLAGS = \
 	$(SDL_LIBS) \
 	-L../src ../src/libparagui.la \
-	$(FREETYPE_LIBS)
-	$(LIBSTDCPP)
+	$(FREETYPE_LIBS) \
+	$(LIBSTDCPP) \
+	$(SIGC_LIBS)
 
 #cairotest_SOURCES = cairotest.cpp
 #cairotest_LDADD = $(LFLAGS) -lcairo -lpixman

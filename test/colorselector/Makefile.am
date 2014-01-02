@@ -8,7 +8,8 @@ colorselector_LDADD = \
 	$(SDL_LIBS) \
 	-L../../src ../../src/libparagui.la \
 	$(FREETYPE_LIBS) \
-	$(LIBSTDCPP)
+	$(LIBSTDCPP) \
+	$(SIGC_LIBS)
 
 EXTRA_DIST = \
 	pgcolorselector.h
